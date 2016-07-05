@@ -9,7 +9,8 @@
 #include "../common/timer.h" // INVALID_TIMER
 #include "../common/strlib.h"// StringBuf
 #include "map.h" // RC_ALL
-#include "atcommand.h" // AtCommandType
+//#include "atcommand.h" // AtCommandType
+enum AtCommandType : uint8;
 #include "battle.h" // battle_config
 #include "buyingstore.h"  // struct s_buyingstore
 #include "itemdb.h" // MAX_ITEMGROUP
@@ -701,10 +702,10 @@ extern struct eri *pc_itemgrouphealrate_ers; /// Player's Item Group Heal Rate t
 /**
  * ERS for the bulk of pc vars
  **/
-struct eri *num_reg_ers;
-struct eri *str_reg_ers;
+extern struct eri *num_reg_ers;
+extern struct eri *str_reg_ers;
 /* */
-bool reg_load;
+extern bool reg_load;
 
 /* Global Expiration Timer ID */
 extern int pc_expiration_tid;
@@ -783,7 +784,7 @@ enum adopt_responses {
 	ADOPT_MARRIED,
 };
 
-struct job_info {
+extern struct job_info {
 	unsigned int base_hp[MAX_LEVEL], base_sp[MAX_LEVEL]; //Storage for the first calculation with hp/sp factor and multiplicator
 	int hp_factor, hp_multiplicator, sp_factor;
 	int max_weight_base;
@@ -940,13 +941,13 @@ int pc_getrefinebonus(int lv,int type);
 bool pc_can_give_items(struct map_session_data *sd);
 bool pc_can_give_bounded_items(struct map_session_data *sd);
 
-bool pc_can_use_command(struct map_session_data *sd, const char *command, AtCommandType type);
+bool pc_can_use_command(struct map_session_data *sd, const char *command, atCommandType type);
 #define pc_has_permission(sd, permission) ( ((sd)->permissions&permission) != 0 )
 bool pc_should_log_commands(struct map_session_data *sd);
 
 void pc_setrestartvalue(struct map_session_data *sd, char type);
 void pc_makesavestatus(struct map_session_data *sd);
-void pc_respawn(struct map_session_data* sd, clr_type clrtype);
+void pc_respawn(struct map_session_data* sd,enum clr_type clrtype);
 void pc_setnewpc(struct map_session_data *sd, uint32 account_id, uint32 char_id, int login_id1, unsigned int client_tick, int sex, int fd);
 bool pc_authok(struct map_session_data *sd, uint32 login_id2, time_t expiration_time, int group_id, struct mmo_charstatus *st, bool changing_mapservers);
 void pc_authfail(struct map_session_data *sd);
@@ -983,9 +984,9 @@ enum e_setpos{
 	SETPOS_AUTOTRADE = 3
 };
 
-enum e_setpos pc_setpos(struct map_session_data* sd, unsigned short mapindex, int x, int y, clr_type clrtype);
+enum e_setpos pc_setpos(struct map_session_data* sd, unsigned short mapindex, int x, int y, enum clr_type clrtype);
 void pc_setsavepoint(struct map_session_data *sd, short mapindex,int x,int y);
-char pc_randomwarp(struct map_session_data *sd,clr_type type);
+char pc_randomwarp(struct map_session_data *sd,enum clr_type type);
 bool pc_memo(struct map_session_data* sd, int pos);
 
 char pc_checkadditem(struct map_session_data *sd, unsigned short nameid, int amount);
@@ -1240,6 +1241,8 @@ void pc_baselevelchanged(struct map_session_data *sd);
 void pc_damage_log_add(struct map_session_data *sd, int id);
 void pc_damage_log_clear(struct map_session_data *sd, int id);
 
+enum e_BANKING_DEPOSIT_ACK : uint8;
+enum e_BANKING_WITHDRAW_ACK : uint8;
 enum e_BANKING_DEPOSIT_ACK pc_bank_deposit(struct map_session_data *sd, int money);
 enum e_BANKING_WITHDRAW_ACK pc_bank_withdraw(struct map_session_data *sd, int money);
 

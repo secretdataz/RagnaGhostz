@@ -15,6 +15,7 @@
 #include "../common/db.h"
 #include "../common/msg_conf.h"
 #include "../common/sql.h"
+#include "mapConst.h"
 
 struct npc_data;
 struct item_data;
@@ -30,44 +31,10 @@ enum E_MAPSERVER_ST {
 #define msg_config_read(cfgName,isnew) map_msg_config_read(cfgName,isnew)
 #define msg_txt(sd,msg_number) map_msg_txt(sd,msg_number)
 #define do_final_msg() map_do_final_msg()
-int map_msg_config_read(char *cfgName,int lang);
+int map_msg_config_read(const char *cfgName,int lang);
 const char* map_msg_txt(struct map_session_data *sd,int msg_number);
 void map_do_final_msg(void);
 void map_msg_reload(void);
-
-#define MAX_NPC_PER_MAP 512
-#define AREA_SIZE battle_config.area_size
-#define DAMAGELOG_SIZE 30
-#define LOOTITEM_SIZE 10
-#define MAX_MOBSKILL 50		//Max 128, see mob skill_idx type if need this higher
-#define MAX_MOB_LIST_PER_MAP 128
-#define MAX_EVENTQUEUE 2
-#define MAX_EVENTTIMER 32
-#define NATURAL_HEAL_INTERVAL 500
-#define MIN_FLOORITEM 2
-#define MAX_FLOORITEM START_ACCOUNT_NUM
-#define MAX_LEVEL 175
-#define MAX_DROP_PER_MAP 48
-#define MAX_IGNORE_LIST 20 	// official is 14
-#define MAX_VENDING 12
-#define MAX_MAP_SIZE 512*512 	// Wasn't there something like this already? Can't find it.. [Shinryo]
-
-//The following system marks a different job ID system used by the map server,
-//which makes a lot more sense than the normal one. [Skotlex]
-//
-//These marks the "level" of the job.
-#define JOBL_2_1 0x100 //256
-#define JOBL_2_2 0x200 //512
-#define JOBL_2 0x300 //768
-
-#define JOBL_UPPER 0x1000 //4096
-#define JOBL_BABY 0x2000  //8192
-#define JOBL_THIRD 0x4000 //16384
-
-//for filtering and quick checking.
-#define MAPID_BASEMASK 0x00ff
-#define MAPID_UPPERMASK 0x0fff
-#define MAPID_THIRDMASK (JOBL_THIRD|MAPID_UPPERMASK)
 
 //First Jobs
 //Note the oddity of the novice:
@@ -235,7 +202,7 @@ enum e_mapid {
 
 //This stackable implementation does not means a BL can be more than one type at a time, but it's
 //meant to make it easier to check for multiple types at a time on invocations such as map_foreach* calls [Skotlex]
-enum bl_type {
+enum bl_type : uint16 {
 	BL_NUL   = 0x000,
 	BL_PC    = 0x001,
 	BL_MOB   = 0x002,
@@ -255,7 +222,7 @@ enum bl_type {
 #define BL_CHAR (BL_PC|BL_MOB|BL_HOM|BL_MER|BL_ELEM)
 
 /// NPC Subtype
-enum npc_subtype {
+enum npc_subtype : uint8 {
 	NPCTYPE_WARP, /// Warp
 	NPCTYPE_SHOP, /// Shop
 	NPCTYPE_SCRIPT, /// Script
@@ -266,7 +233,7 @@ enum npc_subtype {
 	NPCTYPE_MARKETSHOP, /// Marketshop
 };
 
-enum e_race {
+enum e_race : int8 {
 	RC_NONE_ = -1, //don't give us bonus
 	RC_FORMLESS = 0,
 	RC_UNDEAD,
@@ -283,7 +250,7 @@ enum e_race {
 	RC_MAX //auto upd enum for array size
 };
 
-enum e_classAE {
+enum e_classAE : int8 {
 	CLASS_NONE = -1, //don't give us bonus
 	CLASS_NORMAL = 0,
 	CLASS_BOSS,
@@ -293,7 +260,7 @@ enum e_classAE {
 	CLASS_MAX //auto upd enum for array len
 };
 
-enum e_race2 {
+enum e_race2 : uint8 {
 	RC2_NONE = 0,
 	RC2_GOBLIN,
 	RC2_KOBOLD,
@@ -311,7 +278,7 @@ enum e_race2 {
 };
 
 /// Element list
-enum e_element {
+enum e_element : int8 {
 	ELE_NONE=-1,
 	ELE_NEUTRAL=0,
 	ELE_WATER,
@@ -499,7 +466,7 @@ enum _look {
 };
 
 // used by map_setcell()
-typedef enum {
+enum cell_t {
 	CELL_WALKABLE,
 	CELL_SHOOTABLE,
 	CELL_WATER,
@@ -511,11 +478,10 @@ typedef enum {
 	CELL_NOCHAT,
 	CELL_MAELSTROM,
 	CELL_ICEWALL,
-
-} cell_t;
+};
 
 // used by map_getcell()
-typedef enum {
+enum cell_chk : uint8 {
 	CELL_GETTYPE,			// Retrieves a cell's 'gat' type
 
 	CELL_CHKWALL,			// Whether the cell is a wall (gat type 1)
@@ -536,7 +502,7 @@ typedef enum {
 	CELL_CHKMAELSTROM,		// Whether the cell has Maelstrom
 	CELL_CHKICEWALL,		// Whether the cell has Ice Wall
 
-} cell_chk;
+};
 
 struct mapcell
 {
@@ -918,24 +884,24 @@ void map_skill_damage_add(struct map_data *m, uint16 skill_id, int pc, int mob, 
 #define CHK_CLASS(class_) ((class_) > CLASS_NONE && (class_) < CLASS_MAX) /// Check valid Class
 
 //Options read in cli
-extern char* INTER_CONF_NAME;
-extern char* LOG_CONF_NAME;
-extern char* MAP_CONF_NAME;
-extern char* BATTLE_CONF_FILENAME;
-extern char* ATCOMMAND_CONF_FILENAME;
-extern char* SCRIPT_CONF_NAME;
-extern char* MSG_CONF_NAME_EN;
-extern char* GRF_PATH_FILENAME;
+extern const char* INTER_CONF_NAME;
+extern const char* LOG_CONF_NAME;
+extern const char* MAP_CONF_NAME;
+extern const char* BATTLE_CONF_FILENAME;
+extern const char* ATCOMMAND_CONF_FILENAME;
+extern const char* SCRIPT_CONF_NAME;
+extern const char* MSG_CONF_NAME_EN;
+extern const char* GRF_PATH_FILENAME;
 //Other languages supported
-char *MSG_CONF_NAME_RUS;
-char *MSG_CONF_NAME_SPN;
-char *MSG_CONF_NAME_GRM;
-char *MSG_CONF_NAME_CHN;
-char *MSG_CONF_NAME_MAL;
-char *MSG_CONF_NAME_IDN;
-char *MSG_CONF_NAME_FRN;
-char *MSG_CONF_NAME_POR;
-char *MSG_CONF_NAME_THA;
+extern const char *MSG_CONF_NAME_RUS;
+extern const char *MSG_CONF_NAME_SPN;
+extern const char *MSG_CONF_NAME_GRM;
+extern const char *MSG_CONF_NAME_CHN;
+extern const char *MSG_CONF_NAME_MAL;
+extern const char *MSG_CONF_NAME_IDN;
+extern const char *MSG_CONF_NAME_FRN;
+extern const char *MSG_CONF_NAME_POR;
+extern const char *MSG_CONF_NAME_THA;
 
 //Useful typedefs from jA [Skotlex]
 typedef struct map_session_data TBL_PC;

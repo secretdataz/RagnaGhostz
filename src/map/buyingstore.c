@@ -18,7 +18,7 @@
 #include "log.h"  // log_pick_pc, log_zeny
 #include "pc.h"  // struct map_session_data
 #include "chrif.h"
-
+#include "npc.h"
 
 
 //Autotrader

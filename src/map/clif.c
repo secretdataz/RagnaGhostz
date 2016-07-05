@@ -1,8 +1,12 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
-
-
 #include "clif.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
+#include <time.h>
 
 #include "../common/socket.h"
 #include "../common/timer.h"
@@ -19,6 +23,7 @@
 #include "map.h"
 #include "chrif.h"
 #include "pc.h"
+#include "pc_groups.h"
 #include "status.h"
 #include "npc.h"
 #include "itemdb.h"
@@ -47,14 +52,9 @@
 #include "cashshop.h"
 #include "channel.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdarg.h>
-#include <time.h>
-
 /* for clif_clearunit_delayed */
 static struct eri *delay_clearunit_ers;
+unsigned long color_table[COLOR_MAX];
 
 //#define DUMP_UNKNOWN_PACKET
 //#define DUMP_INVALID_PACKET
@@ -823,7 +823,7 @@ void clif_clearflooritem(struct flooritem_data *fitem, int fd)
 ///     2 = logged out
 ///     3 = teleport
 ///     4 = trickdead
-void clif_clearunit_single(int id, clr_type type, int fd)
+void clif_clearunit_single(int id, enum clr_type type, int fd)
 {
 	WFIFOHEAD(fd, packet_len(0x80));
 	WFIFOW(fd,0) = 0x80;
@@ -840,7 +840,7 @@ void clif_clearunit_single(int id, clr_type type, int fd)
 ///     2 = logged out
 ///     3 = teleport
 ///     4 = trickdead
-void clif_clearunit_area(struct block_list* bl, clr_type type)
+void clif_clearunit_area(struct block_list* bl, enum clr_type type)
 {
 	unsigned char buf[8];
 
@@ -865,11 +865,11 @@ void clif_clearunit_area(struct block_list* bl, clr_type type)
 static int clif_clearunit_delayed_sub(int tid, unsigned int tick, int id, intptr_t data)
 {
 	struct block_list *bl = (struct block_list *)data;
-	clif_clearunit_area(bl, (clr_type) id);
+	clif_clearunit_area(bl, (enum clr_type) id);
 	ers_free(delay_clearunit_ers,bl);
 	return 0;
 }
-void clif_clearunit_delayed(struct block_list* bl, clr_type type, unsigned int tick)
+void clif_clearunit_delayed(struct block_list* bl,enum clr_type type, unsigned int tick)
 {
 	struct block_list *tbl = ers_alloc(delay_clearunit_ers, struct block_list);
 	memcpy (tbl, bl, sizeof (struct block_list));
@@ -9771,7 +9771,7 @@ void clif_msg_skill(struct map_session_data* sd, uint16 skill_id, int msg_id)
 /// Formats: false - <packet id>.w <packet len>.w (<name> : <message>).?B 00
 ///          true - <packet id>.w <packet len>.w <name>.24B <message>.?B 00
 static bool clif_process_message(struct map_session_data* sd, bool whisperFormat, char* out_name, char* out_message, char* out_full_message ){
-	char* seperator = " : ";
+	const char* seperator = " : ";
 	int fd;
 	struct s_packet_db* info;
 	uint16 packetLength, inputLength;
@@ -19229,7 +19229,7 @@ void packetdb_readdb(bool reload)
 	};
 	struct {
 		void (*func)(int, struct map_session_data *);
-		char *name;
+		const char *name;
 	} clif_parse_func[]={
 		{clif_parse_WantToConnection,"wanttoconnection"},
 		{clif_parse_LoadEndAck,"loadendack"},
@@ -19470,7 +19470,7 @@ void packetdb_readdb(bool reload)
 		{NULL,NULL}
 	};
 	struct {
-		char *name; //function name
+		const char *name; //function name
 		int funcidx; //
 	} clif_ack_func[]={ //hash
 		{ "ZC_ACK_OPEN_BANKING", ZC_ACK_OPEN_BANKING},

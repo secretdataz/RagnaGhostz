@@ -37,6 +37,14 @@
 #include "party.h" // party_search()
 #include "storage.h"
 #include "quest.h"
+#include "npc.h"
+#include "guild.h"
+#include "clif.h"
+
+struct eri *num_reg_ers;
+struct eri *str_reg_ers;
+bool reg_load=false;
+struct job_info job_info[CLASS_COUNT];
 
 int pc_split_atoui(char* str, unsigned int* val, char sep, int max);
 
@@ -130,7 +138,7 @@ int pc_class2idx(int class_) {
 * @param sd
 * @return Group ID
 */
-inline int pc_get_group_id(struct map_session_data *sd) {
+int pc_get_group_id(struct map_session_data *sd) {
 	return sd->group_id;
 }
 
@@ -138,7 +146,7 @@ inline int pc_get_group_id(struct map_session_data *sd) {
 * @param sd
 * @return Group Level
 */
-inline int pc_get_group_level(struct map_session_data *sd) {
+int pc_get_group_level(struct map_session_data *sd) {
 	return sd->group_level;
 }
 
@@ -5348,7 +5356,7 @@ int pc_steal_coin(struct map_session_data *sd,struct block_list *target)
  *			SETPOS_NO_MAPSERVER	Map not in this map-server, and failed to locate alternate map-server.
  *			SETPOS_AUTOTRADE	Player is in autotrade state
  *------------------------------------------*/
-enum e_setpos pc_setpos(struct map_session_data* sd, unsigned short mapindex, int x, int y, clr_type clrtype)
+enum e_setpos pc_setpos(struct map_session_data* sd, unsigned short mapindex, int x, int y, enum clr_type clrtype)
 {
 	int16 m;
 
@@ -5552,7 +5560,7 @@ enum e_setpos pc_setpos(struct map_session_data* sd, unsigned short mapindex, in
  *	0 = Success
  *	1,2,3 = Fail
  *------------------------------------------*/
-char pc_randomwarp(struct map_session_data *sd, clr_type type)
+char pc_randomwarp(struct map_session_data *sd, enum clr_type type)
 {
 	int x,y,i=0;
 	int16 m;
@@ -7431,7 +7439,7 @@ int pc_skillheal2_bonus(struct map_session_data *sd, uint16 skill_id) {
 	return bonus;
 }
 
-void pc_respawn(struct map_session_data* sd, clr_type clrtype)
+void pc_respawn(struct map_session_data* sd, enum clr_type clrtype)
 {
 	if( !pc_isdead(sd) )
 		return; // not applicable
@@ -10434,7 +10442,7 @@ bool pc_isautolooting(struct map_session_data *sd, unsigned short nameid)
  * @param command Command name without @/# and params
  * @param type is it atcommand or charcommand
  */
-bool pc_can_use_command(struct map_session_data *sd, const char *command, AtCommandType type)
+bool pc_can_use_command(struct map_session_data *sd, const char *command, atCommandType type)
 {
 	return pc_group_can_use_command(pc_get_group_id(sd), command, type);
 }

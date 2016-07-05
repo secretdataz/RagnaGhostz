@@ -25,6 +25,7 @@
 #include "elemental.h"
 #include "mail.h"
 #include "quest.h"
+#include "guild.h"
 
 static const int packet_len_table[]={
 	-1,-1,27,-1, -1, 0,37,-1, 10+NAME_LENGTH,-1, 0, 0,  0, 0,  0, 0, //0x3800-0x380f

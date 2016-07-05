@@ -8,10 +8,12 @@
 #include "../common/mmo.h" // MAX_SKILL, struct square
 #include "../common/db.h"
 #include "map.h" // struct block_list
-#include "battle.h" // enum damage_lv
+//#include "battle.h" // enum damage_lv
 
-enum sc_type : short;
-enum send_target : unsigned char;
+enum damage_lv : uint8;
+enum sc_type : int16;
+enum send_target : uint8;
+enum e_damage_type : uint8;
 struct map_session_data;
 struct homun_data;
 struct skill_unit;
@@ -250,7 +252,7 @@ struct s_skill_nounit_layout {
 	int dy[MAX_SKILL_UNIT_COUNT];
 };
 
-#define MAX_SKILLTIMERSKILL 50
+
 struct skill_timerskill {
 	int timer;
 	int src_id;
@@ -262,7 +264,6 @@ struct skill_timerskill {
 	int flag;
 };
 
-#define MAX_SKILLUNITGROUP 25 /// Maximum skill unit group (for same skill each source)
 /// Skill unit group
 struct skill_unit_group {
 	int src_id; /// Caster ID/RID, if player is account_id
@@ -304,7 +305,6 @@ struct skill_unit {
 	unsigned hidden : 1;
 };
 
-#define MAX_SKILLUNITGROUPTICKSET 25
 struct skill_unit_group_tickset {
 	unsigned int tick;
 	int id;

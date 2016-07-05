@@ -6,7 +6,7 @@
 
 #include "../common/cbasetypes.h"
 #include "../common/mmo.h" // struct party
-#include "guild.h"
+#include "mapConst.h"
 
 #define MAX_BG_MEMBERS 30
 

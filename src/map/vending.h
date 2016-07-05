@@ -17,7 +17,7 @@ struct s_vending {
 	unsigned int value; ///at wich price
 };
 
-DBMap * vending_getdb();
+DBMap* vending_getdb();
 void do_final_vending(void);
 void do_init_vending(void);
 void do_init_vending_autotrade( void );

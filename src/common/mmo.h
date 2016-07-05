@@ -171,7 +171,7 @@ enum item_types {
 };
 
 // Questlog states
-enum quest_state {
+enum quest_state : uint8 {
 	Q_INACTIVE, ///< Inactive quest (the user can toggle between active and inactive quests)
 	Q_ACTIVE,   ///< Active quest
 	Q_COMPLETE, ///< Completed quest

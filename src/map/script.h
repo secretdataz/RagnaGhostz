@@ -5,7 +5,8 @@
 #define _SCRIPT_H_
 
 #include "../common/cbasetypes.h"
-#include "map.h"
+#include "../common/db.h"
+//#include "map.h"
 
 #define NUM_WHISPER_VAR 10
 
@@ -645,12 +646,12 @@ enum random_option_attribute {
 /**
  * used to generate quick script_array entries
  **/
-struct eri *array_ers;
-DBMap *st_db;
-unsigned int active_scripts;
-unsigned int next_id;
-struct eri *st_ers;
-struct eri *stack_ers;
+extern struct eri *array_ers;
+extern DBMap *st_db;
+extern unsigned int active_scripts;
+extern unsigned int next_id;
+extern struct eri *st_ers;
+extern struct eri *stack_ers;
 
 const char* skip_space(const char* p);
 void script_error(const char* src, const char* file, int start_line, const char* error_msg, const char* error_pos);
@@ -660,7 +661,7 @@ struct script_code* parse_script(const char* src,const char* file,int line,int o
 void run_script_sub(struct script_code *rootscript,int pos,int rid,int oid, char* file, int lineno);
 void run_script(struct script_code *rootscript,int pos,int rid,int oid);
 
-int set_reg(struct script_state* st, TBL_PC* sd, int64 num, const char* name, const void* value, struct reg_db *ref);
+int set_reg(struct script_state* st, struct map_session_data* sd, int64 num, const char* name, const void* value, struct reg_db *ref);
 int set_var(struct map_session_data *sd, char *name, void *val);
 int conv_num(struct script_state *st,struct script_data *data);
 const char* conv_str(struct script_state *st,struct script_data *data);
@@ -686,7 +687,7 @@ void script_hardcoded_constants(void);
 void script_cleararray_pc(struct map_session_data* sd, const char* varname, void* value);
 void script_setarray_pc(struct map_session_data* sd, const char* varname, uint32 idx, void* value, int* refcache);
 
-int script_config_read(char *cfgName);
+int script_config_read(const char *cfgName);
 void do_init_script(void);
 void do_final_script(void);
 int add_str(const char* p);
@@ -694,7 +695,7 @@ const char* get_str(int id);
 void script_reload(void);
 
 // @commands (script based)
-void setd_sub(struct script_state *st, TBL_PC *sd, const char *varname, int elem, void *value, struct reg_db *ref);
+void setd_sub(struct script_state *st, struct map_session_data *sd, const char *varname, int elem, void *value, struct reg_db *ref);
 
 /**
  * Array Handling

@@ -5,11 +5,10 @@
 #define _MOB_H_
 
 #include "../common/mmo.h" // struct item
-#include "guild.h" // struct guardian_data
-#include "map.h" // struct status_data, struct view_data, struct mob_skill
 #include "status.h" // struct status data, struct status_change
-#include "unit.h" // unit_stop_walking(), unit_stop_attack()
-#include "npc.h"
+#include "unit.h" // struct view_data, unit_stop_walking(), unit_stop_attack()
+
+struct guardian_data;
 
 // Change this to increase the table size in your mob_db to accomodate a larger mob database.
 // Be sure to note that IDs 4001 to 4048 are reserved for advanced/baby/expanded classes.

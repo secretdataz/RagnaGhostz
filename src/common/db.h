@@ -274,12 +274,6 @@ typedef uint64 (*DBHasher)(DBKey key, unsigned short maxlen);
 typedef void (*DBReleaser)(DBKey key, DBData data, DBRelease which);
 
 
-
-typedef struct DBIterator DBIterator;
-typedef struct DBMap DBMap;
-
-
-
 /**
  * Database iterator.
  * Supports forward iteration, backward iteration and removing entries from the database.

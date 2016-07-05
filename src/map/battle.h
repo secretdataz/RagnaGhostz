@@ -7,21 +7,22 @@
 #include "../common/cbasetypes.h"
 #include "../common/mmo.h"
 #include "../config/core.h"
-#include "clif.h" // e_damage_type
+
+enum e_damage_type : uint8;
 #include "map.h" //ELE_MAX
 
 /// State of a single attack attempt; used in flee/def penalty calculations when mobbed
-typedef enum damage_lv {
+enum damage_lv : uint8 {
 	ATK_NONE,    /// Not an attack
 	ATK_LUCKY,   /// Attack was lucky-dodged
 	ATK_FLEE,    /// Attack was dodged
 	ATK_MISS,    /// Attack missed because of element/race modifier.
 	ATK_BLOCK,   /// Attack was blocked by some skills.
 	ATK_DEF      /// Attack connected
-} damage_lv;
+};
 
 /// Flag of the final calculation
-enum e_battle_flag {
+enum e_battle_flag : uint16 {
 	BF_WEAPON	= 0x0001, /// Weapon attack
 	BF_MAGIC	= 0x0002, /// Magic attack
 	BF_MISC		= 0x0004, /// Misc attack
@@ -38,7 +39,7 @@ enum e_battle_flag {
 };
 
 /// Battle check target [Skotlex]
-enum e_battle_check_target {
+enum e_battle_check_target : uint32 {
 	BCT_NOONE		= 0x000000, ///< No one
 	BCT_SELF		= 0x010000, ///< Self
 	BCT_ENEMY		= 0x020000, ///< Enemy
@@ -620,6 +621,7 @@ extern struct Battle_Config
 void do_init_battle(void);
 void do_final_battle(void);
 extern int battle_config_read(const char *cfgName);
+extern void battle_validate_conf(void);
 extern void battle_set_defaults(void);
 int battle_set_value(const char* w1, const char* w2);
 int battle_get_value(const char* w1);

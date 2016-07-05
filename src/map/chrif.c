@@ -27,7 +27,7 @@
 #include "mercenary.h"
 #include "elemental.h"
 #include "storage.h"
-
+#include "guild.h"
 
 static int check_connect_char_server(int tid, unsigned int tick, int id, intptr_t data);
 

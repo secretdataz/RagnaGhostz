@@ -21,7 +21,7 @@
 
   int inter_log(char *fmt, ...);
 
-  extern unsigned int party_share_level;
+ extern unsigned int party_share_level;
 
  extern Sql* sql_handle;
  extern Sql* lsql_handle;

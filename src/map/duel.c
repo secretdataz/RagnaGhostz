@@ -111,6 +111,7 @@ static void duel_set(const unsigned int did, struct map_session_data* sd) {
 
 /*
  * Create a new duel for sd
+ * return duel_id or 0 when fail
  */
 unsigned int duel_create(struct map_session_data* sd, const unsigned int maxpl)
 {

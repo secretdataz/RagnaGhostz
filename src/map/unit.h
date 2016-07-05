@@ -4,13 +4,17 @@
 #ifndef _UNIT_H_
 #define _UNIT_H_
 
+#include "../common/cbasetypes.h"
+
 //#include "map.h"
+enum sc_type : int16;
 struct block_list;
 struct unit_data;
 struct map_session_data;
+enum clr_type : uint8;
 
-#include "clif.h"  // clr_type
-#include "map.h" // struct block_list
+//#include "clif.h"  // clr_type
+//#include "map.h" // struct block_list
 #include "path.h" // struct walkpath_data
 #include "skill.h" // struct skill_timerskill, struct skill_unit_group, struct skill_unit_group_tickset
 
@@ -101,7 +105,7 @@ int unit_escape(struct block_list *bl, struct block_list *target, short dist);
 
 // Instant unit changes
 bool unit_movepos(struct block_list *bl, short dst_x, short dst_y, int easy, bool checkpath);
-int unit_warp(struct block_list *bl, short map, short x, short y, clr_type type);
+int unit_warp(struct block_list *bl, short map, short x, short y,enum clr_type type);
 int unit_setdir(struct block_list *bl, unsigned char dir);
 uint8 unit_getdir(struct block_list *bl);
 int unit_blown(struct block_list* bl, int dx, int dy, int count, int flag);
@@ -138,11 +142,11 @@ void unit_dataset(struct block_list *bl);
 int unit_fixdamage(struct block_list *src,struct block_list *target,unsigned int tick,int sdelay,int ddelay,int64 damage,int div,int type,int64 damage2);
 // Remove unit
 struct unit_data* unit_bl2ud(struct block_list *bl);
-void unit_remove_map_pc(struct map_session_data *sd, clr_type clrtype);
+void unit_remove_map_pc(struct map_session_data *sd,enum clr_type clrtype);
 void unit_free_pc(struct map_session_data *sd);
 #define unit_remove_map(bl,clrtype) unit_remove_map_(bl,clrtype,__FILE__,__LINE__,__func__)
-int unit_remove_map_(struct block_list *bl, clr_type clrtype, const char* file, int line, const char* func);
-int unit_free(struct block_list *bl, clr_type clrtype);
+int unit_remove_map_(struct block_list *bl,enum clr_type clrtype, const char* file, int line, const char* func);
+int unit_free(struct block_list *bl,enum clr_type clrtype);
 int unit_changeviewsize(struct block_list *bl,short size);
 int unit_changetarget(struct block_list *bl,va_list ap);
 

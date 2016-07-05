@@ -4,12 +4,13 @@
 #ifndef _PC_GROUPS_H_
 #define _PC_GROUPS_H_
 
-#include "atcommand.h" // AtCommandType
+#include "../common/cbasetypes.h"
+enum atCommandType : uint8;
 
 extern int pc_group_max;
 
 bool pc_group_exists(int group_id);
-bool pc_group_can_use_command(int group_id, const char *command, AtCommandType type);
+bool pc_group_can_use_command(int group_id, const char *command, atCommandType type);
 bool pc_group_has_permission(int group_id, int permission);
 bool pc_group_should_log_commands(int group_id);
 const char* pc_group_id2name(int group_id);
@@ -20,7 +21,7 @@ void do_init_pc_groups(void);
 void do_final_pc_groups(void);
 void pc_groups_reload(void);
 
-enum e_pc_permission {
+enum e_pc_permission : uint32 {
 	PC_PERM_NONE                = 0,
 	PC_PERM_TRADE               = 0x00000001,
 	PC_PERM_PARTY               = 0x00000002,

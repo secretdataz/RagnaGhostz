@@ -26,6 +26,9 @@
 #include "homunculus.h"
 #include "mercenary.h"
 #include "elemental.h"
+#include "npc.h"
+#include "guild.h"
+#include "clif.h"
 
 // Regen related flags.
 enum e_regen {
@@ -56,6 +59,14 @@ bool running_npc_stat_calc_event; /// Indicate if OnPCStatCalcEvent is running.
 short current_equip_opt_index; /// Contains random option index of an equipped item. [Secret]
 
 unsigned int SCDisabled[SC_MAX]; ///< List of disabled SC on map zones. [Cydh]
+enum sc_type SkillStatusChangeTable[MAX_SKILL];   /// skill  -> status
+int StatusIconChangeTable[SC_MAX];           /// status -> "icon" (icon is a bit of a misnomer, since there exist values with no icon associated)
+unsigned int StatusChangeFlagTable[SC_MAX];  /// status -> flags
+int StatusSkillChangeTable[SC_MAX];          /// status -> skill
+int StatusRelevantBLTypes[SI_MAX];           /// "icon" -> enum bl_type (for clif->status_change to identify for which bl types to send packets)
+unsigned int StatusChangeStateTable[SC_MAX]; /// status -> flags
+bool StatusDisplayType[SC_MAX];
+
 
 static unsigned short status_calc_str(struct block_list *,struct status_change *,int);
 static unsigned short status_calc_agi(struct block_list *,struct status_change *,int);

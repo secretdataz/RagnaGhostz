@@ -28,6 +28,9 @@
 #include "party.h"
 #include "intif.h"
 #include "storage.h"
+#include "guild.h"
+#include "npc.h"
+#include "clif.h"
 
 // Directions values
 // 1 0 7
@@ -1156,7 +1159,7 @@ uint8 unit_blown_immune(struct block_list* bl, uint8 flag)
  * @param type: Clear type used in clif_clearunit_area()
  * @return Success(0); Failed(1); Error(2); unit_remove_map() Failed(3); map_addblock Failed(4)
  */
-int unit_warp(struct block_list *bl,short m,short x,short y,clr_type type)
+int unit_warp(struct block_list *bl,short m,short x,short y, enum clr_type type)
 {
 	struct unit_data *ud;
 
@@ -2815,7 +2818,7 @@ int unit_changetarget(struct block_list *bl, va_list ap) {
  * @param file, line, func: Call information for debug purposes
  * @return Success(1); Couldn't be removed or bl was free'd(0)
  */
-int unit_remove_map_(struct block_list *bl, clr_type clrtype, const char* file, int line, const char* func)
+int unit_remove_map_(struct block_list *bl, enum clr_type clrtype, const char* file, int line, const char* func)
 {
 	struct unit_data *ud = unit_bl2ud(bl);
 	struct status_change *sc = status_get_sc(bl);
@@ -3085,7 +3088,7 @@ int unit_remove_map_(struct block_list *bl, clr_type clrtype, const char* file, 
  *	0: Assume bl is being warped
  *	1: Death, appropriate cleanup performed
  */
-void unit_remove_map_pc(struct map_session_data *sd, clr_type clrtype)
+void unit_remove_map_pc(struct map_session_data *sd, enum clr_type clrtype)
 {
 	unit_remove_map(&sd->bl,clrtype);
 
@@ -3136,7 +3139,7 @@ void unit_free_pc(struct map_session_data *sd)
  *	1: Death, appropriate cleanup performed
  * @return 0
  */
-int unit_free(struct block_list *bl, clr_type clrtype)
+int unit_free(struct block_list *bl, enum clr_type clrtype)
 {
 	struct unit_data *ud = unit_bl2ud( bl );
 

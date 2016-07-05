@@ -20,7 +20,7 @@
 #include "inter.h"
 #include "int_mail.h"
 
-DBMap* auction_db_ = NULL; // int auction_id -> struct auction_data*
+static DBMap* auction_db_ = NULL; // int auction_id -> struct auction_data*
 
 void auction_delete(struct auction_data *auction);
 int auction_end_timer(int tid, unsigned int tick, int id, intptr_t data);

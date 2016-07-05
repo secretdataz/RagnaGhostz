@@ -27,7 +27,8 @@
 #include "party.h"
 #include "battleground.h"
 #include "chrif.h"
-
+#include "guild.h"
+#include "clif.h"
 
 int attr_fix_table[4][ELE_MAX][ELE_MAX];
 

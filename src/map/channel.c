@@ -15,6 +15,8 @@
 
 #include "map.h" //msg_conf
 #include "clif.h" //clif_chsys_msg
+#include "pc.h"
+#include "guild.h"
 
 static DBMap* channel_db; // channels
 

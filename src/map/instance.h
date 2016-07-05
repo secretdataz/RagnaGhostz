@@ -10,7 +10,7 @@
 
 #include "script.h" // struct reg_db
 
-enum send_target : unsigned char;
+enum send_target : uint8;
 struct block_list;
 
 #define MAX_INSTANCE_DATA		300	// Essentially how many instances we can create, but instance creation is primarily decided by MAX_MAP_PER_SERVER

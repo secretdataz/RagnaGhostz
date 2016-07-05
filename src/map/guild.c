@@ -25,7 +25,7 @@
 #include "channel.h"
 #include "log.h"
 #include "trade.h"
-
+#include "clif.h"
 
 static DBMap* guild_db; // int guild_id -> struct guild*
 static DBMap* castle_db; // int castle_id -> struct guild_castle*

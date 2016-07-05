@@ -8,7 +8,6 @@
 #include "status.h" // struct status_change
 #include "unit.h" // struct unit_data
 
-struct block_list;
 struct npc_data;
 struct view_data;
 
@@ -119,7 +118,7 @@ void npc_chat_finalize(struct npc_data* nd);
 #endif
 
 //Script NPC events.
-enum npce_event {
+enum npce_event : uint8 {
 	NPCE_LOGIN,
 	NPCE_LOGOUT,
 	NPCE_LOADMAP,

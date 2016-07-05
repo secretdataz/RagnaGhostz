@@ -5,7 +5,8 @@
 #define _CASHSHOP_H_
 
 #include "../common/cbasetypes.h" // uint16, uint32
-#include "pc.h" // struct map_session_data
+
+struct map_session_data;
 
 void do_init_cashshop( void );
 void do_final_cashshop( void );

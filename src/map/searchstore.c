@@ -3,6 +3,7 @@
 
 #include "searchstore.h"  // struct s_search_store_info
 
+//#include <ctime>
 #include <cstring>
 
 #include "../common/malloc.h"  // aMalloc, aRealloc, aFree

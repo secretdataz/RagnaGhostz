@@ -22,7 +22,7 @@
 #include "intif.h"
 #include "mapreg.h"
 #include "trade.h"
-
+#include "clif.h"
 
 static DBMap* party_db; // int party_id -> struct party_data* (releases data)
 static DBMap* party_booking_db; // uint32 char_id -> struct party_booking_ad_info* (releases data) // Party Booking [Spiria]

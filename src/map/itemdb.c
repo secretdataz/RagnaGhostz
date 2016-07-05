@@ -16,6 +16,9 @@
 #include "battle.h" // struct battle_config
 #include "cashshop.h"
 #include "intif.h"
+#include "pc.h"
+#include "status.h"
+#include "clif.h"
 
 static DBMap *itemdb; /// Item DB
 static DBMap *itemdb_combo; /// Item Combo DB

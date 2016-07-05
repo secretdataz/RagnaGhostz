@@ -83,14 +83,14 @@ enum e_CASHSHOP_ACK {
 	ERROR_TYPE_PURCHASE_FAIL    = 8, ///< Some items could not be purchased.
 };
 
-enum e_BANKING_DEPOSIT_ACK {
+enum e_BANKING_DEPOSIT_ACK : uint8 {
 	BDA_SUCCESS  = 0x0,
 	BDA_ERROR    = 0x1,
 	BDA_NO_MONEY = 0x2,
 	BDA_OVERFLOW = 0x3,
 };
 
-enum e_BANKING_WITHDRAW_ACK {
+enum e_BANKING_WITHDRAW_ACK : uint8 {
 	BWA_SUCCESS       = 0x0,
 	BWA_NO_MONEY      = 0x1,
 	BWA_UNKNOWN_ERROR = 0x2,
@@ -170,7 +170,7 @@ extern struct s_packet_db packet_db[MAX_PACKET_VER+1][MAX_PACKET_DB+1];
 extern int packet_db_ack[MAX_PACKET_VER + 1][MAX_ACK_FUNC + 1];
 
 // local define
-enum send_target : unsigned char {
+enum send_target : uint8 {
 	ALL_CLIENT = 0,
 	ALL_SAMEMAP,
 	AREA,				// area
@@ -205,7 +205,7 @@ enum send_target : unsigned char {
 	BG_AREA_WOS,
 };
 
-typedef enum broadcast_flags {
+enum broadcast_flags : uint8{
 	BC_ALL			= 0,
 	BC_MAP			= 1,
 	BC_AREA			= 2,
@@ -317,7 +317,7 @@ typedef enum emotion_type {
 	E_MAX
 } emotion_type;
 
-typedef enum clr_type
+enum clr_type : uint8
 {
 	CLR_OUTSIGHT = 0,
 	CLR_DEAD,
@@ -496,7 +496,7 @@ enum e_personalinfo {
 	PINFO_MAX,
 };
 
-enum e_damage_type {
+enum e_damage_type : uint8 {
 	DMG_NORMAL = 0,			/// damage [ damage: total damage, div: amount of hits, damage2: assassin dual-wield damage ]
 	DMG_PICKUP_ITEM,		/// pick up item
 	DMG_SIT_DOWN,			/// sit down
@@ -528,9 +528,9 @@ void clif_charselectok(int id, uint8 ok);
 void clif_dropflooritem(struct flooritem_data* fitem);
 void clif_clearflooritem(struct flooritem_data *fitem, int fd);
 
-void clif_clearunit_single(int id, clr_type type, int fd);
-void clif_clearunit_area(struct block_list* bl, clr_type type);
-void clif_clearunit_delayed(struct block_list* bl, clr_type type, unsigned int tick);
+void clif_clearunit_single(int id,enum clr_type type, int fd);
+void clif_clearunit_area(struct block_list* bl,enum clr_type type);
+void clif_clearunit_delayed(struct block_list* bl,enum clr_type type, unsigned int tick);
 int clif_spawn(struct block_list *bl);	//area
 void clif_walkok(struct map_session_data *sd);	// self
 void clif_move(struct unit_data *ud); //area
@@ -990,7 +990,7 @@ enum clif_colors {
 	COLOR_CYAN,
 	COLOR_MAX
 };
-unsigned long color_table[COLOR_MAX];
+extern unsigned long color_table[COLOR_MAX];
 int clif_colormes(int fd, unsigned long color, const char* msg);
 
 void clif_channel_msg(struct Channel *channel, struct map_session_data *sd, char *msg, short color);

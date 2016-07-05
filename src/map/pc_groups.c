@@ -12,7 +12,7 @@
 #include "../common/strlib.h" // strcmp
 #include "../common/socket.h"
 
-#include "atcommand.h" // AtCommandType
+#include "atcommand.h" // atCommandType
 #include "pc.h" // e_pc_permission
 
 typedef struct GroupSettings GroupSettings;
@@ -306,11 +306,11 @@ static void destroy_config(void)
  * In group configuration file, setting for each command is either
  * <commandname> : <bool> (only atcommand), or
  * <commandname> : [ <bool>, <bool> ] ([ atcommand, charcommand ])
- * Maps AtCommandType enums to indexes of <commandname> value array,
+ * Maps atCommandType enums to indexes of <commandname> value array,
  * COMMAND_ATCOMMAND (1) being index 0, COMMAND_CHARCOMMAND (2) being index 1.
  * @private
  */
-static inline int AtCommandType2idx(AtCommandType type) { return (type-1); }
+static inline int AtCommandType2idx(atCommandType type) { return (type-1); }
 
 /**
  * Checks if player group can use @/#command
@@ -318,7 +318,7 @@ static inline int AtCommandType2idx(AtCommandType type) { return (type-1); }
  * @param command Command name without @/# and params
  * @param type enum AtCommanndType { COMMAND_ATCOMMAND = 1, COMMAND_CHARCOMMAND = 2 }
  */
-bool pc_group_can_use_command(int group_id, const char *command, AtCommandType type)
+bool pc_group_can_use_command(int group_id, const char *command, atCommandType type)
 {
 	int result = 0;
 	config_setting_t *commands = NULL;

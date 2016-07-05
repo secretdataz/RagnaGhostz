@@ -16,8 +16,9 @@
 #include "path.h"
 #include "chrif.h"
 #include "pc.h"
+#include "pc_groups.h"
 #include "buyingstore.h" // struct s_autotrade_entry, struct s_autotrader
-
+#include "npc.h"
 
 
 static uint32 vending_nextid = 0; ///Vending_id counter

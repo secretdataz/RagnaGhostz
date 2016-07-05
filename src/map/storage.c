@@ -16,8 +16,8 @@
 #include "clif.h"
 #include "intif.h"
 #include "pc.h"
-
-
+#include "pc_groups.h"
+#include "guild.h"
 
 
 static DBMap* guild_storage_db; ///Databases of guild_storage : int guild_id -> struct guild_storage*

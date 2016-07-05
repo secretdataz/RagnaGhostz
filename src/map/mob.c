@@ -30,6 +30,8 @@
 #include "elemental.h"
 #include "party.h"
 #include "quest.h"
+#include "npc.h"
+#include "guild.h"
 
 #define ACTIVE_AI_RANGE 2	//Distance added on top of 'AREA_SIZE' at which mobs enter active AI mode.
 
@@ -398,7 +400,7 @@ int mob_get_random_id(int type, int flag, int lv)
 	} while ((rand == 0 || // Skip default first
 		mob == mob_dummy ||
 		mob_is_clone(mob_id) ||
-		(flag&0x01 && (entry->rate < 1000000 && entry->rate <= rnd() % 1000000)) ||
+		(flag&0x01 && (entry->rate < 1000000 && entry->rate <= static_cast<size_t>(rnd()) % 1000000)) ||
 		(flag&0x02 && lv < mob->lv) ||
 		(flag&0x04 && status_has_mode(&mob->status,MD_STATUS_IMMUNE) ) ||
 		(flag&0x08 && mob->spawn[0].qty < 1) ||

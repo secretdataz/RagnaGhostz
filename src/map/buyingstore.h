@@ -5,7 +5,8 @@
 #define _BUYINGSTORE_H_
 
 #include "../common/cbasetypes.h"
-#include "map.h" //MESSAGE_SIZE
+#include "mapConst.h"
+//#include "map.h" //MESSAGE_SIZE
 
 struct s_search_store_search;
 
@@ -60,7 +61,7 @@ void buyingstore_open(struct map_session_data* sd, uint32 account_id);
 void buyingstore_trade(struct map_session_data* sd, uint32 account_id, unsigned int buyer_id, const uint8* itemlist, unsigned int count);
 bool buyingstore_search(struct map_session_data* sd, unsigned short nameid);
 bool buyingstore_searchall(struct map_session_data* sd, const struct s_search_store_search* s);
-DBMap *buyingstore_getdb(void);
+struct DBMap* buyingstore_getdb(void);
 void do_final_buyingstore(void);
 void do_init_buyingstore(void);
 

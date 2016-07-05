@@ -4,9 +4,10 @@
 #ifndef _STATUS_H_
 #define _STATUS_H_
 
-#include "mmo.h"
-#include "map.h" // e_race2
+#include "../common/mmo.h"
+//#include "map.h" // e_race2
 
+enum e_race2 : uint8;
 struct block_list;
 struct mob_data;
 struct pet_data;
@@ -40,7 +41,7 @@ enum refine_type {
 int status_get_refine_chance(enum refine_type wlv, int refine);
 
 /// Status changes listing. These code are for use by the server.
-enum sc_type : short {
+enum sc_type : int16 {
 	SC_NONE = -1,
 
 	//First we enumerate common status ailments which are often used around.
@@ -2019,13 +2020,13 @@ struct weapon_atk {
 #endif
 };
 
-enum sc_type SkillStatusChangeTable[MAX_SKILL];   /// skill  -> status
-int StatusIconChangeTable[SC_MAX];           /// status -> "icon" (icon is a bit of a misnomer, since there exist values with no icon associated)
-unsigned int StatusChangeFlagTable[SC_MAX];  /// status -> flags
-int StatusSkillChangeTable[SC_MAX];          /// status -> skill
-int StatusRelevantBLTypes[SI_MAX];           /// "icon" -> enum bl_type (for clif->status_change to identify for which bl types to send packets)
-unsigned int StatusChangeStateTable[SC_MAX]; /// status -> flags
-bool StatusDisplayType[SC_MAX];
+extern enum sc_type SkillStatusChangeTable[MAX_SKILL];   /// skill  -> status
+extern int StatusIconChangeTable[SC_MAX];           /// status -> "icon" (icon is a bit of a misnomer, since there exist values with no icon associated)
+extern unsigned int StatusChangeFlagTable[SC_MAX];  /// status -> flags
+extern int StatusSkillChangeTable[SC_MAX];          /// status -> skill
+extern int StatusRelevantBLTypes[SI_MAX];           /// "icon" -> enum bl_type (for clif->status_change to identify for which bl types to send packets)
+extern unsigned int StatusChangeStateTable[SC_MAX]; /// status -> flags
+extern bool StatusDisplayType[SC_MAX];
 
 ///For holding basic status (which can be modified by status changes)
 struct status_data {

@@ -7,7 +7,9 @@
 #include "../common/cbasetypes.h"
 #include "../common/strlib.h"
 
-#include "map.h"
+enum quest_state : uint8;
+struct map_session_data;
+//#include "map.h"
 
 struct quest_dropitem {
 	uint16 nameid;
@@ -35,7 +37,7 @@ struct quest_db {
 	StringBuf name;
 };
 
-struct quest_db quest_dummy;	///< Dummy entry for invalid quest lookups
+extern struct quest_db quest_dummy;	///< Dummy entry for invalid quest lookups
 
 // Questlog check types
 enum quest_check_type {
@@ -44,15 +46,15 @@ enum quest_check_type {
 	HUNTING,   ///< Check if the given hunting quest's requirements have been met
 };
 
-int quest_pc_login(TBL_PC *sd);
+int quest_pc_login(struct map_session_data *sd);
 
-int quest_add(TBL_PC * sd, int quest_id);
-int quest_delete(TBL_PC * sd, int quest_id);
-int quest_change(TBL_PC * sd, int qid1, int qid2);
+int quest_add(struct map_session_data * sd, int quest_id);
+int quest_delete(struct map_session_data * sd, int quest_id);
+int quest_change(struct map_session_data * sd, int qid1, int qid2);
 int quest_update_objective_sub(struct block_list *bl, va_list ap);
-void quest_update_objective(TBL_PC * sd, int mob_id);
-int quest_update_status(TBL_PC * sd, int quest_id, enum quest_state status);
-int quest_check(TBL_PC * sd, int quest_id, enum quest_check_type type);
+void quest_update_objective(struct map_session_data * sd, int mob_id);
+int quest_update_status(struct map_session_data * sd, int quest_id, enum quest_state status);
+int quest_check(struct map_session_data * sd, int quest_id, enum quest_check_type type);
 void quest_clear(void);
 
 struct quest_db *quest_search(int quest_id);

@@ -4,7 +4,8 @@
 #ifndef _MAPREG_H_
 #define _MAPREG_H_
 
-#include "script.h"
+#include "../common/cbasetypes.h"
+#include "../common/db.h"
 
 struct mapreg_save {
 	int64 uid;         ///< Unique ID
@@ -16,7 +17,7 @@ struct mapreg_save {
 	bool save;         ///< Whether a save operation is pending
 };
 
-struct reg_db regs;
+extern struct reg_db regs;
 extern bool skip_insert;
 
 void mapreg_reload(void);

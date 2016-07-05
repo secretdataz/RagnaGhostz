@@ -19,6 +19,8 @@
 #include "pc.h"
 #include "intif.h"
 #include "chrif.h"
+#include "npc.h"
+#include "clif.h"
 
 #define MIN_PETTHINKTIME 100
 
@@ -1535,7 +1537,7 @@ int pet_skill_support_timer(int tid, unsigned int tick, int id, intptr_t data)
  */
 void read_petdb()
 {
-	char* filename[] = {
+	const char* filename[] = {
 		DBPATH"pet_db.txt",
 		DBIMPORT"/pet_db.txt"
 	};

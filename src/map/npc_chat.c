@@ -14,6 +14,7 @@
 
 #include "mob.h" // struct mob_data
 #include "pc.h" // struct map_session_data
+#include "npc.h"
 
 /**
  *  Written by MouseJstr in a vision... (2/21/2005)

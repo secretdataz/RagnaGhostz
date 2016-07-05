@@ -22,7 +22,7 @@
 #include "pc.h"
 #include "party.h"
 #include "trade.h"
-
+#include "npc.h"
 
 #include <stdlib.h>
 #include <math.h>

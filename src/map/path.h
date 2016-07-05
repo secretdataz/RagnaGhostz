@@ -5,7 +5,7 @@
 #define _PATH_H_
 
 #include "../common/cbasetypes.h"
-#include "map.h" // enum cell_chk
+enum cell_chk : uint8;
 
 #define MOVE_COST 10
 #define MOVE_DIAGONAL_COST 14
@@ -23,7 +23,7 @@ struct shootpath_data {
 	int y[MAX_WALKPATH];
 };
 
-enum directions{
+enum directions : int8 {
 	DIR_CENTER = -1,
 	DIR_NORTH = 0,
 	DIR_NORTHWEST = 1,

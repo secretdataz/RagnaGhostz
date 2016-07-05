@@ -15,6 +15,7 @@
 #include "chrif.h"
 #include "storage.h"
 #include "intif.h"
+#include "atcommand.h"
 
 #define TRADE_DISTANCE 2 ///Max distance from traders to enable a trade to take place.
 

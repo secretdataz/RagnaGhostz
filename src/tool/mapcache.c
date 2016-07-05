@@ -15,6 +15,7 @@
 #include "../common/mmo.h"
 #include "../common/showmsg.h"
 #include "../common/utils.h"
+#include "../common/core.h"
 
 #include "../config/renewal.h"
 
@@ -195,7 +196,7 @@ void process_args(int argc, char *argv[])
 
 }
 
-int do_init(int argc, char** argv)
+int do_init(int argc, char **argv)
 {
 	FILE *list;
 	char line[1024];

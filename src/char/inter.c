@@ -63,8 +63,8 @@ struct WisData {
 	unsigned long tick;
 	unsigned char src[NAME_LENGTH], dst[NAME_LENGTH], msg[512];
 };
-DBMap* wis_db = NULL; // int wis_id -> struct WisData*
-int wis_dellist[WISDELLIST_MAX], wis_delnum;
+static DBMap* wis_db = NULL; // int wis_id -> struct WisData*
+static int wis_dellist[WISDELLIST_MAX], wis_delnum;
 
 /* from pc.c due to @accinfo. any ideas to replace this crap are more than welcome. */
 const char* job_name(int class_) {

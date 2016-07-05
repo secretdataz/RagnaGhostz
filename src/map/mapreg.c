@@ -19,6 +19,7 @@
 
 
 static struct eri *mapreg_ers;
+struct reg_db regs;
 
 bool skip_insert = false;
 

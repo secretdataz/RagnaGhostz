@@ -22,7 +22,7 @@
 #include "pc.h"
 #include "party.h"
 #include "trade.h"
-
+#include "npc.h"
 
 struct s_mercenary_db mercenary_db[MAX_MERCENARY_CLASS]; // Mercenary Database
 static uint16 mercenary_count;

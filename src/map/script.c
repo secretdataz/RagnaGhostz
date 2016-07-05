@@ -9,6 +9,13 @@
 
 #include "script.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <setjmp.h>
+#include <errno.h>
+
 #ifdef PCRE_SUPPORT
 #include "../../3rdparty/pcre/include/pcre.h" // preg_match
 #endif
@@ -35,6 +42,7 @@
 #include "chrif.h"
 #include "itemdb.h"
 #include "pc.h"
+#include "pc_groups.h"
 #include "storage.h"
 #include "pet.h"
 #include "mapreg.h"
@@ -48,18 +56,16 @@
 #include "mail.h"
 #include "quest.h"
 #include "elemental.h"
+#include "npc.h"
+#include "guild.h"
+#include "atcommand.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#ifndef WIN32
-#endif
-
-#include <setjmp.h>
-#include <errno.h>
-
-
+struct eri *array_ers;
+DBMap *st_db;
+unsigned int active_scripts;
+unsigned int next_id;
+struct eri *st_ers;
+struct eri *stack_ers;
 
 TBL_PC *script_rid2sd(struct script_state *st);
 
@@ -505,7 +511,7 @@ static void script_reportdata(struct script_data* data)
 			ShowDebug("Data: nothing (nil)\n");
 			break;
 		case C_INT:// number
-			ShowDebug("Data: number value=%"PRId64"\n", data->u.num);
+			ShowDebug("Data: number value=%" PRId64 "\n", data->u.num);
 			break;
 		case C_STR:
 		case C_CONSTSTR:// string
@@ -529,7 +535,7 @@ static void script_reportdata(struct script_data* data)
 			}
 			break;
 		case C_POS:// label
-			ShowDebug("Data: label pos=%"PRId64"\n", data->u.num);
+			ShowDebug("Data: label pos=%" PRId64 "\n", data->u.num);
 			break;
 		default:
 			ShowDebug("Data: %s\n", script_op2name(data->type));
@@ -846,7 +852,7 @@ const char* skip_space(const char* p)
 			for(;;)
 			{
 				if( *p == '\0' ) {
-					disp_warning_message("script:script->skip_space: end of file while parsing block comment. expected " CL_BOLD "*/"CL_NORM, p);
+					disp_warning_message("script:script->skip_space: end of file while parsing block comment. expected " CL_BOLD "*/" CL_NORM, p);
 					return p;
 				}
 				if( *p == '*' && p[1] == '/' )
@@ -3125,7 +3131,7 @@ const char* conv_str_(struct script_state* st, struct script_data* data, struct 
 	else if( data_isint(data) )
 	{// int -> string
 		CREATE(p, char, ITEM_NAME_LENGTH);
-		snprintf(p, ITEM_NAME_LENGTH, "%"PRId64"", data->u.num);
+		snprintf(p, ITEM_NAME_LENGTH, "%" PRId64 "", data->u.num);
 		p[ITEM_NAME_LENGTH-1] = '\0';
 		data->type = C_STR;
 		data->u.str = p;
@@ -4186,7 +4192,7 @@ void run_script_main(struct script_state *st)
 	}
 }
 
-int script_config_read(char *cfgName)
+int script_config_read(const char *cfgName)
 {
 	int i;
 	char line[1024],w1[1024],w2[1024];
@@ -6372,7 +6378,7 @@ BUILDIN_FUNC(getelementofarray)
 
 	i = script_getnum(st, 3);
 	if (i < 0 || i >= SCRIPT_MAX_ARRAYSIZE) {
-		ShowWarning("script:getelementofarray: index out of range (%"PRId64")\n", i);
+		ShowWarning("script:getelementofarray: index out of range (%" PRId64 ")\n", i);
 		script_reportdata(data);
 		script_pushnil(st);
 		st->state = END;

@@ -39,7 +39,10 @@
 #include "mapreg.h"
 #include "quest.h"
 #include "pc.h"
-
+#include "pc_groups.h"
+#include "npc.h"
+#include "guild.h"
+#include "clif.h"
 
 #define ATCOMMAND_LENGTH 50
 #define ACMD_FUNC(x) static int atcommand_ ## x (const int fd, struct map_session_data* sd, const char* command, const char* message)
@@ -80,6 +83,8 @@ static config_t atcommand_config;
 static char atcmd_output[CHAT_SIZE_MAX];
 static char atcmd_player_name[NAME_LENGTH];
 const char *parent_cmd;
+
+struct atcmd_binding_data** atcmd_binding = NULL;
 
 static AtCommandInfo* get_atcommandinfo_byname(const char *name); // @help
 static const char* atcommand_checkalias(const char *aliasname); // @help
@@ -8264,7 +8269,7 @@ ACMD_FUNC(duel)
 			target_sd = map_nick2sd((char *)message);
 			if(target_sd != NULL) {
 				unsigned int newduel;
-				if((newduel = duel_create(sd, 2)) != -1) {
+				if((newduel = duel_create(sd, 2)) != 0) {
 					if(target_sd->duel_group > 0 ||	target_sd->duel_invite > 0) {
 						clif_displaymessage(fd, msg_txt(sd,353)); // "Duel: Player already in duel."
 						return 0;
@@ -8932,7 +8937,7 @@ ACMD_FUNC(font)
 /*==========================================
  * type: 1 = commands (@), 2 = charcommands (#)
  *------------------------------------------*/
-static void atcommand_commands_sub(struct map_session_data* sd, const int fd, AtCommandType type)
+static void atcommand_commands_sub(struct map_session_data* sd, const int fd, atCommandType type)
 {
 	char line_buff[CHATBOX_SIZE];
 	char* cur = line_buff;
@@ -10220,7 +10225,7 @@ static void atcommand_get_suggestions(struct map_session_data* sd, const char *n
 	DBIterator* alias_iter;
 	AtCommandInfo* command_info = NULL;
 	AliasInfo* alias_info = NULL;
-	AtCommandType type = atcommand ? COMMAND_ATCOMMAND : COMMAND_CHARCOMMAND;
+	atCommandType type = atcommand ? COMMAND_ATCOMMAND : COMMAND_CHARCOMMAND;
 	char* full_match[MAX_SUGGESTIONS];
 	char* suggestions[MAX_SUGGESTIONS];
 	char* match;

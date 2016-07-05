@@ -6,7 +6,7 @@
 
 #include "../common/db.h"
 #include "../common/mmo.h" // ITEM_NAME_LENGTH
-#include "map.h"
+//#include "map.h"
 
 ///Maximum allowed Item ID (range: 1 ~ 65,534)
 #define MAX_ITEMID USHRT_MAX

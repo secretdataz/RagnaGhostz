@@ -6,12 +6,12 @@
 #include <string.h> // memset
 #include <stdlib.h> // atoi
 
-#include "../common/cbasetypes.h" // uint16, uint32
 #include "../common/malloc.h" // CREATE, RECREATE, aFree
 #include "../common/showmsg.h" // ShowWarning, ShowStatus
 
-
+#include "pc.h" // struct map_session_data
 #include "pet.h" // pet_create_egg
+#include "clif.h"
 
 struct cash_item_db cash_shop_items[CASHSHOP_TAB_SEARCH];
 bool cash_shop_defined = false;

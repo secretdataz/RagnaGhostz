@@ -4,6 +4,8 @@
 #ifndef _ATCOMMAND_H_
 #define _ATCOMMAND_H_
 
+#include "../common/cbasetypes.h"
+
 struct map_session_data;
 
 //This is the distance at which @autoloot works,
@@ -17,10 +19,10 @@ extern char atcommand_symbol;
 extern char charcommand_symbol;
 extern int atcmd_binding_count;
 
-typedef enum {
+enum atCommandType : uint8 {
 	COMMAND_ATCOMMAND = 1,
 	COMMAND_CHARCOMMAND = 2,
-} AtCommandType;
+};
 
 typedef int (*AtCommandFunc)(const int fd, struct map_session_data* sd, const char* command, const char* message);
 
@@ -39,7 +41,7 @@ struct atcmd_binding_data {
 	int level;
 	int level2;
 };
-struct atcmd_binding_data** atcmd_binding;
+extern struct atcmd_binding_data** atcmd_binding;
 struct atcmd_binding_data* get_atcommandbind_byname(const char* name);
 
 #endif /* _ATCOMMAND_H_ */

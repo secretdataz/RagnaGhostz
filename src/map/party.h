@@ -4,13 +4,15 @@
 #ifndef _PARTY_H_
 #define _PARTY_H_
 
+#include <stdarg.h>
+
 #include "../common/mmo.h" // struct party
+
 struct block_list;
 struct map_session_data;
 struct party;
 struct item;
 
-#include <stdarg.h>
 
 #define MAX_PARTY_BOOKING_JOBS 6
 #define MAX_PARTY_BOOKING_RESULTS 10

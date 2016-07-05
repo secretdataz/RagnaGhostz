@@ -24,6 +24,7 @@
 #include "pet.h"
 #include "instance.h"
 #include "chat.h"
+#include "guild.h"
 
 struct npc_data* fake_nd;
 
@@ -4371,7 +4372,7 @@ void npc_read_event_script(void)
 {
 	int i;
 	struct {
-		char *name;
+		const char *name;
 		const char *event_name;
 	} config[] = {
 		{"Login Event",script_config.login_event_name},
