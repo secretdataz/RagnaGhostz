@@ -1,6 +1,12 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "atcommand.h"
+
+#include <stdlib.h>
+#include <math.h>
+#include <cstring>
+
 #include "../common/cbasetypes.h"
 #include "../common/mmo.h"
 #include "../common/timer.h"
@@ -14,7 +20,6 @@
 #include "../common/conf.h"
 
 #include "map.h"
-#include "atcommand.h"
 #include "battle.h"
 #include "chat.h"
 #include "channel.h"
@@ -34,9 +39,6 @@
 #include "mapreg.h"
 #include "quest.h"
 #include "pc.h"
-
-#include <stdlib.h>
-#include <math.h>
 
 
 #define ATCOMMAND_LENGTH 50
@@ -1516,7 +1518,7 @@ ACMD_FUNC(help)
 	config_setting_t *help;
 	const char *text = NULL;
 	const char *command_name = NULL;
-	char *default_command = "help";
+	const char *default_command = "help";
 
 	nullpo_retr(-1, sd);
 
@@ -2999,7 +3001,7 @@ ACMD_FUNC(char_ban)
 	if (bantype == CHRIF_OP_BAN)
 		chrif_req_charban(sd->status.account_id, atcmd_player_name,timediff);
 	else
-		chrif_req_login_operation(sd->status.account_id, atcmd_player_name, bantype, timediff, 0, 0);
+		chrif_req_login_operation(sd->status.account_id, atcmd_player_name,(chrif_req_op) bantype, timediff, 0, 0);
 
 	safesnprintf(output, sizeof(output), msg_txt(sd,88), bantype == CHRIF_OP_BAN ? "char" : "login"); // Sending request to %s server...
 	clif_displaymessage(fd, output);
@@ -3059,7 +3061,7 @@ ACMD_FUNC(char_unban){
 	if (unbantype == CHRIF_OP_UNBAN)
 		chrif_req_charunban(sd->status.account_id,atcmd_player_name);
 	else
-		chrif_req_login_operation(sd->status.account_id, atcmd_player_name, unbantype, 0, 0, 0);
+		chrif_req_login_operation(sd->status.account_id, atcmd_player_name, (chrif_req_op) unbantype, 0, 0, 0);
 
 	sprintf(atcmd_output, msg_txt(sd,88), unbantype == CHRIF_OP_UNBAN ? "char":"login"); // Sending request to %s server...
 	clif_displaymessage(fd, atcmd_output);
@@ -6158,7 +6160,7 @@ ACMD_FUNC(autolootitem)
 ACMD_FUNC(autoloottype)
 {
 	uint8 action = 3; // 1=add, 2=remove, 3=help+list (default), 4=reset
-	enum item_types type = -1;
+	enum item_types type = IT_UNKNOWN;
 	int ITEM_MAX = 1533;
 
 	nullpo_retr(-1, sd);
@@ -6235,7 +6237,7 @@ ACMD_FUNC(autoloottype)
 				clif_displaymessage(fd, msg_txt(sd,1490)); // Item types on your autoloottype list:
 				while (i < IT_MAX) {
 					if (sd->state.autoloottype&(1<<i)) {
-						sprintf(atcmd_output, "  '%s' {%d}", itemdb_typename(i), i);
+						sprintf(atcmd_output, "  '%s' {%d}", itemdb_typename( (item_types) i), i);
 						clif_displaymessage(fd, atcmd_output);
 					}
 					i++;
@@ -8449,7 +8451,7 @@ ACMD_FUNC(clone)
 		y = sd->bl.y;
 	}
 
-	if((x = mob_clone_spawn(pl_sd, sd->bl.m, x, y, "", master, 0, flag?1:0, 0)) > 0) {
+	if((x = mob_clone_spawn(pl_sd, sd->bl.m, x, y, "", master, (e_mode)0, flag?1:0, 0)) > 0) {
 		clif_displaymessage(fd, msg_txt(sd,128+flag*2));	// Evil Clone spawned. Clone spawned. Slave clone spawned.
 		return 0;
 	}
@@ -9633,7 +9635,7 @@ ACMD_FUNC(costume) {
 			if( sd->sc.data[name2id[k]] ) {
 				sprintf(atcmd_output, msg_txt(sd, 727), names[k]); // '%s' Costume removed.
 				clif_displaymessage(sd->fd, atcmd_output);
-				status_change_end(&sd->bl, (sc_type)name2id[k], INVALID_TIMER);
+				status_change_end(&sd->bl, name2id[k], INVALID_TIMER);
 				return 0;
 			}
 		}
@@ -9664,7 +9666,7 @@ ACMD_FUNC(costume) {
 		return -1;
 	}
 
-	sc_start(&sd->bl, &sd->bl, (sc_type)name2id[k], 100, 0, -1);
+	sc_start(&sd->bl, &sd->bl, name2id[k], 100, 0, -1);
 
 	return 0;
 }
@@ -10544,7 +10546,7 @@ static void atcommand_config_read(const char* config_filename)
 		}
 	}
 
-	ShowStatus("Done reading '"CL_WHITE"%d"CL_RESET"' command aliases in '"CL_WHITE"%s"CL_RESET"'.\n", num_aliases, config_filename);
+	ShowStatus("Done reading '" CL_WHITE "%d" CL_RESET "' command aliases in '" CL_WHITE "%s" CL_RESET "'.\n", num_aliases, config_filename);
 	return;
 }
 void atcommand_db_load_groups(int* group_ids) {
@@ -10594,8 +10596,8 @@ void atcommand_db_clear(void) {
 
 void atcommand_doload(void) {
 	atcommand_db_clear();
-	atcommand_db = stridb_alloc(DB_OPT_DUP_KEY|DB_OPT_RELEASE_DATA, ATCOMMAND_LENGTH);
-	atcommand_alias_db = stridb_alloc(DB_OPT_DUP_KEY|DB_OPT_RELEASE_DATA, ATCOMMAND_LENGTH);
+	atcommand_db = stridb_alloc((DBOptions) (DB_OPT_DUP_KEY|DB_OPT_RELEASE_DATA), ATCOMMAND_LENGTH);
+	atcommand_alias_db = stridb_alloc((DBOptions) (DB_OPT_DUP_KEY|DB_OPT_RELEASE_DATA), ATCOMMAND_LENGTH);
 	atcommand_basecommands(); //fills initial atcommand_db with known commands
 	atcommand_config_read(ATCOMMAND_CONF_FILENAME);
 }

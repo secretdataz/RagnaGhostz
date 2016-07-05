@@ -47,6 +47,7 @@
  *  - create a db that organizes itself by splaying
  *
  *  HISTORY:
+ *    2016       - C++ compilation and mark as depreciated [lighta]
  *    2013/08/25 - Added int64/uint64 support for keys [Ind/Hercules]
  *    2013/04/27 - Added ERS to speed up iterator memory allocation [Ind/Hercules]
  *    2012/03/09 - Added enum for data types (int, uint, void*)
@@ -70,14 +71,16 @@
 
 #include "db.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <cstring>
+
 #include "ers.h"
 #include "malloc.h"
 #include "mmo.h"
 #include "showmsg.h"
 #include "strlib.h"
 
-#include <stdio.h>
-#include <stdlib.h>
 
 /*****************************************************************************\
  *  (1) Private typedefs, enums, structures, defines and global variables of *
@@ -2774,10 +2777,10 @@ void db_final(void)
 {
 #ifdef DB_ENABLE_STATS
 	DB_COUNTSTAT(db_final);
-	ShowInfo(CL_WHITE"Database nodes"CL_RESET":\n"
+	ShowInfo(CL_WHITE"Database nodes" CL_RESET ":\n"
 			"allocated %u, freed %u\n",
 			stats.db_node_alloc, stats.db_node_free);
-	ShowInfo(CL_WHITE"Database types"CL_RESET":\n"
+	ShowInfo(CL_WHITE"Database types" CL_RESET ":\n"
 			"DB_INT     : allocated %10u, destroyed %10u\n"
 			"DB_UINT    : allocated %10u, destroyed %10u\n"
 			"DB_STRING  : allocated %10u, destroyed %10u\n"
@@ -2790,7 +2793,7 @@ void db_final(void)
 			stats.db_istring_alloc, stats.db_istring_destroy,
 			stats.db_int64_alloc,   stats.db_int64_destroy,
 			stats.db_uint64_alloc,  stats.db_uint64_destroy);
-	ShowInfo(CL_WHITE"Database function counters"CL_RESET":\n"
+	ShowInfo(CL_WHITE"Database function counters" CL_RESET ":\n"
 			"db_rotate_left     %10u, db_rotate_right    %10u,\n"
 			"db_rebalance       %10u, db_rebalance_erase %10u,\n"
 			"db_is_key_null     %10u,\n"

@@ -1,13 +1,10 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "cbasetypes.h"
-#include "showmsg.h"
-#include "socket.h"
 #include "utils.h"
 
 #include <stdlib.h>
-#include <string.h>
+#include <cstring>
 #include <math.h> // floor()
 
 #ifdef WIN32
@@ -20,6 +17,12 @@
 	#include <dirent.h>
 	#include <sys/stat.h>
 #endif
+
+#include "showmsg.h"
+#include "socket.h"
+
+
+#
 
 
 /// Dumps given buffer into file pointed to by a handle.
@@ -439,10 +442,10 @@ unsigned int get_percentage(const unsigned int A, const unsigned int B)
  */
 int levenshtein(const char *s1, const char *s2) {
 	unsigned int s1len, s2len, x, y, lastdiag, olddiag, i;
-	unsigned int *column;
+	unsigned int* column;
 	s1len = strlen(s1);
 	s2len = strlen(s2);
-	column = malloc((s1len+1) * sizeof(unsigned int));
+	column = (unsigned int*) malloc((s1len+1) * sizeof(unsigned int));
 	for (y = 1; y <= s1len; y++)
 		column[y] = y;
 	for (x = 1; x <= s2len; x++) {

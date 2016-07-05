@@ -4,6 +4,8 @@
 #ifndef _LOG_H_
 #define _LOG_H_
 
+#include "../common/cbasetypes.h"
+
 //#include "map.h"
 struct block_list;
 struct map_session_data;

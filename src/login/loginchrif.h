@@ -10,9 +10,7 @@
 #ifndef LOGINCHRIF_H
 #define	LOGINCHRIF_H
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
+#include "../common/cbasetypes.h"
 
 /**
  * Entry point from char-server to log-server.
@@ -47,10 +45,6 @@ void do_shutdown_loginchrif(void);
  *  dealloc..., function called at exit of the login-serv
  */
 void do_final_loginchrif(void);
-
-#ifdef	__cplusplus
-}
-#endif
 
 #endif	/* LOGINCHRIF_H */
 

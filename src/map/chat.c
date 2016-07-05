@@ -1,6 +1,10 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "chat.h"
+
+#include <cstring>
+
 #include "../common/cbasetypes.h"
 #include "../common/malloc.h"
 #include "../common/nullpo.h"
@@ -13,8 +17,6 @@
 #include "clif.h"
 #include "npc.h" // npc_event_do()
 #include "pc.h"
-#include "chat.h"
-
 
 int chat_triggerevent(struct chat_data *cd); // forward declaration
 

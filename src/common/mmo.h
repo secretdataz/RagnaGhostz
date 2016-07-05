@@ -4,10 +4,15 @@
 #ifndef	_MMO_H_
 #define	_MMO_H_
 
+#include <time.h>
+
 #include "cbasetypes.h"
 #include "../config/core.h"
 #include "db.h"
-#include <time.h>
+
+#ifdef	__cplusplus
+extern "C" {
+#endif
 
 // server->client protocol version
 //        0 - pre-?
@@ -891,6 +896,10 @@ enum e_party_member_withdraw {
 #endif
 #else
 	#define MAX_CARTS 5
+#endif
+
+#ifdef	__cplusplus
+}
 #endif
 
 #endif /* _MMO_H_ */

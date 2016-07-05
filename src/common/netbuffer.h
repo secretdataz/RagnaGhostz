@@ -6,6 +6,10 @@
 
 #include "cbasetypes.h"
 
+#ifdef	__cplusplus
+extern "C" {
+#endif
+
 typedef struct netbuf{
 	sysint	pool;				// The pool ID this buffer belongs to,
 								// is set to -1 if its an emergency allocated buffer 
@@ -78,6 +82,8 @@ void netbuffer_incref( netbuf buf );
 #define NBUFW(netbuf,pos) (*(uint16*)((netbuf->buf) + (pos)))
 #define NBUFL(netbuf,pos) (*(uint32*)((netbuf->buf) + (pos)))
 
-
+#ifdef	__cplusplus
+}
+#endif
 
 #endif

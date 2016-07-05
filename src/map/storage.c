@@ -1,22 +1,23 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
+#include "storage.h"
+#include <stdlib.h>
+#include <string.h>
 
-#include "../common/cbasetypes.h"
 #include "../common/db.h"
 #include "../common/nullpo.h"
 #include "../common/malloc.h"
 #include "../common/showmsg.h"
 
 #include "map.h" // struct map_session_data
-#include "storage.h"
+
 #include "chrif.h"
 #include "itemdb.h"
 #include "clif.h"
 #include "intif.h"
 #include "pc.h"
 
-#include <stdlib.h>
-#include <string.h>
+
 
 
 static DBMap* guild_storage_db; ///Databases of guild_storage : int guild_id -> struct guild_storage*
@@ -583,7 +584,7 @@ bool gstorage_additem2(struct guild_storage* stor, struct item* item, int amount
                                 int da = ((id->stack.guildstorage) ? id->stack.amount : MAX_AMOUNT) - stor->items[i].amount;
 				amount = min(amount, da);
 				if (amount != item->amount)
-					ShowWarning("gstorage_additem2: Stack limit reached! Altered amount of item \""CL_WHITE"%s"CL_RESET"\" (%d). '"CL_WHITE"%d"CL_RESET"' -> '"CL_WHITE"%d"CL_RESET"'.\n", id->name, id->nameid, item->amount, amount);
+					ShowWarning("gstorage_additem2: Stack limit reached! Altered amount of item \"" CL_WHITE "%s" CL_RESET "\" (%d). '" CL_WHITE "%d" CL_RESET "' -> '" CL_WHITE "%d" CL_RESET "'.\n", id->name, id->nameid, item->amount, amount);
 				stor->items[i].amount += amount;
 				stor->dirty = true;
 				return true;

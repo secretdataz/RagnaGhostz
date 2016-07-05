@@ -6,6 +6,10 @@
 
 #include "cbasetypes.h"
 
+#ifdef	__cplusplus
+extern "C" {
+#endif
+
 #define ALC_MARK __FILE__, __LINE__, __func__
 
 
@@ -35,7 +39,7 @@
 
 #	define aMalloc(n)		_mmalloc(n,ALC_MARK)
 #	define aCalloc(m,n)		_mcalloc(m,n,ALC_MARK)
-#	define aRealloc(p,n)	_mrealloc(p,n,ALC_MARK)
+#	define aRealloc(p,n)		_mrealloc(p,n,ALC_MARK)
 #	define aStrdup(p)		_mstrdup(p,ALC_MARK)
 #	define aFree(p)			_mfree(p,ALC_MARK)
 
@@ -88,5 +92,9 @@ bool malloc_verify_ptr(void* ptr);
 size_t malloc_usage (void);
 void malloc_init (void);
 void malloc_final (void);
+
+#ifdef	__cplusplus
+}
+#endif
 
 #endif /* _MALLOC_H_ */

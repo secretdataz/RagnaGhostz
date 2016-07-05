@@ -4,7 +4,11 @@
 #ifndef _QUEST_H_
 #define _QUEST_H_
 
-int inter_quest_parse_frommap(int fd);
+
+
+  int inter_quest_parse_frommap(int fd);
+
+
 
 #endif
 

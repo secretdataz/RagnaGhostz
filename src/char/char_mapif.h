@@ -10,9 +10,7 @@
 #ifndef CHAR_MAPIF_H
 #define	CHAR_MAPIF_H
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
+#include "../common/cbasetypes.h"
 
 int chmapif_sendall(unsigned char *buf, unsigned int len);
 int chmapif_sendallwos(int sfd, unsigned char *buf, unsigned int len);
@@ -66,10 +64,6 @@ void chmapif_server_reset(int id);
 void chmapif_on_disconnect(int id);
 void do_final_chmapif(void);
 
-
-#ifdef	__cplusplus
-}
-#endif
 
 #endif	/* CHAR_MAPIF_H */
 

@@ -1,6 +1,10 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "pc_groups.h"
+
+#include <cstring>
+
 #include "../common/conf.h"
 #include "../common/db.h"
 #include "../common/malloc.h"
@@ -9,7 +13,6 @@
 #include "../common/socket.h"
 
 #include "atcommand.h" // AtCommandType
-#include "pc_groups.h"
 #include "pc.h" // e_pc_permission
 
 typedef struct GroupSettings GroupSettings;
@@ -270,7 +273,7 @@ static void read_config(void)
 		dbi_destroy(iter);
 	}
 
-	ShowStatus("Done reading '"CL_WHITE"%d"CL_RESET"' groups in '"CL_WHITE"%s"CL_RESET"'.\n", group_count, config_filename);
+	ShowStatus("Done reading '" CL_WHITE "%d" CL_RESET "' groups in '" CL_WHITE "%s" CL_RESET "'.\n", group_count, config_filename);
 
 	
 	if( ( pc_group_max = group_count ) ) {

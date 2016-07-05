@@ -4,10 +4,14 @@
 #ifndef _SKILL_H_
 #define _SKILL_H_
 
+#include "../common/cbasetypes.h"
 #include "../common/mmo.h" // MAX_SKILL, struct square
 #include "../common/db.h"
 #include "map.h" // struct block_list
 #include "battle.h" // enum damage_lv
+
+enum sc_type : short;
+enum send_target : unsigned char;
 struct map_session_data;
 struct homun_data;
 struct skill_unit;
@@ -157,7 +161,7 @@ struct s_skill_require {
 	uint16 itemid[MAX_SKILL_ITEM_REQUIRE];	 /// Required item
 	uint16 amount[MAX_SKILL_ITEM_REQUIRE];	 /// Amount of item
 	uint16 *eqItem;							 /// List of equipped item
-	enum sc_type *status;					 /// List of Status required (SC)
+	enum sc_type* status;						 /// List of Status required (SC)
 	uint8 status_count,						 /// Count of SC
 		eqItem_count;						 /// Count of equipped item
 };

@@ -4,6 +4,15 @@
 #ifndef _PET_H_
 #define _PET_H_
 
+#include "../common/cbasetypes.h"
+#include "../common/mmo.h"
+#include "map.h"
+#include "unit.h"
+#include "status.h"
+
+//fwd declaration
+enum sc_type : short;
+
 #define MAX_PET_DB	300
 #define MAX_PETLOOT_SIZE	30
 

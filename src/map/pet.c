@@ -1,6 +1,11 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "pet.h"
+
+#include <stdlib.h>
+#include <cstring>
+
 #include "../common/db.h"
 #include "../common/timer.h"
 #include "../common/nullpo.h"
@@ -14,10 +19,6 @@
 #include "pc.h"
 #include "intif.h"
 #include "chrif.h"
-#include "pet.h"
-
-#include <stdlib.h>
-
 
 #define MIN_PETTHINKTIME 100
 
@@ -1679,7 +1680,7 @@ void read_petdb()
 			ShowWarning("read_petdb: Reached max number of pets [%d]. Remaining pets were not read.\n ", MAX_PET_DB);
 
 		fclose(fp);
-		ShowStatus("Done reading '"CL_WHITE"%d"CL_RESET"' pets in '"CL_WHITE"%s/%s"CL_RESET"'.\n", entries, db_path, filename[i]);
+		ShowStatus("Done reading '" CL_WHITE "%d" CL_RESET "' pets in '" CL_WHITE "%s/%s" CL_RESET "'.\n", entries, db_path, filename[i]);
 	}
 }
 

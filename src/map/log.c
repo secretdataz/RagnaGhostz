@@ -1,7 +1,11 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "../common/cbasetypes.h"
+#include "log.h"
+
+#include <stdlib.h>
+#include <cstring>
+
 #include "../common/sql.h" // SQL_INNODB
 #include "../common/strlib.h"
 #include "../common/nullpo.h"
@@ -10,12 +14,11 @@
 #include "battle.h"
 #include "itemdb.h"
 #include "homunculus.h"
-#include "log.h"
 #include "mob.h"
 #include "pet.h"
 #include "pc.h"
 
-#include <stdlib.h>
+
 
 static char log_timestamp_format[20];
 
@@ -218,11 +221,11 @@ void log_pick(int id, int16 m, e_log_pick_type type, int amount, struct item* it
 #ifdef BETA_THREAD_TEST
 		char entry[512];
 		int e_length = 0;
-		e_length = sprintf(entry, LOG_QUERY " INTO `%s` (`time`, `char_id`, `type`, `nameid`, `amount`, `refine`, `card0`, `card1`, `card2`, `card3`, `map`, `unique_id`, `bound`) VALUES (NOW(), '%d', '%c', '%hu', '%d', '%d', '%hu', '%hu', '%hu', '%hu', '%s', '%"PRIu64"', '%d')",
+		e_length = sprintf(entry, LOG_QUERY " INTO `%s` (`time`, `char_id`, `type`, `nameid`, `amount`, `refine`, `card0`, `card1`, `card2`, `card3`, `map`, `unique_id`, `bound`) VALUES (NOW(), '%d', '%c', '%hu', '%d', '%d', '%hu', '%hu', '%hu', '%hu', '%s', '%llu', '%d')",
 				log_config.log_pick, id, log_picktype2char(type), itm->nameid, amount, itm->refine, itm->card[0], itm->card[1], itm->card[2], itm->card[3], map[m].name?map[m].name:"", itm->unique_id, itm->bound);
 		queryThread_log(entry,e_length);
 #else
-		if( SQL_ERROR == Sql_Query(logmysql_handle, LOG_QUERY " INTO `%s` (`time`, `char_id`, `type`, `nameid`, `amount`, `refine`, `card0`, `card1`, `card2`, `card3`, `map`, `unique_id`, `bound`) VALUES (NOW(), '%d', '%c', '%hu', '%d', '%d', '%hu', '%hu', '%hu', '%hu', '%s', '%"PRIu64"', '%d')",
+		if( SQL_ERROR == Sql_Query(logmysql_handle, LOG_QUERY " INTO `%s` (`time`, `char_id`, `type`, `nameid`, `amount`, `refine`, `card0`, `card1`, `card2`, `card3`, `map`, `unique_id`, `bound`) VALUES (NOW(), '%d', '%c', '%hu', '%d', '%d', '%hu', '%hu', '%hu', '%hu', '%s', '%" PRIu64 "', '%d')",
 			log_config.log_pick, id, log_picktype2char(type), itm->nameid, amount, itm->refine, itm->card[0], itm->card[1], itm->card[2], itm->card[3], map[m].name?map[m].name:"", itm->unique_id, itm->bound) )
 		{
 			Sql_ShowDebug(logmysql_handle);
@@ -240,7 +243,7 @@ void log_pick(int id, int16 m, e_log_pick_type type, int amount, struct item* it
 			return;
 		time(&curtime);
 		strftime(timestring, sizeof(timestring), log_timestamp_format, localtime(&curtime));
-		fprintf(logfp,"%s - %d\t%c\t%hu,%d,%d,%hu,%hu,%hu,%hu,%s,'%"PRIu64"',%d\n", timestring, id, log_picktype2char(type), itm->nameid, amount, itm->refine, itm->card[0], itm->card[1], itm->card[2], itm->card[3], map[m].name?map[m].name:"", itm->unique_id, itm->bound);
+		fprintf(logfp,"%s - %d\t%c\t%hu,%d,%d,%hu,%hu,%hu,%hu,%s,'%" PRIu64 "',%d\n", timestring, id, log_picktype2char(type), itm->nameid, amount, itm->refine, itm->card[0], itm->card[1], itm->card[2], itm->card[3], map[m].name?map[m].name:"", itm->unique_id, itm->bound);
 		fclose(logfp);
 	}
 }
@@ -562,7 +565,7 @@ void log_feeding(struct map_session_data *sd, e_log_feeding_type type, unsigned 
 			log_config.log_feeding, sd->status.char_id, target_id, target_class, log_feedingtype2char(type), intimacy, nameid, mapindex_id2name(sd->mapindex), sd->bl.x, sd->bl.y);
 		queryThread_log(entry, e_length);
 #else
-		if (SQL_ERROR == Sql_Query(logmysql_handle, LOG_QUERY " INTO `%s` (`time`, `char_id`, `target_id`, `target_class`, `type`, `intimacy`, `item_id`, `map`, `x`, `y`) VALUES ( NOW(), '%"PRIu32"', '%"PRIu32"', '%hu', '%c', '%"PRIu32"', '%hu', '%s', '%hu', '%hu' )",
+		if (SQL_ERROR == Sql_Query(logmysql_handle, LOG_QUERY " INTO `%s` (`time`, `char_id`, `target_id`, `target_class`, `type`, `intimacy`, `item_id`, `map`, `x`, `y`) VALUES ( NOW(), '%" PRIu32 "', '%" PRIu32 "', '%hu', '%c', '%" PRIu32 "', '%hu', '%s', '%hu', '%hu' )",
 			log_config.log_feeding, sd->status.char_id, target_id, target_class, log_feedingtype2char(type), intimacy, nameid, mapindex_id2name(sd->mapindex), sd->bl.x, sd->bl.y))
 		{
 			Sql_ShowDebug(logmysql_handle);

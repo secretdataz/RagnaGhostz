@@ -7,6 +7,10 @@
 #include "cbasetypes.h"
 #include <time.h>
 
+#ifdef	__cplusplus
+extern "C" {
+#endif
+
 #define DIFF_TICK(a,b) ((int)((a)-(b)))
 
 #define INVALID_TIMER -1
@@ -59,5 +63,9 @@ double solve_time(char* modif_p);
 int do_timer(unsigned int tick);
 void timer_init(void);
 void timer_final(void);
+
+#ifdef	__cplusplus
+}
+#endif
 
 #endif /* _TIMER_H_ */

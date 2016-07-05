@@ -71,9 +71,9 @@
     </ClCompile>
     <Link>
       <AdditionalOptions>/FIXED:NO %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>libcmtd.lib;oldnames.lib;zdll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>common.lib;libcmtd.lib;oldnames.lib;zdll.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)mapcache.exe</OutputFile>
-      <AdditionalLibraryDirectories>..\3rdparty\zlib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\$(PlatformToolset)\;..\3rdparty\zlib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
@@ -108,9 +108,9 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libcmt.lib;oldnames.lib;zdll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>common.lib;libcmt.lib;oldnames.lib;zdll.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)mapcache.exe</OutputFile>
-      <AdditionalLibraryDirectories>..\3rdparty\zlib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration)\$(PlatformTarget)\$(PlatformToolset)\;..\3rdparty\zlib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
@@ -125,26 +125,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\common\core.c" />
-    <ClCompile Include="..\src\common\des.c" />
-    <ClCompile Include="..\src\common\grfio.c" />
-    <ClCompile Include="..\src\common\malloc.c" />
-    <ClCompile Include="..\src\common\showmsg.c" />
-    <ClCompile Include="..\src\common\strlib.c" />
-    <ClCompile Include="..\src\common\utils.c" />
     <ClCompile Include="..\src\tool\mapcache.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\common\cbasetypes.h" />
-    <ClInclude Include="..\src\common\core.h" />
-    <ClInclude Include="..\src\common\des.h" />
-    <ClInclude Include="..\src\common\grfio.h" />
-    <ClInclude Include="..\src\common\malloc.h" />
-    <ClInclude Include="..\src\common\mmo.h" />
-    <ClInclude Include="..\src\common\showmsg.h" />
-    <ClInclude Include="..\src\common\strlib.h" />
-    <ClInclude Include="..\src\common\utils.h" />
-    <ClInclude Include="..\src\common\winapi.h" />
     <ClInclude Include="..\src\config\renewal.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

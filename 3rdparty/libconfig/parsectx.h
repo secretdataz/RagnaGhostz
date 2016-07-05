@@ -1,3 +1,5 @@
+#pragma once
+
 /* ----------------------------------------------------------------------------
    libconfig - A library for processing structured configuration files
    Copyright (C) 2005-2010  Mark A Lindner
@@ -25,6 +27,7 @@
 
 #include "libconfig.h"
 #include "strbuf.h"
+
 
 struct parse_context
 {

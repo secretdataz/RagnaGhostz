@@ -9,6 +9,10 @@
 	#include <signal.h>
 #endif
 
+#ifdef	__cplusplus
+extern "C" {
+#endif
+    
 extern int arg_c;
 extern char **arg_v;
 
@@ -33,7 +37,6 @@ enum {
 
 extern char SERVER_TYPE;
 
-extern int parse_console(const char* buf);
 const char *get_svn_revision(void);
 const char *get_git_hash(void);
 extern int do_init(int,char**);
@@ -53,4 +56,8 @@ enum E_CORE_ST
 /// If NULL, runflag is set to CORE_ST_STOP instead.
 extern void (*shutdown_callback)(void);
 
+#ifdef	__cplusplus
+}
+#endif
+    
 #endif /* _CORE_H_ */

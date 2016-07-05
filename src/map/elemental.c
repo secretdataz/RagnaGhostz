@@ -1,6 +1,10 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "elemental.h"
+
+#include <cstring>
+
 #include "../common/cbasetypes.h"
 #include "../common/malloc.h"
 #include "../common/timer.h"
@@ -18,7 +22,7 @@
 #include "pc.h"
 #include "party.h"
 #include "trade.h"
-#include "elemental.h"
+
 
 #include <stdlib.h>
 #include <math.h>
@@ -306,7 +310,7 @@ int elemental_clean_single_effect(struct elemental_data *ed, uint16 skill_id) {
 			case SC_CIRCLE_OF_FIRE_OPTION:
 			case SC_TIDAL_WEAPON_OPTION:
 				if( bl ) status_change_end(bl,type,INVALID_TIMER);	// Master
-				status_change_end(&ed->bl,type-1,INVALID_TIMER);	// Elemental Spirit
+				status_change_end(&ed->bl,(sc_type)(type-1),INVALID_TIMER);	// Elemental Spirit
 				break;
 			case SC_ZEPHYR:
 				if( bl ) status_change_end(bl,type,INVALID_TIMER);
@@ -514,7 +518,8 @@ int elemental_change_mode(struct elemental_data *ed, enum e_mode mode) {
 	// Removes the effects of the previous mode.
 	if(ed->elemental.mode != mode ) elemental_clean_effect(ed);
 
-	ed->battle_status.mode = ed->elemental.mode = mode;
+        ed->elemental.mode = mode;
+	ed->battle_status.mode = (e_mode) mode;
 
 	// Normalize elemental mode to elemental skill mode.
 	if( mode == EL_MODE_AGGRESSIVE ) skill_mode = EL_SKILLMODE_AGGRESSIVE;	// Aggressive spirit mode -> Aggressive spirit skill.

@@ -1,7 +1,11 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "../common/cbasetypes.h"
+#include "instance.h"
+
+#include <stdlib.h>
+#include <cstring>
+
 #include "../common/socket.h"
 #include "../common/timer.h"
 #include "../common/nullpo.h"
@@ -18,7 +22,7 @@
 #include "party.h"
 #include "pc.h"
 
-#include <stdlib.h>
+
 
 #define INSTANCE_INTERVAL	60000	// Interval used to check when an instance is to be destroyed (ms)
 
@@ -991,7 +995,7 @@ void do_reload_instance(void)
 
 void do_init_instance(void) {
 	InstanceDB = uidb_alloc(DB_OPT_BASE);
-	InstanceNameDB = strdb_alloc(DB_OPT_DUP_KEY|DB_OPT_RELEASE_DATA,0);
+	InstanceNameDB = strdb_alloc((DBOptions) (DB_OPT_DUP_KEY|DB_OPT_RELEASE_DATA),0);
 
 	instance_readdb();
 	memset(instance_data, 0, sizeof(instance_data));

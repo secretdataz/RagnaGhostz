@@ -11,9 +11,13 @@ MT19937AR_OBJ = ../../3rdparty/mt19937ar/mt19937ar.o
 MT19937AR_H = ../../3rdparty/mt19937ar/mt19937ar.h
 MT19937AR_INCLUDE = -I../../3rdparty/mt19937ar
 
-LIBCONFIG_H = $(shell ls ../../3rdparty/libconfig/*.h)
-LIBCONFIG_AR = ../../3rdparty/libconfig/obj/libconfig.a
-LIBCONFIG_INCLUDE = -I../../3rdparty/libconfig
+#LIBCONFIG_H = $(shell ls ../../3rdparty/libconfig/*.h)
+#LIBCONFIG_AR = ../../3rdparty/libconfig/obj/libconfig.a
+#LIBCONFIG_INCLUDE = -I../../3rdparty/libconfig
+
+LIBCONFIG_H = /usr/include/libconfig.h++
+LIBCONFIG_SO = /usr/lib64/libconfig++.so
+LIBCONFIG_INCLUDE = -I/usr/include
 
 HAVE_MYSQL=@HAVE_MYSQL@
 ifeq ($(HAVE_MYSQL),yes)
@@ -22,6 +26,8 @@ else
 	SERVER_DEPENDS=needs_mysql
 endif
 ALL_DEPENDS=server
+
+TMP_LAZY_CXXFLAG=-std=c++11 -fpermissive
 
 @SET_MAKE@
 
@@ -57,15 +63,15 @@ $(COMMON_AR): $(COMMON_DIR_OBJ)
 	@echo "	AR	$@"
 	@@AR@ rcs $(COMMON_AR) $(COMMON_DIR_OBJ)
 
-common: obj $(COMMON_DIR_OBJ) $(MT19937AR_OBJ) $(LIBCONFIG_AR) $(COMMON_AR)
+common: obj $(COMMON_DIR_OBJ) $(MT19937AR_OBJ) $(COMMON_AR)
 
 obj/%.o: %.c $(COMMON_H) $(MT19937AR_H) $(LIBCONFIG_H)
-	@echo "	CC	$<"
-	@@CC@ @CFLAGS_AR@ $(MT19937AR_INCLUDE) $(LIBCONFIG_INCLUDE) @MYSQL_CFLAGS@ @CPPFLAGS@ -c $(OUTPUT_OPTION) $<
+	@echo "	CXX	$<"
+	@@CXX@ @CFLAGS_AR@ $(MT19937AR_INCLUDE) $(LIBCONFIG_INCLUDE) @MYSQL_CFLAGS@ @CPPFLAGS@ -c $(OUTPUT_OPTION) $<
 
 obj/mini%.o: %.c $(COMMON_H) $(MT19937AR_H) $(LIBCONFIG_H)
-	@echo "	CC	$<"
-	@@CC@ @CFLAGS_AR@ $(MT19937AR_INCLUDE) $(LIBCONFIG_INCLUDE) @MYSQL_CFLAGS@ -DMINICORE @CPPFLAGS@ -c $(OUTPUT_OPTION) $<
+	@echo "	CXX	$<"
+	@@CXX@ $(TMP_LAZY_CXXFLAG) @CFLAGS_AR@ $(MT19937AR_INCLUDE) $(LIBCONFIG_INCLUDE) @MYSQL_CFLAGS@ -DMINICORE @CPPFLAGS@ -c $(OUTPUT_OPTION) $<
 
 # missing object files
 $(MT19937AR_OBJ):

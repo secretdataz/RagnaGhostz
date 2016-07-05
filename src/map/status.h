@@ -4,6 +4,9 @@
 #ifndef _STATUS_H_
 #define _STATUS_H_
 
+#include "mmo.h"
+#include "map.h" // e_race2
+
 struct block_list;
 struct mob_data;
 struct pet_data;
@@ -37,7 +40,7 @@ enum refine_type {
 int status_get_refine_chance(enum refine_type wlv, int refine);
 
 /// Status changes listing. These code are for use by the server.
-typedef enum sc_type {
+enum sc_type : short {
 	SC_NONE = -1,
 
 	//First we enumerate common status ailments which are often used around.
@@ -783,7 +786,7 @@ typedef enum sc_type {
 	SC_EXTREMITYFIST2, //! NOTE: This SC should be right before SC_MAX, so it doesn't disturb if RENEWAL is disabled
 #endif
 	SC_MAX, //Automatically updated max, used in for's to check we are within bounds.
-} sc_type;
+};
 
 /// Official status change ids, used to display status icons on the client.
 enum si_type {
@@ -2016,7 +2019,7 @@ struct weapon_atk {
 #endif
 };
 
-sc_type SkillStatusChangeTable[MAX_SKILL];   /// skill  -> status
+enum sc_type SkillStatusChangeTable[MAX_SKILL];   /// skill  -> status
 int StatusIconChangeTable[SC_MAX];           /// status -> "icon" (icon is a bit of a misnomer, since there exist values with no icon associated)
 unsigned int StatusChangeFlagTable[SC_MAX];  /// status -> flags
 int StatusSkillChangeTable[SC_MAX];          /// status -> skill
@@ -2146,12 +2149,10 @@ struct status_change {
 };
 
 // for looking up associated data
-sc_type status_skill2sc(int skill);
-int status_sc2skill(sc_type sc);
-unsigned int status_sc2scb_flag(sc_type sc);
+enum sc_type status_skill2sc(int skill);
+int status_sc2skill(enum sc_type sc);
+unsigned int status_sc2scb_flag(enum sc_type sc);
 int status_type2relevant_bl_types(int type);
-
-int StatusIconChangeTable[SC_MAX];          /// status -> "icon" (icon is a bit of a misnomer, since there exist values with no icon associated)
 
 int status_damage(struct block_list *src,struct block_list *target,int64 dhp,int64 dsp, int walkdelay, int flag);
 //Define for standard HP damage attacks.
@@ -2248,13 +2249,13 @@ int status_isimmune(struct block_list *bl);
 
 int status_get_sc_def(struct block_list *src,struct block_list *bl, enum sc_type type, int rate, int tick, unsigned char flag);
 //Short version, receives rate in 1->100 range, and does not uses a flag setting.
-#define sc_start(src, bl, type, rate, val1, tick) status_change_start(src,bl,type,100*(rate),val1,0,0,0,tick,SCSTART_NONE)
-#define sc_start2(src, bl, type, rate, val1, val2, tick) status_change_start(src,bl,type,100*(rate),val1,val2,0,0,tick,SCSTART_NONE)
-#define sc_start4(src, bl, type, rate, val1, val2, val3, val4, tick) status_change_start(src,bl,type,100*(rate),val1,val2,val3,val4,tick,SCSTART_NONE)
+#define sc_start(src, bl, type, rate, val1, tick) status_change_start(src,bl,(sc_type)type,100*(rate),val1,0,0,0,tick,SCSTART_NONE)
+#define sc_start2(src, bl, type, rate, val1, val2, tick) status_change_start(src,bl,(sc_type)type,100*(rate),val1,val2,0,0,tick,SCSTART_NONE)
+#define sc_start4(src, bl, type, rate, val1, val2, val3, val4, tick) status_change_start(src,bl,(sc_type)type,100*(rate),val1,val2,val3,val4,tick,SCSTART_NONE)
 
 int status_change_start(struct block_list* src, struct block_list* bl,enum sc_type type,int rate,int val1,int val2,int val3,int val4,int tick,unsigned char flag);
 int status_change_end_(struct block_list* bl, enum sc_type type, int tid, const char* file, int line);
-#define status_change_end(bl,type,tid) status_change_end_(bl,type,tid,__FILE__,__LINE__)
+#define status_change_end(bl,type,tid) status_change_end_(bl,(sc_type)type,tid,__FILE__,__LINE__)
 int kaahi_heal_timer(int tid, unsigned int tick, int id, intptr_t data);
 int status_change_timer(int tid, unsigned int tick, int id, intptr_t data);
 int status_change_timer_sub(struct block_list* bl, va_list ap);
@@ -2262,14 +2263,14 @@ int status_change_clear(struct block_list* bl, int type);
 void status_change_clear_buffs(struct block_list* bl, uint8 type);
 void status_change_clear_onChangeMap(struct block_list *bl, struct status_change *sc);
 
-#define status_calc_bl(bl, flag) status_calc_bl_(bl, (enum scb_flag)(flag), SCO_NONE)
-#define status_calc_mob(md, opt) status_calc_bl_(&(md)->bl, SCB_ALL, opt)
-#define status_calc_pet(pd, opt) status_calc_bl_(&(pd)->bl, SCB_ALL, opt)
-#define status_calc_pc(sd, opt) status_calc_bl_(&(sd)->bl, SCB_ALL, opt)
-#define status_calc_homunculus(hd, opt) status_calc_bl_(&(hd)->bl, SCB_ALL, opt)
-#define status_calc_mercenary(md, opt) status_calc_bl_(&(md)->bl, SCB_ALL, opt)
-#define status_calc_elemental(ed, opt) status_calc_bl_(&(ed)->bl, SCB_ALL, opt)
-#define status_calc_npc(nd, opt) status_calc_bl_(&(nd)->bl, SCB_ALL, opt)
+#define status_calc_bl(bl, flag) status_calc_bl_(bl, (enum scb_flag)(flag),(e_status_calc_opt) SCO_NONE)
+#define status_calc_mob(md, opt) status_calc_bl_(&(md)->bl,(scb_flag) SCB_ALL,(e_status_calc_opt) opt)
+#define status_calc_pet(pd, opt) status_calc_bl_(&(pd)->bl, (scb_flag)SCB_ALL,(e_status_calc_opt) opt)
+#define status_calc_pc(sd, opt) status_calc_bl_(&(sd)->bl,(scb_flag) SCB_ALL,(e_status_calc_opt) opt)
+#define status_calc_homunculus(hd, opt) status_calc_bl_(&(hd)->bl,(scb_flag) SCB_ALL,(e_status_calc_opt) opt)
+#define status_calc_mercenary(md, opt) status_calc_bl_(&(md)->bl,(scb_flag) SCB_ALL,(e_status_calc_opt) opt)
+#define status_calc_elemental(ed, opt) status_calc_bl_(&(ed)->bl,(scb_flag) SCB_ALL,(e_status_calc_opt) opt)
+#define status_calc_npc(nd, opt) status_calc_bl_(&(nd)->bl,(scb_flag) SCB_ALL,(e_status_calc_opt) opt)
 
 void status_calc_bl_(struct block_list *bl, enum scb_flag flag, enum e_status_calc_opt opt);
 int status_calc_mob_(struct mob_data* md, enum e_status_calc_opt opt);

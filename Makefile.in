@@ -4,18 +4,10 @@ HAVE_MYSQL=@HAVE_MYSQL@
 OMAP=@OMAP@
 ifeq ($(HAVE_MYSQL),yes)
 	ALL_DEPENDS=server tools
-	SERVER_DEPENDS=common login char map import
-	COMMON_DEPENDS=mt19937ar libconfig
-	LOGIN_DEPENDS=mt19937ar libconfig common
-	CHAR_DEPENDS=mt19937ar libconfig common
-	MAP_DEPENDS=mt19937ar libconfig common
+	SERVER_DEPENDS=login char map import
 else
 	ALL_DEPENDS=needs_mysql
 	SERVER_DEPENDS=needs_mysql
-	COMMON_DEPENDS=needs_mysql
-	LOGIN_DEPENDS=needs_mysql
-	CHAR_DEPENDS=needs_mysql
-	MAP_DEPENDS=needs_mysql
 endif
 
 
@@ -32,9 +24,6 @@ endif
 	install uninstall bin-clean \
 
 all: $(ALL_DEPENDS)
-
-sql: $(SERVER_DEPENDS)
-	@echo "-!- 'make sql' is now deprecated. Please run 'make server' to continue. -!-"
 
 server: $(SERVER_DEPENDS)
 

@@ -4,6 +4,7 @@
 #ifndef _PATH_H_
 #define _PATH_H_
 
+#include "../common/cbasetypes.h"
 #include "map.h" // enum cell_chk
 
 #define MOVE_COST 10

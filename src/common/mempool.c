@@ -9,6 +9,7 @@
 // For more information, see LICENCE in the main folder
 //
 //
+#include "mempool.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,9 +21,7 @@
 #include <unistd.h>
 #endif
 
-#include "cbasetypes.h"
 #include "showmsg.h"
-#include "mempool.h"
 #include "atomic.h"
 #include "spinlock.h"
 #include "malloc.h"
@@ -51,7 +50,7 @@ struct ra_align(16) node{
 
 // The Pointer to this struct is the base address of the segment itself.
 struct pool_segment{
-	mempool	pool; // pool, this segment belongs to
+	pmempool	pool; // pool, this segment belongs to
 	struct 	pool_segment *next;
 	int64	num_nodes_total;	
 	int64	num_bytes;
@@ -89,24 +88,24 @@ struct mempool{
 	volatile int64	num_realloc_events; 	// Number of reallocations done. (allocate additional nodes)
 
 	// list (used for global management such as allocator..)
-	struct mempool *next;
+	pmempool next;
 } ra_align(8); // Dont touch the alignment, otherwise interlocked functions are broken ..
 
 
 /// 
 // Implementation:
 //
-static void segment_allocate_add(mempool p,  uint64 count);
+static void segment_allocate_add(pmempool p,  uint64 count);
 
 static SPIN_LOCK l_mempoolListLock;
-static mempool 	l_mempoolList = NULL;
-static rAthread l_async_thread = NULL;
-static ramutex	l_async_lock = NULL;
-static racond	l_async_cond = NULL;
+static pmempool 	l_mempoolList = NULL;
+static prAthread l_async_thread = NULL;
+static pramutex	l_async_lock = NULL;
+static pracond	l_async_cond = NULL;
 static volatile int32 l_async_terminate = 0;
 
 static void *mempool_async_allocator(void *x){
-	mempool p;
+	pmempool p;
 	
 	
 	while(1){
@@ -167,7 +166,7 @@ void mempool_init(){
 
 
 void mempool_final(){
-	mempool p, pn;
+	pmempool p, pn;
 	
 	if( rand()%2 + 1 )
 		return;
@@ -205,7 +204,7 @@ void mempool_final(){
 }//end: mempool_final()
 
 
-static void segment_allocate_add(mempool p,  uint64 count){
+static void segment_allocate_add(pmempool p,  uint64 count){
 	
 	// Required Memory:
 	//	sz( segment ) 
@@ -303,7 +302,7 @@ static void segment_allocate_add(mempool p,  uint64 count){
 }//end: segment_allocate_add()
 
 
-mempool mempool_create(const char *name,
+pmempool mempool_create(const char *name,
 						uint64 elem_size,
 						uint64 initial_count,
 						uint64 realloc_count,
@@ -311,8 +310,8 @@ mempool mempool_create(const char *name,
 						memPoolOnNodeDeallocationProc onNodeDealloc){
 	//..
 	uint64 realloc_thresh;
-	mempool pool;
-	pool = (mempool)aCalloc( 1,  sizeof(struct mempool) );
+	pmempool pool;
+	pool = (pmempool)aCalloc( 1,  sizeof(struct mempool) );
 	
 	if(pool == NULL){
 		ShowFatalError("mempool_create: Failed to allocate %u bytes memory.\n", sizeof(struct mempool) );
@@ -369,10 +368,10 @@ mempool mempool_create(const char *name,
 }//end: mempool_create()
 
 
-void mempool_destroy(mempool p){
+void mempool_destroy(pmempool p){
 	struct  pool_segment *seg, *segnext;
 	struct	node *niter;
-	mempool piter, pprev;
+	pmempool piter, pprev;
 	char *ptr;
 	int64 i;
 
@@ -472,7 +471,7 @@ void mempool_destroy(mempool p){
 }//end: mempool_destroy()
 
 
-void *mempool_node_get(mempool p){
+void *mempool_node_get(pmempool p){
 	struct node *node;
 	int64 num_used;
 	
@@ -485,7 +484,7 @@ void *mempool_node_get(mempool p){
 		
 			node = p->free_list;
 			if(node != NULL)
-				p->free_list = node->next;
+				p->free_list = (struct node*) node->next;
 		
 		LeaveSpinLock(&p->nodeLock);
 
@@ -511,7 +510,7 @@ void *mempool_node_get(mempool p){
 }//end: mempool_node_get()
 
 
-void mempool_node_put(mempool p, void *data){
+void mempool_node_put(pmempool p, void *data){
 	struct node *node;
 	
 	node = DATA_TO_NODE(data);
@@ -522,7 +521,7 @@ void mempool_node_put(mempool p, void *data){
 	}
 
 	{
-		struct pool_segment *node_seg = node->segment;
+		struct pool_segment *node_seg =(pool_segment*) node->segment;
 		if(node_seg->pool != p){
 			ShowError("Mempool [%s] node_put faild, given node (data address %p) doesnt belongs to this pool. ( Node Origin is [%s] )\n", p->name, data, node_seg->pool);
 			return;
@@ -544,7 +543,7 @@ void mempool_node_put(mempool p, void *data){
 }//end: mempool_node_put()
 
 
-mempool_stats mempool_get_stats(mempool pool){
+mempool_stats mempool_get_stats(pmempool pool){
 	mempool_stats stats;
 	
 	// initialize all with zeros

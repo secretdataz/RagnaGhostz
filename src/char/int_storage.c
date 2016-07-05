@@ -1,6 +1,12 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "int_storage.h"
+
+#include <stdlib.h>
+#include <cstring>
+//#include <string>
+
 #include "../common/mmo.h"
 #include "../common/showmsg.h"
 #include "../common/socket.h"
@@ -8,9 +14,6 @@
 #include "../common/sql.h"
 #include "char.h"
 #include "inter.h"
-
-#include <stdlib.h>
-
 
 #define STORAGE_MEMINC	16
 
@@ -255,7 +258,7 @@ int mapif_parse_SaveGuildStorage(int fd)
 * IZ 0x3856 <account_id>.L <guild_id>.W
 * Tells map-server if the process if complete, unlock the guild storage
 */
-static void mapif_itembound_ack(int fd, int account_id, int guild_id)
+void mapif_itembound_ack(int fd, int account_id, int guild_id)
 {
 	WFIFOHEAD(fd,8);
 	WFIFOW(fd,0) = 0x3856;
@@ -277,7 +280,7 @@ static void mapif_itembound_ack(int fd, int account_id, int guild_id)
 * @param count
 * @author [Cydh]
 */
-static void mapif_itembound_store2gstorage(int fd, int guild_id, struct item items[], unsigned short count) {
+void mapif_itembound_store2gstorage(int fd, int guild_id, struct item items[], unsigned short count) {
 	int size = 8 + sizeof(struct item) * MAX_INVENTORY, i;
 
 	WFIFOHEAD(fd, size);
@@ -352,7 +355,7 @@ int mapif_parse_itembound_retrieve(int fd)
 		memcpy(&items[count++], &item, sizeof(struct item));
 	Sql_FreeResult(sql_handle);
 
-	ShowInfo("Found '"CL_WHITE"%d"CL_RESET"' guild bound item(s) from CID = "CL_WHITE"%d"CL_RESET", AID = %d, Guild ID = "CL_WHITE"%d"CL_RESET".\n", count, char_id, account_id, guild_id);
+	ShowInfo("Found '" CL_WHITE "%d" CL_RESET "' guild bound item(s) from CID = " CL_WHITE "%d" CL_RESET ", AID = %d, Guild ID = " CL_WHITE "%d" CL_RESET ".\n", count, char_id, account_id, guild_id);
 	if (!count) { //No items found - No need to continue
 		StringBuf_Destroy(&buf);
 		SqlStmt_Free(stmt);

@@ -4,9 +4,13 @@
 #ifndef _INSTANCE_H_
 #define _INSTANCE_H_
 
+#include "../common/cbasetypes.h"
 #include "../common/mmo.h" // struct point
+#include "../common/strlib.h"
+
 #include "script.h" // struct reg_db
 
+enum send_target : unsigned char;
 struct block_list;
 
 #define MAX_INSTANCE_DATA		300	// Essentially how many instances we can create, but instance creation is primarily decided by MAX_MAP_PER_SERVER

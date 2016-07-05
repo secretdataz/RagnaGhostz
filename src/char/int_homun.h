@@ -15,4 +15,5 @@ bool mapif_homunculus_load(int homun_id, struct s_homunculus* hd);
 bool mapif_homunculus_delete(int homun_id);
 bool mapif_homunculus_rename(char *name);
 
+
 #endif /* _INT_HOMUN_SQL_H_ */

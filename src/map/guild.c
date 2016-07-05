@@ -1,7 +1,11 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "../common/cbasetypes.h"
+#include "guild.h"
+
+#include <cstring>
+#include <stdlib.h>
+
 #include "../common/timer.h"
 #include "../common/nullpo.h"
 #include "../common/malloc.h"
@@ -12,7 +16,6 @@
 #include "../common/utils.h"
 
 #include "map.h"
-#include "guild.h"
 #include "storage.h"
 #include "battle.h"
 #include "npc.h"
@@ -22,8 +25,6 @@
 #include "channel.h"
 #include "log.h"
 #include "trade.h"
-
-#include <stdlib.h>
 
 
 static DBMap* guild_db; // int guild_id -> struct guild*
@@ -49,7 +50,7 @@ struct guild_expcache {
 static struct eri *expcache_ers; //For handling of guild exp payment.
 
 #define MAX_GUILD_SKILL_REQUIRE 5
-struct{
+struct s_guild_skill_tree {
 	int id;
 	int max;
 	struct{
@@ -1912,7 +1913,7 @@ void guild_castle_map_init(void) {
 		}
 		dbi_destroy(iter);
 		if (intif_guild_castle_dataload(num, castle_ids))
-			ShowStatus("Requested '"CL_WHITE"%d"CL_RESET"' guild castles from char-server...\n", num);
+			ShowStatus("Requested '" CL_WHITE "%d" CL_RESET "' guild castles from char-server...\n", num);
 		aFree(castle_ids);
 	}
 }
@@ -2054,7 +2055,7 @@ int guild_castledataloadack(int len, struct guild_castle *gc) {
 			}
 		}
 	}
-	ShowStatus("Received '"CL_WHITE"%d"CL_RESET"' guild castles from char-server.\n", n);
+	ShowStatus("Received '" CL_WHITE "%d" CL_RESET "' guild castles from char-server.\n", n);
 	return 0;
 }
 
@@ -2226,7 +2227,7 @@ void guild_flags_clear(void) {
 void do_init_guild(void) {
 	const char* dbsubpath[] = {
 		"",
-		"/"DBIMPORT,
+		"/" DBIMPORT,
 	};
 	int i;
 	

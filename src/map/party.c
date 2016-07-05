@@ -1,6 +1,11 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "party.h"
+
+#include <stdlib.h>
+#include <cstring>
+
 #include "../common/cbasetypes.h"
 #include "../common/timer.h"
 #include "../common/socket.h" // last_tick
@@ -11,15 +16,12 @@
 #include "../common/utils.h"
 #include "../common/strlib.h"
 
-#include "party.h"
 #include "atcommand.h"	//msg_txt()
 #include "pc.h"
 #include "instance.h"
 #include "intif.h"
 #include "mapreg.h"
 #include "trade.h"
-
-#include <stdlib.h>
 
 
 static DBMap* party_db; // int party_id -> struct party_data* (releases data)

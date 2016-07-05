@@ -7,6 +7,10 @@
  * @author rAthena Dev Team
  */
 
+#include "char_mapif.h"
+
+#include <string.h> //memcpy
+
 #include "../common/socket.h"
 #include "../common/sql.h"
 #include "../common/malloc.h"
@@ -15,7 +19,7 @@
 #include "inter.h"
 #include "char.h"
 #include "char_logif.h"
-#include "char_mapif.h"
+
 
 #include <stdlib.h>
 
@@ -167,7 +171,7 @@ void chmapif_sendall_playercount(int users){
  * HZ 0x2afb <size>.W <status>.B <name>.24B <mapname>.11B <map_x>.W <map_y>.W
  * @param fd
  **/
-static void chmapif_send_misc(int fd) {
+void chmapif_send_misc(int fd) {
 	uint16 offs = 5;
 	unsigned char buf[45];
 
@@ -195,7 +199,7 @@ static void chmapif_send_misc(int fd) {
  * @param map_id
  * @param count Number of map from new map-server has
  **/
-static void chmapif_send_maps(int fd, int map_id, int count, unsigned char *mapbuf) {
+void chmapif_send_maps(int fd, int map_id, int count, unsigned char *mapbuf) {
 	uint16 x;
 
 	if (count == 0) {

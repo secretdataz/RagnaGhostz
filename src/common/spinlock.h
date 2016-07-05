@@ -23,6 +23,10 @@
 #include "atomic.h"
 #include "thread.h"
 
+#ifdef	__cplusplus
+extern "C" {
+#endif
+
 #ifdef WIN32
 
 typedef struct __declspec( align(64) ) SPIN_LOCK{
@@ -98,7 +102,9 @@ static forceinline void LeaveSpinLock(PSPIN_LOCK lck){
 		dropsynclock(&lck->sync_lock);
 }
 
-
+#ifdef	__cplusplus
+}
+#endif
 
 
 #endif

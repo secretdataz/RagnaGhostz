@@ -4,13 +4,19 @@ COMMON_DIR_OBJ = $(COMMON_OBJ:%=../common/obj/%)
 COMMON_H = $(shell ls ../common/*.h)
 COMMON_INCLUDE = -I../common/
 
-LIBCONFIG_H = $(shell ls ../../3rdparty/libconfig/*.h)
-LIBCONFIG_AR = ../../3rdparty/libconfig/obj/libconfig.a
-LIBCONFIG_INCLUDE = -I../../3rdparty/libconfig
+#LIBCONFIG_H = $(shell ls ../../3rdparty/libconfig/*.h)
+#LIBCONFIG_AR = ../../3rdparty/libconfig/obj/libconfig.a
+#LIBCONFIG_INCLUDE = -I../../3rdparty/libconfig
+
+LIBCONFIG_H = /usr/include/libconfig.h++
+LIBCONFIG_SO = /usr/lib64/libconfig++.so
+LIBCONFIG_INCLUDE = -I/usr/include
 
 OTHER_H = ../config/renewal.h
 
 MAPCACHE_OBJ = obj_all/mapcache.o
+
+TMP_LAZY_CXXFLAG=-std=c++11 -fpermissive
 
 @SET_MAKE@
 
@@ -21,7 +27,7 @@ all: mapcache
 
 mapcache: obj_all $(MAPCACHE_OBJ) $(COMMON_DIR_OBJ) $(LIBCONFIG_OBJ)
 	@echo "	LD	$@"
-	@@CC@ @LDFLAGS@ -o ../../mapcache@EXEEXT@ $(MAPCACHE_OBJ) $(COMMON_DIR_OBJ) $(LIBCONFIG_AR) @LIBS@
+	@@CXX@ @LDFLAGS@ -o ../../mapcache@EXEEXT@ $(MAPCACHE_OBJ) $(COMMON_DIR_OBJ) $(LIBCONFIG_SO) @LIBS@
 
 clean:
 	@echo "	CLEAN	tool"
@@ -40,8 +46,8 @@ obj_all:
 	-mkdir obj_all
 
 obj_all/%.o: %.c $(COMMON_H) $(OTHER_H) $(LIBCONFIG_H)
-	@echo "	CC	$<"
-	@@CC@ @CFLAGS@ $(COMMON_INCLUDE) $(LIBCONFIG_INCLUDE) @CPPFLAGS@ -c $(OUTPUT_OPTION) $<
+	@echo "	CXX	$<"
+	@@CXX@ $(TMP_LAZY_CXXFLAG) @CFLAGS@ $(COMMON_INCLUDE) $(LIBCONFIG_INCLUDE) @CPPFLAGS@ -c $(OUTPUT_OPTION) $<
 
 # missing common object files
 $(COMMON_DIR_OBJ):

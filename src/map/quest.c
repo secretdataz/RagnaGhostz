@@ -1,7 +1,11 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "../common/cbasetypes.h"
+#include "quest.h"
+
+#include <stdlib.h>
+#include <cstring>
+
 #include "../common/socket.h"
 #include "../common/malloc.h"
 #include "../common/nullpo.h"
@@ -13,11 +17,8 @@
 #include "map.h"
 #include "pc.h"
 #include "party.h"
-#include "quest.h"
 #include "chrif.h"
 #include "intif.h"
-
-#include <stdlib.h>
 
 static DBMap *questdb;
 static void questdb_free_sub(struct quest_db *quest, bool free);
@@ -502,7 +503,7 @@ void quest_read_txtdb(void)
 		}
 
 		fclose(fp);
-		ShowStatus("Done reading '"CL_WHITE"%d"CL_RESET"' entries in '"CL_WHITE"%s"CL_RESET"'.\n", count, filename);
+		ShowStatus("Done reading '" CL_WHITE "%d" CL_RESET "' entries in '" CL_WHITE "%s" CL_RESET "'.\n", count, filename);
 	}
 }
 

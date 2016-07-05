@@ -1,13 +1,13 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "cbasetypes.h"
-#include "malloc.h"
-#include "showmsg.h"
 #include "strlib.h"
 
+#include <cstring> // atexit
 #include <stdlib.h>
 
+#include "malloc.h"
+#include "showmsg.h"
 
 #define J_MAX_MALLOC_SIZE 65535
 
@@ -260,9 +260,12 @@ char* _strtok_r(char *s1, const char *s2, char **lasts)
 }
 #endif
 
-#if !(defined(WIN32) && defined(_MSC_VER) && _MSC_VER >= 1400) && !defined(HAVE_STRNLEN)
+//#if !(defined(WIN32) && defined(_MSC_VER) && _MSC_VER >= 1400) && !defined(HAVE_STRNLEN)
 /* Find the length of STRING, but scan at most MAXLEN characters.
    If no '\0' terminator is found in that many characters, return MAXLEN.  */
+
+//#ifndef strnlen
+#if !(defined(WIN32) && defined(_MSC_VER) && _MSC_VER >= 1400) && !defined(HAVE_STRNLEN)
 size_t strnlen (const char* string, size_t maxlen)
 {
   const char* end = (const char*)memchr(string, '\0', maxlen);
@@ -1056,7 +1059,7 @@ bool sv_readdb(const char* directory, const char* filename, char delim, int minc
 	aFree(fields);
 	aFree(line);
 	fclose(fp);
-	ShowStatus("Done reading '"CL_WHITE"%d"CL_RESET"' entries in '"CL_WHITE"%s"CL_RESET"'.\n", entries, path);
+	ShowStatus("Done reading '" CL_WHITE "%d" CL_RESET "' entries in '" CL_WHITE "%s" CL_RESET "'.\n", entries, path);
 
 	return true;
 }

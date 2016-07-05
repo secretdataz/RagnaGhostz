@@ -3,8 +3,10 @@
 
 #include "cbasetypes.h"
 
-typedef struct EVDP_DATA EVDP_DATA;
 
+#ifdef	__cplusplus
+extern "C" {
+#endif
 
 //#idef EVDP_EPOLL
 #include <sys/epoll.h>
@@ -12,6 +14,7 @@ struct EVDP_DATA{
 	struct epoll_event ev_data;
 	bool ev_added;
 };
+typedef struct EVDP_DATA EVDP_DATA;
 //#endif
 
 
@@ -163,6 +166,8 @@ void evdp_writable_remove(int32 fd, EVDP_DATA *ep);
  */
 void evdp_remove(int32 fd, 	EVDP_DATA *ep);
 
-
+#ifdef	__cplusplus
+}
+#endif
 
 #endif

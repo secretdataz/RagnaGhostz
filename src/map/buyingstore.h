@@ -4,6 +4,9 @@
 #ifndef _BUYINGSTORE_H_
 #define _BUYINGSTORE_H_
 
+#include "../common/cbasetypes.h"
+#include "map.h" //MESSAGE_SIZE
+
 struct s_search_store_search;
 
 #define MAX_BUYINGSTORE_SLOTS 5

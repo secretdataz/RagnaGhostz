@@ -1,6 +1,12 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "pc.h"
+
+#include <stdlib.h>
+#include <math.h>
+#include <cstring>
+
 #include "../common/cbasetypes.h"
 #include "../common/core.h" // get_svn_revision()
 #include "../common/malloc.h"
@@ -31,9 +37,6 @@
 #include "party.h" // party_search()
 #include "storage.h"
 #include "quest.h"
-
-#include <stdlib.h>
-#include <math.h>
 
 int pc_split_atoui(char* str, unsigned int* val, char sep, int max);
 
@@ -1212,10 +1215,10 @@ bool pc_authok(struct map_session_data *sd, uint32 login_id2, time_t expiration_
 	sd->die_counter=-1;
 
 	//display login notice
-	ShowInfo("'"CL_WHITE"%s"CL_RESET"' logged in."
-	         " (AID/CID: '"CL_WHITE"%d/%d"CL_RESET"',"
-	         " Packet Ver: '"CL_WHITE"%d"CL_RESET"', IP: '"CL_WHITE"%d.%d.%d.%d"CL_RESET"',"
-	         " Group '"CL_WHITE"%d"CL_RESET"').\n",
+	ShowInfo("'" CL_WHITE "%s" CL_RESET "' logged in."
+	         " (AID/CID: '" CL_WHITE "%d/%d" CL_RESET "',"
+	         " Packet Ver: '" CL_WHITE "%d" CL_RESET "', IP: '" CL_WHITE "%d.%d.%d.%d" CL_RESET "',"
+	         " Group '" CL_WHITE "%d" CL_RESET "').\n",
 	         sd->status.name, sd->status.account_id, sd->status.char_id,
 	         sd->packet_ver, CONVIP(ip), sd->group_id);
 	// Send friends list
@@ -11095,7 +11098,7 @@ static int pc_read_statsdb(const char *basedir, int last_s, bool silent){
 	sprintf(line, "%s/statpoint.txt", basedir);
 	fp=fopen(line,"r");
 	if(fp == NULL){
-		if(silent==0) ShowWarning("Can't read '"CL_WHITE"%s"CL_RESET"'... Generating DB.\n",line);
+		if(silent==0) ShowWarning("Can't read '" CL_WHITE "%s" CL_RESET "'... Generating DB.\n",line);
 		return max(last_s,i);
 	} else {
 		int entries=0;
@@ -11114,7 +11117,7 @@ static int pc_read_statsdb(const char *basedir, int last_s, bool silent){
 			entries++;
 		}
 		fclose(fp);
-		ShowStatus("Done reading '"CL_WHITE"%d"CL_RESET"' entries in '"CL_WHITE"%s/%s"CL_RESET"'.\n", entries, basedir,"statpoint.txt");
+		ShowStatus("Done reading '" CL_WHITE "%d" CL_RESET "' entries in '" CL_WHITE "%s/%s" CL_RESET "'.\n", entries, basedir,"statpoint.txt");
 	}
 	return max(last_s,i);
 }
@@ -11132,7 +11135,7 @@ void pc_readdb(void) {
 	int i, k, s = 1;
 	const char* dbsubpath[] = {
 		"",
-		"/"DBIMPORT,
+		"/" DBIMPORT,
 		//add other path here
 	};
 		
@@ -11259,7 +11262,7 @@ int pc_read_motd(void)
 				char * ptr;
 				buf[len] = 0;
 				if( ( ptr = strstr(buf, " :") ) != NULL && ptr-buf >= NAME_LENGTH ) // crashes newer clients
-					ShowWarning("Found sequence '"CL_WHITE" :"CL_RESET"' on line '"CL_WHITE"%u"CL_RESET"' in '"CL_WHITE"%s"CL_RESET"'. This can cause newer clients to crash.\n", lines, motd_txt);
+					ShowWarning("Found sequence '" CL_WHITE " :" CL_RESET "' on line '" CL_WHITE "%u" CL_RESET "' in '" CL_WHITE "%s" CL_RESET "'. This can cause newer clients to crash.\n", lines, motd_txt);
 			}
 			else {// empty line
 				buf[0] = ' ';
@@ -11268,10 +11271,10 @@ int pc_read_motd(void)
 			entries++;
 		}
 		fclose(fp);
-		ShowStatus("Done reading '"CL_WHITE"%u"CL_RESET"' entries in '"CL_WHITE"%s"CL_RESET"'.\n", entries, motd_txt);
+		ShowStatus("Done reading '" CL_WHITE "%u" CL_RESET "' entries in '" CL_WHITE "%s" CL_RESET "'.\n", entries, motd_txt);
 	}
 	else
-		ShowWarning("File '"CL_WHITE"%s"CL_RESET"' not found.\n", motd_txt);
+		ShowWarning("File '" CL_WHITE "%s" CL_RESET "' not found.\n", motd_txt);
 
 	return 0;
 }

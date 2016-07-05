@@ -1,6 +1,11 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "int_mercenary.h"
+
+#include <stdlib.h>
+#include <string.h>
+
 #include "../common/mmo.h"
 #include "../common/strlib.h"
 #include "../common/showmsg.h"
@@ -8,8 +13,6 @@
 #include "../common/sql.h"
 #include "char.h"
 #include "inter.h"
-
-#include <stdlib.h>
 
 bool mercenary_owner_fromsql(uint32 char_id, struct mmo_charstatus *status)
 {
@@ -132,7 +135,7 @@ bool mapif_mercenary_delete(int merc_id)
 	return true;
 }
 
-static void mapif_mercenary_send(int fd, struct s_mercenary *merc, unsigned char flag)
+void mapif_mercenary_send(int fd, struct s_mercenary *merc, unsigned char flag)
 {
 	int size = sizeof(struct s_mercenary) + 5;
 
@@ -144,20 +147,20 @@ static void mapif_mercenary_send(int fd, struct s_mercenary *merc, unsigned char
 	WFIFOSET(fd,size);
 }
 
-static void mapif_parse_mercenary_create(int fd, struct s_mercenary* merc)
+void mapif_parse_mercenary_create(int fd, struct s_mercenary* merc)
 {
 	bool result = mapif_mercenary_save(merc);
 	mapif_mercenary_send(fd, merc, result);
 }
 
-static void mapif_parse_mercenary_load(int fd, int merc_id, uint32 char_id)
+void mapif_parse_mercenary_load(int fd, int merc_id, uint32 char_id)
 {
 	struct s_mercenary merc;
 	bool result = mapif_mercenary_load(merc_id, char_id, &merc);
 	mapif_mercenary_send(fd, &merc, result);
 }
 
-static void mapif_mercenary_deleted(int fd, unsigned char flag)
+void mapif_mercenary_deleted(int fd, unsigned char flag)
 {
 	WFIFOHEAD(fd,3);
 	WFIFOW(fd,0) = 0x3871;
@@ -165,13 +168,13 @@ static void mapif_mercenary_deleted(int fd, unsigned char flag)
 	WFIFOSET(fd,3);
 }
 
-static void mapif_parse_mercenary_delete(int fd, int merc_id)
+void mapif_parse_mercenary_delete(int fd, int merc_id)
 {
 	bool result = mapif_mercenary_delete(merc_id);
 	mapif_mercenary_deleted(fd, result);
 }
 
-static void mapif_mercenary_saved(int fd, unsigned char flag)
+void mapif_mercenary_saved(int fd, unsigned char flag)
 {
 	WFIFOHEAD(fd,3);
 	WFIFOW(fd,0) = 0x3872;
@@ -179,7 +182,7 @@ static void mapif_mercenary_saved(int fd, unsigned char flag)
 	WFIFOSET(fd,3);
 }
 
-static void mapif_parse_mercenary_save(int fd, struct s_mercenary* merc)
+void mapif_parse_mercenary_save(int fd, struct s_mercenary* merc)
 {
 	bool result = mapif_mercenary_save(merc);
 	mapif_mercenary_saved(fd, result);

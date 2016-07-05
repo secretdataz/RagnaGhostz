@@ -1,6 +1,11 @@
 // Copyright (c) rAthena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "char_logif.h"
+
+#include <stdlib.h>
+#include <string.h>
+
 #include "../common/socket.h"
 #include "../common/timer.h"
 #include "../common/showmsg.h"
@@ -12,9 +17,7 @@
 #include "char.h"
 #include "char_clif.h"
 #include "char_mapif.h"
-#include "char_logif.h"
 
-#include <stdlib.h>
 
 //early declaration
 void chlogif_on_ready(void);
@@ -83,7 +86,7 @@ void chlogif_pincode_start(int fd, struct char_session_data* sd){
  * Load this character's account id into the 'online accounts' packet
  * @see DBApply
  */
-static int chlogif_send_acc_tologin_sub(DBKey key, DBData *data, va_list ap) {
+int chlogif_send_acc_tologin_sub(DBKey key, DBData *data, va_list ap) {
 	struct online_char_data* character = (struct online_char_data*)db_data2ptr(data);
 	int* i = va_arg(ap, int*);
 	if(character->server > -1) {
@@ -134,7 +137,7 @@ void chlogif_send_usercount(int users){
 int chlogif_broadcast_user_count(int tid, unsigned int tick, int id, intptr_t data)
 {
 	uint8 buf[6];
-	int users = char_count_users();
+	unsigned int users = char_count_users();
 
 	// only send an update when needed
 	static int prev_users = 0;

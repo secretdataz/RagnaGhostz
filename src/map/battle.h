@@ -4,6 +4,7 @@
 #ifndef _BATTLE_H_
 #define _BATTLE_H_
 
+#include "../common/cbasetypes.h"
 #include "../common/mmo.h"
 #include "../config/core.h"
 #include "clif.h" // e_damage_type

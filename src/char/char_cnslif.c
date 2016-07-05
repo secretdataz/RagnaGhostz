@@ -1,16 +1,18 @@
 // Copyright (c) rAthena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include <stdlib.h>
+#include <string.h>
+
+#include "char_cnslif.h"
+
 #include "../common/socket.h"
 #include "../common/showmsg.h"
 #include "../common/timer.h"
 #include "../common/ers.h"
 #include "../common/cli.h"
 #include "char.h"
-#include "char_cnslif.h"
 
-#include <stdlib.h>
-#include <string.h>
 
 /*======================================================
  * Login-Server help option info
@@ -75,7 +77,7 @@ int cnslif_parse(const char* buf)
 			runflag = 0;
 		}
 		else if( strcmpi("alive", command) == 0 || strcmpi("status", command) == 0 )
-			ShowInfo(CL_CYAN"Console: "CL_BOLD"I'm Alive."CL_RESET"\n");
+			ShowInfo(CL_CYAN "Console: " CL_BOLD "I'm Alive." CL_RESET "\n");
 		else if( strcmpi("reloadconf", command) == 0 ) {
 			ShowInfo("Reloading config file \"%s\"\n", CHAR_CONF_NAME);
 			char_config_read(CHAR_CONF_NAME, false);

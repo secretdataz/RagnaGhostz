@@ -1,7 +1,11 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "../common/cbasetypes.h"
+#include "homunculus.h"
+
+#include <stdlib.h>
+#include <cstring>
+
 #include "../common/malloc.h"
 #include "../common/timer.h"
 #include "../common/nullpo.h"
@@ -18,10 +22,6 @@
 #include "pc.h"
 #include "party.h"
 #include "trade.h"
-
-#include "homunculus.h"
-
-#include <stdlib.h>
 
 struct s_homunculus_db homunculus_db[MAX_HOMUNCULUS_CLASS];	//[orn]
 struct homun_skill_tree_entry hskill_tree[MAX_HOMUNCULUS_CLASS][MAX_HOM_SKILL_TREE];
@@ -1609,7 +1609,7 @@ void read_homunculus_expdb(void)
 			hexptbl[MAX_LEVEL - 1] = 0;
 		}
 		fclose(fp);
-		ShowStatus("Done reading '"CL_WHITE"%d"CL_RESET"' levels in '"CL_WHITE"%s/%s"CL_RESET"'.\n", j, db_path, filename[i]);
+		ShowStatus("Done reading '" CL_WHITE "%d" CL_RESET "' levels in '" CL_WHITE "%s/%s" CL_RESET "'.\n", j, db_path, filename[i]);
 	}
 }
 

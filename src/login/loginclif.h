@@ -10,10 +10,6 @@
 #ifndef _LOGINCLIF_H
 #define	_LOGINCLIF_H
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
 /**
  * Entry point from client to log-server.
  * Function that checks incoming command, then splits it to the correct handler.
@@ -33,10 +29,6 @@ void do_init_loginclif(void);
  *  dealloc..., function called at exit of the login-serv
  */
 void do_final_loginclif(void);
-
-#ifdef	__cplusplus
-}
-#endif
 
 #endif	/* _LOGINCLIF_H */
 

@@ -1,18 +1,21 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "itemdb.h"
+
+#include <stdlib.h>
+#include <cstring>
+
 #include "../common/nullpo.h"
 #include "../common/malloc.h"
 #include "../common/random.h"
 #include "../common/showmsg.h"
 #include "../common/strlib.h"
 #include "../common/utils.h"
-#include "itemdb.h"
+
 #include "battle.h" // struct battle_config
 #include "cashshop.h"
 #include "intif.h"
-
-#include <stdlib.h>
 
 static DBMap *itemdb; /// Item DB
 static DBMap *itemdb_combo; /// Item Combo DB
@@ -1033,7 +1036,7 @@ static void itemdb_read_combos(const char* basedir, bool silent) {
 	}
 	fclose(fp);
 
-	ShowStatus("Done reading '"CL_WHITE"%lu"CL_RESET"' entries in '"CL_WHITE"%s"CL_RESET"'.\n",count,path);
+	ShowStatus("Done reading '" CL_WHITE "%lu" CL_RESET "' entries in '" CL_WHITE "%s" CL_RESET "'.\n",count,path);
 
 	return;
 }
@@ -1127,7 +1130,7 @@ bool itemdb_parse_roulette_db(void)
 		}
 	}
 
-	ShowStatus("Done reading '"CL_WHITE"%lu"CL_RESET"' entries in '"CL_WHITE"%s"CL_RESET"'.\n", count, db_roulette_table);
+	ShowStatus("Done reading '" CL_WHITE "%lu" CL_RESET "' entries in '" CL_WHITE "%s" CL_RESET "'.\n", count, db_roulette_table);
 
 	return true;
 }
@@ -1456,7 +1459,7 @@ static int itemdb_readdb(void){
 
 		fclose(fp);
 
-		ShowStatus("Done reading '"CL_WHITE"%lu"CL_RESET"' entries in '"CL_WHITE"%s"CL_RESET"'.\n", count, path);
+		ShowStatus("Done reading '" CL_WHITE "%lu" CL_RESET "' entries in '" CL_WHITE "%s" CL_RESET "'.\n", count, path);
 	}
 
 	return 0;
@@ -1506,7 +1509,7 @@ static int itemdb_read_sqldb(void) {
 		// free the query result
 		Sql_FreeResult(mmysql_handle);
 
-		ShowStatus("Done reading '"CL_WHITE"%lu"CL_RESET"' entries in '"CL_WHITE"%s"CL_RESET"'.\n", count, item_db_name[fi]);
+		ShowStatus("Done reading '" CL_WHITE "%lu" CL_RESET "' entries in '" CL_WHITE "%s" CL_RESET "'.\n", count, item_db_name[fi]);
 	}
 
 	return 0;
@@ -1656,7 +1659,7 @@ static void itemdb_read(void) {
 	int i;
 	const char* dbsubpath[] = {
 		"",
-		"/"DBIMPORT,
+		"/" DBIMPORT,
 	};
 	
 	if (db_use_sqldbs)

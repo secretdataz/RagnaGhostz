@@ -10,10 +10,6 @@
 #ifndef CONSOLEIF_H
 #define	CONSOLEIF_H
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
 /**
  * Console Command Parser
  * Transmited from command cli.c
@@ -49,10 +45,6 @@ void do_init_logincnslif(void);
  * Handler to cleanup module, called when login-server stops.
  */
 void do_final_logincnslif(void);
-
-#ifdef	__cplusplus
-}
-#endif
 
 #endif	/* CONSOLEIF_H */
 

@@ -1,6 +1,12 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "int_auction.h"
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
 #include "../common/mmo.h"
 #include "../common/malloc.h"
 #include "../common/db.h"
@@ -13,18 +19,13 @@
 #include "char_mapif.h"
 #include "inter.h"
 #include "int_mail.h"
-#include "int_auction.h"
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
-static DBMap* auction_db_ = NULL; // int auction_id -> struct auction_data*
+DBMap* auction_db_ = NULL; // int auction_id -> struct auction_data*
 
 void auction_delete(struct auction_data *auction);
-static int auction_end_timer(int tid, unsigned int tick, int id, intptr_t data);
+int auction_end_timer(int tid, unsigned int tick, int id, intptr_t data);
 
-static int auction_count(int char_id, bool buy)
+int auction_count(int char_id, bool buy)
 {
 	int i = 0;
 	struct auction_data *auction;
@@ -140,7 +141,7 @@ unsigned int auction_create(struct auction_data *auction)
 	return auction->auction_id;
 }
 
-static void mapif_Auction_message(int char_id, unsigned char result)
+void mapif_Auction_message(int char_id, unsigned char result)
 {
 	unsigned char buf[74];
 
@@ -150,7 +151,7 @@ static void mapif_Auction_message(int char_id, unsigned char result)
 	chmapif_sendall(buf,7);
 }
 
-static int auction_end_timer(int tid, unsigned int tick, int id, intptr_t data)
+int auction_end_timer(int tid, unsigned int tick, int id, intptr_t data)
 {
 	struct auction_data *auction;
 	if( (auction = (struct auction_data *)idb_get(auction_db_, id)) != NULL )
@@ -266,7 +267,7 @@ void inter_auctions_fromsql(void)
 	Sql_FreeResult(sql_handle);
 }
 
-static void mapif_Auction_sendlist(int fd, int char_id, short count, short pages, unsigned char *buf)
+void mapif_Auction_sendlist(int fd, int char_id, short count, short pages, unsigned char *buf)
 {
 	int len = (sizeof(struct auction_data) * count) + 12;
 
@@ -280,7 +281,7 @@ static void mapif_Auction_sendlist(int fd, int char_id, short count, short pages
 	WFIFOSET(fd,len);
 }
 
-static void mapif_parse_Auction_requestlist(int fd)
+void mapif_parse_Auction_requestlist(int fd)
 {
 	char searchtext[NAME_LENGTH];
 	int char_id = RFIFOL(fd,4), len = sizeof(struct auction_data);
@@ -293,7 +294,7 @@ static void mapif_parse_Auction_requestlist(int fd)
 
 	memcpy(searchtext, RFIFOP(fd,16), NAME_LENGTH);
 
-	for( auction = dbi_first(iter); dbi_exists(iter); auction = dbi_next(iter) )
+	for( auction = static_cast<auction_data *>(dbi_first(iter)); dbi_exists(iter); auction = static_cast<auction_data *>(dbi_next(iter)) )
 	{
 		if( (type == 0 && auction->type != IT_ARMOR && auction->type != IT_PETARMOR) ||
 			(type == 1 && auction->type != IT_WEAPON) ||
@@ -323,7 +324,7 @@ static void mapif_parse_Auction_requestlist(int fd)
 	mapif_Auction_sendlist(fd, char_id, j, pages, buf);
 }
 
-static void mapif_Auction_register(int fd, struct auction_data *auction)
+void mapif_Auction_register(int fd, struct auction_data *auction)
 {
 	int len = sizeof(struct auction_data) + 4;
 
@@ -334,7 +335,7 @@ static void mapif_Auction_register(int fd, struct auction_data *auction)
 	WFIFOSET(fd,len);
 }
 
-static void mapif_parse_Auction_register(int fd)
+void mapif_parse_Auction_register(int fd)
 {
 	struct auction_data auction;
 	if( RFIFOW(fd,2) != sizeof(struct auction_data) + 4 )
@@ -347,7 +348,7 @@ static void mapif_parse_Auction_register(int fd)
 	mapif_Auction_register(fd, &auction);
 }
 
-static void mapif_Auction_cancel(int fd, int char_id, unsigned char result)
+void mapif_Auction_cancel(int fd, int char_id, unsigned char result)
 {
 	WFIFOHEAD(fd,7);
 	WFIFOW(fd,0) = 0x3852;
@@ -356,7 +357,7 @@ static void mapif_Auction_cancel(int fd, int char_id, unsigned char result)
 	WFIFOSET(fd,7);
 }
 
-static void mapif_parse_Auction_cancel(int fd)
+void mapif_parse_Auction_cancel(int fd)
 {
 	int char_id = RFIFOL(fd,2), auction_id = RFIFOL(fd,6);
 	struct auction_data *auction;
@@ -385,7 +386,7 @@ static void mapif_parse_Auction_cancel(int fd)
 	mapif_Auction_cancel(fd, char_id, 0); // The auction has been canceled
 }
 
-static void mapif_Auction_close(int fd, int char_id, unsigned char result)
+void mapif_Auction_close(int fd, int char_id, unsigned char result)
 {
 	WFIFOHEAD(fd,7);
 	WFIFOW(fd,0) = 0x3853;
@@ -394,7 +395,7 @@ static void mapif_Auction_close(int fd, int char_id, unsigned char result)
 	WFIFOSET(fd,7);
 }
 
-static void mapif_parse_Auction_close(int fd)
+void mapif_parse_Auction_close(int fd)
 {
 	int char_id = RFIFOL(fd,2), auction_id = RFIFOL(fd,6);
 	struct auction_data *auction;
@@ -427,7 +428,7 @@ static void mapif_parse_Auction_close(int fd)
 	mapif_Auction_close(fd, char_id, 0); // You have ended the auction
 }
 
-static void mapif_Auction_bid(int fd, int char_id, int bid, unsigned char result)
+void mapif_Auction_bid(int fd, int char_id, int bid, unsigned char result)
 {
 	WFIFOHEAD(fd,11);
 	WFIFOW(fd,0) = 0x3855;
@@ -437,7 +438,7 @@ static void mapif_Auction_bid(int fd, int char_id, int bid, unsigned char result
 	WFIFOSET(fd,11);
 }
 
-static void mapif_parse_Auction_bid(int fd)
+void mapif_parse_Auction_bid(int fd)
 {
 	int char_id = RFIFOL(fd,4), bid = RFIFOL(fd,12);
 	unsigned int auction_id = RFIFOL(fd,8);

@@ -7,11 +7,12 @@
 //#define DEBUG_HASH
 //#define DEBUG_DUMP_STACK
 
+#include "script.h"
+
 #ifdef PCRE_SUPPORT
 #include "../../3rdparty/pcre/include/pcre.h" // preg_match
 #endif
 
-#include "../common/cbasetypes.h"
 #include "../common/malloc.h"
 #include "../common/md5calc.h"
 #include "../common/nullpo.h"
@@ -45,7 +46,6 @@
 #include "battleground.h"
 #include "party.h"
 #include "mail.h"
-#include "script.h"
 #include "quest.h"
 #include "elemental.h"
 
@@ -273,9 +273,9 @@ extern script_function buildin_func[];
  * MySQL Query Slave
  **/
 static SPIN_LOCK queryThreadLock;
-static rAthread queryThread = NULL;
-static ramutex	queryThreadMutex = NULL;
-static racond	queryThreadCond = NULL;
+static prAthread queryThread = NULL;
+static pramutex	queryThreadMutex = NULL;
+static pracond	queryThreadCond = NULL;
 static volatile int32 queryThreadTerminate = 0;
 
 struct queryThreadEntry {
@@ -846,7 +846,7 @@ const char* skip_space(const char* p)
 			for(;;)
 			{
 				if( *p == '\0' ) {
-					disp_warning_message("script:script->skip_space: end of file while parsing block comment. expected "CL_BOLD"*/"CL_NORM, p);
+					disp_warning_message("script:script->skip_space: end of file while parsing block comment. expected " CL_BOLD "*/"CL_NORM, p);
 					return p;
 				}
 				if( *p == '*' && p[1] == '/' )
@@ -2254,13 +2254,13 @@ static void read_constdb(void)
 		}
 		else {
 			skipped++;
-			ShowWarning("Skipping line '"CL_WHITE"%d"CL_RESET"', invalide constant definition\n",linenum);
+			ShowWarning("Skipping line '" CL_WHITE "%d" CL_RESET "', invalide constant definition\n",linenum);
 		}
 	}
 	fclose(fp);
-	ShowStatus("Done reading '"CL_WHITE"%d"CL_RESET"' entries in '"CL_WHITE"%s/const.txt"CL_RESET"'.\n", entries, db_path);
+	ShowStatus("Done reading '" CL_WHITE "%d" CL_RESET "' entries in '" CL_WHITE "%s/const.txt" CL_RESET "'.\n", entries, db_path);
 	if(skipped){
-		ShowWarning("Skipped '"CL_WHITE"%d"CL_RESET"', entries\n",skipped);
+		ShowWarning("Skipped '" CL_WHITE "%d" CL_RESET "', entries\n",skipped);
 	}
 }
 
@@ -9963,7 +9963,7 @@ BUILDIN_FUNC(clone)
 	TBL_PC *sd, *msd=NULL;
 	uint32 char_id;
 	int master_id=0,x,y, flag = 0, m;
-	enum e_mode mode = 0;
+	enum e_mode mode = (e_mode) 0;
 	unsigned int duration = 0;
 	const char *mapname,*event;
 

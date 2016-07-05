@@ -4,7 +4,13 @@
 #ifndef _SHOWMSG_H_
 #define _SHOWMSG_H_
 
+
 #include "../../3rdparty/libconfig/libconfig.h"
+#include "cbasetypes.h"
+
+#ifdef	__cplusplus
+extern "C" {
+#endif
 
 // for help with the console colors look here:
 // http://www.edoceo.com/liberum/?doc=printf-with-color
@@ -85,16 +91,20 @@ enum msg_type {
 	MSG_FATALERROR
 };
 
-extern void ClearScreen(void);
-extern void ShowMessage(const char *, ...);
-extern void ShowStatus(const char *, ...);
-extern void ShowSQL(const char *, ...);
-extern void ShowInfo(const char *, ...);
-extern void ShowNotice(const char *, ...);
-extern void ShowWarning(const char *, ...);
-extern void ShowDebug(const char *, ...);
-extern void ShowError(const char *, ...);
-extern void ShowFatalError(const char *, ...);
-extern void ShowConfigWarning(config_setting_t *config, const char *string, ...);
+void ClearScreen(void);
+void ShowMessage(const char *, ...);
+void ShowStatus(const char *, ...);
+void ShowSQL(const char *, ...);
+void ShowInfo(const char *, ...);
+void ShowNotice(const char *, ...);
+void ShowWarning(const char *, ...);
+void ShowDebug(const char *, ...);
+void ShowError(const char *, ...);
+void ShowFatalError(const char *, ...);
+void ShowConfigWarning(config_setting_t *config, const char *string, ...);
 
+#ifdef	__cplusplus
+}
+#endif
+    
 #endif /* _SHOWMSG_H_ */

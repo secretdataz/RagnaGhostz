@@ -1,6 +1,11 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "vending.h"
+
+#include <stdlib.h> // atoi
+#include <cstring>
+
 #include "../common/nullpo.h"
 #include "../common/malloc.h" // aMalloc, aFree
 #include "../common/showmsg.h" // ShowInfo
@@ -10,11 +15,10 @@
 #include "atcommand.h"
 #include "path.h"
 #include "chrif.h"
-#include "vending.h"
 #include "pc.h"
 #include "buyingstore.h" // struct s_autotrade_entry, struct s_autotrader
 
-#include <stdlib.h> // atoi
+
 
 static uint32 vending_nextid = 0; ///Vending_id counter
 static DBMap *vending_db; ///DB holder the vender : charid -> map_session_data
@@ -521,7 +525,7 @@ void vending_reopen( struct map_session_data* sd )
 			// Immediate save
 			chrif_save(sd, 3);
 
-			ShowInfo("Vending loaded for '"CL_WHITE"%s"CL_RESET"' with '"CL_WHITE"%d"CL_RESET"' items at "CL_WHITE"%s (%d,%d)"CL_RESET"\n",
+			ShowInfo("Vending loaded for '" CL_WHITE "%s" CL_RESET "' with '" CL_WHITE "%d" CL_RESET "' items at " CL_WHITE "%s (%d,%d)" CL_RESET "\n",
 				sd->status.name, count, mapindex_id2name(sd->mapindex), sd->bl.x, sd->bl.y);
 		}
 		aFree(data);
@@ -534,7 +538,7 @@ void vending_reopen( struct map_session_data* sd )
 	}
 
 	if (fail != 0) {
-		ShowError("vending_reopen: (Error:%d) Load failed for autotrader '"CL_WHITE"%s"CL_RESET"' (CID=%d/AID=%d)\n", fail, sd->status.name, sd->status.char_id, sd->status.account_id);
+		ShowError("vending_reopen: (Error:%d) Load failed for autotrader '" CL_WHITE "%s" CL_RESET "' (CID=%d/AID=%d)\n", fail, sd->status.name, sd->status.char_id, sd->status.account_id);
 		map_quit(sd);
 	}
 }
@@ -635,7 +639,7 @@ void do_init_vending_autotrade(void)
 			}
 			dbi_destroy(iter);
 
-			ShowStatus("Done loading '"CL_WHITE"%d"CL_RESET"' vending autotraders with '"CL_WHITE"%d"CL_RESET"' items.\n", db_size(vending_autotrader_db), items);
+			ShowStatus("Done loading '" CL_WHITE "%d" CL_RESET "' vending autotraders with '" CL_WHITE "%d" CL_RESET "' items.\n", db_size(vending_autotrader_db), items);
 		}
 	}
 

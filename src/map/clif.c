@@ -1,7 +1,9 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "../common/cbasetypes.h"
+
+#include "clif.h"
+
 #include "../common/socket.h"
 #include "../common/timer.h"
 #include "../common/grfio.h"
@@ -40,7 +42,6 @@
 #include "mercenary.h"
 #include "elemental.h"
 #include "log.h"
-#include "clif.h"
 #include "mail.h"
 #include "quest.h"
 #include "cashshop.h"
@@ -66,7 +67,7 @@ struct Clif_Config {
 struct s_packet_db packet_db[MAX_PACKET_VER + 1][MAX_PACKET_DB + 1];
 int packet_db_ack[MAX_PACKET_VER + 1][MAX_ACK_FUNC + 1];
 #ifdef PACKET_OBFUSCATION
-static struct s_packet_keys *packet_keys[MAX_PACKET_VER + 1];
+static struct s_packet_keys* packet_keys[MAX_PACKET_VER + 1];
 static unsigned int clif_cryptKey[3]; // Used keys
 #endif
 static unsigned short clif_parse_cmd(int fd, struct map_session_data *sd);
@@ -213,7 +214,7 @@ int clif_setip(const char* ip) {
 	}
 
 	safestrncpy(map_ip_str, ip, sizeof(map_ip_str));
-	ShowInfo("Map Server IP Address : '"CL_WHITE"%s"CL_RESET"' -> '"CL_WHITE"%s"CL_RESET"'.\n", ip, ip2str(map_ip, ip_str));
+	ShowInfo("Map Server IP Address : '" CL_WHITE "%s" CL_RESET "' -> '" CL_WHITE "%s" CL_RESET "'.\n", ip, ip2str(map_ip, ip_str));
 	return 1;
 }
 
@@ -222,7 +223,7 @@ void clif_setbindip(const char* ip)
 	bind_ip = host2ip(ip);
 	if (bind_ip) {
 		char ip_str[16];
-		ShowInfo("Map Server Bind IP Address : '"CL_WHITE"%s"CL_RESET"' -> '"CL_WHITE"%s"CL_RESET"'.\n", ip, ip2str(bind_ip, ip_str));
+		ShowInfo("Map Server Bind IP Address : '" CL_WHITE "%s" CL_RESET "' -> '" CL_WHITE "%s" CL_RESET "'.\n", ip, ip2str(bind_ip, ip_str));
 	} else {
 		ShowWarning("Failed to Resolve Map Server Address! (%s)\n", ip);
 	}
@@ -10014,7 +10015,7 @@ void clif_parse_WantToConnection(int fd, struct map_session_data* sd)
 	    (packet_ver > 9 && packet_ver <40 && (battle_config.packet_ver_flag & 1<<(packet_ver-9)) == 0) || // version not allowed
 	    (packet_ver >= 40 && packet_ver <=72 && (battle_config.packet_ver_flag2 & 1<<(packet_ver-40)) == 0)		)
 	{// packet version rejected
-		ShowInfo("Rejected connection attempt, forbidden packet version (AID/CID: '"CL_WHITE"%d/%d"CL_RESET"', Packet Ver: '"CL_WHITE"%d"CL_RESET"', IP: '"CL_WHITE"%s"CL_RESET"').\n", account_id, char_id, packet_ver, ip2str(session[fd]->client_addr, NULL));
+		ShowInfo("Rejected connection attempt, forbidden packet version (AID/CID: '" CL_WHITE "%d/%d" CL_RESET "', Packet Ver: '" CL_WHITE "%d" CL_RESET "', IP: '" CL_WHITE "%s" CL_RESET "').\n", account_id, char_id, packet_ver, ip2str(session[fd]->client_addr, NULL));
 		WFIFOHEAD(fd,packet_len(0x6a));
 		WFIFOW(fd,0) = 0x6a;
 		WFIFOB(fd,2) = 5; // Your Game's EXE file is not the latest version
@@ -18846,11 +18847,11 @@ static int clif_parse(int fd)
 				//Disassociate character from the socket connection.
 				session[fd]->session_data = NULL;
 				sd->fd = 0;
-				ShowInfo("Character '"CL_WHITE"%s"CL_RESET"' logged off (using @autotrade).\n", sd->status.name);
+				ShowInfo("Character '" CL_WHITE "%s" CL_RESET "' logged off (using @autotrade).\n", sd->status.name);
 			} else
 			if (sd->state.active) {
 				// Player logout display [Valaris]
-				ShowInfo("Character '"CL_WHITE"%s"CL_RESET"' logged off.\n", sd->status.name);
+				ShowInfo("Character '" CL_WHITE "%s" CL_RESET "' logged off.\n", sd->status.name);
 				clif_quitsave(fd, sd);
 			} else {
 				//Unusual logout (during log on/off/map-changer procedure)
@@ -18858,7 +18859,7 @@ static int clif_parse(int fd)
 				map_quit(sd);
 			}
 		} else {
-			ShowInfo("Closed connection from '"CL_WHITE"%s"CL_RESET"'.\n", ip2str(session[fd]->client_addr, NULL));
+			ShowInfo("Closed connection from '" CL_WHITE "%s" CL_RESET "'.\n", ip2str(session[fd]->client_addr, NULL));
 		}
 		do_close(fd);
 		return 0;
@@ -19569,7 +19570,7 @@ void packetdb_readdb(bool reload)
 					trim(w2);
 					if (sscanf(w2, "%11[^,],%11[^,],%11[^ \r\n/]", key1, key2, key3) == 3) {
 						if (!packet_keys[packet_ver])
-							CREATE(packet_keys[packet_ver], struct s_packet_keys, 1);
+							CREATE(packet_keys[packet_ver], s_packet_keys, 1);
 						packet_keys[packet_ver]->keys[0] = strtol(key1, NULL, 0);
 						packet_keys[packet_ver]->keys[1] = strtol(key2, NULL, 0);
 						packet_keys[packet_ver]->keys[2] = strtol(key3, NULL, 0);
@@ -19679,9 +19680,9 @@ void packetdb_readdb(bool reload)
 			clif_config.packet_db_ver = j?j:MAX_PACKET_VER;
 		}
 		sprintf(line, "%s/%s", db_path,filename[f]);
-		ShowStatus("Done reading '"CL_WHITE"%d"CL_RESET"' entries in '"CL_WHITE"%s"CL_RESET"'.\n", entries, line);
+		ShowStatus("Done reading '" CL_WHITE "%d" CL_RESET "' entries in '" CL_WHITE "%s" CL_RESET "'.\n", entries, line);
 	}
-	ShowStatus("Using default packet version: "CL_WHITE"%d"CL_RESET".\n", clif_config.packet_db_ver);
+	ShowStatus("Using default packet version: " CL_WHITE "%d" CL_RESET ".\n", clif_config.packet_db_ver);
 
 #ifdef PACKET_OBFUSCATION
 	if (!key_defined && !clif_cryptKey[0] && !clif_cryptKey[1] && !clif_cryptKey[2]) { // Not defined
@@ -19697,7 +19698,7 @@ void packetdb_readdb(bool reload)
 			memcpy(&clif_cryptKey, &packet_keys[use_key]->keys, sizeof(packet_keys[use_key]->keys));
 		}
 	}
-	ShowStatus("Packet Obfuscation: "CL_GREEN"Enabled"CL_RESET". Keys: "CL_WHITE"0x%08X, 0x%08X, 0x%08X"CL_RESET"\n", clif_cryptKey[0], clif_cryptKey[1], clif_cryptKey[2]);
+	ShowStatus("Packet Obfuscation: " CL_GREEN "Enabled" CL_RESET ". Keys: " CL_WHITE "0x%08X, 0x%08X, 0x%08X" CL_RESET "\n", clif_cryptKey[0], clif_cryptKey[1], clif_cryptKey[2]);
 
 	for (i = 0; i < ARRAYLENGTH(packet_keys); i++) {
 		if (packet_keys[i]) {
@@ -19739,7 +19740,7 @@ void do_init_clif(void) {
 
 	set_defaultparse(clif_parse);
 	if( make_listen_bind(bind_ip,map_port) == -1 ) {
-		ShowFatalError("Failed to bind to port '"CL_WHITE"%d"CL_RESET"'\n",map_port);
+		ShowFatalError("Failed to bind to port '" CL_WHITE "%d" CL_RESET "'\n",map_port);
 		exit(EXIT_FAILURE);
 	}
 

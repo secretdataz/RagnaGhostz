@@ -5,6 +5,11 @@
 #define _MAPINDEX_H_
 
 #include "../config/renewal.h"
+#include "../config/core.h"
+
+#ifdef	__cplusplus
+extern "C" {
+#endif
 
 #define MAX_MAPINDEX 2000
 
@@ -68,4 +73,8 @@ void mapindex_check_mapdefault(const char *mapname);
 void mapindex_init(void);
 void mapindex_final(void);
 
+#ifdef	__cplusplus
+}
+#endif
+    
 #endif /* _MAPINDEX_H_ */

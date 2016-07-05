@@ -4,6 +4,7 @@
 #ifndef _INTIF_H_
 #define _INTIF_H_
 
+#include "../common/cbasetypes.h"
 //#include "../common/mmo.h"
 struct party_member;
 struct guild_member;

@@ -1,6 +1,11 @@
 // Copyright (c) rAthena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "channel.h"
+
+#include <stdlib.h>
+#include <cstring>
+
 #include "../common/cbasetypes.h"
 #include "../common/malloc.h"
 #include "../common/conf.h" //libconfig
@@ -10,9 +15,6 @@
 
 #include "map.h" //msg_conf
 #include "clif.h" //clif_chsys_msg
-#include "channel.h"
-
-#include <stdlib.h>
 
 static DBMap* channel_db; // channels
 
@@ -42,7 +44,7 @@ struct Channel* channel_create(char *name, char *pass, unsigned char color, enum
 
 	CREATE( channel, struct Channel, 1 ); //will exit on fail allocation
 	channel->users = idb_alloc(DB_OPT_BASE);
-	channel->banned = idb_alloc(DB_OPT_BASE|DB_OPT_RELEASE_DATA);
+	channel->banned = idb_alloc((DBOptions) (DB_OPT_BASE|DB_OPT_RELEASE_DATA) );
 	channel->opt = CHAN_OPT_BASE;
 	channel->type = chantype;
 	channel->color = color;
@@ -964,7 +966,7 @@ int channel_pcsetopt(struct map_session_data *sd, char *chname, const char *opti
 			clif_displaymessage(sd->fd, output);
 			return -1;
 		} else {
-			channel->opt |= k;
+			channel->opt = (Channel_Opt) (channel->opt|k);
 			sprintf(output, msg_txt(sd,1450), opt_str[k],channel->name);// Option '%s' is enabled for channel '#%s'.
 			clif_displaymessage(sd->fd, output);
 		}
@@ -977,12 +979,12 @@ int channel_pcsetopt(struct map_session_data *sd, char *chname, const char *opti
 				return -1;
 			}
 			if( v == 0 ) {
-				channel->opt &=~ k;
+				channel->opt = (Channel_Opt) (channel->opt & ~k);
 				channel->msg_delay = 0;
 				sprintf(output, msg_txt(sd,1453), opt_str[k],channel->name,v);// Option '%s' is disabled for channel '#%s'.
 				clif_displaymessage(sd->fd, output);
 			} else {
-				channel->opt |= k;
+				channel->opt = (Channel_Opt) (channel->opt | k);
 				channel->msg_delay = v;
 				sprintf(output, msg_txt(sd,1452), opt_str[k],channel->name,v);// Option '%s' is enabled for channel '#%s' at %d seconds.
 				clif_displaymessage(sd->fd, output);
@@ -994,7 +996,7 @@ int channel_pcsetopt(struct map_session_data *sd, char *chname, const char *opti
 					clif_displaymessage(sd->fd, output);
 					return -1;
 				} else {
-					channel->opt |= k;
+					channel->opt = (Channel_Opt) (channel->opt|k);
 					sprintf(output, msg_txt(sd,1450), opt_str[k],channel->name);// Option '%s' is enabled for channel '#%s'.
 					clif_displaymessage(sd->fd, output);
 				}
@@ -1004,7 +1006,7 @@ int channel_pcsetopt(struct map_session_data *sd, char *chname, const char *opti
 					clif_displaymessage(sd->fd, output);
 					return -1;
 				} else {
-					channel->opt &=~ k;
+					channel->opt = (Channel_Opt) (channel->opt & ~k);
 					sprintf(output, msg_txt(sd,1453), opt_str[k],channel->name);// Option '%s' is disabled for channel '#%s'.
 					clif_displaymessage(sd->fd, output);
 				}
@@ -1133,7 +1135,7 @@ void channel_read_config(void) {
 			}
 		}
 
-		ShowStatus("Done reading '"CL_WHITE"%d"CL_RESET"' channels in '"CL_WHITE"%s"CL_RESET"'.\n", db_size(channel_db), config_filename);
+		ShowStatus("Done reading '" CL_WHITE "%d" CL_RESET "' channels in '" CL_WHITE "%s" CL_RESET "'.\n", db_size(channel_db), config_filename);
 		config_destroy(&channels_conf);
 	}
 }
@@ -1144,7 +1146,7 @@ void channel_read_config(void) {
  *  0 : success
  */
 void do_init_channel(void) {
-	channel_db = stridb_alloc(DB_OPT_DUP_KEY|DB_OPT_RELEASE_DATA, CHAN_NAME_LENGTH);
+	channel_db = stridb_alloc((DBOptions) (DB_OPT_DUP_KEY|DB_OPT_RELEASE_DATA), CHAN_NAME_LENGTH);
 	channel_config.ally_enable = channel_config.map_enable = channel_config.ally_autojoin = channel_config.map_autojoin = false;
 	channel_read_config();
 }

@@ -7,14 +7,18 @@
  * @author rAthena Dev Team
  */
 
+#include "account.h"
+
+#include <stdlib.h>
+#include <cstring>
+
+
 #include "../common/malloc.h"
 #include "../common/mmo.h"
 #include "../common/showmsg.h"
 #include "../common/socket.h"
 #include "../common/sql.h"
 #include "../common/strlib.h"
-#include "account.h"
-#include <stdlib.h>
 
 /// global defines
 #define ACCOUNT_SQL_DB_VERSION 20140928

@@ -17,6 +17,7 @@
 //	65536 (inter server connects may use it for charstatus struct..)  
 //
 
+#include "netbuffer.h"
 
 ///
 // Implementation:

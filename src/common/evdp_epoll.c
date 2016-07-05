@@ -8,6 +8,7 @@
 //
 //
 
+#include "evdp.h"
 
 #define EPOLL_MAX_PER_CYCLE 10	// Max Events to coalesc. per cycle. 
 

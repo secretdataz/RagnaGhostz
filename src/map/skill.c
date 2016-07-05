@@ -1,7 +1,8 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "../common/cbasetypes.h"
+#include "skill.h"
+
 #include "../common/timer.h"
 #include "../common/nullpo.h"
 #include "../common/malloc.h"
@@ -16,7 +17,7 @@
 #include "clif.h"
 #include "pc.h"
 #include "status.h"
-#include "skill.h"
+
 #include "pet.h"
 #include "homunculus.h"
 #include "mercenary.h"
@@ -12002,7 +12003,7 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 		}
 		skill_clear_unitgroup(src); // To remove previous skills - cannot used combined
 		if( (sg = skill_unitsetting(src,skill_id,skill_lv,src->x,src->y,0)) != NULL ) {
-			sc_start2(src,src,skill_id == NC_NEUTRALBARRIER ? SC_NEUTRALBARRIER_MASTER : SC_STEALTHFIELD_MASTER,100,skill_lv,sg->group_id,skill_get_time(skill_id,skill_lv));
+			sc_start2(src,src,(skill_id == NC_NEUTRALBARRIER) ? SC_NEUTRALBARRIER_MASTER : SC_STEALTHFIELD_MASTER,100,skill_lv,sg->group_id,skill_get_time(skill_id,skill_lv));
 			if( sd ) pc_overheat(sd,1);
 		}
 		break;
@@ -15796,11 +15797,11 @@ void skill_consume_requirement(struct map_session_data *sd, uint16 skill_id, uin
 			pc_delspiritball(sd,sd->spiritball,0);
 		}
 
-		if(require.zeny > 0)
+		if(require.zeny > 0 && sd->status.zeny>0)
 		{
 			if( skill_id == NJ_ZENYNAGE )
 				require.zeny = 0; //Zeny is reduced on skill_attack.
-			if( sd->status.zeny < require.zeny )
+			if( static_cast<size_t>(sd->status.zeny) < require.zeny )
 				require.zeny = sd->status.zeny;
 			pc_payzeny(sd,require.zeny,LOG_TYPE_CONSUME,NULL);
 		}
@@ -21273,7 +21274,7 @@ static void skill_readdb(void)
 	int i;
 	const char* dbsubpath[] = {
 		"",
-		"/"DBIMPORT,
+		"/" DBIMPORT,
 		//add other path here
 	};
 	

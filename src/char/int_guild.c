@@ -1,6 +1,12 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "int_guild.h"
+
+#include <stdlib.h>
+#define __STDC_WANT_LIB_EXT1__ 1
+#include <string.h>
+
 #include "../common/cbasetypes.h"
 #include "../common/mmo.h"
 #include "../common/malloc.h"
@@ -11,9 +17,6 @@
 #include "char.h"
 #include "char_mapif.h"
 #include "inter.h"
-#include "int_guild.h"
-
-#include <stdlib.h>
 
 #define GS_MEMBER_UNMODIFIED 0x00
 #define GS_MEMBER_MODIFIED 0x01
@@ -43,7 +46,7 @@ int mapif_guild_info(int fd,struct guild *g);
 int guild_break_sub(int key,void *data,va_list ap);
 int inter_guild_tosql(struct guild *g,int flag);
 
-static int guild_save_timer(int tid, unsigned int tick, int id, intptr_t data)
+int guild_save_timer(int tid, unsigned int tick, int id, intptr_t data)
 {
 	static int last_id = 0; //To know in which guild we were.
 	int state = 0; //0: Have not reached last guild. 1: Reached last guild, ready for save. 2: Some guild saved, don't do further saving.
@@ -122,7 +125,7 @@ int inter_guild_tosql(struct guild *g,int flag)
 	if (g->guild_id<=0 && g->guild_id != -1) return 0;
 
 #ifdef NOISY
-	ShowInfo("Save guild request ("CL_BOLD"%d"CL_RESET" - flag 0x%x).",g->guild_id, flag);
+	ShowInfo("Save guild request (" CL_BOLD "%d" CL_RESET " - flag 0x%x).",g->guild_id, flag);
 #endif
 
 	Sql_EscapeStringLen(sql_handle, esc_name, g->name, strnlen(g->name, NAME_LENGTH));
@@ -214,7 +217,7 @@ int inter_guild_tosql(struct guild *g,int flag)
 				StringBuf_AppendStr(&buf, ", ");
 			//else	//last condition using add_coma setting
 			//	add_comma = true;
-			StringBuf_Printf(&buf, "`guild_lv`=%d, `skill_point`=%d, `exp`=%"PRIu64", `next_exp`=%u, `max_member`=%d", g->guild_lv, g->skill_point, g->exp, g->next_exp, g->max_member);
+			StringBuf_Printf(&buf, "`guild_lv`=%d, `skill_point`=%d, `exp`=%zu, `next_exp`=%u, `max_member`=%d", g->guild_lv, g->skill_point, g->exp, g->next_exp, g->max_member);
 		}
 		StringBuf_Printf(&buf, " WHERE `guild_id`=%d", g->guild_id);
 		if( SQL_ERROR == Sql_Query(sql_handle, "%s", StringBuf_Value(&buf)) )
@@ -234,7 +237,7 @@ int inter_guild_tosql(struct guild *g,int flag)
 				//Since nothing references guild member table as foreign keys, it's safe to use REPLACE INTO
 				Sql_EscapeStringLen(sql_handle, esc_name, m->name, strnlen(m->name, NAME_LENGTH));
 				if( SQL_ERROR == Sql_Query(sql_handle, "REPLACE INTO `%s` (`guild_id`,`account_id`,`char_id`,`hair`,`hair_color`,`gender`,`class`,`lv`,`exp`,`exp_payper`,`online`,`position`,`name`) "
-					"VALUES ('%d','%d','%d','%d','%d','%d','%d','%d','%"PRIu64"','%d','%d','%d','%s')",
+					"VALUES ('%d','%d','%d','%d','%d','%d','%d','%d','%llu','%d','%d','%d','%s')",
 					schema_config.guild_member_db, g->guild_id, m->account_id, m->char_id,
 					m->hair, m->hair_color, m->gender,
 					m->class_, m->lv, m->exp, m->exp_payper, m->online, m->position, esc_name) )
@@ -593,7 +596,7 @@ static struct guild_castle* inter_guildcastle_fromsql(int castle_id)
 
 
 // Read exp_guild.txt
-static bool exp_guild_parse_row(char* split[], int column, int current)
+bool exp_guild_parse_row(char* split[], int column, int current)
 {
 	unsigned int exp = (unsigned int)atol(split[0]);
 
@@ -734,7 +737,7 @@ int inter_guild_sql_init(void)
 /**
  * @see DBApply
  */
-static int guild_db_final(DBKey key, DBData *data, va_list ap)
+int guild_db_final(DBKey key, DBData *data, va_list ap)
 {
 	struct guild *g = (struct guild*)db_data2ptr(data);
 	if (g->save_flag&GS_MASK) {
@@ -781,7 +784,7 @@ int search_guildname(char *str)
 }
 
 // Check if guild is empty
-static bool guild_check_empty(struct guild *g)
+bool guild_check_empty(struct guild *g)
 {
 	int i;
 	ARR_FIND( 0, g->max_member, i, g->member[i].account_id > 0 );
@@ -1641,7 +1644,7 @@ int mapif_parse_GuildSkillUp(int fd,int guild_id,uint16 skill_id,uint32 account_
 }
 
 //Manual deletion of an alliance when partnering guild does not exists. [Skotlex]
-static int mapif_parse_GuildDeleteAlliance(struct guild *g, int guild_id, uint32 account_id1, uint32 account_id2, int flag)
+int mapif_parse_GuildDeleteAlliance(struct guild *g, int guild_id, uint32 account_id1, uint32 account_id2, int flag)
 {
 	int i;
 	char name[NAME_LENGTH];

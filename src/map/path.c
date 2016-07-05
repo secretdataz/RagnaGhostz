@@ -1,7 +1,14 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "../common/cbasetypes.h"
+#include "path.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <cstring>
+#include <cmath>
+#include <math.h>
+
 #include "../common/db.h"
 #include "../common/malloc.h"
 #include "../common/nullpo.h"
@@ -9,12 +16,6 @@
 #include "../common/showmsg.h"
 #include "map.h"
 #include "battle.h"
-#include "path.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
 
 #define SET_OPEN 0
 #define SET_CLOSED 1
@@ -54,7 +55,7 @@ static BHEAP_STRUCT_VAR(node_heap, g_open_set);	// use static heap for all path 
 /// @}
 
 // Translates dx,dy into walking direction
-static const unsigned char walk_choices [3][3] =
+static const char walk_choices [3][3] =
 {
 	{DIR_NORTHWEST,DIR_NORTH,DIR_NORTHEAST},
 	{DIR_WEST,DIR_CENTER,DIR_EAST},
@@ -200,7 +201,7 @@ bool path_search_long(struct shootpath_data *spd,int16 m,int16 x0,int16 y0,int16
 static void heap_push_node(struct node_heap *heap, struct path_node *node)
 {
 #ifndef __clang_analyzer__ // TODO: Figure out why clang's static analyzer doesn't like this
-	BHEAP_ENSURE(*heap, 1, 256);
+	BHEAP_ENSURE(*heap, 1, 256, struct path_node**);
 	BHEAP_PUSH2(*heap, node, NODE_MINTOPCMP, swap_ptr);
 #endif // __clang_analyzer__
 }
@@ -332,7 +333,7 @@ bool path_search(struct walkpath_data *wpd, int16 m, int16 x0, int16 y0, int16 x
 		struct path_node *current, *it;
 		int xs = md->xs - 1;
 		int ys = md->ys - 1;
-		int len = 0;
+		unsigned char len = 0;
 		int j;
 
 		// A* (A-star) pathfinding

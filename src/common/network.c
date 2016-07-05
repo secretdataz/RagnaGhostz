@@ -11,11 +11,14 @@
 #define _GNU_SOURCE
 //#endif
 
+#include "network.h"
 
 #define ENABLE_IPV6
 #define HAVE_ACCEPT4
 #define EVENTS_PER_CYCLE 10
 #define PARANOID_CHECKS
+
+#include "network.h"
 
 // Local Vars (settings..)
 static int l_ListenBacklog = 64;

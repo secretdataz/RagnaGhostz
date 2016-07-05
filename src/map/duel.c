@@ -2,15 +2,14 @@
 // For more information, see LICENCE in the main folder
 // Duel organizing functions [LuzZza]
 
-#include "../common/cbasetypes.h"
-
-#include "atcommand.h"  // msg_txt
-#include "clif.h"
 #include "duel.h"
-#include "pc.h"
 
 #include <stdio.h>
 #include <string.h>
+
+#include "atcommand.h"  // msg_txt
+#include "clif.h"
+#include "pc.h"
 
 //global var (extern)
 struct duel duel_list[MAX_DUEL]; //list of current duel
@@ -113,9 +112,9 @@ static void duel_set(const unsigned int did, struct map_session_data* sd) {
 /*
  * Create a new duel for sd
  */
-int duel_create(struct map_session_data* sd, const unsigned int maxpl)
+unsigned int duel_create(struct map_session_data* sd, const unsigned int maxpl)
 {
-	int i=1;
+	unsigned int i=1;
 	char output[256];
 
 	while(duel_list[i].members_count > 0 && i < MAX_DUEL) i++;

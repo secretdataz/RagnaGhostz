@@ -64,12 +64,12 @@ struct s_packet_db {
 	short pos[MAX_PACKET_POS];
 };
 
-#ifdef PACKET_OBFUSCATION
+//#ifdef PACKET_OBFUSCATION
 /// Keys based on packet versions
 struct s_packet_keys {
 	unsigned int keys[3]; ///< 3-Keys
 };
-#endif
+//#endif
 
 enum e_CASHSHOP_ACK {
 	ERROR_TYPE_NONE             = 0, ///< The deal has successfully completed.
@@ -170,8 +170,8 @@ extern struct s_packet_db packet_db[MAX_PACKET_VER+1][MAX_PACKET_DB+1];
 extern int packet_db_ack[MAX_PACKET_VER + 1][MAX_ACK_FUNC + 1];
 
 // local define
-typedef enum send_target {
-	ALL_CLIENT,
+enum send_target : unsigned char {
+	ALL_CLIENT = 0,
 	ALL_SAMEMAP,
 	AREA,				// area
 	AREA_WOS,			// area, without self
@@ -203,7 +203,7 @@ typedef enum send_target {
 	BG_SAMEMAP_WOS,
 	BG_AREA,
 	BG_AREA_WOS,
-} send_target;
+};
 
 typedef enum broadcast_flags {
 	BC_ALL			= 0,

@@ -1,13 +1,14 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "char.h"
+
 #include <time.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "../common/cbasetypes.h"
 #include "../common/core.h"
 #include "../common/db.h"
 #include "../common/malloc.h"
@@ -77,7 +78,7 @@ DBData char_create_online_data(DBKey key, va_list args){
 	struct online_char_data* character;
 	CREATE(character, struct online_char_data, 1);
 	character->account_id = key.i;
-	character->char_id = -1;
+	character->char_id = 0;
 	character->server = -1;
 	character->fd = -1;
 	character->waiting_disconnect = INVALID_TIMER;
@@ -115,7 +116,7 @@ void char_set_char_online(int map_id, uint32 char_id, uint32 account_id) {
 
 	//Check to see for online conflicts
 	character = (struct online_char_data*)idb_ensure(online_char_db, account_id, char_create_online_data);
-	if( character->char_id != -1 && character->server > -1 && character->server != map_id )
+	if( character->char_id && character->server > -1 && character->server != map_id )
 	{
 		ShowNotice("set_char_online: Character %d:%d marked in map server %d, but map server %d claims to have (%d:%d) online!\n",
 			character->account_id, character->char_id, character->server, map_id, account_id, char_id);
@@ -146,7 +147,7 @@ void char_set_char_online(int map_id, uint32 char_id, uint32 account_id) {
 void char_set_char_offline(uint32 char_id, uint32 account_id){
 	struct online_char_data* character;
 
-	if ( char_id == -1 )
+	if ( char_id == 0 )
 	{
 		if( SQL_ERROR == Sql_Query(sql_handle, "UPDATE `%s` SET `online`='0' WHERE `account_id`='%d'", schema_config.char_db, account_id) )
 			Sql_ShowDebug(sql_handle);
@@ -175,7 +176,7 @@ void char_set_char_offline(uint32 char_id, uint32 account_id){
 
 		if(character->char_id == char_id)
 		{
-			character->char_id = -1;
+			character->char_id = 0;
 			character->server = -1;
 			// needed if player disconnects completely since Skotlex did not want to free the session
 			character->pincode_success = false;
@@ -185,7 +186,7 @@ void char_set_char_offline(uint32 char_id, uint32 account_id){
 	}
 
 	//Remove char if 1- Set all offline, or 2- character is no longer connected to char-server.
-	if (char_id == -1 || character == NULL || character->fd == -1){
+	if (char_id == 0 || character == NULL || character->fd == -1){
 		chlogif_send_setaccoffline(login_fd,account_id);
 	}
 }
@@ -197,7 +198,7 @@ int char_db_setoffline(DBKey key, DBData *data, va_list ap) {
 	struct online_char_data* character = (struct online_char_data*)db_data2ptr(data);
 	int server = va_arg(ap, int);
 	if (server == -1) {
-		character->char_id = -1;
+		character->char_id = 0;
 		character->server = -1;
 		if(character->waiting_disconnect != INVALID_TIMER){
 			delete_timer(character->waiting_disconnect, char_chardb_waiting_disconnect);
@@ -211,7 +212,7 @@ int char_db_setoffline(DBKey key, DBData *data, va_list ap) {
 /**
  * @see DBApply
  */
-static int char_db_kickoffline(DBKey key, DBData *data, va_list ap){
+int char_db_kickoffline(DBKey key, DBData *data, va_list ap){
 	struct online_char_data* character = (struct online_char_data*)db_data2ptr(data);
 	int server_id = va_arg(ap, int);
 
@@ -255,7 +256,7 @@ void char_set_all_offline_sql(void){
 /**
  * @see DBCreateData
  */
-static DBData char_create_charstatus(DBKey key, va_list args) {
+DBData char_create_charstatus(DBKey key, va_list args) {
 	struct mmo_charstatus *cp;
 	cp = (struct mmo_charstatus *) aCalloc(1,sizeof(struct mmo_charstatus));
 	cp->char_id = key.i;
@@ -265,7 +266,7 @@ static DBData char_create_charstatus(DBKey key, va_list args) {
 int char_inventory_to_sql(const struct item items[], int max, int id);
 
 int char_mmo_char_tosql(uint32 char_id, struct mmo_charstatus* p){
-	int i = 0;
+	unsigned int i = 0;
 	int count = 0;
 	int diff = 0;
 	char save_status[128]; //For displaying save information. [Skotlex]
@@ -646,7 +647,7 @@ int char_memitemdata_to_sql(const struct item items[], int max, int id, int tabl
 				{
 					// update all fields.
 					StringBuf_Clear(&buf);
-					StringBuf_Printf(&buf, "UPDATE `%s` SET `amount`='%d', `equip`='%d', `identify`='%d', `refine`='%d',`attribute`='%d', `expire_time`='%u', `bound`='%d', `unique_id`='%"PRIu64"'",
+					StringBuf_Printf(&buf, "UPDATE `%s` SET `amount`='%d', `equip`='%d', `identify`='%d', `refine`='%d',`attribute`='%d', `expire_time`='%u', `bound`='%d', `unique_id`='%llu'",
 						tablename, items[i].amount, items[i].equip, items[i].identify, items[i].refine, items[i].attribute, items[i].expire_time, items[i].bound, items[i].unique_id);
 					for( j = 0; j < MAX_SLOTS; ++j )
 						StringBuf_Printf(&buf, ", `card%d`=%hu", j, items[i].card[j]);
@@ -703,7 +704,7 @@ int char_memitemdata_to_sql(const struct item items[], int max, int id, int tabl
 		else
 			found = true;
 
-		StringBuf_Printf(&buf, "('%d', '%hu', '%d', '%d', '%d', '%d', '%d', '%u', '%d', '%"PRIu64"'",
+		StringBuf_Printf(&buf, "('%d', '%hu', '%d', '%d', '%d', '%d', '%d', '%u', '%d', '%llu'",
 			id, items[i].nameid, items[i].amount, items[i].equip, items[i].identify, items[i].refine, items[i].attribute, items[i].expire_time, items[i].bound, items[i].unique_id);
 		for( j = 0; j < MAX_SLOTS; ++j )
 			StringBuf_Printf(&buf, ", '%hu'", items[i].card[j]);
@@ -819,7 +820,7 @@ int char_inventory_to_sql(const struct item items[], int max, int id) {
 				else {
 					// update all fields.
 					StringBuf_Clear(&buf);
-					StringBuf_Printf(&buf, "UPDATE `%s` SET `amount`='%d', `equip`='%d', `identify`='%d', `refine`='%d',`attribute`='%d', `expire_time`='%u', `favorite`='%d', `bound`='%d', `unique_id`='%"PRIu64"'",
+					StringBuf_Printf(&buf, "UPDATE `%s` SET `amount`='%d', `equip`='%d', `identify`='%d', `refine`='%d',`attribute`='%d', `expire_time`='%u', `favorite`='%d', `bound`='%d', `unique_id`='%llu'",
 					    schema_config.inventory_db, items[i].amount, items[i].equip, items[i].identify, items[i].refine, items[i].attribute, items[i].expire_time, items[i].favorite, items[i].bound, items[i].unique_id);
 					for( j = 0; j < MAX_SLOTS; ++j )
 						StringBuf_Printf(&buf, ", `card%d`=%hu", j, items[i].card[j]);
@@ -872,7 +873,7 @@ int char_inventory_to_sql(const struct item items[], int max, int id) {
 		else
 			found = true;
 
-		StringBuf_Printf(&buf, "('%d', '%hu', '%d', '%d', '%d', '%d', '%d', '%u', '%d', '%d', '%"PRIu64"'",
+		StringBuf_Printf(&buf, "('%d', '%hu', '%d', '%d', '%d', '%d', '%d', '%u', '%d', '%d', '%llu'",
 						 id, items[i].nameid, items[i].amount, items[i].equip, items[i].identify, items[i].refine, items[i].attribute, items[i].expire_time, items[i].favorite, items[i].bound, items[i].unique_id);
 		for( j = 0; j < MAX_SLOTS; ++j )
 			StringBuf_Printf(&buf, ", '%hu'", items[i].card[j]);
@@ -1610,7 +1611,7 @@ int char_make_new_char_sql(struct char_session_data* sd, char* name_, int str, i
 	//Retrieve the newly auto-generated char id
 	char_id = (int)Sql_LastInsertId(sql_handle);
 	//Give the char the default items
-	for (k = 0; k <= MAX_STARTITEM && tmp_start_items[k].nameid != 0; k++) {
+	for (k = 0; k < MAX_STARTITEM && tmp_start_items[k].nameid != 0; k++) {
 		if( SQL_ERROR == Sql_Query(sql_handle, "INSERT INTO `%s` (`char_id`,`nameid`, `amount`, `equip`, `identify`) VALUES ('%d', '%hu', '%hu', '%hu', '%d')", schema_config.inventory_db, char_id, tmp_start_items[k].nameid, tmp_start_items[k].amount, tmp_start_items[k].pos, 1) )
 			Sql_ShowDebug(sql_handle);
 	}
@@ -1817,9 +1818,9 @@ int char_delete_char_sql(uint32 char_id){
  * This function parse all map-serv attached to this char-serv and increase user count
  * @return numbers of total users
  */
-int char_count_users(void)
+unsigned int char_count_users(void)
 {
-	int i, users;
+	unsigned int i, users;
 
 	users = 0;
 	for(i = 0; i < ARRAYLENGTH(map_server); i++) {
@@ -2169,10 +2170,10 @@ int char_lan_subnetcheck(uint32 ip){
 	int i;
 	ARR_FIND( 0, subnet_count, i, (subnet[i].char_ip & subnet[i].mask) == (ip & subnet[i].mask) );
 	if( i < subnet_count ) {
-		ShowInfo("Subnet check [%u.%u.%u.%u]: Matches "CL_CYAN"%u.%u.%u.%u/%u.%u.%u.%u"CL_RESET"\n", CONVIP(ip), CONVIP(subnet[i].char_ip & subnet[i].mask), CONVIP(subnet[i].mask));
+		ShowInfo("Subnet check [%u.%u.%u.%u]: Matches " CL_CYAN "%u.%u.%u.%u/%u.%u.%u.%u" CL_RESET "\n", CONVIP(ip), CONVIP(subnet[i].char_ip & subnet[i].mask), CONVIP(subnet[i].mask));
 		return subnet[i].map_ip;
 	} else {
-		ShowInfo("Subnet check [%u.%u.%u.%u]: "CL_CYAN"WAN"CL_RESET"\n", CONVIP(ip));
+		ShowInfo("Subnet check [%u.%u.%u.%u]: " CL_CYAN "WAN" CL_RESET "\n", CONVIP(ip));
 		return 0;
 	}
 }
@@ -2249,7 +2250,7 @@ int char_chardb_waiting_disconnect(int tid, unsigned int tick, int id, intptr_t 
 /**
  * @see DBApply
  */
-static int char_online_data_cleanup_sub(DBKey key, DBData *data, va_list ap)
+int char_online_data_cleanup_sub(DBKey key, DBData *data, va_list ap)
 {
 	struct online_char_data *character= (struct online_char_data *)db_data2ptr(data);
 	if (character->fd != -1)
@@ -2262,7 +2263,7 @@ static int char_online_data_cleanup_sub(DBKey key, DBData *data, va_list ap)
 	return 0;
 }
 
-static int char_online_data_cleanup(int tid, unsigned int tick, int id, intptr_t data){
+int char_online_data_cleanup(int tid, unsigned int tick, int id, intptr_t data){
 	online_char_db->foreach(online_char_db, char_online_data_cleanup_sub);
 	return 0;
 }
@@ -2808,7 +2809,7 @@ void char_set_defaults(){
  * @param start: Start point reference
  * @param count: Start point count reference
  */
-static void char_config_split_startpoint(char *w1_value, char *w2_value, struct point start_point[MAX_STARTPOINT], short *count)
+void char_config_split_startpoint(char *w1_value, char *w2_value, struct point start_point[MAX_STARTPOINT], short *count)
 {
 	char *lineitem, **fields;
 	int i = 0, fields_length = 3 + 1;
@@ -2853,7 +2854,7 @@ static void char_config_split_startpoint(char *w1_value, char *w2_value, struct 
  * @param w2_value: Value from w2
  * @param start: Start item reference
  */
-static void char_config_split_startitem(char *w1_value, char *w2_value, struct startitem start_items[MAX_STARTITEM])
+void char_config_split_startitem(char *w1_value, char *w2_value, struct startitem start_items[MAX_STARTITEM])
 {
 	char *lineitem, **fields;
 	int i = 0, fields_length = 3 + 1;
@@ -3258,7 +3259,7 @@ int do_init(int argc, char **argv)
 	set_defaultparse(chclif_parse);
 
 	if( (char_fd = make_listen_bind(charserv_config.bind_ip,charserv_config.char_port)) == -1 ) {
-		ShowFatalError("Failed to bind to port '"CL_WHITE"%d"CL_RESET"'\n",charserv_config.char_port);
+		ShowFatalError("Failed to bind to port '" CL_WHITE "%d" CL_RESET "'\n",charserv_config.char_port);
 		exit(EXIT_FAILURE);
 	}
 
@@ -3270,9 +3271,9 @@ int do_init(int argc, char **argv)
 
 	do_init_chcnslif();
 	mapindex_check_mapdefault(charserv_config.default_map);
-	ShowInfo("Default map: '"CL_WHITE"%s %d,%d"CL_RESET"'\n", charserv_config.default_map, charserv_config.default_map_x, charserv_config.default_map_y);
+	ShowInfo("Default map: '" CL_WHITE "%s %d,%d" CL_RESET "'\n", charserv_config.default_map, charserv_config.default_map_x, charserv_config.default_map_y);
 
-	ShowStatus("The char-server is "CL_GREEN"ready"CL_RESET" (Server is listening on the port %d).\n\n", charserv_config.char_port);
+	ShowStatus("The char-server is " CL_GREEN "ready" CL_RESET " (Server is listening on the port %d).\n\n", charserv_config.char_port);
 
 	return 0;
 }

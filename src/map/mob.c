@@ -1,6 +1,12 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "mob.h"
+
+#include <stdlib.h>
+#include <math.h>
+#include <cstring>
+
 #include "../common/cbasetypes.h"
 #include "../common/timer.h"
 #include "../common/db.h"
@@ -24,9 +30,6 @@
 #include "elemental.h"
 #include "party.h"
 #include "quest.h"
-
-#include <stdlib.h>
-#include <math.h>
 
 #define ACTIVE_AI_RANGE 2	//Distance added on top of 'AREA_SIZE' at which mobs enter active AI mode.
 
@@ -57,7 +60,14 @@
 struct mob_db *mob_db_data[MAX_MOB_DB+1];
 struct mob_db *mob_dummy = NULL;	//Dummy mob to be returned when a non-existant one is requested.
 
-struct mob_db *mob_db(int mob_id) { if (mob_id < 0 || mob_id > MAX_MOB_DB || mob_db_data[mob_id] == NULL) return mob_dummy; return mob_db_data[mob_id]; }
+//TODO replace with something like mob_getmobID, or mob_lookupID
+// currently hiding ctor (not much an issue just use struct keyword to bypass this)_
+struct mob_db *mob_db(int mob_id)
+{ 
+    if (mob_id < 0 || mob_id > MAX_MOB_DB || mob_db_data[mob_id] == NULL) 
+        return mob_dummy; 
+    return mob_db_data[mob_id]; 
+}
 
 //Dynamic mob chat database
 struct mob_chat *mob_chat_db[MAX_MOB_CHAT+1];
@@ -496,7 +506,7 @@ struct mob_data *mob_once_spawn_sub(struct block_list *bl, int16 m, int16 x, int
 	data.num = 1;
 	data.id = mob_id;
 	data.state.size = size;
-	data.state.ai = ai;
+	data.state.ai =(mob_ai) ai;
 
 	if (mobname)
 		safestrncpy(data.name, mobname, sizeof(data.name));
@@ -1133,7 +1143,7 @@ static int mob_ai_sub_hard_activesearch(struct block_list *bl,va_list ap)
 	nullpo_ret(bl);
 	md=va_arg(ap,struct mob_data *);
 	target= va_arg(ap,struct block_list**);
-	mode= va_arg(ap,enum e_mode);
+	mode=(e_mode) va_arg(ap,int);
 
 	//If can't seek yet, not an enemy, or you can't attack it, skip.
 	if ((*target) == bl || !status_check_skilluse(&md->bl, bl, 0, 0))
@@ -3640,7 +3650,7 @@ int mob_clone_spawn(struct map_session_data *sd, int16 m, int16 x, int16 y, cons
 	if (mode) //User provided mode.
 		status->mode = mode;
 	else if (flag&1) //Friendly Character, remove looting.
-		status->mode &= ~MD_LOOTER;
+		status->mode = (e_mode)(status->mode & ~MD_LOOTER);
 	status->hp = status->max_hp;
 	status->sp = status->max_sp;
 	memcpy(&db->vd, &sd->vd, sizeof(struct view_data));
@@ -4000,9 +4010,9 @@ static bool mob_parse_dbrow(char** str)
 		return false;
 	}
 
-	status->mode = (int)strtol(str[25], NULL, 0);
+	status->mode = (e_mode)strtol(str[25], NULL, 0);
 	if (!battle_config.monster_active_enable)
-		status->mode &= ~MD_AGGRESSIVE;
+		status->mode = (e_mode)(status->mode & ~MD_AGGRESSIVE);
 
 	if (status_has_mode(status,MD_STATUS_IMMUNE|MD_KNOCKBACK_IMMUNE|MD_DETECTOR))
 		status->class_ = CLASS_BOSS;
@@ -4158,7 +4168,7 @@ static int mob_read_sqldb(void)
 		// free the query result
 		Sql_FreeResult(mmysql_handle);
 
-		ShowStatus("Done reading '"CL_WHITE"%lu"CL_RESET"' entries in '"CL_WHITE"%s"CL_RESET"'.\n", count, mob_db_name[fi]);
+		ShowStatus("Done reading '" CL_WHITE "%lu" CL_RESET "' entries in '" CL_WHITE "%s" CL_RESET "'.\n", count, mob_db_name[fi]);
 	}
 	return 0;
 }
@@ -4620,7 +4630,7 @@ static int mob_read_sqlskilldb(void)
 		// free the query result
 		Sql_FreeResult(mmysql_handle);
 
-		ShowStatus("Done reading '"CL_WHITE"%lu"CL_RESET"' entries in '"CL_WHITE"%s"CL_RESET"'.\n", count, mob_skill_db_name[fi]);
+		ShowStatus("Done reading '" CL_WHITE "%lu" CL_RESET "' entries in '" CL_WHITE "%s" CL_RESET "'.\n", count, mob_skill_db_name[fi]);
 	}
 	return 0;
 }
@@ -4978,7 +4988,7 @@ static void mob_load(void)
 	int i;
 	const char* dbsubpath[] = {
 		"",
-		"/"DBIMPORT,
+		"/" DBIMPORT,
 	};
 
 	// First we parse all the possible monsters to add additional data in the second loop

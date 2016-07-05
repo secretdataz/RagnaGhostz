@@ -4,8 +4,11 @@
 #ifndef _NULLPO_H_
 #define _NULLPO_H_
 
-
 #include "cbasetypes.h"
+
+#ifdef	__cplusplus
+extern "C" {
+#endif
 
 #define NLP_MARK __FILE__, __LINE__, __func__
 
@@ -13,6 +16,27 @@
 #if defined(DEBUG) && !defined(NULLPO_CHECK)
 #define NULLPO_CHECK
 #endif
+
+/*----------------------------------------------------------------------------
+ * Macros
+ *----------------------------------------------------------------------------
+ */
+/*======================================
+ * Null
+ *--------------------------------------
+ * nullpo_ret(t)
+ * 
+ *--------------------------------------
+ * nullpo_retv(t)
+ *   
+ *--------------------------------------
+ * nullpo_retr(ret, t)
+ *  
+ *--------------------------------------
+ * nullpo_ret_f(t, fmt, ...)
+ *  
+ *--------------------------------------
+ */
 
 #if defined(NULLPO_CHECK)
 
@@ -207,5 +231,9 @@ void nullpo_info(const char *file, int line, const char *func);
 void nullpo_info_f(const char *file, int line, const char *func, 
                    const char *fmt, ...)
                    __attribute__((format(printf,4,5)));
+
+#ifdef	__cplusplus
+}
+#endif
 
 #endif /* _NULLPO_H_ */

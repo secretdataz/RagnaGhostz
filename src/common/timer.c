@@ -1,21 +1,20 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "cbasetypes.h"
+#include "timer.h"
+
+#include <stdlib.h>
+#include <string.h>
+#ifdef WIN32
+#include "winapi.h" // GetTickCount()
+#else
+#endif
+
 #include "db.h"
 #include "malloc.h"
 #include "showmsg.h"
 #include "utils.h"
 #include "nullpo.h"
-#include "timer.h"
-
-#include <stdlib.h>
-#include <string.h>
-
-#ifdef WIN32
-#include "winapi.h" // GetTickCount()
-#else
-#endif
 
 // If the server can't handle processing thousands of monsters
 // or many connected clients, please increase TIMER_MIN_INTERVAL.
@@ -197,7 +196,7 @@ unsigned int gettick(void)
 /// Adds a timer to the timer_heap
 static void push_timer_heap(int tid)
 {
-	BHEAP_ENSURE(timer_heap, 1, 256);
+	BHEAP_ENSURE(timer_heap, 1, 256, int*);
 	BHEAP_PUSH(timer_heap, tid, DIFFTICK_MINTOPCMP, swap);
 }
 

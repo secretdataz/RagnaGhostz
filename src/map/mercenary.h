@@ -4,6 +4,7 @@
 #ifndef _MERCENARY_H_
 #define _MERCENARY_H_
 
+#include "../common/cbasetypes.h"
 #include "status.h" // struct status_data, struct status_change
 #include "unit.h" // struct unit_data
 

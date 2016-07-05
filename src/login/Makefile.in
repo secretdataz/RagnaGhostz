@@ -7,9 +7,13 @@ MT19937AR_OBJ = ../../3rdparty/mt19937ar/mt19937ar.o
 MT19937AR_H = ../../3rdparty/mt19937ar/mt19937ar.h
 MT19937AR_INCLUDE = -I../../3rdparty/mt19937ar
 
-LIBCONFIG_H = $(shell ls ../../3rdparty/libconfig/*.h)
-LIBCONFIG_AR = ../../3rdparty/libconfig/obj/libconfig.a
-LIBCONFIG_INCLUDE = -I../../3rdparty/libconfig
+#LIBCONFIG_H = $(shell ls ../../3rdparty/libconfig/*.h)
+#LIBCONFIG_AR = ../../3rdparty/libconfig/obj/libconfig.a
+#LIBCONFIG_INCLUDE = -I../../3rdparty/libconfig
+
+LIBCONFIG_H = /usr/include/libconfig.h++
+LIBCONFIG_SO = /usr/lib64/libconfig++.so
+LIBCONFIG_INCLUDE = -I/usr/include
 
 LOGIN_OBJ = $(shell ls *.c | sed -e "s/\.c/\.o/g")
 LOGIN_DIR_OBJ = $(LOGIN_OBJ:%=obj/%)
@@ -22,6 +26,8 @@ else
 	SERVER_DEPENDS=needs_mysql
 endif
 ALL_DEPENDS=server
+
+TMP_LAZY_CXXFLAG=-std=c++11 -fpermissive
 
 @SET_MAKE@
 
@@ -59,14 +65,14 @@ obj:
 
 login-server: obj $(LOGIN_DIR_OBJ) $(COMMON_AR)  $(MT19937AR_OBJ)
 	@echo "	LD	@OLOG@@EXEEXT@"
-	@@CC@ @LDFLAGS@ -o ../../@OLOG@@EXEEXT@ $(LOGIN_DIR_OBJ) $(COMMON_AR) $(MT19937AR_OBJ) $(LIBCONFIG_AR) @LIBS@ @MYSQL_LIBS@
+	@@CXX@ @LDFLAGS@ -o ../../@OLOG@@EXEEXT@ $(LOGIN_DIR_OBJ) $(COMMON_AR) $(MT19937AR_OBJ) $(LIBCONFIG_SO) @LIBS@ @MYSQL_LIBS@
 	    
 
 # login object files
 
 obj/%.o: %.c $(LOGIN_H) $(COMMON_H) $(MT19937AR_H) $(LIBCONFIG_H)
-	@echo "	CC	$<"
-	@@CC@ @CFLAGS@ $(COMMON_INCLUDE) $(MT19937AR_INCLUDE) $(LIBCONFIG_INCLUDE) -DWITH_SQL @MYSQL_CFLAGS@ @CPPFLAGS@ -c $(OUTPUT_OPTION) $<
+	@echo "	CXX	$<"
+	@@CXX@ $(TMP_LAZY_CXXFLAG) @CFLAGS@ $(COMMON_INCLUDE) $(MT19937AR_INCLUDE) $(LIBCONFIG_INCLUDE) -DWITH_SQL @MYSQL_CFLAGS@ @CPPFLAGS@ -c $(OUTPUT_OPTION) $<
 
 # missing object files
 $(COMMON_AR):

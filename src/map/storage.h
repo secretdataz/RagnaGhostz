@@ -4,6 +4,8 @@
 #ifndef _STORAGE_H_
 #define _STORAGE_H_
 
+#include "../common/cbasetypes.h"
+
 //#include "../common/mmo.h"
 struct storage_data;
 struct guild_storage;

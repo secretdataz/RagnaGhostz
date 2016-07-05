@@ -4,13 +4,14 @@
 #ifndef _CHAR_SQL_H_
 #define _CHAR_SQL_H_
 
-#define DB_NAME_LEN 256 //max len of dbs
-
 #include "../config/core.h"
+
+#include "../common/cbasetypes.h"
 #include "../common/core.h" // CORE_ST_LAST
 #include "../common/msg_conf.h"
 #include "../common/mmo.h"
 
+#define DB_NAME_LEN 256 //max len of dbs
 
 extern int login_fd; //login file descriptor
 extern int char_fd; //char file descriptor
@@ -255,7 +256,7 @@ extern struct fame_list taekwon_fame_list[MAX_FAME_LIST];
 int char_search_mapserver(unsigned short map, uint32 ip, uint16 port);
 int char_lan_subnetcheck(uint32 ip);
 
-int char_count_users(void);
+unsigned int char_count_users(void);
 DBData char_create_online_data(DBKey key, va_list args);
 int char_db_setoffline(DBKey key, DBData *data, va_list ap);
 void char_set_char_online(int map_id, uint32 char_id, uint32 account_id);
@@ -315,5 +316,6 @@ const char* char_msg_txt(int msg_number);
 void char_do_final_msg(void);
 bool char_config_read(const char* cfgName, bool normal);
 
+void do_abort(void);
 
 #endif /* _CHAR_SQL_H_ */

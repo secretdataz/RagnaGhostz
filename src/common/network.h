@@ -6,10 +6,13 @@
 #include "netbuffer.h" 
 #include "evdp.h"
 
+#ifdef	__cplusplus
+extern "C" {
+#endif
+
 #ifndef MAXCONN
 #define MAXCONN 16384
 #endif
-
 
 typedef struct SESSION{
 	EVDP_DATA	evdp_data;	// Must be always the frist member! (some evdp's may rely on this fact)
@@ -184,6 +187,8 @@ void network_parser_set_ro(int32 fd,
 #define ROPACKET_DYNLEN 0
 
 
-
+#ifdef	__cplusplus
+}
+#endif
 
 #endif

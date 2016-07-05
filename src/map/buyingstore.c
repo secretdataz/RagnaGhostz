@@ -1,6 +1,11 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "buyingstore.h"  // struct s_buyingstore
+
+#include <stdlib.h> // atoi
+#include <cstring> // atoi
+
 #include "../common/nullpo.h"
 #include "../common/db.h"  // ARR_FIND
 #include "../common/malloc.h" // aMalloc, aFree
@@ -9,13 +14,12 @@
 #include "../common/strlib.h"  // safestrncpy
 #include "atcommand.h"  // msg_txt
 #include "battle.h"  // battle_config.*
-#include "buyingstore.h"  // struct s_buyingstore
 #include "clif.h"  // clif_buyingstore_*
 #include "log.h"  // log_pick_pc, log_zeny
 #include "pc.h"  // struct map_session_data
 #include "chrif.h"
 
-#include <stdlib.h> // atoi
+
 
 //Autotrader
 static DBMap *buyingstore_autotrader_db; /// Holds autotrader info: char_id -> struct s_autotrader
@@ -628,7 +632,7 @@ void buyingstore_reopen( struct map_session_data* sd ){
 			// Immediate save
 			chrif_save(sd, 3);
 
-			ShowInfo("Buyingstore loaded for '"CL_WHITE"%s"CL_RESET"' with '"CL_WHITE"%d"CL_RESET"' items at "CL_WHITE"%s (%d,%d)"CL_RESET"\n",
+			ShowInfo("Buyingstore loaded for '" CL_WHITE "%s" CL_RESET "' with '" CL_WHITE "%d" CL_RESET "' items at " CL_WHITE "%s (%d,%d)" CL_RESET "\n",
 				sd->status.name, count, mapindex_id2name(sd->mapindex), sd->bl.x, sd->bl.y);
 		}
 		aFree(data);
@@ -641,7 +645,7 @@ void buyingstore_reopen( struct map_session_data* sd ){
 	}
 
 	if (fail != 0) {
-		ShowError("buyingstore_reopen: (Error:%d) Load failed for autotrader '"CL_WHITE"%s"CL_RESET"' (CID=%/AID=%d)\n", fail, sd->status.name, sd->status.char_id, sd->status.account_id);
+		ShowError("buyingstore_reopen: (Error:%d) Load failed for autotrader '" CL_WHITE "%s" CL_RESET "' (CID=%/AID=%d)\n", fail, sd->status.name, sd->status.char_id, sd->status.account_id);
 		map_quit(sd);
 	}
 }
@@ -742,7 +746,7 @@ void do_init_buyingstore_autotrade( void ) {
 			}
 			dbi_destroy(iter);
 
-			ShowStatus("Done loading '"CL_WHITE"%d"CL_RESET"' buyingstore autotraders with '"CL_WHITE"%d"CL_RESET"' items.\n", db_size(buyingstore_autotrader_db), items);
+			ShowStatus("Done loading '" CL_WHITE "%d" CL_RESET "' buyingstore autotraders with '" CL_WHITE "%d" CL_RESET "' items.\n", db_size(buyingstore_autotrader_db), items);
 		}
 	}
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\src\login\account.c">
@@ -21,66 +21,6 @@
     </ClCompile>
     <ClCompile Include="..\src\login\loginlog.c">
       <Filter>login</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\cli.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\core.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\conf.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\db.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\ers.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\malloc.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\md5calc.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\nullpo.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\random.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\showmsg.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\socket.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\sql.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\strlib.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\timer.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\utils.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\thread.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\mutex.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\mempool.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\msg_conf.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\raconf.c">
-      <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdparty\mt19937ar\mt19937ar.c">
       <Filter>3rdparty\mt19937ar</Filter>
@@ -123,75 +63,6 @@
     <ClInclude Include="..\src\login\loginlog.h">
       <Filter>login</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\common\cbasetypes.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\core.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\cli.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\conf.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\db.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\ers.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\malloc.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\md5calc.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\mmo.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\nullpo.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\random.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\showmsg.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\socket.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\sql.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\strlib.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\timer.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\utils.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\winapi.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\thread.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\mutex.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\mempool.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\msg_conf.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\raconf.h">
-      <Filter>common</Filter>
-    </ClInclude>
     <ClInclude Include="..\3rdparty\mt19937ar\mt19937ar.h">
       <Filter>3rdparty\mt19937ar</Filter>
     </ClInclude>
@@ -221,9 +92,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="common">
-      <UniqueIdentifier>{b50ee803-e71d-4d41-8f7d-2dad5839df50}</UniqueIdentifier>
-    </Filter>
     <Filter Include="login">
       <UniqueIdentifier>{8eea96ed-d379-4694-ae2e-ffb0be95170c}</UniqueIdentifier>
     </Filter>

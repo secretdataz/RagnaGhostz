@@ -7,9 +7,13 @@ MT19937AR_OBJ = ../../3rdparty/mt19937ar/mt19937ar.o
 MT19937AR_H = ../../3rdparty/mt19937ar/mt19937ar.h
 MT19937AR_INCLUDE = -I../../3rdparty/mt19937ar
 
-LIBCONFIG_H = $(shell ls ../../3rdparty/libconfig/*.h)
-LIBCONFIG_AR = ../../3rdparty/libconfig/obj/libconfig.a
-LIBCONFIG_INCLUDE = -I../../3rdparty/libconfig
+#LIBCONFIG_H = $(shell ls ../../3rdparty/libconfig/*.h)
+#LIBCONFIG_AR = ../../3rdparty/libconfig/obj/libconfig.a
+#LIBCONFIG_INCLUDE = -I../../3rdparty/libconfig
+
+LIBCONFIG_H = /usr/include/libconfig.h++
+LIBCONFIG_SO = /usr/lib64/libconfig++.so
+LIBCONFIG_INCLUDE = -I/usr/include
 
 COMMON_OBJ = ../common/obj/sql.o
 COMMON_H = ../common/sql.h
@@ -25,6 +29,8 @@ else
 	SERVER_DEPENDS=needs_mysql
 endif
 ALL_DEPENDS=server
+
+TMP_LAZY_CXXFLAG=-std=c++11 -fpermissive
 
 @SET_MAKE@
 
@@ -49,9 +55,9 @@ help:
 #####################################################################
 
 
-char-server: obj $(CHAR_DIR_OBJ) $(LIBCONFIG_AR) $(COMMON_AR)
+char-server: obj $(CHAR_DIR_OBJ) $(COMMON_AR)
 	@echo "	LD	@OCHR@@EXEEXT@"
-	@@CC@ @LDFLAGS@ -o ../../@OCHR@@EXEEXT@ $(CHAR_DIR_OBJ) $(LIBCONFIG_AR) $(COMMON_AR) $(MT19937AR_OBJ) $(LIBCONFIG_OBJ) @LIBS@ @MYSQL_LIBS@
+	@@CXX@ @LDFLAGS@ -o ../../@OCHR@@EXEEXT@ $(CHAR_DIR_OBJ) $(LIBCONFIG_SO) $(COMMON_AR) $(MT19937AR_OBJ) $(LIBCONFIG_OBJ) @LIBS@ @MYSQL_LIBS@
 
 needs_mysql:
 	@echo "MySQL not found or disabled by the configure script"
@@ -62,8 +68,8 @@ obj:
 	@-mkdir obj
 
 obj/%.o: %.c $(CHAR_H) $(COMMON_H) $(MT19937AR_H) $(LIBCONFIG_H)
-	@echo "	CC	$<"
-	@@CC@ @CFLAGS@ $(COMMON_INCLUDE) $(MT19937AR_INCLUDE) $(LIBCONFIG_INCLUDE) @MYSQL_CFLAGS@ @CPPFLAGS@ -c $(OUTPUT_OPTION) $<
+	@echo "	CXX	$<"
+	@@CXX@ $(TMP_LAZY_CXXFLAG) @CFLAGS@ $(COMMON_INCLUDE) $(MT19937AR_INCLUDE) $(LIBCONFIG_INCLUDE) @MYSQL_CFLAGS@ @CPPFLAGS@ -c $(OUTPUT_OPTION) $<
 
 # missing object files
 $(COMMON_AR):

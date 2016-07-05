@@ -3,6 +3,10 @@
 
 #ifdef PCRE_SUPPORT
 
+#include "../../3rdparty/pcre/include/pcre.h"
+
+#include <cstring>
+
 #include "../common/timer.h"
 #include "../common/malloc.h"
 #include "../common/showmsg.h"
@@ -10,9 +14,6 @@
 
 #include "mob.h" // struct mob_data
 #include "pc.h" // struct map_session_data
-
-#include "../../3rdparty/pcre/include/pcre.h"
-
 
 /**
  *  Written by MouseJstr in a vision... (2/21/2005)

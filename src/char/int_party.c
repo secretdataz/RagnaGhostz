@@ -1,6 +1,11 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "int_party.h"
+
+#include <stdlib.h>
+#include <string.h>
+
 #include "../common/cbasetypes.h"
 #include "../common/mmo.h"
 #include "../common/malloc.h"
@@ -12,9 +17,7 @@
 #include "char.h"
 #include "char_mapif.h"
 #include "inter.h"
-#include "int_party.h"
 
-#include <stdlib.h>
 
 struct party_data {
 	struct party party;
@@ -33,7 +36,7 @@ int party_check_exp_share(struct party_data *p);
 int mapif_party_optionchanged(int fd,struct party *p, uint32 account_id, int flag);
 
 //Updates party's level range and unsets even share if broken.
-static int int_party_check_lv(struct party_data *p) {
+int int_party_check_lv(struct party_data *p) {
 	int i;
 	unsigned int lv;
 	p->min_lv = UINT_MAX;
@@ -58,7 +61,7 @@ static int int_party_check_lv(struct party_data *p) {
 	return 1;
 }
 //Calculates the state of a party.
-static void int_party_calc_state(struct party_data *p)
+void int_party_calc_state(struct party_data *p)
 {
 	int i;
 	p->min_lv = UINT_MAX;
@@ -120,7 +123,7 @@ int inter_party_tosql(struct party *p, int flag, int index)
 	party_id = p->party_id;
 
 #ifdef NOISY
-	ShowInfo("Save party request ("CL_BOLD"%d"CL_RESET" - %s).\n", party_id, p->name);
+	ShowInfo("Save party request (" CL_BOLD "%d" CL_RESET " - %s).\n", party_id, p->name);
 #endif
 	Sql_EscapeStringLen(sql_handle, esc_name, p->name, strnlen(p->name, NAME_LENGTH));
 
@@ -194,7 +197,7 @@ struct party_data *inter_party_fromsql(int party_id)
 	int i;
 
 #ifdef NOISY
-	ShowInfo("Load party request ("CL_BOLD"%d"CL_RESET")\n", party_id);
+	ShowInfo("Load party request (" CL_BOLD "%d" CL_RESET ")\n", party_id);
 #endif
 	if( party_id <= 0 )
 		return NULL;
@@ -347,7 +350,7 @@ int mapif_party_created(int fd,uint32 account_id,uint32 char_id,struct party *p)
 }
 
 //Party information not found
-static void mapif_party_noinfo(int fd, int party_id, uint32 char_id)
+void mapif_party_noinfo(int fd, int party_id, uint32 char_id)
 {
 	WFIFOHEAD(fd, 12);
 	WFIFOW(fd,0) = 0x3821;
@@ -359,7 +362,7 @@ static void mapif_party_noinfo(int fd, int party_id, uint32 char_id)
 }
 
 //Digest party information
-static void mapif_party_info(int fd, struct party* p, uint32 char_id)
+void mapif_party_info(int fd, struct party* p, uint32 char_id)
 {
 	unsigned char buf[8 + sizeof(struct party)];
 	WBUFW(buf,0) = 0x3821;
@@ -517,7 +520,7 @@ int mapif_parse_CreateParty(int fd, char *name, int item, int item2, struct part
 }
 
 // Party information request
-static void mapif_parse_PartyInfo(int fd, int party_id, uint32 char_id)
+void mapif_parse_PartyInfo(int fd, int party_id, uint32 char_id)
 {
 	struct party_data *p;
 	p = inter_party_fromsql(party_id);

@@ -4,6 +4,11 @@
 #ifndef _QUEST_H_
 #define _QUEST_H_
 
+#include "../common/cbasetypes.h"
+#include "../common/strlib.h"
+
+#include "map.h"
+
 struct quest_dropitem {
 	uint16 nameid;
 	uint16 count;

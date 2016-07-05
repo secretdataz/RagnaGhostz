@@ -1,19 +1,20 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "trade.h"
+
+#include <stdio.h>
+#include <string.h>
+
 #include "../common/nullpo.h"
 #include "../common/socket.h"
 #include "clif.h"
 #include "itemdb.h"
 #include "path.h"
-#include "trade.h"
 #include "pc.h"
 #include "chrif.h"
 #include "storage.h"
 #include "intif.h"
-
-#include <stdio.h>
-#include <string.h>
 
 #define TRADE_DISTANCE 2 ///Max distance from traders to enable a trade to take place.
 

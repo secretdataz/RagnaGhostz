@@ -1,6 +1,11 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "intif.h"
+
+#include <cstring>
+#include <stdlib.h>
+
 #include "../common/showmsg.h"
 #include "../common/socket.h"
 #include "../common/nullpo.h"
@@ -12,7 +17,6 @@
 #include "chrif.h"
 #include "clif.h"
 #include "pc.h"
-#include "intif.h"
 #include "storage.h"
 #include "party.h"
 #include "pet.h"
@@ -21,8 +25,6 @@
 #include "elemental.h"
 #include "mail.h"
 #include "quest.h"
-
-#include <stdlib.h>
 
 static const int packet_len_table[]={
 	-1,-1,27,-1, -1, 0,37,-1, 10+NAME_LENGTH,-1, 0, 0,  0, 0,  0, 0, //0x3800-0x380f
@@ -3071,7 +3073,7 @@ void intif_itembound_guild_retrieve(uint32 char_id,uint32 account_id,int guild_i
 	WFIFOSET(inter_fd,12);
 	if (gstor)
 		gstor->locked = true; //Lock for retrieval process
-	ShowInfo("Request guild bound item(s) retrieval for CID = "CL_WHITE"%d"CL_RESET", AID = %d, Guild ID = "CL_WHITE"%d"CL_RESET".\n", char_id, account_id, guild_id);
+	ShowInfo("Request guild bound item(s) retrieval for CID = " CL_WHITE "%d" CL_RESET ", AID = %d, Guild ID = " CL_WHITE "%d" CL_RESET ".\n", char_id, account_id, guild_id);
 }
 
 /**
@@ -3111,7 +3113,7 @@ void intif_parse_itembound_store2gstorage(int fd) {
 		if (!gstorage_additem2(gstor, item, item->amount))
 			failed++;
 	}
-	ShowInfo("Retrieved '"CL_WHITE"%d"CL_RESET"' (failed: %d) guild bound item(s) for Guild ID = "CL_WHITE"%d"CL_RESET".\n", count, failed, guild_id);
+	ShowInfo("Retrieved '" CL_WHITE "%d" CL_RESET "' (failed: %d) guild bound item(s) for Guild ID = " CL_WHITE "%d" CL_RESET ".\n", count, failed, guild_id);
 	gstor->locked = false;
 	gstor->opened = 0;
 }
@@ -3129,7 +3131,8 @@ void intif_parse_itembound_store2gstorage(int fd) {
  */
 int intif_parse(int fd)
 {
-	int packet_len, cmd;
+	int packet_len;
+	unsigned int cmd;
 	cmd = RFIFOW(fd,0);
 	// Verify ID of the packet
 	if(cmd<0x3800 || cmd>=0x3800+ARRAYLENGTH(packet_len_table) ||

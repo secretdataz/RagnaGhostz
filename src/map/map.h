@@ -4,16 +4,17 @@
 #ifndef _MAP_H_
 #define _MAP_H_
 
+#include <stdarg.h>
+
+#include "../config/core.h"
+
 #include "../common/cbasetypes.h"
 #include "../common/core.h" // CORE_ST_LAST
 #include "../common/mmo.h"
 #include "../common/mapindex.h"
 #include "../common/db.h"
 #include "../common/msg_conf.h"
-
-#include "../config/core.h"
-
-#include <stdarg.h>
+#include "../common/sql.h"
 
 struct npc_data;
 struct item_data;
@@ -917,14 +918,14 @@ void map_skill_damage_add(struct map_data *m, uint16 skill_id, int pc, int mob, 
 #define CHK_CLASS(class_) ((class_) > CLASS_NONE && (class_) < CLASS_MAX) /// Check valid Class
 
 //Options read in cli
-extern char *INTER_CONF_NAME;
-extern char *LOG_CONF_NAME;
-extern char *MAP_CONF_NAME;
-extern char *BATTLE_CONF_FILENAME;
-extern char *ATCOMMAND_CONF_FILENAME;
-extern char *SCRIPT_CONF_NAME;
-extern char *MSG_CONF_NAME_EN;
-extern char *GRF_PATH_FILENAME;
+extern char* INTER_CONF_NAME;
+extern char* LOG_CONF_NAME;
+extern char* MAP_CONF_NAME;
+extern char* BATTLE_CONF_FILENAME;
+extern char* ATCOMMAND_CONF_FILENAME;
+extern char* SCRIPT_CONF_NAME;
+extern char* MSG_CONF_NAME_EN;
+extern char* GRF_PATH_FILENAME;
 //Other languages supported
 char *MSG_CONF_NAME_RUS;
 char *MSG_CONF_NAME_SPN;
@@ -969,7 +970,7 @@ extern char log_db_db[32];
 
 #endif
 
-#include "../common/sql.h"
+
 
 extern int db_use_sqldbs;
 

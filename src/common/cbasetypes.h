@@ -228,7 +228,7 @@ typedef uintptr_t uintptr;
 #if defined(_MSC_VER) || defined(__BORLANDC__)
 #define strcasecmp			stricmp
 #define strncasecmp			strnicmp
-#define strncmpi			strnicmp
+#define strncmpi			_strnicmp
 #if defined(__BORLANDC__) || _MSC_VER < 1900
 #define snprintf			_snprintf
 #endif
@@ -252,7 +252,9 @@ typedef uintptr_t uintptr;
 #define inline __inline
 #define forceinline __forceinline
 #define ra_align(n) __declspec(align(n))
-#define _chdir chdir
+#if _MSC_VER <= 1900
+ #define _chdir chdir //1900 depreciated
+#endif
 #else
 // For GCC
 #define forceinline __attribute__((always_inline)) inline
@@ -280,7 +282,6 @@ typedef char bool;
 #ifdef swap // just to be sure
 #undef swap
 #endif
-// hmm only ints?
 //#define swap(a,b) { int temp=a; a=b; b=temp;}
 // if using macros then something that is type independent
 //#define swap(a,b) ((a == b) || ((a ^= b), (b ^= a), (a ^= b)))
@@ -403,18 +404,18 @@ void SET_FUNCPOINTER(T1& var, T2 p)
 #endif
 
 #ifndef max
-static inline int max(int a, int b){ return (a > b) ? a : b; } //default is int
+inline int max(int a, int b){ return (a > b) ? a : b; } //default is int
 #endif
-static inline int8 i8max(int8 a, int8 b){ return (a > b) ? a : b; }
-static inline int16 i16max(int16 a, int16 b){ return (a > b) ? a : b; }
-static inline int32 i32max(int32 a, int32 b){ return (a > b) ? a : b; }
-static inline int64 i64max(int64 a, int64 b){ return (a > b) ? a : b; }
-static inline uint32 umax(uint32 a, uint32 b){ return (a > b) ? a : b; }
-static inline uint8 u8max(uint8 a, uint8 b){ return (a > b) ? a : b; }
-static inline uint16 u16max(uint16 a, uint16 b){ return (a > b) ? a : b; }
-static inline uint32 u32max(uint32 a, uint32 b){ return (a > b) ? a : b; }
-static inline uint64 u64max(uint64 a, uint64 b){ return (a > b) ? a : b; }
-static inline size_t zmax(size_t a, size_t b){ return (a > b) ? a : b; } //cause those varie
+inline int8 i8max(int8 a, int8 b){ return (a > b) ? a : b; }
+inline int16 i16max(int16 a, int16 b){ return (a > b) ? a : b; }
+inline int32 i32max(int32 a, int32 b){ return (a > b) ? a : b; }
+inline int64 i64max(int64 a, int64 b){ return (a > b) ? a : b; }
+inline uint32 umax(uint32 a, uint32 b){ return (a > b) ? a : b; }
+inline uint8 u8max(uint8 a, uint8 b){ return (a > b) ? a : b; }
+inline uint16 u16max(uint16 a, uint16 b){ return (a > b) ? a : b; }
+inline uint32 u32max(uint32 a, uint32 b){ return (a > b) ? a : b; }
+inline uint64 u64max(uint64 a, uint64 b){ return (a > b) ? a : b; }
+inline size_t zmax(size_t a, size_t b){ return (a > b) ? a : b; } //cause those varie
 
 #ifdef min
 #undef min

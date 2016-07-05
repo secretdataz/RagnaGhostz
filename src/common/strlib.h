@@ -7,9 +7,15 @@
 #include "cbasetypes.h"
 #include <stdarg.h>
 
-#define __USE_GNU  // required to enable strnlen on some platforms
-#include <string.h>
-#undef __USE_GNU
+#ifndef __USE_GNU
+    #define __USE_GNU  // required to enable strnlen on some platforms
+    #include <string.h>
+    #undef __USE_GNU
+#endif
+
+#ifdef	__cplusplus
+extern "C" {
+#endif
 
 char* jstrescape (char* pt);
 char* jstrescapecpy (char* pt, const char* spt);
@@ -151,5 +157,9 @@ char* StringBuf_Value(StringBuf* self);
 void StringBuf_Clear(StringBuf* self);
 void StringBuf_Destroy(StringBuf* self);
 void StringBuf_Free(StringBuf* self);
+
+#ifdef	__cplusplus
+}
+#endif
 
 #endif /* _STRLIB_H_ */

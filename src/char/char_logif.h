@@ -10,10 +10,6 @@
 
 #include "char.h"
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
 #if PACKETVER_SUPPORTS_PINCODE
 void chlogif_pincode_notifyLoginPinError( uint32 account_id );
 void chlogif_pincode_notifyLoginPinUpdate( uint32 account_id, char* pin );
@@ -60,10 +56,6 @@ void do_final_chlogif(void);
 
 
 #define loginif_check(a) { if(!chlogif_isconnected()) return a; }
-
-#ifdef	__cplusplus
-}
-#endif
 
 #endif	/* CHAR_LOGIF_H */
 

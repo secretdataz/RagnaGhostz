@@ -1,6 +1,12 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "npc.h"
+
+#include <cstring>
+#include <stdlib.h>
+#include <errno.h>
+
 #include "../common/cbasetypes.h"
 #include "../common/timer.h"
 #include "../common/nullpo.h"
@@ -18,10 +24,6 @@
 #include "pet.h"
 #include "instance.h"
 #include "chat.h"
-
-#include <stdlib.h>
-#include <errno.h>
-
 
 struct npc_data* fake_nd;
 
@@ -502,7 +504,7 @@ int npc_event_do_clock(int tid, unsigned int tick, int id, intptr_t data)
  *------------------------------------------*/
 void npc_event_do_oninit(void)
 {
-	ShowStatus("Event '"CL_WHITE"OnInit"CL_RESET"' executed with '"CL_WHITE"%d"CL_RESET"' NPCs."CL_CLL"\n", npc_event_doall("OnInit"));
+	ShowStatus("Event '" CL_WHITE "OnInit" CL_RESET "' executed with '" CL_WHITE "%d" CL_RESET "' NPCs." CL_CLL "\n", npc_event_doall("OnInit"));
 
 	add_timer_interval(gettick()+100,npc_event_do_clock,0,0,1000);
 }
@@ -3373,9 +3375,9 @@ static void npc_market_checkall(void) {
 	if (!db_size(NPCMarketDB))
 		return;
 	else {
-		ShowInfo("Checking '"CL_WHITE"%d"CL_RESET"' NPC Markets...\n", db_size(NPCMarketDB));
+		ShowInfo("Checking '" CL_WHITE "%d" CL_RESET "' NPC Markets...\n", db_size(NPCMarketDB));
 		NPCMarketDB->foreach(NPCMarketDB, npc_market_checkall_sub);
-		ShowStatus("Done checking '"CL_WHITE"%d"CL_RESET"' NPC Markets.\n", db_size(NPCMarketDB));
+		ShowStatus("Done checking '" CL_WHITE "%d" CL_RESET "' NPC Markets.\n", db_size(NPCMarketDB));
 		NPCMarketDB->clear(NPCMarketDB, npc_market_free);
 	}
 }
@@ -3416,7 +3418,7 @@ static void npc_market_fromsql(void) {
 	}
 	Sql_FreeResult(mmysql_handle);
 
-	ShowStatus("Done loading '"CL_WHITE"%d"CL_RESET"' entries for '"CL_WHITE"%d"CL_RESET"' NPC Markets from '"CL_WHITE"%s"CL_RESET"' table.\n", count, db_size(NPCMarketDB), market_table);
+	ShowStatus("Done loading '" CL_WHITE "%d" CL_RESET "' entries for '" CL_WHITE "%d" CL_RESET "' NPC Markets from '" CL_WHITE "%s" CL_RESET "' table.\n", count, db_size(NPCMarketDB), market_table);
 }
 #endif
 
@@ -3740,7 +3742,7 @@ static const char* npc_parse_mob(char* w1, char* w2, char* w3, char* w4, const c
 	if (size > 0 && size <= 2)
 		mob.state.size = size;
 	if (ai > AI_NONE && ai <= AI_MAX)
-		mob.state.ai = ai;
+		mob.state.ai = (mob_ai)ai;
 
 	if (mob.num > 1 && battle_config.mob_count_rate != 100) {
 		if ((mob.num = mob.num * battle_config.mob_count_rate / 100) < 1)
@@ -4506,16 +4508,16 @@ int npc_reload(void) {
 	//TODO: the following code is copy-pasted from do_init_npc(); clean it up
 	// Reloading npcs now
 	for (nsl = npc_src_files; nsl; nsl = nsl->next) {
-		ShowStatus("Loading NPC file: %s"CL_CLL"\r", nsl->name);
+		ShowStatus("Loading NPC file: %s" CL_CLL "\r", nsl->name);
 		npc_parsesrcfile(nsl->name,false);
 	}
-	ShowInfo ("Done loading '"CL_WHITE"%d"CL_RESET"' NPCs:"CL_CLL"\n"
-		"\t-'"CL_WHITE"%d"CL_RESET"' Warps\n"
-		"\t-'"CL_WHITE"%d"CL_RESET"' Shops\n"
-		"\t-'"CL_WHITE"%d"CL_RESET"' Scripts\n"
-		"\t-'"CL_WHITE"%d"CL_RESET"' Spawn sets\n"
-		"\t-'"CL_WHITE"%d"CL_RESET"' Mobs Cached\n"
-		"\t-'"CL_WHITE"%d"CL_RESET"' Mobs Not Cached\n",
+	ShowInfo ("Done loading '" CL_WHITE "%d" CL_RESET "' NPCs:" CL_CLL "\n"
+		"\t-'" CL_WHITE "%d" CL_RESET "' Warps\n"
+		"\t-'" CL_WHITE "%d" CL_RESET "' Shops\n"
+		"\t-'" CL_WHITE "%d" CL_RESET "' Scripts\n"
+		"\t-'" CL_WHITE "%d" CL_RESET "' Spawn sets\n"
+		"\t-'" CL_WHITE "%d" CL_RESET "' Mobs Cached\n"
+		"\t-'" CL_WHITE "%d" CL_RESET "' Mobs Not Cached\n",
 		npc_id - npc_new_min, npc_warp, npc_shop, npc_script, npc_mob, npc_cache_mob, npc_delay_mob);
 
 	//Re-read the NPC Script Events cache.
@@ -4527,13 +4529,13 @@ int npc_reload(void) {
 	npc_event_doall("OnAgitInit3");
 
 	//Execute the OnInit event for freshly loaded npcs. [Skotlex]
-	ShowStatus("Event '"CL_WHITE"OnInit"CL_RESET"' executed with '"CL_WHITE"%d"CL_RESET"' NPCs.\n",npc_event_doall("OnInit"));
+	ShowStatus("Event '" CL_WHITE "OnInit" CL_RESET "' executed with '" CL_WHITE "%d" CL_RESET "' NPCs.\n",npc_event_doall("OnInit"));
 
 	do_reload_instance();
 
 	// Execute rest of the startup events if connected to char-server. [Lance]
 	if(!CheckForCharServer()){
-		ShowStatus("Event '"CL_WHITE"OnInterIfInit"CL_RESET"' executed with '"CL_WHITE"%d"CL_RESET"' NPCs.\n", npc_event_doall("OnInterIfInit"));
+		ShowStatus("Event '" CL_WHITE "OnInterIfInit" CL_RESET "' executed with '" CL_WHITE "%d" CL_RESET "' NPCs.\n", npc_event_doall("OnInterIfInit"));
 	}
 
 #if PACKETVER >= 20131223
@@ -4637,7 +4639,7 @@ void do_init_npc(void){
 
 	ev_db = strdb_alloc((DBOptions)(DB_OPT_DUP_KEY|DB_OPT_RELEASE_DATA), EVENT_NAME_LENGTH);
 	npcname_db = strdb_alloc(DB_OPT_BASE, NPC_NAME_LENGTH+1);
-	npc_path_db = strdb_alloc(DB_OPT_BASE|DB_OPT_DUP_KEY|DB_OPT_RELEASE_DATA,80);
+	npc_path_db = strdb_alloc((DBOptions)(DB_OPT_BASE|DB_OPT_DUP_KEY|DB_OPT_RELEASE_DATA),80);
 #if PACKETVER >= 20131223
 	NPCMarketDB = strdb_alloc(DB_OPT_BASE, NPC_NAME_LENGTH+1);
 	npc_market_fromsql();
@@ -4648,16 +4650,16 @@ void do_init_npc(void){
 	// process all npc files
 	ShowStatus("Loading NPCs...\r");
 	for( file = npc_src_files; file != NULL; file = file->next ) {
-		ShowStatus("Loading NPC file: %s"CL_CLL"\r", file->name);
+		ShowStatus("Loading NPC file: %s" CL_CLL "\r", file->name);
 		npc_parsesrcfile(file->name,false);
 	}
-	ShowInfo ("Done loading '"CL_WHITE"%d"CL_RESET"' NPCs:"CL_CLL"\n"
-		"\t-'"CL_WHITE"%d"CL_RESET"' Warps\n"
-		"\t-'"CL_WHITE"%d"CL_RESET"' Shops\n"
-		"\t-'"CL_WHITE"%d"CL_RESET"' Scripts\n"
-		"\t-'"CL_WHITE"%d"CL_RESET"' Spawn sets\n"
-		"\t-'"CL_WHITE"%d"CL_RESET"' Mobs Cached\n"
-		"\t-'"CL_WHITE"%d"CL_RESET"' Mobs Not Cached\n",
+	ShowInfo ("Done loading '" CL_WHITE "%d" CL_RESET "' NPCs:" CL_CLL "\n"
+		"\t-'" CL_WHITE "%d" CL_RESET "' Warps\n"
+		"\t-'" CL_WHITE "%d" CL_RESET "' Shops\n"
+		"\t-'" CL_WHITE "%d" CL_RESET "' Scripts\n"
+		"\t-'" CL_WHITE "%d" CL_RESET "' Spawn sets\n"
+		"\t-'" CL_WHITE "%d" CL_RESET "' Mobs Cached\n"
+		"\t-'" CL_WHITE "%d" CL_RESET "' Mobs Not Cached\n",
 		npc_id - START_NPC_NUM, npc_warp, npc_shop, npc_script, npc_mob, npc_cache_mob, npc_delay_mob);
 
 	// set up the events cache

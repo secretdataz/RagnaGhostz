@@ -1,6 +1,11 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include"int_mail.h"
+
+#include <stdlib.h>
+#include <string.h>
+
 #include "../common/mmo.h"
 #include "../common/showmsg.h"
 #include "../common/socket.h"
@@ -10,9 +15,7 @@
 #include "char_mapif.h"
 #include "inter.h"
 
-#include <stdlib.h>
-
-static int mail_fromsql(uint32 char_id, struct mail_data* md)
+int mail_fromsql(uint32 char_id, struct mail_data* md)
 {
 	int i, j;
 	struct mail_message *msg;
@@ -160,7 +163,7 @@ int mail_savemessage(struct mail_message* msg)
 
 /// Retrieves a single message from the database.
 /// Returns true if the operation succeeds (or false if it fails).
-static bool mail_loadmessage(int mail_id, struct mail_message* msg)
+bool mail_loadmessage(int mail_id, struct mail_message* msg)
 {
 	int j;
 	StringBuf buf;
@@ -232,7 +235,7 @@ static bool mail_loadmessage(int mail_id, struct mail_message* msg)
 /*==========================================
  * Client Inbox Request
  *------------------------------------------*/
-static void mapif_Mail_sendinbox(int fd, uint32 char_id, unsigned char flag)
+void mapif_Mail_sendinbox(int fd, uint32 char_id, unsigned char flag)
 {
 	struct mail_data md;
 	mail_fromsql(char_id, &md);
@@ -247,7 +250,7 @@ static void mapif_Mail_sendinbox(int fd, uint32 char_id, unsigned char flag)
 	WFIFOSET(fd,WFIFOW(fd,2));
 }
 
-static void mapif_parse_Mail_requestinbox(int fd)
+void mapif_parse_Mail_requestinbox(int fd)
 {
 	mapif_Mail_sendinbox(fd, RFIFOL(fd,2), RFIFOB(fd,6));
 }
@@ -255,7 +258,7 @@ static void mapif_parse_Mail_requestinbox(int fd)
 /*==========================================
  * Mark mail as 'Read'
  *------------------------------------------*/
-static void mapif_parse_Mail_read(int fd)
+void mapif_parse_Mail_read(int fd)
 {
 	int mail_id = RFIFOL(fd,2);
 	if( SQL_ERROR == Sql_Query(sql_handle, "UPDATE `%s` SET `status` = '%d' WHERE `id` = '%d'", schema_config.mail_db, MAIL_READ, mail_id) )
@@ -265,7 +268,7 @@ static void mapif_parse_Mail_read(int fd)
 /*==========================================
  * Client Attachment Request
  *------------------------------------------*/
-static bool mail_DeleteAttach(int mail_id)
+bool mail_DeleteAttach(int mail_id)
 {
 	StringBuf buf;
 	int i;
@@ -293,7 +296,7 @@ static bool mail_DeleteAttach(int mail_id)
 	return true;
 }
 
-static void mapif_Mail_getattach(int fd, uint32 char_id, int mail_id)
+void mapif_Mail_getattach(int fd, uint32 char_id, int mail_id)
 {
 	struct mail_message msg;
 
@@ -321,7 +324,7 @@ static void mapif_Mail_getattach(int fd, uint32 char_id, int mail_id)
 	WFIFOSET(fd,WFIFOW(fd,2));
 }
 
-static void mapif_parse_Mail_getattach(int fd)
+void mapif_parse_Mail_getattach(int fd)
 {
 	mapif_Mail_getattach(fd, RFIFOL(fd,2), RFIFOL(fd,6));
 }
@@ -329,7 +332,7 @@ static void mapif_parse_Mail_getattach(int fd)
 /*==========================================
  * Delete Mail
  *------------------------------------------*/
-static void mapif_Mail_delete(int fd, uint32 char_id, int mail_id)
+void mapif_Mail_delete(int fd, uint32 char_id, int mail_id)
 {
 	bool failed = false;
 	if ( SQL_ERROR == Sql_Query(sql_handle, "DELETE FROM `%s` WHERE `id` = '%d'", schema_config.mail_db, mail_id) )
@@ -346,7 +349,7 @@ static void mapif_Mail_delete(int fd, uint32 char_id, int mail_id)
 	WFIFOSET(fd,11);
 }
 
-static void mapif_parse_Mail_delete(int fd)
+void mapif_parse_Mail_delete(int fd)
 {
 	mapif_Mail_delete(fd, RFIFOL(fd,2), RFIFOL(fd,6));
 }
@@ -372,7 +375,7 @@ void mapif_Mail_new(struct mail_message *msg)
 /*==========================================
  * Return Mail
  *------------------------------------------*/
-static void mapif_Mail_return(int fd, uint32 char_id, int mail_id)
+void mapif_Mail_return(int fd, uint32 char_id, int mail_id)
 {
 	struct mail_message msg;
 	int new_mail = 0;
@@ -413,7 +416,7 @@ static void mapif_Mail_return(int fd, uint32 char_id, int mail_id)
 	WFIFOSET(fd,11);
 }
 
-static void mapif_parse_Mail_return(int fd)
+void mapif_parse_Mail_return(int fd)
 {
 	mapif_Mail_return(fd, RFIFOL(fd,2), RFIFOL(fd,6));
 }
@@ -421,7 +424,7 @@ static void mapif_parse_Mail_return(int fd)
 /*==========================================
  * Send Mail
  *------------------------------------------*/
-static void mapif_Mail_send(int fd, struct mail_message* msg)
+void mapif_Mail_send(int fd, struct mail_message* msg)
 {
 	int len = sizeof(struct mail_message) + 4;
 
@@ -432,7 +435,7 @@ static void mapif_Mail_send(int fd, struct mail_message* msg)
 	WFIFOSET(fd,len);
 }
 
-static void mapif_parse_Mail_send(int fd)
+void mapif_parse_Mail_send(int fd)
 {
 	struct mail_message msg;
 	char esc_name[NAME_LENGTH*2+1];

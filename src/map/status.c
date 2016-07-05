@@ -1,6 +1,12 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "status.h"
+
+#include <stdlib.h>
+#include <math.h>
+#include <cstring>
+
 #include "../common/cbasetypes.h"
 #include "../common/timer.h"
 #include "../common/nullpo.h"
@@ -20,9 +26,6 @@
 #include "homunculus.h"
 #include "mercenary.h"
 #include "elemental.h"
-
-#include <stdlib.h>
-#include <math.h>
 
 // Regen related flags.
 enum e_regen {
@@ -6941,7 +6944,7 @@ unsigned char status_calc_attack_element(struct block_list *bl, struct status_ch
 static enum e_mode status_calc_mode(struct block_list *bl, struct status_change *sc, enum e_mode mode)
 {
 	if(!sc || !sc->count)
-		return cap_value(mode, 0, INT_MAX);
+		return cap_value((int)mode, 0, INT_MAX);
 	if(sc->data[SC_MODECHANGE]) {
 		if (sc->data[SC_MODECHANGE]->val2)
 			mode = (mode&~MD_MASK)|sc->data[SC_MODECHANGE]->val2; // Set mode
@@ -13808,7 +13811,7 @@ static bool status_readdb_attrfix(const char *basedir,bool silent)
 		entries++;
 	}
 	fclose(fp);
-	ShowStatus("Done reading '"CL_WHITE"%d"CL_RESET"' entries in '"CL_WHITE"%s"CL_RESET"'.\n", entries, path);
+	ShowStatus("Done reading '" CL_WHITE "%d" CL_RESET "' entries in '" CL_WHITE "%s" CL_RESET "'.\n", entries, path);
 	return true;
 }
 
@@ -13827,7 +13830,7 @@ int status_readdb(void)
 	int i, j, k;
 	const char* dbsubpath[] = {
 		"",
-		"/"DBIMPORT,
+		"/" DBIMPORT,
 		//add other path here
 	};
 	// Initialize databases to default

@@ -1,14 +1,16 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "../common/cbasetypes.h"
+#include "battleground.h"
+
+#include <cstring>
+
 #include "../common/timer.h"
 #include "../common/malloc.h"
 #include "../common/nullpo.h"
 #include "../common/showmsg.h"
 #include "../common/strlib.h"
 
-#include "battleground.h"
 #include "battle.h"
 #include "clif.h"
 #include "npc.h"

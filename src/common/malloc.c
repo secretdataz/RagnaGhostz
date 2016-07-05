@@ -2,12 +2,13 @@
 // For more information, see LICENCE in the main folder
 
 #include "malloc.h"
-#include "core.h"
-#include "showmsg.h"
 
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
+#include "core.h"
+#include "showmsg.h"
 
 ////////////// Memory Libraries //////////////////
 
@@ -60,7 +61,7 @@
 #	define MALLOC(n,file,line,func)	malloc(n)
 #	define CALLOC(m,n,file,line,func)	calloc((m),(n))
 #	define REALLOC(p,n,file,line,func)	realloc((p),(n))
-#	define STRDUP(p,file,line,func)	strdup(p)
+#	define STRDUP(p,file,line,func)		strdup(p)
 #	define FREE(p,file,line,func)		free(p)
 #	define MEMORY_USAGE()	0
 #	define MEMORY_VERIFY(ptr)	true
@@ -649,7 +650,7 @@ static void memmgr_init (void)
 {
 #ifdef LOG_MEMMGR
 	sprintf(memmer_logfile, "log/%s.leaks", SERVER_NAME);
-	ShowStatus("Memory manager initialised: "CL_WHITE"%s"CL_RESET"\n", memmer_logfile);
+	ShowStatus("Memory manager initialised: " CL_WHITE "%s" CL_RESET "\n", memmer_logfile);
 	memset(hash_unfill, 0, sizeof(hash_unfill));
 #endif /* LOG_MEMMGR */
 }

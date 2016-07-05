@@ -1,6 +1,12 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "map.h"
+
+#include <stdlib.h>
+#include <math.h>
+#include <cstring>
+
 #include "../common/cbasetypes.h"
 #include "../common/core.h"
 #include "../common/timer.h"
@@ -15,7 +21,6 @@
 #include "../common/cli.h"
 #include "../common/ers.h"
 
-#include "map.h"
 #include "path.h"
 #include "chrif.h"
 #include "clif.h"
@@ -38,10 +43,6 @@
 #include "cashshop.h"
 #include "channel.h"
 
-#include <stdlib.h>
-#include <math.h>
-#ifndef _WIN32
-#endif
 
 char default_codepage[32] = "";
 
@@ -2743,7 +2744,7 @@ void map_spawnmobs(int16 m)
 
 	if (battle_config.etc_log && k > 0)
 	{
-		ShowStatus("Map %s: Spawned '"CL_WHITE"%d"CL_RESET"' mobs.\n",map[m].name, k);
+		ShowStatus("Map %s: Spawned '" CL_WHITE "%d" CL_RESET "' mobs.\n",map[m].name, k);
 	}
 }
 
@@ -2796,7 +2797,7 @@ int map_removemobs_timer(int tid, unsigned int tick, int id, intptr_t data)
 	count = map_foreachinmap(map_removemobs_sub, m, BL_MOB);
 
 	if (battle_config.etc_log && count > 0)
-		ShowStatus("Map %s: Removed '"CL_WHITE"%d"CL_RESET"' mobs.\n",map[m].name, count);
+		ShowStatus("Map %s: Removed '" CL_WHITE "%d" CL_RESET "' mobs.\n",map[m].name, count);
 
 	return 1;
 }
@@ -3425,7 +3426,7 @@ int map_addmap(char* mapname)
 
 	if( map_num >= MAX_MAP_PER_SERVER - 1 )
 	{
-		ShowError("Could not add map '"CL_WHITE"%s"CL_RESET"', the limit of maps has been reached.\n",mapname);
+		ShowError("Could not add map '" CL_WHITE "%s" CL_RESET "', the limit of maps has been reached.\n",mapname);
 		return 1;
 	}
 
@@ -3436,7 +3437,7 @@ int map_addmap(char* mapname)
 
 static void map_delmapid(int id)
 {
-	ShowNotice("Removing map [ %s ] from maplist"CL_CLL"\n",map[id].name);
+	ShowNotice("Removing map [ %s ] from maplist" CL_CLL "\n",map[id].name);
 	memmove(map+id, map+id+1, sizeof(map[0])*(map_num-id-1));
 	map_num--;
 }
@@ -3599,7 +3600,7 @@ int map_readallmaps (void)
 		ShowStatus("Loading maps (using GRF files)...\n");
 	else {
 		char* mapcachefilepath[] = {
-			"db/"DBPATH"map_cache.dat",
+			"db/" DBPATH "map_cache.dat",
 			"db/import/map_cache.dat"
 		};
 
@@ -3608,10 +3609,10 @@ int map_readallmaps (void)
 
 			if( ( fp = fopen(mapcachefilepath[i], "rb") ) == NULL ){
 				if( i == 0 ){
-					ShowFatalError( "Unable to open map cache file "CL_WHITE"%s"CL_RESET"\n", mapcachefilepath[i] );
+					ShowFatalError( "Unable to open map cache file " CL_WHITE "%s" CL_RESET "\n", mapcachefilepath[i] );
 					exit(EXIT_FAILURE); //No use launching server if maps can't be read.
 				}else{
-					ShowWarning( "Unable to open map cache file "CL_WHITE"%s"CL_RESET"\n", mapcachefilepath[i] );
+					ShowWarning( "Unable to open map cache file " CL_WHITE "%s" CL_RESET "\n", mapcachefilepath[i] );
 					break;
 				}
 			}
@@ -3635,7 +3636,7 @@ int map_readallmaps (void)
 
 		if( enable_grf ){
 			// show progress
-			ShowStatus("Loading maps [%i/%i]: %s"CL_CLL"\r", i, map_num, map[i].name);
+			ShowStatus("Loading maps [%i/%i]: %s" CL_CLL "\r", i, map_num, map[i].name);
 
 			// try to load the map
 			success = map_readgat(&map[i]) != 0;
@@ -3664,7 +3665,7 @@ int map_readallmaps (void)
 
 		if (uidb_get(map_db,(unsigned int)map[i].index) != NULL)
 		{
-			ShowWarning("Map %s already loaded!"CL_CLL"\n", map[i].name);
+			ShowWarning("Map %s already loaded!" CL_CLL "\n", map[i].name);
 			if (map[i].cell) {
 				aFree(map[i].cell);
 				map[i].cell = NULL;
@@ -3701,11 +3702,11 @@ int map_readallmaps (void)
 	}
 
 	// finished map loading
-	ShowInfo("Successfully loaded '"CL_WHITE"%d"CL_RESET"' maps."CL_CLL"\n",map_num);
+	ShowInfo("Successfully loaded '" CL_WHITE "%d" CL_RESET "' maps." CL_CLL "\n",map_num);
 	instance_start = map_num; // Next Map Index will be instances
 
 	if (maps_removed)
-		ShowNotice("Maps removed: '"CL_WHITE"%d"CL_RESET"'\n",maps_removed);
+		ShowNotice("Maps removed: '" CL_WHITE "%d" CL_RESET "'\n",maps_removed);
 
 	return 0;
 }
@@ -4105,7 +4106,7 @@ int log_sql_init(void)
 	// log db connection
 	logmysql_handle = Sql_Malloc();
 
-	ShowInfo(""CL_WHITE"[SQL]"CL_RESET": Connecting to the Log Database "CL_WHITE"%s"CL_RESET" At "CL_WHITE"%s"CL_RESET"...\n",log_db_db,log_db_ip);
+	ShowInfo("" CL_WHITE "[SQL]" CL_RESET ": Connecting to the Log Database " CL_WHITE "%s" CL_RESET " At " CL_WHITE "%s" CL_RESET "...\n",log_db_db,log_db_ip);
 	if ( SQL_ERROR == Sql_Connect(logmysql_handle, log_db_id, log_db_pw, log_db_ip, log_db_port, log_db_db) ){
 		ShowError("Couldn't connect with uname='%s',passwd='%s',host='%s',port='%d',database='%s'\n",
 			log_db_id, log_db_pw, log_db_ip, log_db_port, log_db_db);
@@ -4113,7 +4114,7 @@ int log_sql_init(void)
 		Sql_Free(logmysql_handle);
 		exit(EXIT_FAILURE);
 	}
-	ShowStatus(""CL_WHITE"[SQL]"CL_RESET": Successfully '"CL_GREEN"connected"CL_RESET"' to Database '"CL_WHITE"%s"CL_RESET"'.\n", log_db_db);
+	ShowStatus("" CL_WHITE "[SQL]" CL_RESET ": Successfully '" CL_GREEN "connected" CL_RESET "' to Database '" CL_WHITE "%s" CL_RESET "'.\n", log_db_db);
 
 	if( strlen(default_codepage) > 0 )
 		if ( SQL_ERROR == Sql_SetEncoding(logmysql_handle, default_codepage) )
@@ -4372,13 +4373,13 @@ void do_final(void)
 
 	// remove all objects on maps
 	for (i = 0; i < map_num; i++) {
-		ShowStatus("Cleaning up maps [%d/%d]: %s..."CL_CLL"\r", i+1, map_num, map[i].name);
+		ShowStatus("Cleaning up maps [%d/%d]: %s..." CL_CLL "\r", i+1, map_num, map[i].name);
 		if (map[i].m >= 0) {
 			map_foreachinmap(cleanup_sub, i, BL_ALL);
 			channel_delete(map[i].channel);
 		}
 	}
-	ShowStatus("Cleaned up %d maps."CL_CLL"\n", map_num);
+	ShowStatus("Cleaned up %d maps." CL_CLL "\n", map_num);
 
 	id_db->foreach(id_db,cleanup_db_sub);
 	chrif_char_reset_offline();
@@ -4750,9 +4751,9 @@ int do_init(int argc, char *argv[])
 	npc_event_do_oninit();	// Init npcs (OnInit)
 
 	if (battle_config.pk_mode)
-		ShowNotice("Server is running on '"CL_WHITE"PK Mode"CL_RESET"'.\n");
+		ShowNotice("Server is running on '" CL_WHITE "PK Mode" CL_RESET "'.\n");
 
-	ShowStatus("Server is '"CL_GREEN"ready"CL_RESET"' and listening on port '"CL_WHITE"%d"CL_RESET"'.\n\n", map_port);
+	ShowStatus("Server is '" CL_GREEN "ready" CL_RESET "' and listening on port '" CL_WHITE "%d" CL_RESET "'.\n\n", map_port);
 
 	if( runflag != CORE_ST_STOP )
 	{

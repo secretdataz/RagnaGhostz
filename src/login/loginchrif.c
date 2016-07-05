@@ -7,6 +7,11 @@
  * @author rAthena Dev Team
  */
 
+#include "loginchrif.h"
+
+#include <stdlib.h>
+#include <cstring>
+
 #include "../common/timer.h" //difftick
 #include "../common/strlib.h" //safeprint
 #include "../common/showmsg.h" //show notice
@@ -14,9 +19,7 @@
 #include "account.h"
 #include "login.h"
 #include "loginlog.h"
-#include "loginchrif.h"
 
-#include <stdlib.h>
 
 //early declaration
 void logchrif_on_disconnect(int id);

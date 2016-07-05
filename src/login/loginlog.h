@@ -10,9 +10,7 @@
 #ifndef __LOGINLOG_H_INCLUDED__
 #define __LOGINLOG_H_INCLUDED__
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
+#include "../common/cbasetypes.h"
 
 /**
  * Get the number of failed login attempts by the ip in the last minutes.
@@ -53,9 +51,5 @@ bool loginlog_init(void);
  * @return true success
  */
 bool loginlog_final(void);
-
-#ifdef	__cplusplus
-}
-#endif
 
 #endif // __LOGINLOG_H_INCLUDED__

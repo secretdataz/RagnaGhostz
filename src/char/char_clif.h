@@ -10,10 +10,6 @@
 
 #include "char.h"
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
 void chclif_moveCharSlotReply( int fd, struct char_session_data* sd, unsigned short index, short reason );
 int chclif_parse_moveCharSlot( int fd, struct char_session_data* sd);
 #if PACKETVER_SUPPORTS_PINCODE
@@ -56,10 +52,6 @@ int chclif_parse_chkcaptcha(int fd);
 void chclif_block_character( int fd, struct char_session_data* sd);
 
 int chclif_parse(int fd);
-
-#ifdef	__cplusplus
-}
-#endif
 
 #endif	/* CHAR_CLIF_H */
 

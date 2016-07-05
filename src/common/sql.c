@@ -1,18 +1,20 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "cbasetypes.h"
-#include "malloc.h"
-#include "showmsg.h"
-#include "strlib.h"
-#include "timer.h"
 #include "sql.h"
+
+#include <mysql.h>
+#include <stdlib.h>// strtoul
+#include <cstring>// memset
 
 #ifdef WIN32
 #include "winapi.h"
 #endif
-#include <mysql.h>
-#include <stdlib.h>// strtoul
+#include "malloc.h"
+#include "showmsg.h"
+#include "strlib.h"
+#include "timer.h"
+
 
 #define SQL_CONF_NAME "conf/inter_athena.conf"
 

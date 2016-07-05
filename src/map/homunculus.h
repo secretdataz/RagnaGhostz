@@ -4,6 +4,7 @@
 #ifndef _HOMUNCULUS_H_
 #define _HOMUNCULUS_H_
 
+#include "../common/cbasetypes.h"
 #include "status.h" // struct status_data, struct status_change
 #include "unit.h" // struct unit_data
 

@@ -4,6 +4,7 @@
 #ifndef _BATTLEGROUND_H_
 #define _BATTLEGROUND_H_
 
+#include "../common/cbasetypes.h"
 #include "../common/mmo.h" // struct party
 #include "guild.h"
 

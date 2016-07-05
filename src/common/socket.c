@@ -1,21 +1,16 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "cbasetypes.h"
-#include "mmo.h"
-#include "timer.h"
-#include "malloc.h"
-#include "showmsg.h"
-#include "strlib.h"
 #include "socket.h"
 
 #include <stdlib.h>
+#include <cstring> //std::strerror
 
 #ifdef WIN32
 	#include "winapi.h"
 #else
 	#include <errno.h>
-#include <netinet/tcp.h>
+	#include <netinet/tcp.h>
 	#include <net/if.h>
 	#include <unistd.h>
 #include <sys/ioctl.h>
@@ -33,6 +28,12 @@
 	#include <sys/resource.h>
 	#endif
 #endif
+
+#include "mmo.h"
+#include "timer.h"
+#include "malloc.h"
+#include "showmsg.h"
+#include "strlib.h"
 
 /////////////////////////////////////////////////////////////////////
 #if defined(WIN32)
@@ -1393,7 +1394,7 @@ void socket_init(void)
 	add_timer_interval(gettick()+1000, connect_check_clear, 0, 0, 5*60*1000);
 #endif
 
-	ShowInfo("Server supports up to '"CL_WHITE"%u"CL_RESET"' concurrent connections.\n", rlim_cur);
+	ShowInfo("Server supports up to '" CL_WHITE "%u" CL_RESET "' concurrent connections.\n", rlim_cur);
 }
 
 

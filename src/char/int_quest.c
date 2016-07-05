@@ -1,6 +1,11 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "int_quest.h"
+
+#include <stdlib.h>
+#include <string.h>
+
 #include "../common/mmo.h"
 #include "../common/malloc.h"
 #include "../common/socket.h"
@@ -9,9 +14,7 @@
 
 #include "char.h"
 #include "inter.h"
-#include "int_quest.h"
 
-#include <stdlib.h>
 
 /**
  * Loads the entire questlog for a character.

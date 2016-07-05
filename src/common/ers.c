@@ -41,14 +41,15 @@
 \*****************************************************************************/
 
 
-#include "cbasetypes.h"
 #include "ers.h"
+
+#include <cstring>
+#include <stdlib.h>
+
 #include "malloc.h" // CREATE, RECREATE, aMalloc, aFree
 #include "nullpo.h"
 #include "showmsg.h" // ShowMessage, ShowError, ShowFatalError, CL_BOLD, CL_NORMAL
 
-#include <stdlib.h>
-#include <string.h>
 
 #ifndef DISABLE_ERS
 
@@ -91,7 +92,7 @@ typedef struct ers_cache
 	unsigned int ChunkSize;
 
 	// Misc options, some options are shared from the instance
-	enum ERSOptions Options;
+	int Options;
 
 	// Linked list
 	struct ers_cache *Next, *Prev;
@@ -105,7 +106,7 @@ struct ers_instance_t {
 	char *Name;
 
 	// Misc options
-	enum ERSOptions Options;
+	int Options;
 
 	// Our cache
 	ers_cache_t *Cache;
@@ -124,7 +125,7 @@ static struct ers_instance_t *InstanceList = NULL;
 /**
  * @param Options the options from the instance seeking a cache, we use it to give it a cache with matching configuration
  **/
-static ers_cache_t *ers_find_cache(unsigned int size, enum ERSOptions Options) {
+static ers_cache_t *ers_find_cache(unsigned int size, int Options) {
 	ers_cache_t *cache;
 
 	for (cache = CacheList; cache; cache = cache->Next)
@@ -290,7 +291,7 @@ void ers_cache_size(ERS *self, unsigned int new_size) {
 }
 
 
-ERS *ers_new(uint32 size, char *name, enum ERSOptions options)
+ERS *ers_new(uint32 size, char *name, int options)
 {
 	struct ers_instance_t *instance;
 	CREATE(instance,struct ers_instance_t, 1);
@@ -335,7 +336,7 @@ void ers_report(void) {
 
 	for (cache = CacheList; cache; cache = cache->Next) {
 		cache_c++;
-		ShowMessage(CL_BOLD"[ERS Cache of size '"CL_NORMAL""CL_WHITE"%u"CL_NORMAL""CL_BOLD"' report]\n"CL_NORMAL, cache->ObjectSize);
+		ShowMessage(CL_BOLD"[ERS Cache of size '" CL_NORMAL "" CL_WHITE "%u" CL_NORMAL "" CL_BOLD "' report]\n"CL_NORMAL, cache->ObjectSize);
 		ShowMessage("\tinstances          : %u\n", cache->ReferenceCount);
 		ShowMessage("\tblocks in use      : %u/%u\n", cache->UsedObjs, cache->UsedObjs+cache->Free);
 		ShowMessage("\tblocks unused      : %u\n", cache->Free);
@@ -346,9 +347,9 @@ void ers_report(void) {
 		memory_b += cache->UsedObjs * cache->ObjectSize;
 		memory_t += (cache->UsedObjs+cache->Free) * cache->ObjectSize;
 	}
-	ShowInfo("ers_report: '"CL_WHITE"%u"CL_NORMAL"' caches in use\n",cache_c);
-	ShowInfo("ers_report: '"CL_WHITE"%u"CL_NORMAL"' blocks in use, consuming '"CL_WHITE"%.2f MB"CL_NORMAL"'\n",blocks_u,(double)((memory_b)/1024)/1024);
-	ShowInfo("ers_report: '"CL_WHITE"%u"CL_NORMAL"' blocks total, consuming '"CL_WHITE"%.2f MB"CL_NORMAL"' \n",blocks_a,(double)((memory_t)/1024)/1024);
+	ShowInfo("ers_report: '" CL_WHITE "%u" CL_NORMAL "' caches in use\n",cache_c);
+	ShowInfo("ers_report: '" CL_WHITE "%u" CL_NORMAL "' blocks in use, consuming '" CL_WHITE "%.2f MB" CL_NORMAL "'\n",blocks_u,(double)((memory_b)/1024)/1024);
+	ShowInfo("ers_report: '" CL_WHITE "%u" CL_NORMAL "' blocks total, consuming '" CL_WHITE "%.2f MB" CL_NORMAL "' \n",blocks_a,(double)((memory_t)/1024)/1024);
 }
 
 /**

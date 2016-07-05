@@ -1,6 +1,13 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "inter.h"
+
+#include <cstring>
+//#include <string>
+#include <stdlib.h>
+#include <sys/stat.h> // for stat/lstat/fstat - [Dekamaster/Ultimate GM Tool]
+
 #include "../common/mmo.h"
 #include "../common/malloc.h"
 #include "../common/strlib.h"
@@ -10,7 +17,7 @@
 #include "char.h"
 #include "char_logif.h"
 #include "char_mapif.h"
-#include "inter.h"
+
 #include "int_party.h"
 #include "int_guild.h"
 #include "int_storage.h"
@@ -21,11 +28,6 @@
 #include "int_auction.h"
 #include "int_quest.h"
 #include "int_elemental.h"
-
-#include <stdlib.h>
-
-#include <sys/stat.h> // for stat/lstat/fstat - [Dekamaster/Ultimate GM Tool]
-
 
 #define WISDATA_TTL (60*1000)	//Wis data Time To Live (60 seconds)
 #define WISDELLIST_MAX 256		// Number of elements in the list Delete data Wis
@@ -61,8 +63,8 @@ struct WisData {
 	unsigned long tick;
 	unsigned char src[NAME_LENGTH], dst[NAME_LENGTH], msg[512];
 };
-static DBMap* wis_db = NULL; // int wis_id -> struct WisData*
-static int wis_dellist[WISDELLIST_MAX], wis_delnum;
+DBMap* wis_db = NULL; // int wis_id -> struct WisData*
+int wis_dellist[WISDELLIST_MAX], wis_delnum;
 
 /* from pc.c due to @accinfo. any ideas to replace this crap are more than welcome. */
 const char* job_name(int class_) {
@@ -322,7 +324,7 @@ void geoip_readdb(void){
 	geoip_cache = (unsigned char *) aMalloc(sizeof(unsigned char) * bufa.st_size);
 	if(fread(geoip_cache, sizeof(unsigned char), bufa.st_size, db) != bufa.st_size) { ShowError("geoip_cache reading didn't read all elements \n"); }
 	fclose(db);
-	ShowStatus("Finished Reading "CL_GREEN"GeoIP"CL_RESET" Database.\n");
+	ShowStatus("Finished Reading " CL_GREEN "GeoIP" CL_RESET " Database.\n");
 }
 /* [Dekamaster/Nightroad] */
 /* WHY NOT A DBMAP: There are millions of entries in GeoIP and it has its own algorithm to go quickly through them, a DBMap wouldn't be efficient */
@@ -384,7 +386,7 @@ void inter_to_fd(int fd, int u_fd, int aid, char* msg, ...) {
  * @param acc_id : id of player found
  * @param acc_name : name of player found
  */
-static void mapif_acc_info_ack(int fd, int u_fd, int acc_id, const char* acc_name){
+void mapif_acc_info_ack(int fd, int u_fd, int acc_id, const char* acc_name){
 	WFIFOHEAD(fd,10 + NAME_LENGTH);
 	WFIFOW(fd,0) = 0x3808;
 	WFIFOL(fd,2) = u_fd;
@@ -737,7 +739,7 @@ int inter_accreg_fromsql(uint32 account_id, uint32 char_id, int fd, int type)
 /*==========================================
  * read config file
  *------------------------------------------*/
-static int inter_config_read(const char* cfgName)
+int inter_config_read(const char* cfgName)
 {
 	char line[1024];
 	FILE* fp;
@@ -1015,7 +1017,7 @@ int mapif_parse_WisRequest(int fd)
 
 	if ( fd <= 0 ) {return 0;} // check if we have a valid fd
 
-	if (RFIFOW(fd,2)-52 >= sizeof(wd->msg)) {
+	if (RFIFOW(fd,2) >= sizeof(wd->msg)+52) {
 		ShowWarning("inter: Wis message size too long.\n");
 		return 0;
 	} else if (RFIFOW(fd,2)-52 <= 0) { // normaly, impossible, but who knows...
@@ -1175,7 +1177,7 @@ int mapif_parse_RegistryRequest(int fd)
 	return 1;
 }
 
-static void mapif_namechange_ack(int fd, uint32 account_id, uint32 char_id, int type, int flag, char *name)
+void mapif_namechange_ack(int fd, uint32 account_id, uint32 char_id, int type, int flag, char *name)
 {
 	WFIFOHEAD(fd, NAME_LENGTH+13);
 	WFIFOW(fd, 0) = 0x3806;
@@ -1245,7 +1247,7 @@ int inter_check_length(int fd, int length)
 
 int inter_parse_frommap(int fd)
 {
-	int cmd;
+	unsigned int cmd;
 	int len = 0;
 	cmd = RFIFOW(fd,0);
 	// Check is valid packet entry

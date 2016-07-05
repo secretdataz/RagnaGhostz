@@ -695,8 +695,8 @@ struct map_session_data {
 #endif
 };
 
-struct eri *pc_sc_display_ers; /// Player's SC display table
-struct eri *pc_itemgrouphealrate_ers; /// Player's Item Group Heal Rate table
+extern struct eri *pc_sc_display_ers; /// Player's SC display table
+extern struct eri *pc_itemgrouphealrate_ers; /// Player's Item Group Heal Rate table
 
 /**
  * ERS for the bulk of pc vars
@@ -783,7 +783,7 @@ enum adopt_responses {
 	ADOPT_MARRIED,
 };
 
-struct {
+struct job_info {
 	unsigned int base_hp[MAX_LEVEL], base_sp[MAX_LEVEL]; //Storage for the first calculation with hp/sp factor and multiplicator
 	int hp_factor, hp_multiplicator, sp_factor;
 	int max_weight_base;

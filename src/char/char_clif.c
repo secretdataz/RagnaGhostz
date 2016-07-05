@@ -1,6 +1,11 @@
 // Copyright (c) rAthena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "char_clif.h"
+
+#include <stdlib.h>
+#include <string.h>
+
 #include "../common/mmo.h"
 #include "../common/socket.h"
 #include "../common/sql.h"
@@ -15,9 +20,7 @@
 #include "char.h"
 #include "char_logif.h"
 #include "char_mapif.h"
-#include "char_clif.h"
 
-#include <stdlib.h>
 
 #if PACKETVER_SUPPORTS_PINCODE
 bool pincode_allowed( char* pincode );
@@ -166,13 +169,12 @@ int chclif_parse_pincode_check( int fd, struct char_session_data* sd ){
  * Helper function to check if a new pincode contains illegal characters or combinations
  */
 bool pincode_allowed( char* pincode ){
-	int i;
 	char c, n, compare[PINCODE_LENGTH+1];
 
 	memset( compare, 0, PINCODE_LENGTH+1);
 
 	// Sanity check for bots to prevent errors
-	for( i = 0; i < PINCODE_LENGTH; i++ ){
+	for(int i = 0; i < PINCODE_LENGTH; i++ ){
 		c = pincode[i];
 
 		if( c < '0' || c > '9' ){
@@ -185,7 +187,7 @@ bool pincode_allowed( char* pincode ){
 		c = pincode[0];
 
 		// Check if the first character equals the rest of the input
-		for( i = 0; i < PINCODE_LENGTH; i++ ){
+		for(int i = 0; i < PINCODE_LENGTH; i++ ){
 			compare[i] = c;
 		}
 
@@ -199,7 +201,7 @@ bool pincode_allowed( char* pincode ){
 		c = pincode[0];
 
 		// Check if it is an ascending sequence
-		for( i = 0; i < PINCODE_LENGTH; i++ ){
+		for(int i = 0; i < PINCODE_LENGTH; i++ ){
 			n = c + i;
 
 			if( n > '9' ){
@@ -214,7 +216,7 @@ bool pincode_allowed( char* pincode ){
 		}
 
 		// Check if it is an descending sequence
-		for( i = 0; i < PINCODE_LENGTH; i++ ){
+		for(int i = 0; i < PINCODE_LENGTH; i++ ){
 			n = c - i;
 
 			if( n < '0' ){
@@ -329,7 +331,7 @@ int chclif_mmo_send006b(int fd, struct char_session_data* sd){
 	if(newvers) //20100413
 		offset += 3;
 	if (charserv_config.save_log)
-		ShowInfo("Loading Char Data ("CL_BOLD"%d"CL_RESET")\n",sd->account_id);
+		ShowInfo("Loading Char Data (" CL_BOLD "%d" CL_RESET ")\n",sd->account_id);
 
 	j = 24 + offset; // offset
 	WFIFOHEAD(fd,j + MAX_CHARS*MAX_CHAR_BUF);
@@ -352,7 +354,7 @@ int chclif_mmo_send006b(int fd, struct char_session_data* sd){
 //----------------------------------------
 void chclif_mmo_send082d(int fd, struct char_session_data* sd) {
 	if (charserv_config.save_log)
-		ShowInfo("Loading Char Data ("CL_BOLD"%d"CL_RESET")\n",sd->account_id);
+		ShowInfo("Loading Char Data (" CL_BOLD "%d" CL_RESET ")\n",sd->account_id);
 	WFIFOHEAD(fd,29);
 	WFIFOW(fd,0) = 0x82d;
 	WFIFOW(fd,2) = 29;
@@ -568,7 +570,7 @@ int chclif_parse_char_delete2_accept(int fd, struct char_session_data* sd) {
 		time_t delete_date;
 		char_id = RFIFOL(fd,2);
 
-		ShowInfo(CL_RED"Request Char Deletion: "CL_GREEN"%d (%d)"CL_RESET"\n", sd->account_id, char_id);
+		ShowInfo(CL_RED "Request Char Deletion: " CL_GREEN "%d (%d)" CL_RESET "\n", sd->account_id, char_id);
 
 		// construct "YY-MM-DD"
 		birthdate[0] = RFIFOB(fd,6);
@@ -1011,7 +1013,7 @@ int chclif_parse_delchar(int fd,struct char_session_data* sd, int cmd){
 		int i, ch;
 		int cid = RFIFOL(fd,2);
 
-		ShowInfo(CL_RED"Request Char Deletion: "CL_GREEN"%d (%d)"CL_RESET"\n", sd->account_id, cid);
+		ShowInfo(CL_RED "Request Char Deletion: " CL_GREEN "%d (%d)" CL_RESET "\n", sd->account_id, cid);
 		memcpy(email, RFIFOP(fd,6), 40);
 		RFIFOSKIP(fd,( cmd == 0x68) ? 46 : 56);
 
@@ -1290,7 +1292,7 @@ int chclif_parse(int fd) {
 			case 0x9a1: next=chclif_parse_req_charlist(fd,sd); break;
 			// unknown packet received
 			default:
-				ShowError("parse_char: Received unknown packet "CL_WHITE"0x%x"CL_RESET" from ip '"CL_WHITE"%s"CL_RESET"'! Disconnecting!\n", RFIFOW(fd,0), ip2str(ipl, NULL));
+				ShowError("parse_char: Received unknown packet " CL_WHITE "0x%x" CL_RESET " from ip '" CL_WHITE "%s" CL_RESET "'! Disconnecting!\n", RFIFOW(fd,0), ip2str(ipl, NULL));
 				set_eof(fd);
 				return 0;
 		}

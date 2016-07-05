@@ -8,6 +8,11 @@
  * @author rAthena Dev Team
  */
 
+#include "login.h"
+
+#include <stdlib.h>
+#include <cstring>
+
 #include "../common/core.h"
 #include "../common/db.h"
 #include "../common/malloc.h"
@@ -22,15 +27,14 @@
 #include "../common/utils.h"
 #include "../common/mmo.h"
 #include "../config/core.h"
+
 #include "account.h"
 #include "ipban.h"
-#include "login.h"
 #include "loginlog.h"
 #include "loginclif.h"
 #include "loginchrif.h"
 #include "logincnslif.h"
 
-#include <stdlib.h>
 
 #define LOGIN_MAX_MSG 30				/// Max number predefined in msg_conf
 static char* msg_table[LOGIN_MAX_MSG];	/// Login Server messages_conf
@@ -131,7 +135,7 @@ void login_remove_online_user(uint32 account_id) {
  */
 int login_waiting_disconnect_timer(int tid, unsigned int tick, int id, intptr_t data) {
 	struct online_login_data* p = (struct online_login_data*)idb_get(online_db, id);
-	if( p != NULL && p->waiting_disconnect == tid && p->account_id == id ){
+	if( p != NULL && p->waiting_disconnect == tid && p->account_id == (unsigned int)id ){
 		p->waiting_disconnect = INVALID_TIMER;
 		login_remove_online_user(id);
 		idb_remove(auth_db, id);
@@ -871,7 +875,7 @@ int do_init(int argc, char** argv) {
 
 	// server port open & binding
 	if( (login_fd = make_listen_bind(login_config.login_ip,login_config.login_port)) == -1 ) {
-		ShowFatalError("Failed to bind to port '"CL_WHITE"%d"CL_RESET"'\n",login_config.login_port);
+		ShowFatalError("Failed to bind to port '" CL_WHITE "%d" CL_RESET "'\n",login_config.login_port);
 		exit(EXIT_FAILURE);
 	}
 
@@ -882,7 +886,7 @@ int do_init(int argc, char** argv) {
 
 	do_init_logincnslif();
 
-	ShowStatus("The login-server is "CL_GREEN"ready"CL_RESET" (Server is listening on the port %u).\n\n", login_config.login_port);
+	ShowStatus("The login-server is " CL_GREEN "ready" CL_RESET " (Server is listening on the port %u).\n\n", login_config.login_port);
 	login_log(0, "login server", 100, "login server started");
 
 	return 0;

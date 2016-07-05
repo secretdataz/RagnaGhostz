@@ -6,6 +6,10 @@
 
 #include "cbasetypes.h"
 
+#ifdef	__cplusplus
+extern "C" {
+#endif
+
 // rAthena generic configuration file parser
 // 
 //  Config file Syntax is athena style 
@@ -14,7 +18,7 @@
 //	Comments are started with // or ; (ini style)
 //
 
-typedef struct raconf *raconf;
+typedef struct raconf* praconf;
 
 
 /** 
@@ -24,7 +28,7 @@ typedef struct raconf *raconf;
  *
  * @returns not NULL incase of success
  */
-raconf	raconf_parse(const char *file_name);
+praconf	raconf_parse(const char *file_name);
 
 
 /** 
@@ -32,28 +36,30 @@ raconf	raconf_parse(const char *file_name);
  *
  * @param rc - the handle to free
  */
-void	raconf_destroy(raconf rc);
+void	raconf_destroy(praconf rc);
 
 
 /** 
  * Gets the value for Section / Key pair, if key not exists returns _default! 
  *
  */
-bool 		raconf_getbool(raconf rc, const char *section, const char *key,	bool _default);
-float		raconf_getfloat(raconf rc,const char *section, const char *key, float _default);
-int64		raconf_getint(raconf rc,  const char *section, const char *key, int64 _default);  
-const char*	raconf_getstr(raconf rc,  const char *section, const char *key, const char *_default);
+bool 		raconf_getbool(praconf rc, const char *section, const char *key,	bool _default);
+float		raconf_getfloat(praconf rc,const char *section, const char *key, float _default);
+int64		raconf_getint(praconf rc,  const char *section, const char *key, int64 _default);  
+const char*	raconf_getstr(praconf rc,  const char *section, const char *key, const char *_default);
 
 /**
  * Gets the value for Section / Key pair, but has fallback section option if not found in section, 
  * if not found in both - default gets returned.
  *
  */
-bool        raconf_getboolEx(raconf rc, const char *section, const char *fallback_section, const char *key, bool _default);
-float       raconf_getfloatEx(raconf rc,const char *section, const char *fallback_section, const char *key, float _default);
-int64       raconf_getintEx(raconf rc,  const char *section, const char *fallback_section, const char *key, int64 _default);
-const char* raconf_getstrEx(raconf rc,  const char *section, const char *fallback_section, const char *key, const char *_default);
+bool        raconf_getboolEx(praconf rc, const char *section, const char *fallback_section, const char *key, bool _default);
+float       raconf_getfloatEx(praconf rc,const char *section, const char *fallback_section, const char *key, float _default);
+int64       raconf_getintEx(praconf rc,  const char *section, const char *fallback_section, const char *key, int64 _default);
+const char* raconf_getstrEx(praconf rc,  const char *section, const char *fallback_section, const char *key, const char *_default);
 
-
+#ifdef	__cplusplus
+}
+#endif
 
 #endif

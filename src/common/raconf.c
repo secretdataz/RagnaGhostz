@@ -9,17 +9,16 @@
 // For more information, see LICENCE in the main folder
 //
 
+#include "raconf.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "cbasetypes.h"
 #include "showmsg.h"
 #include "db.h"
 #include "malloc.h"
-
-#include "raconf.h"
+//#include "mutex.h" //racond
 
 #define SECTION_LEN 32
 #define VARNAME_LEN 64
@@ -130,7 +129,7 @@ static struct conf_value *makeValue(const char *key, char *val, size_t val_len){
 }//end: makeValue()
 
 
-static bool configParse(raconf inst,  const char *fileName){
+static bool configParse(praconf inst,  const char *fileName){
 	FILE *fp;
 	char line[4096];
 	char currentSection[SECTION_LEN];
@@ -353,7 +352,7 @@ static bool configParse(raconf inst,  const char *fileName){
 				v = makeValue(key, valuestart, (p-valuestart) );				
 				
 				// Try to get the old one before
-				o = strdb_get(inst->db, key);
+				o =(conf_value*) strdb_get(inst->db, key);
 				if(o != NULL){
 					strdb_remove(inst->db, key);
 					aFree(o); //			
@@ -397,16 +396,16 @@ static bool configParse(raconf inst,  const char *fileName){
 									}
 										
 
-raconf  raconf_parse(const char *file_name){
-	struct raconf *rc;
+praconf raconf_parse(const char *file_name){
+	praconf rc;
 	
-	rc = aCalloc(1, sizeof(struct raconf) );
+	rc = (praconf) aCalloc(1, sizeof(struct raconf) );
 	if(rc == NULL){
 		ShowFatalError("raconf_parse: failed to allocate memory for new handle\n");
 		return NULL;
 	}
 
-	rc->db = strdb_alloc(DB_OPT_BASE | DB_OPT_DUP_KEY, 98);	
+	rc->db = strdb_alloc((DBOptions)(DB_OPT_BASE | DB_OPT_DUP_KEY), 98);	
 	//
 	
 	if(configParse(rc, file_name) != true){
@@ -417,7 +416,7 @@ raconf  raconf_parse(const char *file_name){
 }//end: raconf_parse()
 
 
-void raconf_destroy(raconf rc){
+void raconf_destroy(praconf rc){
 	DBIterator *iter;
 	struct conf_value *v;
 	
@@ -434,13 +433,13 @@ void raconf_destroy(raconf rc){
 	
 }//end: raconf_destroy()
 
-bool raconf_getbool(raconf rc, const char *section, const char *key,  bool _default){
+bool raconf_getbool(praconf rc, const char *section, const char *key,  bool _default){
 	char keystr[SECTION_LEN + VARNAME_LEN + 1 + 1];
 	struct conf_value *v;
 	
 	MAKEKEY(keystr, section, key);
 
-	v = strdb_get(rc->db, keystr);
+	v = (conf_value*) strdb_get(rc->db, keystr);
 	if(v == NULL)
 		return _default;
 	else
@@ -448,13 +447,13 @@ bool raconf_getbool(raconf rc, const char *section, const char *key,  bool _defa
 }//end: raconf_getbool()
 
 
-float raconf_getfloat(raconf rc,const char *section, const char *key, float _default){
+float raconf_getfloat(praconf rc,const char *section, const char *key, float _default){
 	char keystr[SECTION_LEN + VARNAME_LEN + 1 + 1];
 	struct conf_value *v;
 	
 	MAKEKEY(keystr, section, key);
 
-	v = strdb_get(rc->db, keystr);
+	v = (conf_value*) strdb_get(rc->db, keystr);
 	if(v == NULL)
 		return _default;
 	else
@@ -462,13 +461,13 @@ float raconf_getfloat(raconf rc,const char *section, const char *key, float _def
 }//end: raconf_getfloat()
 
 
-int64 raconf_getint(raconf rc,  const char *section, const char *key, int64 _default){
+int64 raconf_getint(praconf rc,  const char *section, const char *key, int64 _default){
 	char keystr[SECTION_LEN + VARNAME_LEN + 1 + 1];
 	struct conf_value *v;
 	
 	MAKEKEY(keystr, section, key);
 	
-	v = strdb_get(rc->db, keystr);
+	v = (conf_value*) strdb_get(rc->db, keystr);
 	if(v == NULL)
 		return _default;
 	else
@@ -477,13 +476,13 @@ int64 raconf_getint(raconf rc,  const char *section, const char *key, int64 _def
 }//end: raconf_getint()
 
 
-const char* raconf_getstr(raconf rc,  const char *section, const char *key, const char *_default){
+const char* raconf_getstr(praconf rc,  const char *section, const char *key, const char *_default){
 	char keystr[SECTION_LEN + VARNAME_LEN + 1 + 1];
 	struct conf_value *v;
 
 	MAKEKEY(keystr, section, key);	
 
-	v = strdb_get(rc->db, keystr);
+	v = (conf_value*) strdb_get(rc->db, keystr);
 	if(v == NULL)
 		return _default;
 	else
@@ -491,16 +490,16 @@ const char* raconf_getstr(raconf rc,  const char *section, const char *key, cons
 }//end: raconf_getstr()
 
 
-bool raconf_getboolEx(raconf rc, const char *section, const char *fallback_section, const char *key, bool _default){
+bool raconf_getboolEx(praconf rc, const char *section, const char *fallback_section, const char *key, bool _default){
 	char keystr[SECTION_LEN + VARNAME_LEN + 1 + 1];
 	struct conf_value *v;
 	
 	MAKEKEY(keystr, section, key);
-	v = strdb_get(rc->db, keystr);
+	v = (conf_value*) strdb_get(rc->db, keystr);
 	if(v == NULL){
 		
 		MAKEKEY(keystr, fallback_section, key);
-		v = strdb_get(rc->db, keystr);
+		v = (conf_value*) strdb_get(rc->db, keystr);
 		if(v == NULL){
 			return _default;
 		}else{
@@ -513,16 +512,16 @@ bool raconf_getboolEx(raconf rc, const char *section, const char *fallback_secti
 }//end: raconf_getboolEx()
 
 
-float raconf_getfloatEx(raconf rc,const char *section, const char *fallback_section, const char *key, float _default){
+float raconf_getfloatEx(praconf rc,const char *section, const char *fallback_section, const char *key, float _default){
 	char keystr[SECTION_LEN + VARNAME_LEN + 1 + 1];
 	struct conf_value *v;
 	
 	MAKEKEY(keystr, section, key);
-	v = strdb_get(rc->db, keystr);
+	v = (conf_value*) strdb_get(rc->db, keystr);
 	if(v == NULL){
 		
 		MAKEKEY(keystr, fallback_section, key);
-		v = strdb_get(rc->db, keystr);
+		v = (conf_value*) strdb_get(rc->db, keystr);
 		if(v == NULL){
 			return _default;
 		}else{
@@ -536,16 +535,16 @@ float raconf_getfloatEx(raconf rc,const char *section, const char *fallback_sect
 }//end: raconf_getfloatEx()
 
 
-int64 raconf_getintEx(raconf rc,  const char *section, const char *fallback_section, const char *key, int64 _default){
+int64 raconf_getintEx(praconf rc,  const char *section, const char *fallback_section, const char *key, int64 _default){
 	char keystr[SECTION_LEN + VARNAME_LEN + 1 + 1];
 	struct conf_value *v;
 	
 	MAKEKEY(keystr, section, key);
-	v = strdb_get(rc->db, keystr);
+	v = (conf_value*) strdb_get(rc->db, keystr);
 	if(v == NULL){
 		
 		MAKEKEY(keystr, fallback_section, key);
-		v = strdb_get(rc->db, keystr);
+		v = (conf_value*) strdb_get(rc->db, keystr);
 		if(v == NULL){
 			return _default;
 		}else{
@@ -559,16 +558,16 @@ int64 raconf_getintEx(raconf rc,  const char *section, const char *fallback_sect
 }//end: raconf_getintEx()
 
 
-const char* raconf_getstrEx(raconf rc,  const char *section, const char *fallback_section, const char *key, const char *_default){
+const char* raconf_getstrEx(praconf rc,  const char *section, const char *fallback_section, const char *key, const char *_default){
 	char keystr[SECTION_LEN + VARNAME_LEN + 1 + 1];
 	struct conf_value *v;
 	
 	MAKEKEY(keystr, section, key);
-	v = strdb_get(rc->db, keystr);
+	v = (conf_value*) strdb_get(rc->db, keystr);
 	if(v == NULL){
 		
 		MAKEKEY(keystr, fallback_section, key);
-		v = strdb_get(rc->db, keystr);
+		v = (conf_value*) strdb_get(rc->db, keystr);
 		if(v == NULL){
 			return _default;
 		}else{

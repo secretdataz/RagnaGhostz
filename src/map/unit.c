@@ -1,6 +1,10 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include "unit.h"
+#include <stdlib.h>
+#include <string.h>
+
 #include "../common/showmsg.h"
 #include "../common/timer.h"
 #include "../common/nullpo.h"
@@ -24,10 +28,6 @@
 #include "party.h"
 #include "intif.h"
 #include "storage.h"
-
-#include <stdlib.h>
-#include <string.h>
-
 
 // Directions values
 // 1 0 7

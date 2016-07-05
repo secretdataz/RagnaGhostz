@@ -1,18 +1,12 @@
 // Copyright (c) rAthena Project (www.rathena.org) - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#ifdef WIN32
-#include "winapi.h"
-#else
-#include <pthread.h>
+#include "mutex.h"
 
-#endif
 
-#include "cbasetypes.h"
 #include "malloc.h"
 #include "showmsg.h"
 #include "timer.h"
-#include "mutex.h"
 
 struct ramutex{
 #ifdef WIN32
@@ -23,20 +17,6 @@ struct ramutex{
 };
 
 
-struct racond{
-#ifdef WIN32
-	HANDLE events[2];
-	ra_align(8) volatile LONG nWaiters;
-	CRITICAL_SECTION waiters_lock;
-
-#define EVENT_COND_SIGNAL 0
-#define EVENT_COND_BROADCAST 1
-
-#else
-	pthread_cond_t hCond;
-#endif
-};
-
 
 ////////////////////
 // Mutex
@@ -45,10 +25,10 @@ struct racond{
 //
 
 
-ramutex ramutex_create(){
-	struct ramutex *m;
+pramutex ramutex_create(){
+	pramutex m;
 	
-	m = (struct ramutex*)aMalloc( sizeof(struct ramutex) );
+	m = (pramutex)aMalloc( sizeof(struct ramutex) );
 	if(m == NULL){
 		ShowFatalError("ramutex_create: OOM while allocating %u bytes.\n", sizeof(struct ramutex));
 		return NULL;
@@ -64,7 +44,7 @@ ramutex ramutex_create(){
 }//end: ramutex_create()
 
 
-void ramutex_destroy( ramutex m ){
+void ramutex_destroy( pramutex m ){
 
 #ifdef WIN32
 	DeleteCriticalSection(&m->hMutex);
@@ -77,7 +57,7 @@ void ramutex_destroy( ramutex m ){
 }//end: ramutex_destroy()
 
 
-void ramutex_lock( ramutex m ){
+void ramutex_lock( pramutex m ){
 
 #ifdef WIN32
 	EnterCriticalSection(&m->hMutex);
@@ -87,7 +67,7 @@ void ramutex_lock( ramutex m ){
 }//end: ramutex_lock
 
 
-bool ramutex_trylock( ramutex m ){
+bool ramutex_trylock( pramutex m ){
 #ifdef WIN32
 	if(TryEnterCriticalSection(&m->hMutex) == TRUE)
 		return true;
@@ -102,7 +82,7 @@ bool ramutex_trylock( ramutex m ){
 }//end: ramutex_trylock()
 
 
-void ramutex_unlock( ramutex m ){
+void ramutex_unlock( pramutex m ){
 #ifdef WIN32
 	LeaveCriticalSection(&m->hMutex);
 #else
@@ -119,10 +99,10 @@ void ramutex_unlock( ramutex m ){
 // Implementation:
 //
 
-racond racond_create(){
-	struct racond *c;
+pracond racond_create(){
+	pracond c;
 	
-	c = (struct racond*)aMalloc( sizeof(struct racond) );
+	c = (pracond)aMalloc( sizeof(struct racond) );
 	if(c == NULL){
 		ShowFatalError("racond_create: OOM while allocating %u bytes\n", sizeof(struct racond));
 		return NULL;
@@ -141,7 +121,7 @@ racond racond_create(){
 }//end: racond_create()
 
 
-void racond_destroy( racond c ){
+void racond_destroy( pracond c ){
 #ifdef WIN32
 	CloseHandle( c->events[ EVENT_COND_SIGNAL ] );
 	CloseHandle( c->events[ EVENT_COND_BROADCAST ] );
@@ -154,7 +134,7 @@ void racond_destroy( racond c ){
 }//end: racond_destroy()
 
 
-void racond_wait( racond c,  ramutex m,  sysint timeout_ticks){
+void racond_wait( pracond c,  pramutex m,  sysint timeout_ticks){
 #ifdef WIN32
 	register DWORD ms;
 	int result;
@@ -212,7 +192,7 @@ void racond_wait( racond c,  ramutex m,  sysint timeout_ticks){
 }//end: racond_wait()
 
 
-void racond_signal( racond c ){
+void racond_signal( pracond c ){
 #ifdef WIN32
 //	bool has_waiters = false;
 //	EnterCriticalSection(&c->waiters_lock);
@@ -228,7 +208,7 @@ void racond_signal( racond c ){
 }//end: racond_signal()
 
 
-void racond_broadcast( racond c ){
+void racond_broadcast( pracond c ){
 #ifdef WIN32
 //	bool has_waiters = false;
 //	EnterCriticalSection(&c->waiters_lock);

@@ -4,6 +4,8 @@
 #ifndef _DUEL_H_
 #define _DUEL_H_
 
+#include "../common/cbasetypes.h"
+
 #ifdef	__cplusplus
 extern "C" {
 #endif
@@ -19,7 +21,7 @@ extern struct duel duel_list[MAX_DUEL]; //list of current duel
 extern int duel_count; //current number of duel on server
 
 //Duel functions // [LuzZza]
-int duel_create(struct map_session_data* sd, const unsigned int maxpl);
+unsigned int duel_create(struct map_session_data* sd, const unsigned int maxpl);
 void duel_invite(const unsigned int did, struct map_session_data* sd, struct map_session_data* target_sd);
 void duel_accept(const unsigned int did, struct map_session_data* sd);
 void duel_reject(const unsigned int did, struct map_session_data* sd);
