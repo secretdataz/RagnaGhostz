@@ -20,6 +20,9 @@
 #include "chrif.h"
 #include "intif.h"
 #include "clif.h"
+#include "mob.h"
+#include "battle.h"
+#include "log.h"
 
 static DBMap *questdb;
 struct quest_db quest_dummy;

@@ -1108,6 +1108,7 @@ int StringBuf_Vprintf(StringBuf* self, const char* fmt, va_list ap)
 		va_list apcopy;
 		/* Try to print in the allocated space. */
 		size = self->max_ - (self->ptr_ - self->buf_);
+		//va_start(apcopy);
 		va_copy(apcopy, ap);
 		n = vsnprintf(self->ptr_, size, fmt, apcopy);
 		va_end(apcopy);

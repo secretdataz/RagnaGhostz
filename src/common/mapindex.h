@@ -7,10 +7,6 @@
 #include "../config/renewal.h"
 #include "../config/core.h"
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
 #define MAX_MAPINDEX 2000
 
 //Some definitions for the mayor city maps.
@@ -73,8 +69,5 @@ void mapindex_check_mapdefault(const char *mapname);
 void mapindex_init(void);
 void mapindex_final(void);
 
-#ifdef	__cplusplus
-}
-#endif
-    
+
 #endif /* _MAPINDEX_H_ */

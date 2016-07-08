@@ -12,6 +12,7 @@
 #include "../common/malloc.h"
 #include "../common/random.h"
 #include "../common/socket.h"
+#include "../common/ers.h"  // ers_destroy
 
 #include "map.h"
 #include "path.h"
@@ -31,6 +32,8 @@
 #include "guild.h"
 #include "npc.h"
 #include "clif.h"
+#include "mob.h"
+#include "battle.h"
 
 // Directions values
 // 1 0 7

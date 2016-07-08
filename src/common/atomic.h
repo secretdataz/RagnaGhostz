@@ -16,10 +16,6 @@
 // 
 #include "cbasetypes.h"
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
 #if defined(_MSC_VER)
 #include "winapi.h"
 
@@ -153,8 +149,5 @@ static forceinline int32 InterlockedExchange(volatile int32 *target, int32 val){
 
 #endif //endif compiler decission
 
-#ifdef	__cplusplus
-}
-#endif
 
 #endif

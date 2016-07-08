@@ -18,6 +18,7 @@
 #include "../common/timer.h"
 #include "../common/utils.h"
 #include "../common/mmo.h" //NAME_LENGTH
+#include "../common/ers.h"  // ers_destroy
 
 #include "atcommand.h" // get_atcommand_level()
 #include "map.h"
@@ -40,6 +41,17 @@
 #include "npc.h"
 #include "guild.h"
 #include "clif.h"
+
+#include "buyingstore.h"  // struct s_buyingstore
+#include "itemdb.h" // MAX_ITEMGROUP
+#include "script.h" // struct script_reg, struct script_regstr
+#include "searchstore.h"  // struct s_search_store_info
+#include "status.h" // OPTION_*, struct weapon_atk
+#include "unit.h" // unit_stop_attack(), unit_stop_walking()
+#include "vending.h" // struct s_vending
+#include "mob.h"
+#include "log.h"
+#include "pc_groups.h"
 
 struct eri *num_reg_ers;
 struct eri *str_reg_ers;

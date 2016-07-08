@@ -6,7 +6,7 @@
 
 #include "../common/cbasetypes.h"
 
-enum {
+enum e_guild_action : uint32 {
   GS_BASIC = 0x0001,
   GS_MEMBER = 0x0002,
   GS_POSITION = 0x0004,
@@ -22,8 +22,8 @@ enum {
   GS_REMOVE = 0x8000,
 };
 
-struct guild;
-struct guild_castle;
+//struct guild;
+//struct guild_castle;
 
 int inter_guild_parse_frommap(int fd);
 int inter_guild_sql_init(void);

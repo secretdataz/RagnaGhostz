@@ -31,20 +31,12 @@
  extern const char* LAN_CONF_NAME; //char-login
  extern const char* MSG_CONF_NAME_EN; //all
  
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
 bool cli_hasevent();
 void display_versionscreen(bool do_exit);
 bool opt_has_next_value(const char* option, int i, int argc);
 int cli_get_options(int argc, char ** argv);
 int parse_console_timer(int tid, unsigned int tick, int id, intptr_t data);
 int parse_console(const char* buf); //particular for each serv
-
-#ifdef	__cplusplus
-}
-#endif
 
 extern void display_helpscreen(bool exit);
 

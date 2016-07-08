@@ -380,7 +380,8 @@ struct s_roulette_db {
 		           *qty[MAX_ROULETTE_LEVEL]; /// Amount of Item ID
 	int *flag[MAX_ROULETTE_LEVEL]; /// Whether the item is for loss or win
 	int items[MAX_ROULETTE_LEVEL]; /// Number of items in the list for each
-} rd;
+};
+extern struct s_roulette_db rd;
 
 ///Main item data struct
 struct item_data

@@ -21,6 +21,14 @@ struct npc_data;
 struct item_data;
 struct Channel;
 
+enum e_Mobsize {
+	SZ_SMALL = 0,
+	SZ_MEDIUM,
+	SZ_BIG,
+	SZ_ALL,
+	SZ_MAX
+};
+
 enum E_MAPSERVER_ST {
 	MAPSERVER_ST_RUNNING = CORE_ST_LAST,
 	MAPSERVER_ST_STARTING,

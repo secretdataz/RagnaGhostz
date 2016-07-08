@@ -12,6 +12,7 @@
 #include "../common/showmsg.h"  // ShowWarning
 #include "../common/socket.h"  // RBUF*
 #include "../common/strlib.h"  // safestrncpy
+#include "../common/timer.h"  // gettick
 #include "atcommand.h"  // msg_txt
 #include "battle.h"  // battle_config.*
 #include "clif.h"  // clif_buyingstore_*

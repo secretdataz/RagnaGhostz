@@ -21,6 +21,9 @@
 #include "chrif.h"
 #include "npc.h"
 #include "clif.h"
+#include "mob.h"
+#include "battle.h"
+#include "log.h"
 
 #define MIN_PETTHINKTIME 100
 

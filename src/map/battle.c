@@ -29,6 +29,9 @@
 #include "chrif.h"
 #include "guild.h"
 #include "clif.h"
+#include "mob.h"
+#include "log.h"
+#include "pc_groups.h"
 
 int attr_fix_table[4][ELE_MAX][ELE_MAX];
 

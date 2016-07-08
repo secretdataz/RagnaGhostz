@@ -12,6 +12,7 @@
 #include "pc.h" // struct map_session_data
 #include "pet.h" // pet_create_egg
 #include "clif.h"
+#include "log.h"
 
 struct cash_item_db cash_shop_items[CASHSHOP_TAB_SEARCH];
 bool cash_shop_defined = false;

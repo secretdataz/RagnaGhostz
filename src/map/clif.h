@@ -222,9 +222,9 @@ enum broadcast_flags : uint8{
 	BC_COLOR_MASK	= 0x30, // BC_YELLOW|BC_BLUE|BC_WOE
 
 	BC_DEFAULT		= BC_ALL|BC_PC|BC_YELLOW
-} broadcast_flags;
+};
 
-typedef enum emotion_type {
+enum emotion_type {
 	E_GASP = 0,     // /!
 	E_WHAT,         // /?
 	E_HO,
@@ -315,7 +315,7 @@ typedef enum emotion_type {
 	E_YUT7,
 	//
 	E_MAX
-} emotion_type;
+};
 
 enum clr_type : uint8
 {
@@ -324,9 +324,9 @@ enum clr_type : uint8
 	CLR_RESPAWN,
 	CLR_TELEPORT,
 	CLR_TRICKDEAD,
-} clr_type;
+};
 
-enum map_property
+enum map_property  : uint8
 {// clif_map_property
 	MAPPROPERTY_NOTHING       = 0,
 	MAPPROPERTY_FREEPVPZONE   = 1,
@@ -337,7 +337,7 @@ enum map_property
 	MAPPROPERTY_DENYSKILLZONE = 6,
 };
 
-enum map_type
+enum map_type  : uint8
 {// clif_map_type
 	MAPTYPE_VILLAGE              = 0,
 	MAPTYPE_VILLAGE_IN           = 1,
@@ -366,7 +366,7 @@ enum map_type
 	MAPTYPE_UNUSED               = 29,
 };
 
-enum useskill_fail_cause
+enum useskill_fail_cause  : uint8
 {// clif_skill_fail
 	USESKILL_FAIL_LEVEL = 0,
 	USESKILL_FAIL_SP_INSUFFICIENT = 1,
@@ -457,7 +457,7 @@ enum useskill_fail_cause
 	USESKILL_FAIL_MAX
 };
 
-enum clif_messages {
+enum clif_messages  : uint16 {
 	/* Constant values */
 	// clif_cart_additem_ack flags
 	ADDITEM_TO_CART_FAIL_WEIGHT = 0x0,
@@ -488,7 +488,7 @@ enum clif_messages {
 	MERGE_ITEM_NOT_AVAILABLE = 0x887,
 };
 
-enum e_personalinfo {
+enum e_personalinfo  : uint8 {
 	PINFO_BASIC = 0,
 	PINFO_PREMIUM,
 	PINFO_SERVER,

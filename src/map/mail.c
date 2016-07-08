@@ -8,12 +8,15 @@
 #include "../common/nullpo.h"
 #include "../common/showmsg.h"
 #include "../common/strlib.h"
+#include "../common/timer.h"  // gettick
 
 #include "atcommand.h"
 #include "itemdb.h"
 #include "clif.h"
 #include "pc.h"
 #include "intif.h"
+#include "log.h"
+#include "battle.h"
 
 void mail_clear(struct map_session_data *sd)
 {

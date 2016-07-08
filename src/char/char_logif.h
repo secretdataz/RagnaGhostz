@@ -8,7 +8,8 @@
 #ifndef CHAR_LOGIF_H
 #define	CHAR_LOGIF_H
 
-#include "char.h"
+#include "../common/cbasetypes.h"
+struct char_session_data;
 
 #if PACKETVER_SUPPORTS_PINCODE
 void chlogif_pincode_notifyLoginPinError( uint32 account_id );
@@ -53,9 +54,6 @@ void chlogif_check_shutdown(void);
 void chlogif_on_disconnect(void);
 void chlogif_on_ready(void);
 void do_final_chlogif(void);
-
-
-#define loginif_check(a) { if(!chlogif_isconnected()) return a; }
 
 #endif	/* CHAR_LOGIF_H */
 

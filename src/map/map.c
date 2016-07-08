@@ -44,6 +44,9 @@
 #include "channel.h"
 #include "guild.h"
 #include "atcommand.h"
+#include "battle.h"
+#include "log.h"
+#include "mob.h"
 
 char default_codepage[32] = "";
 

@@ -10,7 +10,6 @@
 #include "../common/showmsg.h"
 
 #include "map.h" // struct map_session_data
-
 #include "chrif.h"
 #include "itemdb.h"
 #include "clif.h"
@@ -18,7 +17,8 @@
 #include "pc.h"
 #include "pc_groups.h"
 #include "guild.h"
-
+#include "log.h"
+#include "battle.h"
 
 static DBMap* guild_storage_db; ///Databases of guild_storage : int guild_id -> struct guild_storage*
 

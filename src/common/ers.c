@@ -103,7 +103,7 @@ struct ers_instance_t {
 	struct eri VTable;
 
 	// Name, used for debugging purposes
-	char *Name;
+	const char *Name;
 
 	// Misc options
 	int Options;
@@ -272,8 +272,8 @@ static void ers_obj_destroy(ERS *self)
 	else
 		InstanceList = instance->Next;
 
-	if( instance->Options & ERS_OPT_FREE_NAME )
-		aFree(instance->Name);
+//	if( instance->Options & ERS_OPT_FREE_NAME )
+//		aFree(instance->Name);
 
 	aFree(instance);
 }
@@ -310,7 +310,11 @@ ERS *ers_new(uint32 size,const char *name, int options)
 	instance->VTable.chunk_size = ers_cache_size;
 
 	//instance->Name = ( options & ERS_OPT_FREE_NAME ) ? aStrdup(name) : name);
-	strcpy(instance->Name,( options & ERS_OPT_FREE_NAME ) ? aStrdup(name) : name);
+       // if(options & ERS_OPT_FREE_NAME)
+       //     instance->Name=aStrdup(name);
+       // else
+            instance->Name = name;
+	//strcpy(instance->Name,( options & ERS_OPT_FREE_NAME ) ? aStrdup(name) : name);
 	instance->Options = options;
 
 	instance->Cache = ers_find_cache(size,instance->Options);

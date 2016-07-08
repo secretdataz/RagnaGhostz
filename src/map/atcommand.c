@@ -1,6 +1,5 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
-
 #include "atcommand.h"
 
 #include <stdlib.h>
@@ -43,10 +42,14 @@
 #include "npc.h"
 #include "guild.h"
 #include "clif.h"
+#include "log.h"
+#include "itemdb.h" // MAX_ITEMGROUP
+#include "mob.h"
 
 #define ATCOMMAND_LENGTH 50
 #define ACMD_FUNC(x) static int atcommand_ ## x (const int fd, struct map_session_data* sd, const char* command, const char* message)
 
+extern struct Battle_Config battle_config;
 typedef struct AtCommandInfo AtCommandInfo;
 typedef struct AliasInfo AliasInfo;
 

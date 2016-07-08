@@ -3,6 +3,12 @@
 
 #include "skill.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <math.h>
+
 #include "../common/timer.h"
 #include "../common/nullpo.h"
 #include "../common/malloc.h"
@@ -35,12 +41,7 @@
 #include "guild.h"
 #include "date.h"
 #include "unit.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <math.h>
+#include "pc_groups.h"
 
 #define SKILLUNITTIMER_INTERVAL	100
 #define TIMERSKILL_INTERVAL	150
@@ -21356,7 +21357,7 @@ void skill_reload (void) {
  *------------------------------------------*/
 void do_init_skill(void)
 {
-	skilldb_name2id = strdb_alloc(DB_OPT_DUP_KEY|DB_OPT_RELEASE_DATA, 0);
+	skilldb_name2id = strdb_alloc((DBOptions) (DB_OPT_DUP_KEY|DB_OPT_RELEASE_DATA), 0);
 
 	skill_readdb();
 

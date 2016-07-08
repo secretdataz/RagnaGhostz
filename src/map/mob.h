@@ -89,14 +89,6 @@ enum MobDamageLogFlag
 	MDLF_SELF
 };
 
-enum size {
-	SZ_SMALL = 0,
-	SZ_MEDIUM,
-	SZ_BIG,
-	SZ_ALL,
-	SZ_MAX
-};
-
 /// Used hardcoded Random Monster group in src
 enum e_Random_Monster {
 	MOBG_Branch_Of_Dead_Tree	= 0,

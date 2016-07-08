@@ -3,6 +3,8 @@
 
 #include "elemental.h"
 
+#include <stdlib.h>
+#include <math.h>
 #include <cstring>
 
 #include "../common/cbasetypes.h"
@@ -23,9 +25,7 @@
 #include "party.h"
 #include "trade.h"
 #include "npc.h"
-
-#include <stdlib.h>
-#include <math.h>
+#include "battle.h"
 
 struct s_elemental_db elemental_db[MAX_ELEMENTAL_CLASS]; // Elemental Database
 static uint16 elemental_count;

@@ -3,12 +3,8 @@
 
 #include "cbasetypes.h"
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
 
 typedef struct mempool* pmempool;
-
 typedef void (*memPoolOnNodeAllocationProc)(void *ptr);
 typedef void (*memPoolOnNodeDeallocationProc)(void *ptr);
 
@@ -100,8 +96,5 @@ void mempool_node_put(pmempool pool, void *node);
  */
 mempool_stats mempool_get_stats(pmempool pool);
 
-#ifdef	__cplusplus
-}
-#endif
 
 #endif

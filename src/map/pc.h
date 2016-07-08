@@ -5,23 +5,32 @@
 #define _PC_H_
 
 #include "../common/mmo.h" // JOB_*, MAX_FAME_LIST, struct fame_list, struct mmo_charstatus
-#include "../common/ers.h"
-#include "../common/timer.h" // INVALID_TIMER
+//#include "../common/ers.h"
+//#include "../common/timer.h" // INVALID_TIMER
 #include "../common/strlib.h"// StringBuf
 #include "map.h" // RC_ALL
-//#include "atcommand.h" // AtCommandType
-enum AtCommandType : uint8;
-#include "battle.h" // battle_config
-#include "buyingstore.h"  // struct s_buyingstore
-#include "itemdb.h" // MAX_ITEMGROUP
-#include "script.h" // struct script_reg, struct script_regstr
+#include "itemdb.h" // MAX_ITEMGROUP MAX_ITEMDELAYS
 #include "searchstore.h"  // struct s_search_store_info
-#include "status.h" // OPTION_*, struct weapon_atk
-#include "unit.h" // unit_stop_attack(), unit_stop_walking()
 #include "vending.h" // struct s_vending
+#include "buyingstore.h"
+#include "unit.h" // unit_data
+#include "status.h" // unit_data
+#include "script.h" // struct script_reg, struct script_regstr
+
+//#include "atcommand.h" // AtCommandType
+
+/*
+#include "battle.h" // battle_config
 #include "mob.h"
 #include "log.h"
 #include "pc_groups.h"
+*/
+
+enum atCommandType : uint8;
+enum e_log_chat_type : uint8;
+enum e_log_pick_type : uint32;
+enum sc_type : int16;
+enum si_type : short;
 
 #define MAX_PC_BONUS 10 /// Max bonus, usually used by item bonus
 #define MAX_PC_SKILL_REQUIRE 5 /// Max skill tree requirement

@@ -29,6 +29,7 @@
 #include "../common/strlib.h"
 #include "../common/timer.h"
 #include "../common/utils.h"
+#include "../common/ers.h"  // ers_destroy
 #ifdef BETA_THREAD_TEST
 	#include "../common/atomic.h"
 	#include "../common/spinlock.h"
@@ -59,6 +60,9 @@
 #include "npc.h"
 #include "guild.h"
 #include "atcommand.h"
+#include "battle.h"
+#include "log.h"
+#include "mob.h"
 
 struct eri *array_ers;
 DBMap *st_db;
@@ -2760,7 +2764,7 @@ void script_array_ensure_zero(struct script_state *st, struct map_session_data *
 	}
 
 	if (src && src->arrays) {
-		struct script_array *sa = idb_get(src->arrays, script_getvarid(uid));
+		struct script_array *sa = (struct script_array*) idb_get(src->arrays, script_getvarid(uid));
 		if (sa) {
 			unsigned int i;
 
@@ -4247,7 +4251,7 @@ int script_config_read(const char *cfgName)
  */
 static int db_script_free_code_sub(DBKey key, DBData *data, va_list ap)
 {
-	struct script_code *code = db_data2ptr(data);
+	struct script_code *code = (struct script_code*) db_data2ptr(data);
 	if (code)
 		script_free_code(code);
 	return 0;

@@ -12,7 +12,7 @@ struct map_session_data;
 struct mob_data;
 struct item;
 
-typedef enum e_log_chat_type
+enum e_log_chat_type : uint8
 {
 	LOG_CHAT_GLOBAL      = 0x01,
 	LOG_CHAT_WHISPER     = 0x02,
@@ -21,9 +21,9 @@ typedef enum e_log_chat_type
 	LOG_CHAT_MAINCHAT    = 0x10,
 	// all
 	LOG_CHAT_ALL         = 0xFF,
-} e_log_chat_type;
+};
 
-typedef enum e_log_pick_type
+enum e_log_pick_type : uint32
 {
 	LOG_TYPE_NONE             = 0,
 	LOG_TYPE_TRADE            = 0x000001,
@@ -53,18 +53,19 @@ typedef enum e_log_pick_type
 	LOG_TYPE_LOOT             = LOG_TYPE_PICKDROP_MONSTER|LOG_TYPE_CONSUME,
 	// all
 	LOG_TYPE_ALL              = 0xFFFFFF,
-} e_log_pick_type;
+};
 
-typedef enum e_log_cash_type
+enum e_log_cash_type : uint8
 {
 	LOG_CASH_TYPE_CASH = 0x1,
 	LOG_CASH_TYPE_KAFRA = 0x2
-} e_log_cash_type;
+};
 
-typedef enum e_log_feeding_type {
+enum e_log_feeding_type : uint8 
+{
 	LOG_FEED_HOMUNCULUS = 0x1,
 	LOG_FEED_PET        = 0x2,
-} e_log_feeding_type;
+};
 
 /// new logs
 void log_pick_pc(struct map_session_data* sd, e_log_pick_type type, int amount, struct item* itm);

@@ -5,20 +5,11 @@
 
 #include "cbasetypes.h"
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-    
 /// One 64-bit block.
-typedef struct BIT64 { uint8_t b[8]; } BIT64;
+struct BIT64 { uint8_t b[8]; };
 
 
 void des_decrypt_block(BIT64* block);
 void des_decrypt(unsigned char* data, size_t size);
-
-#ifdef	__cplusplus
-}
-#endif
-    
 
 #endif // _DES_H_

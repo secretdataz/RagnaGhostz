@@ -19,6 +19,8 @@
 #include "pc.h"
 #include "status.h"
 #include "clif.h"
+#include "log.h"
+#include "mob.h"
 
 static DBMap *itemdb; /// Item DB
 static DBMap *itemdb_combo; /// Item Combo DB
@@ -26,6 +28,7 @@ static DBMap *itemdb_group; /// Item Group DB
 static DBMap *itemdb_randomopt; /// Random option DB
 
 struct item_data *dummy_item; /// This is the default dummy item used for non-existant items. [Skotlex]
+struct s_roulette_db rd;
 
 /**
 * Check if combo exists

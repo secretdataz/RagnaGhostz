@@ -7,9 +7,12 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "../common/timer.h"  // gettick
+
 #include "atcommand.h"  // msg_txt
 #include "clif.h"
 #include "pc.h"
+#include "battle.h"
 
 //global var (extern)
 struct duel duel_list[MAX_DUEL]; //list of current duel

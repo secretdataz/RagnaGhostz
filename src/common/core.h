@@ -9,10 +9,6 @@
 	#include <signal.h>
 #endif
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-    
 extern int arg_c;
 extern char **arg_v;
 
@@ -56,8 +52,5 @@ enum E_CORE_ST
 /// If NULL, runflag is set to CORE_ST_STOP instead.
 extern void (*shutdown_callback)(void);
 
-#ifdef	__cplusplus
-}
-#endif
-    
+
 #endif /* _CORE_H_ */

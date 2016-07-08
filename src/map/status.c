@@ -29,6 +29,8 @@
 #include "npc.h"
 #include "guild.h"
 #include "clif.h"
+#include "mob.h"
+#include "pc_groups.h"
 
 // Regen related flags.
 enum e_regen {

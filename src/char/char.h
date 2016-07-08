@@ -4,11 +4,8 @@
 #ifndef _CHAR_SQL_H_
 #define _CHAR_SQL_H_
 
-#include "../config/core.h"
-
 #include "../common/cbasetypes.h"
 #include "../common/core.h" // CORE_ST_LAST
-#include "../common/msg_conf.h"
 #include "../common/mmo.h"
 
 #define DB_NAME_LEN 256 //max len of dbs
@@ -311,7 +308,7 @@ void char_set_session_flag_(int account_id, int val, bool set);
 #define msg_config_read(cfgName) char_msg_config_read(cfgName)
 #define msg_txt(msg_number) char_msg_txt(msg_number)
 #define do_final_msg() char_do_final_msg()
-int char_msg_config_read(char *cfgName);
+int char_msg_config_read(const char *cfgName);
 const char* char_msg_txt(int msg_number);
 void char_do_final_msg(void);
 bool char_config_read(const char* cfgName, bool normal);

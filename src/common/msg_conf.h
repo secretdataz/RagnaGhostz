@@ -4,10 +4,6 @@
 #ifndef MSG_CONF_H
 #define	MSG_CONF_H
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
 enum lang_types {
 	LANG_RUS = 0x01,
 	LANG_SPN = 0x02,
@@ -37,9 +33,6 @@ const char* msg_langtype2langstr(int langtype);
 // Verify that the choosen langtype is enabled.
 int msg_checklangtype(int lang, bool display);
 
-#ifdef	__cplusplus
-}
-#endif
 
 #endif	/* MSG_CONF_H */
 

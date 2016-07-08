@@ -641,20 +641,20 @@ int chlogif_parse_vipack(int fd) {
 
 /**
  * HA 0x2742
- * Request vip data to loginserv
+ * Request vip data from loginserv
  * @param aid : account_id to request the vip data
  * @param flag : 0x1 Select info and update old_groupid, 0x2 VIP duration is changed by atcommand or script, 0x8 First request on player login
  * @param add_vip_time : tick to add to vip timestamp
  * @param mapfd: link to mapserv for ack
  * @return 0 if success
  */
-int chlogif_reqvipdata(uint32 aid, uint8 flag, int32 timediff, int mapfd) {
+int chlogif_reqvipdata(uint32 aid, uint8 type, int32 timediff, int mapfd) {
 	loginif_check(-1);
 #ifdef VIP_ENABLE
 	WFIFOHEAD(login_fd,15);
 	WFIFOW(login_fd,0) = 0x2742;
 	WFIFOL(login_fd,2) = aid; //aid
-	WFIFOB(login_fd,6) = flag; //flag
+	WFIFOB(login_fd,6) = type; //type
 	WFIFOL(login_fd,7) = timediff; //req_inc_duration
 	WFIFOL(login_fd,11) = mapfd; //req_inc_duration
 	WFIFOSET(login_fd,15);
@@ -667,7 +667,7 @@ int chlogif_reqvipdata(uint32 aid, uint8 flag, int32 timediff, int mapfd) {
 * Request account info to login-server
 */
 int chlogif_req_accinfo(int fd, int u_fd, int u_aid, int u_group, int account_id, int8 type) {
-	loginif_check(-1);
+	chlogif_isconnected();
 	//ShowInfo("%d request account info for %d (type %d)\n", u_aid, account_id, type);
 	WFIFOHEAD(login_fd,23);
 	WFIFOW(login_fd,0) = 0x2720;

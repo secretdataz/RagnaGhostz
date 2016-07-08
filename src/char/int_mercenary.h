@@ -6,18 +6,18 @@
 
 #include "../common/cbasetypes.h"
 
-  struct s_mercenary;
+// struct s_mercenary;
 
-  int inter_mercenary_sql_init(void);
-  void inter_mercenary_sql_final(void);
-  int inter_mercenary_parse_frommap(int fd);
+int inter_mercenary_sql_init(void);
+void inter_mercenary_sql_final(void);
+int inter_mercenary_parse_frommap(int fd);
 
-  // Mercenary Owner Database
-  bool mercenary_owner_fromsql(uint32 char_id, struct mmo_charstatus *status);
-  bool mercenary_owner_tosql(uint32 char_id, struct mmo_charstatus *status);
-  bool mercenary_owner_delete(uint32 char_id);
+// Mercenary Owner Database
+bool mercenary_owner_fromsql(uint32 char_id, struct mmo_charstatus *status);
+bool mercenary_owner_tosql(uint32 char_id, struct mmo_charstatus *status);
+bool mercenary_owner_delete(uint32 char_id);
 
-  bool mapif_mercenary_delete(int merc_id);
+bool mapif_mercenary_delete(int merc_id);
 
 
 #endif /* _INT_MERCENARY_SQL_H_ */

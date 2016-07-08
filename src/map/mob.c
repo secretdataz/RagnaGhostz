@@ -32,6 +32,8 @@
 #include "quest.h"
 #include "npc.h"
 #include "guild.h"
+#include "battle.h"
+#include "log.h"
 
 #define ACTIVE_AI_RANGE 2	//Distance added on top of 'AREA_SIZE' at which mobs enter active AI mode.
 
@@ -64,7 +66,7 @@ struct mob_db *mob_dummy = NULL;	//Dummy mob to be returned when a non-existant 
 
 //TODO replace with something like mob_getmobID, or mob_lookupID
 // currently hiding ctor (not much an issue just use struct keyword to bypass this)_
-struct mob_db *mob_db(int mob_id)
+struct mob_db* mob_db(int mob_id)
 { 
     if (mob_id < 0 || mob_id > MAX_MOB_DB || mob_db_data[mob_id] == NULL) 
         return mob_dummy; 

@@ -790,7 +790,7 @@ enum sc_type : int16 {
 };
 
 /// Official status change ids, used to display status icons on the client.
-enum si_type {
+enum si_type : short {
 	SI_BLANK		= -1,
 	SI_PROVOKE		= 0,
 	SI_ENDURE		= 1,

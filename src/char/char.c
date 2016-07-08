@@ -19,6 +19,7 @@
 #include "../common/strlib.h"
 #include "../common/timer.h"
 #include "../common/cli.h"
+#include "../common/msg_conf.h"
 #include "int_guild.h"
 #include "int_homun.h"
 #include "int_mercenary.h"
@@ -3093,7 +3094,7 @@ static void char_config_adjust() {
 /*
  * Message conf function
  */
-int char_msg_config_read(char *cfgName){
+int char_msg_config_read(const char *cfgName){
 	return _msg_config_read(cfgName,CHAR_MAX_MSG,msg_table);
 }
 const char* char_msg_txt(int msg_number){

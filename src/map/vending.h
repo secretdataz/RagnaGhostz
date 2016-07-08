@@ -5,11 +5,12 @@
 #define	_VENDING_H_
 
 #include "../common/cbasetypes.h"
-#include "buyingstore.h"
+#include "../common/db.h"
 //#include "map.h"
 
 struct map_session_data;
 struct s_search_store_search;
+struct s_autotrader;
 
 struct s_vending {
 	short index; /// cart index (return item data)

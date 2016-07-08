@@ -25,6 +25,9 @@
 #include "instance.h"
 #include "chat.h"
 #include "guild.h"
+#include "battle.h"
+#include "mob.h"
+#include "log.h"
 
 struct npc_data* fake_nd;
 
