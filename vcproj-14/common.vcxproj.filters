@@ -1,195 +1,195 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Fichiers sources">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Fichiers d%27en-tête">
+    <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Fichiers de ressources">
+    <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\cbasetypes.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\cli.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\conf.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\core.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\db.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\ers.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\malloc.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\md5calc.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\mempool.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\mmo.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\msg_conf.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\mutex.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\nullpo.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\raconf.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\random.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\showmsg.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\socket.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\sql.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\strlib.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\thread.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\timer.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\utils.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\winapi.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\atomic.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\des.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\evdp.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\grfio.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\mapindex.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\netbuffer.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\network.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\spinlock.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\common\utils.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\timer.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\thread.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\strlib.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\sql.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\socket.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\showmsg.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\random.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\raconf.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\nullpo.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\mutex.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\msg_conf.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\mempool.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\md5calc.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\malloc.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\ers.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\db.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\core.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\conf.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\cli.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\des.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\evdp_epoll.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\grfio.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\mapindex.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\netbuffer.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\network.c">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
