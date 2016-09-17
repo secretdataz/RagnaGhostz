@@ -1819,9 +1819,9 @@ int char_delete_char_sql(uint32 char_id){
  * This function parse all map-serv attached to this char-serv and increase user count
  * @return numbers of total users
  */
-unsigned int char_count_users(void)
+int char_count_users(void)
 {
-	unsigned int i, users;
+	 int i, users;
 
 	users = 0;
 	for(i = 0; i < ARRAYLENGTH(map_server); i++) {

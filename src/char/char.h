@@ -253,7 +253,7 @@ extern struct fame_list taekwon_fame_list[MAX_FAME_LIST];
 int char_search_mapserver(unsigned short map, uint32 ip, uint16 port);
 int char_lan_subnetcheck(uint32 ip);
 
-unsigned int char_count_users(void);
+int char_count_users(void);
 DBData char_create_online_data(DBKey key, va_list args);
 int char_db_setoffline(DBKey key, DBData *data, va_list ap);
 void char_set_char_online(int map_id, uint32 char_id, uint32 account_id);
