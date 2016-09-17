@@ -303,6 +303,10 @@ static void display_title(void) {
 		ShowInfo("SVN Revision: '" CL_WHITE "%s" CL_RESET "'\n", svn);
 	else if( git[0] != UNKNOWN_VERSION )
 		ShowInfo("Git Hash: '" CL_WHITE "%s" CL_RESET "'\n", git);
+	ShowInfo("Server compiled for packet version %d.\n", PACKETVER);
+#ifdef __cplusplus
+	ShowInfo(CL_RED "Using Alpha C++ build!" CL_RESET "\n");
+#endif
 }
 
 // Warning if executed as superuser (root)

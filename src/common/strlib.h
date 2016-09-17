@@ -9,7 +9,7 @@
 
 #ifndef __USE_GNU
     #define __USE_GNU  // required to enable strnlen on some platforms
-    #include <string.h>
+    #include <cstring>
     #undef __USE_GNU
 #endif
 

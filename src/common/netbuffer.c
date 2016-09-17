@@ -17,7 +17,16 @@
 //	65536 (inter server connects may use it for charstatus struct..)  
 //
 
+#include <cstring>
+#include <stdlib.h>
+
+#include "core.h"
+#include "malloc.h"
+#include "mempool.h"
 #include "netbuffer.h"
+#include "raconf.h"
+#include "showmsg.h"
+#include "thread.h"
 
 ///
 // Implementation:
@@ -25,12 +34,12 @@
 static volatile int32 l_nEmergencyAllocations = 0; // stats.
 static sysint l_nPools = 0;
 static sysint *l_poolElemSize = NULL;
-static mempool *l_pool = NULL;
+static pmempool *l_pool = NULL;
 
 
 void netbuffer_init(){
 	char localsection[32];
-	raconf conf;
+	praconf conf;
 	sysint i;
 	
 	// Initialize Statistic counters:
@@ -61,7 +70,7 @@ void netbuffer_init(){
 
 	// Allocate arrays.
 	l_poolElemSize = (sysint*)aCalloc( l_nPools, sizeof(sysint) );
-	l_pool = (mempool*)aCalloc( l_nPools, sizeof(mempool) );
+	l_pool = (pmempool*)aCalloc( l_nPools, sizeof(pmempool) );
 	
 
 	for(i = 0; i < l_nPools; i++){

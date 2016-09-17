@@ -3,13 +3,13 @@
 
 #include "sql.h"
 
-#include <mysql.h>
 #include <stdlib.h>// strtoul
 #include <cstring>// memset
 
 #ifdef WIN32
 #include "winapi.h"
 #endif
+#include <mysql.h> // moved here to resolve compile error [Secretdataz]
 #include "malloc.h"
 #include "showmsg.h"
 #include "strlib.h"

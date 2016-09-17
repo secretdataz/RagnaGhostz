@@ -1,7 +1,11 @@
 #ifndef _rA_NETWORK_H_
 #define _rA_NETWORK_H_
 
+#ifdef WIN32
+#include "winapi.h"
+#else
 #include <netinet/in.h>
+#endif
 #include "cbasetypes.h"
 #include "netbuffer.h" 
 #include "evdp.h"

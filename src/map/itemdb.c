@@ -1653,7 +1653,7 @@ static bool itemdb_read_randomopt(const char* basedir, bool silent) {
 	}
 	fclose(fp);
 
-	ShowStatus("Done reading '"CL_WHITE"%lu"CL_RESET"' entries in '"CL_WHITE"%s"CL_RESET"'.\n", count, path);
+	ShowStatus("Done reading '" CL_WHITE "%lu" CL_RESET "' entries in '" CL_WHITE "%s" CL_RESET "'.\n", count, path);
 
 	return true;
 }

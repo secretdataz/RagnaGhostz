@@ -12,13 +12,15 @@
 //#endif
 
 #include "network.h"
+#include "showmsg.h"
+#include "timer.h"
 
 #define ENABLE_IPV6
 #define HAVE_ACCEPT4
 #define EVENTS_PER_CYCLE 10
 #define PARANOID_CHECKS
 
-#include "network.h"
+//#include "network.h"
 
 // Local Vars (settings..)
 static int l_ListenBacklog = 64;

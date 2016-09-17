@@ -102,7 +102,7 @@ static pmempool 	l_mempoolList = NULL;
 static prAthread l_async_thread = NULL;
 static pramutex	l_async_lock = NULL;
 static pracond	l_async_cond = NULL;
-static volatile int32 l_async_terminate = 0;
+static volatile long l_async_terminate = 0;
 
 static void *mempool_async_allocator(void *x){
 	pmempool p;
