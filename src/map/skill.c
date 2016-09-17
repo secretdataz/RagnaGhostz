@@ -19891,7 +19891,7 @@ void skill_usave_trigger(struct map_session_data *sd)
 	struct skill_usave *sus = NULL;
 	struct skill_unit_group *group = NULL;
 
-	if (!(sus = idb_get(skillusave_db,sd->status.char_id)))
+	if (!(sus = static_cast<skill_usave *>(idb_get(skillusave_db,sd->status.char_id))))
 		return;
 
 	if ((group = skill_unitsetting(&sd->bl, sus->skill_id, sus->skill_lv, sd->bl.x, sd->bl.y, 0)))

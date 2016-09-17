@@ -2791,7 +2791,7 @@ unsigned int script_array_size(struct script_state *st, struct map_session_data 
 	struct reg_db *src = script_array_src(st, sd, name, ref);
 
 	if (src && src->arrays)
-		sa = idb_get(src->arrays, search_str(name));
+		sa = static_cast<script_array *>(idb_get(src->arrays, search_str(name)));
 
 	return sa ? sa->size : 0;
 }
@@ -2809,7 +2809,7 @@ unsigned int script_array_highest_key(struct script_state *st, struct map_sessio
 
 		script_array_ensure_zero(st,sd,reference_uid(key, 0), ref);
 
-		if( ( sa = idb_get(src->arrays, key) ) ) {
+		if( ( sa = static_cast<script_array *>(idb_get(src->arrays, key)) ) ) {
 			unsigned int i, highest_key = 0;
 
 			for(i = 0; i < sa->size; i++) {
@@ -2826,7 +2826,7 @@ unsigned int script_array_highest_key(struct script_state *st, struct map_sessio
 
 int script_free_array_db(DBKey key, DBData *data, va_list ap)
 {
-	struct script_array *sa = db_data2ptr(data);
+	struct script_array *sa = static_cast<script_array *>(db_data2ptr(data));
 	aFree(sa->members);
 	ers_free(array_ers, sa);
 	return SCRIPT_CMD_SUCCESS;
@@ -2942,7 +2942,7 @@ void script_array_update(struct reg_db *src, int64 num, bool empty)
 	if (!src->arrays) {
 		src->arrays = idb_alloc(DB_OPT_BASE);
 	} else {
-		sa = idb_get(src->arrays, id);
+		sa = static_cast<script_array *>(idb_get(src->arrays, id));
 	}
 
 	if( sa ) {
@@ -3955,7 +3955,7 @@ void script_stop_instances(struct script_code *code) {
 
 	iter = db_iterator(st_db);
 
-	for( st = dbi_first(iter); dbi_exists(iter); st = dbi_next(iter) ) {
+	for( st = static_cast<script_state *>(dbi_first(iter)); dbi_exists(iter); st = static_cast<script_state *>(dbi_next(iter)) ) {
 		if( st->script == code )
 			script_free_state(st);
 	}
@@ -4306,7 +4306,7 @@ void script_cleararray_pc(struct map_session_data* sd, const char* varname, void
 	if( value )
 		script_array_ensure_zero(NULL,sd,reference_uid(key,0), NULL);
 
-	if( !(sa = idb_get(src->arrays, key)) ) /* non-existent array, nothing to empty */
+	if( !(sa = static_cast<script_array *>(idb_get(src->arrays, key))) ) /* non-existent array, nothing to empty */
 		return;
 
 	size = sa->size;
@@ -4349,7 +4349,7 @@ int script_reg_destroy(DBKey key, DBData *data, va_list ap)
 	if( data->type != DB_DATA_PTR ) // got no need for those!
 		return 0;
 
-	src = db_data2ptr(data);
+	src = static_cast<script_reg_state *>(db_data2ptr(data));
 
 	if( src->type ) {
 		struct script_reg_str *p = (struct script_reg_str *)src;
@@ -4651,7 +4651,7 @@ void do_final_script() {
 		aFree(generic_ui_array);
 
 	iter = db_iterator(st_db);
-	for(st = dbi_first(iter); dbi_exists(iter); st = dbi_next(iter))
+	for(st = static_cast<script_state *>(dbi_first(iter)); dbi_exists(iter); st = static_cast<script_state *>(dbi_next(iter)))
 		script_free_state(st);
 	dbi_destroy(iter);
 
@@ -4777,7 +4777,7 @@ void script_reload(void) {
 	atcmd_binding_count = 0;
 
 	iter = db_iterator(st_db);
-	for(st = dbi_first(iter); dbi_exists(iter); st = dbi_next(iter))
+	for(st = static_cast<script_state *>(dbi_first(iter)); dbi_exists(iter); st = static_cast<script_state *>(dbi_next(iter)))
 		script_free_state(st);
 	dbi_destroy(iter);
 	db_clear(st_db);
@@ -6288,7 +6288,7 @@ BUILDIN_FUNC(deletearray)
 
 	script_array_ensure_zero(st, NULL, data->u.num, reference_getref(data));
 
-	if ( !(sa = idb_get(src->arrays, id)) ) { // non-existent array, nothing to empty
+	if ( !(sa = static_cast<script_array *>(idb_get(src->arrays, id))) ) { // non-existent array, nothing to empty
 		return SCRIPT_CMD_SUCCESS;// not a variable
 	}
 
@@ -9987,7 +9987,7 @@ BUILDIN_FUNC(clone)
 		master_id=script_getnum(st,7);
 
 	if( script_hasdata(st,8) )
-		mode=script_getnum(st,8);
+		mode = static_cast<e_mode>(script_getnum(st,8));
 
 	if( script_hasdata(st,9) )
 		flag=script_getnum(st,9);
@@ -18035,7 +18035,7 @@ BUILDIN_FUNC(awake)
 
 	iter = db_iterator(st_db);
 
-	for (tst = dbi_first(iter); dbi_exists(iter); tst = dbi_next(iter)) {
+	for (tst = static_cast<script_state *>(dbi_first(iter)); dbi_exists(iter); tst = static_cast<script_state *>(dbi_next(iter))) {
 		if (tst->oid == nd->bl.id) {
 			TBL_PC* sd = map_id2sd(tst->rid);
 
@@ -19040,7 +19040,7 @@ BUILDIN_FUNC(instance_create)
 	int owner_id = 0;
 
 	if (script_hasdata(st, 3)) {
-		mode = script_getnum(st, 3);
+		mode = static_cast<instance_mode>(script_getnum(st, 3));
 
 		if (mode < IM_NONE || mode >= IM_MAX) {
 			ShowError("buildin_instance_create: Unknown instance mode %d for '%s'\n", mode, script_getstr(st, 2));

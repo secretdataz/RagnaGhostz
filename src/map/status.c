@@ -12080,7 +12080,7 @@ int status_change_end_(struct block_list* bl, enum sc_type type, int tid, const 
 		switch (type) {
 		case SC_MAGICPOWER:
 			//If Mystical Amplification ends, MATK is immediately recalculated
-			status_calc_bl_(bl, calc_flag, SCO_FORCE);
+			status_calc_bl_(bl, static_cast<scb_flag>(calc_flag), SCO_FORCE);
 			break;
 		default:
 			status_calc_bl(bl, calc_flag);
