@@ -17282,7 +17282,7 @@ BUILDIN_FUNC(setunitdata)
 				} else
 					md->state.copy_master_mode = 0;
 				break;
-			case UMOB_DMGIMMUNE: md->ud.immune_attack = (bool)value > 0 ? 1 : 0; break;
+			case UMOB_DMGIMMUNE: md->ud.immune_attack = value > 0 ? true : false; break;
 			case UMOB_ATKRANGE: md->status.rhw.range = (unsigned short)value; break;
 			case UMOB_ATKMIN: md->status.rhw.atk = (unsigned short)value; break;
 			case UMOB_ATKMAX: md->status.rhw.atk2 = (unsigned short)value; break;
@@ -17333,7 +17333,7 @@ BUILDIN_FUNC(setunitdata)
 			case UHOM_INT: hd->base_status.int_ = (unsigned short)value; status_calc_misc(bl, &hd->base_status, hd->homunculus.level); break;
 			case UHOM_DEX: hd->base_status.dex = (unsigned short)value; status_calc_misc(bl, &hd->base_status, hd->homunculus.level); break;
 			case UHOM_LUK: hd->base_status.luk = (unsigned short)value; status_calc_misc(bl, &hd->base_status, hd->homunculus.level); break;
-			case UHOM_DMGIMMUNE: hd->ud.immune_attack = (bool)value > 0 ? 1 : 0; break;
+			case UHOM_DMGIMMUNE: hd->ud.immune_attack = value > 0 ? true : false; break;
 			case UHOM_ATKRANGE: hd->base_status.rhw.range = (unsigned short)value; break;
 			case UHOM_ATKMIN: hd->base_status.rhw.atk = (unsigned short)value; break;
 			case UHOM_ATKMAX: hd->base_status.rhw.atk2 = (unsigned short)value; break;
@@ -17382,7 +17382,7 @@ BUILDIN_FUNC(setunitdata)
 			case UPET_INT: pd->status.int_ = (unsigned short)value; status_calc_misc(bl, &pd->status, pd->pet.level); break;
 			case UPET_DEX: pd->status.dex = (unsigned short)value; status_calc_misc(bl, &pd->status, pd->pet.level); break;
 			case UPET_LUK: pd->status.luk = (unsigned short)value; status_calc_misc(bl, &pd->status, pd->pet.level); break;
-			case UPET_DMGIMMUNE: pd->ud.immune_attack = (bool)value > 0 ? 1 : 0; break;
+			case UPET_DMGIMMUNE: pd->ud.immune_attack = value > 0 ? true : false; break;
 			case UPET_ATKRANGE: pd->status.rhw.range = (unsigned short)value; break;
 			case UPET_ATKMIN: pd->status.rhw.atk = (unsigned short)value; break;
 			case UPET_ATKMAX: pd->status.rhw.atk2 = (unsigned short)value; break;
@@ -17430,7 +17430,7 @@ BUILDIN_FUNC(setunitdata)
 			case UMER_INT: mc->base_status.int_ = (unsigned short)value; status_calc_misc(bl, &mc->base_status, mc->db->lv); break;
 			case UMER_DEX: mc->base_status.dex = (unsigned short)value; status_calc_misc(bl, &mc->base_status, mc->db->lv); break;
 			case UMER_LUK: mc->base_status.luk = (unsigned short)value; status_calc_misc(bl, &mc->base_status, mc->db->lv); break;
-			case UMER_DMGIMMUNE: mc->ud.immune_attack = (bool)value > 0 ? 1 : 0; break;
+			case UMER_DMGIMMUNE: mc->ud.immune_attack = value > 0 ? true : false; break;
 			case UMER_ATKRANGE: mc->base_status.rhw.range = (unsigned short)value; break;
 			case UMER_ATKMIN: mc->base_status.rhw.atk = (unsigned short)value; break;
 			case UMER_ATKMAX: mc->base_status.rhw.atk2 = (unsigned short)value; break;
@@ -17480,7 +17480,7 @@ BUILDIN_FUNC(setunitdata)
 			case UELE_INT: ed->base_status.int_ = (unsigned short)value; status_calc_misc(bl, &ed->base_status, ed->db->lv); break;
 			case UELE_DEX: ed->base_status.dex = (unsigned short)value; status_calc_misc(bl, &ed->base_status, ed->db->lv); break;
 			case UELE_LUK: ed->base_status.luk = (unsigned short)value; status_calc_misc(bl, &ed->base_status, ed->db->lv); break;
-			case UELE_DMGIMMUNE: ed->ud.immune_attack = (bool)value > 0 ? 1 : 0; break;
+			case UELE_DMGIMMUNE: ed->ud.immune_attack = value > 0 ? true : false; break;
 			case UELE_ATKRANGE: ed->base_status.rhw.range = (unsigned short)value; break;
 			case UELE_ATKMIN: ed->base_status.rhw.atk = (unsigned short)value; break;
 			case UELE_ATKMAX: ed->base_status.rhw.atk2 = (unsigned short)value; break;

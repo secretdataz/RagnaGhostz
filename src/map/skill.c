@@ -241,7 +241,8 @@ static void skill_chk2(int *idx) {
 #define skill_get3(id,x,var)  { skill_chk(&id); if (!id) return 0; skill_chk2(&x);  return var; }
 
 // Skill DB
-enum e_damage_type skill_get_hit( uint16 skill_id )                { skill_get  (skill_id, skill_db[skill_id]->hit); }
+enum e_damage_type skill_get_hit( uint16 skill_id )                { skill_chk(&skill_id); if (!skill_id) return DMG_NORMAL;
+																		return static_cast<e_damage_type>(skill_db[skill_id]->hit); }
 int skill_get_inf( uint16 skill_id )                               { skill_get  (skill_id, skill_db[skill_id]->inf); }
 int skill_get_ele( uint16 skill_id , uint16 skill_lv )             { skill_get2 (skill_id, skill_lv, skill_db[skill_id]->element); }
 int skill_get_nk( uint16 skill_id )                                { skill_get  (skill_id, skill_db[skill_id]->nk); }
@@ -4055,7 +4056,7 @@ static int skill_timerskill(int tid, unsigned int tick, int id, intptr_t data)
 							}
 							if (j) {
 								i = applyeffects[rnd()%j];
-								status_change_start(src, target, i, 10000, skl->skill_lv,
+								status_change_start(src, target, static_cast<sc_type>(i), 10000, skl->skill_lv,
 									(i == SC_BURNING ? 1000 : (i == SC_BLEEDING ? src->id : 0)),
 									(i == SC_BURNING ? src->id : 0), 0,
 									(i == SC_BURNING ? 15000 : (i == SC_FREEZING ? 40000 :
@@ -5665,7 +5666,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 			struct status_change *sc2 = status_get_sc(&ele->bl);
 			struct status_change *tsc2 = status_get_sc(bl);
 			sc_type type = status_skill2sc(skill_id), type2;
-			type2 = type-1;
+			type2 = static_cast<sc_type>(type-1);
 
 			clif_skill_nodamage(src,battle_get_master(src),skill_id,skill_lv,1);
 			clif_skill_damage(src, src, tick, status_get_amotion(src), 0, -30000, 1, skill_id, skill_lv, DMG_SKILL);
@@ -10182,8 +10183,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 				break;
 			}
 			switch( skill_lv ) {// Select mode bassed on skill level used.
-				case 2: mode = EL_MODE_ASSIST; break;
-				case 3: mode = EL_MODE_AGGRESSIVE; break;
+				case 2: mode = static_cast<e_mode>EL_MODE_ASSIST; break;
+				case 3: mode = static_cast<e_mode>EL_MODE_AGGRESSIVE; break;
 			}
 			if( !elemental_change_mode(sd->ed,mode) ) {
 				clif_skill_fail(sd,skill_id,USESKILL_FAIL_LEVEL,0);
@@ -16592,7 +16593,7 @@ void skill_weaponrefine(struct map_session_data *sd, int idx)
 				clif_upgrademessage(sd->fd, 3, material[ditem->wlv]);
 				return;
 			}
-			per = status_get_refine_chance(ditem->wlv, (int)item->refine);
+			per = status_get_refine_chance(static_cast<refine_type>(ditem->wlv), (int)item->refine);
 			if( sd->class_&JOBL_THIRD )
 				per += 10;
 			else
