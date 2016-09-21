@@ -13,186 +13,195 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="rA_common">
+      <UniqueIdentifier>{386b1f27-bf47-4da1-b15e-21b6ec1ee59a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rA_common\Crypt">
+      <UniqueIdentifier>{7c8599d0-3b51-4b61-9d8d-0b406b67fd11}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\src\common\atomic.h">
+      <Filter>rA_common</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\cbasetypes.h">
-      <Filter>Header Files</Filter>
+      <Filter>rA_common</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\cli.h">
-      <Filter>Header Files</Filter>
+      <Filter>rA_common</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\conf.h">
-      <Filter>Header Files</Filter>
+      <Filter>rA_common</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\core.h">
-      <Filter>Header Files</Filter>
+      <Filter>rA_common</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\db.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\ers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\malloc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\md5calc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\mempool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\mmo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\msg_conf.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\mutex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\nullpo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\raconf.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\random.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\showmsg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\socket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\sql.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\strlib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\thread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\winapi.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\atomic.h">
-      <Filter>Header Files</Filter>
+      <Filter>rA_common</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\des.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\evdp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\grfio.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\mapindex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\netbuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\network.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\common\spinlock.h">
-      <Filter>Header Files</Filter>
+      <Filter>rA_common</Filter>
     </ClInclude>
     <ClInclude Include="..\src\common\epoll.h">
-      <Filter>Header Files</Filter>
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\ers.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\evdp.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\grfio.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\malloc.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\mapindex.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\md5calc.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\mempool.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\mmo.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\msg_conf.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\mutex.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\netbuffer.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\network.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\nullpo.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\raconf.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\random.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\showmsg.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\socket.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\spinlock.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\sql.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\strlib.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\thread.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\timer.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\utils.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\winapi.h">
+      <Filter>rA_common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common\crypt.h">
+      <Filter>rA_common\Crypt</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\common\utils.c">
-      <Filter>Source Files</Filter>
+      <Filter>rA_common</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\timer.c">
-      <Filter>Source Files</Filter>
+      <Filter>rA_common</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\thread.c">
-      <Filter>Source Files</Filter>
+      <Filter>rA_common</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\strlib.c">
-      <Filter>Source Files</Filter>
+      <Filter>rA_common</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\sql.c">
-      <Filter>Source Files</Filter>
+      <Filter>rA_common</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\socket.c">
-      <Filter>Source Files</Filter>
+      <Filter>rA_common</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\showmsg.c">
-      <Filter>Source Files</Filter>
+      <Filter>rA_common</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\random.c">
-      <Filter>Source Files</Filter>
+      <Filter>rA_common</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\raconf.c">
-      <Filter>Source Files</Filter>
+      <Filter>rA_common</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\nullpo.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\mutex.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\msg_conf.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\mempool.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\md5calc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\malloc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\ers.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\db.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\core.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\conf.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\cli.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\des.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\evdp_epoll.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\grfio.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\mapindex.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\netbuffer.c">
-      <Filter>Source Files</Filter>
+      <Filter>rA_common</Filter>
     </ClCompile>
     <ClCompile Include="..\src\common\network.c">
-      <Filter>Source Files</Filter>
+      <Filter>rA_common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\common\netbuffer.c">
+      <Filter>rA_common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\common\mutex.c">
+      <Filter>rA_common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\common\msg_conf.c">
+      <Filter>rA_common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\common\mempool.c">
+      <Filter>rA_common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\common\md5calc.c">
+      <Filter>rA_common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\common\mapindex.c">
+      <Filter>rA_common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\common\malloc.c">
+      <Filter>rA_common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\common\grfio.c">
+      <Filter>rA_common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\common\evdp_epoll.c">
+      <Filter>rA_common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\common\ers.c">
+      <Filter>rA_common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\common\des.c">
+      <Filter>rA_common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\common\db.c">
+      <Filter>rA_common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\common\core.c">
+      <Filter>rA_common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\common\conf.c">
+      <Filter>rA_common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\common\cli.c">
+      <Filter>rA_common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
