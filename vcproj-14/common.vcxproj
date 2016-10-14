@@ -159,7 +159,6 @@
     <ClInclude Include="..\src\common\cli.h" />
     <ClInclude Include="..\src\common\conf.h" />
     <ClInclude Include="..\src\common\core.h" />
-    <ClInclude Include="..\src\common\crypt.h" />
     <ClInclude Include="..\src\common\db.h" />
     <ClInclude Include="..\src\common\des.h" />
     <ClInclude Include="..\src\common\epoll.h" />
