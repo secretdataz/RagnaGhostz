@@ -123,9 +123,6 @@
     <ClInclude Include="..\src\common\crypt.h">
       <Filter>rA_common\Crypt</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\common\md5crypt.h">
-      <Filter>rA_common\Crypt</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\common\utils.c">
@@ -205,12 +202,6 @@
     </ClCompile>
     <ClCompile Include="..\src\common\cli.c">
       <Filter>rA_common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\crypt.cpp">
-      <Filter>rA_common\Crypt</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\common\md5crypt.cpp">
-      <Filter>rA_common\Crypt</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
