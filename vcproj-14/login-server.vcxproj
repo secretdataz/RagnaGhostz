@@ -151,19 +151,14 @@
     <ClInclude Include="..\src\login\loginlog.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\3rdparty\libconfig\grammar.c" />
-    <ClCompile Include="..\3rdparty\libconfig\libconfig.c" />
-    <ClCompile Include="..\3rdparty\libconfig\scanctx.c" />
-    <ClCompile Include="..\3rdparty\libconfig\scanner.c" />
-    <ClCompile Include="..\3rdparty\libconfig\strbuf.c" />
     <ClCompile Include="..\3rdparty\mt19937ar\mt19937ar.c" />
-    <ClCompile Include="..\src\login\account.c" />
-    <ClCompile Include="..\src\login\ipban.c" />
-    <ClCompile Include="..\src\login\login.c" />
-    <ClCompile Include="..\src\login\loginchrif.c" />
-    <ClCompile Include="..\src\login\loginclif.c" />
-    <ClCompile Include="..\src\login\logincnslif.c" />
-    <ClCompile Include="..\src\login\loginlog.c" />
+    <ClCompile Include="..\src\login\account.cpp" />
+    <ClCompile Include="..\src\login\ipban.cpp" />
+    <ClCompile Include="..\src\login\login.cpp" />
+    <ClCompile Include="..\src\login\loginchrif.cpp" />
+    <ClCompile Include="..\src\login\loginclif.cpp" />
+    <ClCompile Include="..\src\login\logincnslif.cpp" />
+    <ClCompile Include="..\src\login\loginlog.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

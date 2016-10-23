@@ -1,44 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\src\login\account.c">
-      <Filter>login</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\login\ipban.c">
-      <Filter>login</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\login\login.c">
-      <Filter>login</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\login\loginchrif.c">
-      <Filter>login</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\login\loginclif.c">
-      <Filter>login</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\login\logincnslif.c">
-      <Filter>login</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\login\loginlog.c">
-      <Filter>login</Filter>
-    </ClCompile>
     <ClCompile Include="..\3rdparty\mt19937ar\mt19937ar.c">
       <Filter>3rdparty\mt19937ar</Filter>
     </ClCompile>
-    <ClCompile Include="..\3rdparty\libconfig\grammar.c">
-      <Filter>3rdparty\libconfig</Filter>
+    <ClCompile Include="..\src\login\account.cpp">
+      <Filter>login</Filter>
     </ClCompile>
-    <ClCompile Include="..\3rdparty\libconfig\libconfig.c">
-      <Filter>3rdparty\libconfig</Filter>
+    <ClCompile Include="..\src\login\ipban.cpp">
+      <Filter>login</Filter>
     </ClCompile>
-    <ClCompile Include="..\3rdparty\libconfig\scanctx.c">
-      <Filter>3rdparty\libconfig</Filter>
+    <ClCompile Include="..\src\login\login.cpp">
+      <Filter>login</Filter>
     </ClCompile>
-    <ClCompile Include="..\3rdparty\libconfig\scanner.c">
-      <Filter>3rdparty\libconfig</Filter>
+    <ClCompile Include="..\src\login\loginchrif.cpp">
+      <Filter>login</Filter>
     </ClCompile>
-    <ClCompile Include="..\3rdparty\libconfig\strbuf.c">
-      <Filter>3rdparty\libconfig</Filter>
+    <ClCompile Include="..\src\login\loginclif.cpp">
+      <Filter>login</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\login\logincnslif.cpp">
+      <Filter>login</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\login\loginlog.cpp">
+      <Filter>login</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
