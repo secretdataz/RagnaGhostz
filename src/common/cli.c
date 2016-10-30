@@ -9,9 +9,9 @@
 
 #include "cli.h"
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
 #ifdef WIN32
 	#include <conio.h>
 #else

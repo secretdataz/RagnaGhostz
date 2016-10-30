@@ -3,7 +3,7 @@
 
 #include "chrif.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <cstring>
 
 #include "../common/cbasetypes.h"

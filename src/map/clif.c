@@ -2,9 +2,9 @@
 // For more information, see LICENCE in the main folder
 #include "clif.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <stdarg.h>
 #include <time.h>
 

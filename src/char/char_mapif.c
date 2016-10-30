@@ -9,7 +9,7 @@
 
 #include "char_mapif.h"
 
-#include <string.h> //memcpy
+#include <cstring> //memcpy
 
 #include "../common/socket.h"
 #include "../common/sql.h"
@@ -21,7 +21,7 @@
 #include "char_logif.h"
 
 
-#include <stdlib.h>
+#include <cstdlib>
 
 /**
  * Packet send to all map-servers, attach to ourself

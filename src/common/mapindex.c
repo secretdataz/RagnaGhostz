@@ -3,7 +3,7 @@
 
 #include "mapindex.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <cstring>
 
 #include "core.h"

@@ -3,7 +3,7 @@
 
 #include "log.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <cstring>
 
 #include "../common/sql.h" // SQL_INNODB

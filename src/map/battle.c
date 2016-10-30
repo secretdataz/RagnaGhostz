@@ -3,7 +3,7 @@
 
 #include "battle.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <math.h>
 #include <cstring>
 

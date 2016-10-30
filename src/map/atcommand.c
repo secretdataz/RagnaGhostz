@@ -2,7 +2,7 @@
 // For more information, see LICENCE in the main folder
 #include "atcommand.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <math.h>
 #include <cstring>
 

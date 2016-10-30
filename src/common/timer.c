@@ -3,8 +3,8 @@
 
 #include "timer.h"
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #ifdef WIN32
 #include "winapi.h" // GetTickCount()
 #else

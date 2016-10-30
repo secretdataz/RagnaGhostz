@@ -9,7 +9,7 @@
 
 #include "logincnslif.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <cstring>
 
 #include "../common/mmo.h" //cbasetype + NAME_LENGTH

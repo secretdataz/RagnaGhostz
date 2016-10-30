@@ -9,7 +9,7 @@
 
 #include "loginlog.h"
 
-#include <stdlib.h> // exit
+#include <cstdlib> // exit
 #include <cstring>
 
 #include "../common/cbasetypes.h"

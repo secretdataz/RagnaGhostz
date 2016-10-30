@@ -4,7 +4,7 @@
 #include "npc.h"
 
 #include <cstring>
-#include <stdlib.h>
+#include <cstdlib>
 #include <errno.h>
 
 #include "../common/cbasetypes.h"

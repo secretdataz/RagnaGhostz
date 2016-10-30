@@ -3,7 +3,7 @@
 
 #include "grfio.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <zlib.h>
 #include <cstring>
 

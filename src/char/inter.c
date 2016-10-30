@@ -5,7 +5,7 @@
 
 #include <cstring>
 //#include <string>
-#include <stdlib.h>
+#include <cstdlib>
 #include <sys/stat.h> // for stat/lstat/fstat - [Dekamaster/Ultimate GM Tool]
 
 #include "../common/mmo.h"

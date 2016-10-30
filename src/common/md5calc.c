@@ -8,8 +8,8 @@
 
 #include "md5calc.h"
 
-#include <string.h>
-#include <stdio.h>
+#include <cstring>
+#include <cstdio>
 
 #include "../common/random.h"
 

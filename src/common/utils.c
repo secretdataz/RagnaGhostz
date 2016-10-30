@@ -3,7 +3,7 @@
 
 #include "utils.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <cstring>
 #include <math.h> // floor()
 

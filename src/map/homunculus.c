@@ -3,7 +3,7 @@
 
 #include "homunculus.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <cstring>
 
 #include "../common/malloc.h"

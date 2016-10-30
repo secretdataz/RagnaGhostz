@@ -3,9 +3,9 @@
 
 #include "int_auction.h"
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
 
 #include "../common/mmo.h"
 #include "../common/malloc.h"

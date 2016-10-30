@@ -3,7 +3,7 @@
 
 #include "instance.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <cstring>
 
 #include "../common/socket.h"

@@ -3,8 +3,8 @@
 
 #include "int_mercenary.h"
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include "../common/mmo.h"
 #include "../common/strlib.h"

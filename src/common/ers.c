@@ -44,7 +44,7 @@
 #include "ers.h"
 
 #include <cstring>
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "malloc.h" // CREATE, RECREATE, aMalloc, aFree
 #include "nullpo.h"

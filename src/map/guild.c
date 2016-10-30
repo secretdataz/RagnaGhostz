@@ -4,7 +4,7 @@
 #include "guild.h"
 
 #include <cstring>
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "../common/timer.h"
 #include "../common/nullpo.h"

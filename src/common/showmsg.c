@@ -4,7 +4,7 @@
 #include "showmsg.h"
 
 #include <time.h>
-#include <stdlib.h> // atexit
+#include <cstdlib> // atexit
 #include <cstring> // atexit
 
 #include "strlib.h" // StringBuf

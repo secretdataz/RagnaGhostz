@@ -3,9 +3,9 @@
 
 #include "int_guild.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 #define __STDC_WANT_LIB_EXT1__ 1
-#include <string.h>
+#include <cstring>
 
 #include "../common/cbasetypes.h"
 #include "../common/mmo.h"

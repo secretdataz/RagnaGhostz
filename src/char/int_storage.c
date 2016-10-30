@@ -3,7 +3,7 @@
 
 #include "int_storage.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <cstring>
 //#include <string>
 

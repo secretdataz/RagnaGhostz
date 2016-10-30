@@ -3,8 +3,8 @@
 
 #include "char_logif.h"
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include "../common/socket.h"
 #include "../common/timer.h"

@@ -3,7 +3,7 @@
 
 #include "socket.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <cstring> //std::strerror
 
 #ifdef WIN32

@@ -3,7 +3,7 @@
 
 #include "buyingstore.h"  // struct s_buyingstore
 
-#include <stdlib.h> // atoi
+#include <cstdlib> // atoi
 #include <cstring> // atoi
 
 #include "../common/nullpo.h"

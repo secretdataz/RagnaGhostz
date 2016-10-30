@@ -4,7 +4,7 @@
 #include "strlib.h"
 
 #include <cstring> // atexit
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "malloc.h"
 #include "showmsg.h"

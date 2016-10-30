@@ -3,7 +3,7 @@
 
 #include "vending.h"
 
-#include <stdlib.h> // atoi
+#include <cstdlib> // atoi
 #include <cstring>
 
 #include "../common/nullpo.h"

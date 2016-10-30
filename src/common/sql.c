@@ -3,7 +3,7 @@
 
 #include "sql.h"
 
-#include <stdlib.h>// strtoul
+#include <cstdlib>// strtoul
 #include <cstring>// memset
 
 #ifdef WIN32

@@ -4,7 +4,7 @@
 #include "core.h"
 
 #include <cstring>
-#include <stdlib.h>
+#include <cstdlib>
 #include <signal.h>
 #ifndef _WIN32
 #include <unistd.h>

@@ -3,8 +3,8 @@
 
 #include "cashshop.h"
 
-#include <string.h> // memset
-#include <stdlib.h> // atoi
+#include <cstring> // memset
+#include <cstdlib> // atoi
 
 #include "../common/malloc.h" // CREATE, RECREATE, aFree
 #include "../common/showmsg.h" // ShowWarning, ShowStatus

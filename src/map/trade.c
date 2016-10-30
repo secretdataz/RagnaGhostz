@@ -3,8 +3,8 @@
 
 #include "trade.h"
 
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 
 #include "../common/nullpo.h"
 #include "../common/socket.h"

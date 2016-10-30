@@ -4,7 +4,7 @@
 #include "intif.h"
 
 #include <cstring>
-#include <stdlib.h>
+#include <cstdlib>
 
 #include "../common/showmsg.h"
 #include "../common/socket.h"

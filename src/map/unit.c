@@ -2,8 +2,8 @@
 // For more information, see LICENCE in the main folder
 
 #include "unit.h"
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include "../common/showmsg.h"
 #include "../common/timer.h"
