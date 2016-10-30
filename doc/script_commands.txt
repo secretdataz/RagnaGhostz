@@ -4326,16 +4326,6 @@ See also db/[pre-]re/job_noenter_map.txt
 
 ---------------------------------------
 
-*get_revision()
-
-This command will return the SVN revision number that the server is currently
-running on.
-
-    if ( get_revision() >= 15000 )
-        mes "Welcome to rAthena!";
-
----------------------------------------
-
 *get_githash()
 
 This command will return the Git Hash that the server is currently running on.
