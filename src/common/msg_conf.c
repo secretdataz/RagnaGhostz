@@ -1,10 +1,9 @@
-#include "msg_conf.h"
-
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
 
 #include "malloc.h"
+#include "msg_conf.h"
 #include "showmsg.h"
 
 /*

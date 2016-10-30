@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "timer.h"
-
 #include <cstdlib>
 #include <cstring>
 #ifdef WIN32
@@ -12,9 +10,10 @@
 
 #include "db.h"
 #include "malloc.h"
-#include "showmsg.h"
-#include "utils.h"
 #include "nullpo.h"
+#include "showmsg.h"
+#include "timer.h"
+#include "utils.h"
 
 // If the server can't handle processing thousands of monsters
 // or many connected clients, please increase TIMER_MIN_INTERVAL.

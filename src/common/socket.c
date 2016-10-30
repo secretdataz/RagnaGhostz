@@ -1,15 +1,16 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "socket.h"
-
 #include <cstdlib>
 #include <cstring> //std::strerror
+#ifndef WIN32
+	#include <cerrno>
+#endif
 
+#include "socket.h"
 #ifdef WIN32
 	#include "winapi.h"
 #else
-	#include <cerrno>
 	#include <netinet/tcp.h>
 	#include <net/if.h>
 	#include <unistd.h>

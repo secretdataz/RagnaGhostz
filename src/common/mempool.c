@@ -9,7 +9,6 @@
 // For more information, see LICENCE in the main folder
 //
 //
-#include "mempool.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -25,6 +24,7 @@
 #include "atomic.h"
 #include "spinlock.h"
 #include "malloc.h"
+#include "mempool.h"
 #include "mutex.h"
 
 #define ALIGN16	ra_align(16)

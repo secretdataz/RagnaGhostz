@@ -1,11 +1,10 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "core.h"
-
 #include <cstring>
 #include <cstdlib>
 #include <csignal>
+
 #ifndef _WIN32
 #include <unistd.h>
 #else
@@ -13,6 +12,7 @@
 #include <direct.h> // _chdir
 #endif
 
+#include "core.h"
 #include "mmo.h"
 #include "showmsg.h"
 #include "malloc.h"

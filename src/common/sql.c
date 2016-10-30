@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "sql.h"
-
 #include <cstdlib>// strtoul
 #include <cstring>// memset
 
@@ -12,6 +10,7 @@
 #include <mysql.h> // moved here to resolve compile error [Secretdataz]
 #include "malloc.h"
 #include "showmsg.h"
+#include "sql.h"
 #include "strlib.h"
 #include "timer.h"
 

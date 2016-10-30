@@ -9,16 +9,15 @@
 // For more information, see LICENCE in the main folder
 //
 
-#include "raconf.h"
-
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
-#include "showmsg.h"
 #include "db.h"
 #include "malloc.h"
 //#include "mutex.h" //racond
+#include "raconf.h"
+#include "showmsg.h"
 
 #define SECTION_LEN 32
 #define VARNAME_LEN 64

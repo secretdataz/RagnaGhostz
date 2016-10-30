@@ -7,11 +7,12 @@
  * @author rAthena Dev Team
  */
 
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+
 #include "cli.h"
 
-#include <cstdio>
-#include <cstring>
-#include <cstdlib>
 #ifdef WIN32
 	#include <conio.h>
 #else
@@ -19,8 +20,8 @@
 #endif
 
 #include "cbasetypes.h"
-#include "showmsg.h"
 #include "core.h"
+#include "showmsg.h"
 
 
 //map confs

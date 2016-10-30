@@ -1,13 +1,13 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "grfio.h"
-
 #include <cstdlib>
-#include <zlib.h>
 #include <cstring>
 
+#include <zlib.h>
+
 #include "des.h"
+#include "grfio.h"
 #include "malloc.h"
 #include "showmsg.h"
 #include "strlib.h"

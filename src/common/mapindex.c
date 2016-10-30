@@ -1,12 +1,11 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "mapindex.h"
-
 #include <cstdlib>
 #include <cstring>
 
 #include "core.h"
+#include "mapindex.h"
 #include "mmo.h"
 #include "showmsg.h"
 #include "strlib.h"

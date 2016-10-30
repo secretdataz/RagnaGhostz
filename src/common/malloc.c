@@ -1,13 +1,12 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "malloc.h"
-
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
 
 #include "core.h"
+#include "malloc.h"
 #include "showmsg.h"
 
 ////////////// Memory Libraries //////////////////

@@ -1,17 +1,13 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "showmsg.h"
-
 #include <ctime>
 #include <cstdlib> // atexit
 #include <cstring> // atexit
 
+#include "core.h"
+#include "showmsg.h"
 #include "strlib.h" // StringBuf
-
-#include "core.h" //[Ind] - For SERVER_TYPE
-
-
 
 #ifdef WIN32
 	#include "winapi.h"

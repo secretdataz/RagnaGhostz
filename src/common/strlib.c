@@ -1,13 +1,12 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "strlib.h"
-
 #include <cstring> // atexit
 #include <cstdlib>
 
 #include "malloc.h"
 #include "showmsg.h"
+#include "strlib.h"
 
 #define J_MAX_MALLOC_SIZE 65535
 

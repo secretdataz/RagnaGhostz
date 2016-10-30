@@ -69,12 +69,11 @@
  * @see #db.h
 \*****************************************************************************/
 
-#include "db.h"
-
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
+#include "db.h"
 #include "ers.h"
 #include "malloc.h"
 #include "mmo.h"

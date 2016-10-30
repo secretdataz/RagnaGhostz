@@ -6,12 +6,11 @@
  *
  ***********************************************************/
 
-#include "md5calc.h"
-
 #include <cstring>
 #include <cstdio>
 
 #include "../common/random.h"
+#include "md5calc.h"
 
 #ifndef UINT_MAX
 #define UINT_MAX 4294967295U
