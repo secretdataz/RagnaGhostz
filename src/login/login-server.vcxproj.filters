@@ -34,25 +34,25 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="account.c">
+    <ClCompile Include="account.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ipban.c">
+    <ClCompile Include="ipban.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="login.c">
+    <ClCompile Include="login.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="loginchrif.c">
+    <ClCompile Include="loginchrif.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="loginclif.c">
+    <ClCompile Include="loginclif.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="logincnslif.c">
+    <ClCompile Include="logincnslif.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="loginlog.c">
+    <ClCompile Include="loginlog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

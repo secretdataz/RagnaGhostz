@@ -94,6 +94,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>FD_SETSIZE=4096;PCRE_SUPPORT;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;LIBCONFIG_STATIC;YY_USE_CONST;WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -164,13 +165,13 @@
     <ClInclude Include="loginlog.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="account.c" />
-    <ClCompile Include="ipban.c" />
-    <ClCompile Include="login.c" />
-    <ClCompile Include="loginchrif.c" />
-    <ClCompile Include="loginclif.c" />
-    <ClCompile Include="logincnslif.c" />
-    <ClCompile Include="loginlog.c" />
+    <ClCompile Include="account.cpp" />
+    <ClCompile Include="ipban.cpp" />
+    <ClCompile Include="login.cpp" />
+    <ClCompile Include="loginchrif.cpp" />
+    <ClCompile Include="loginclif.cpp" />
+    <ClCompile Include="logincnslif.cpp" />
+    <ClCompile Include="loginlog.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
