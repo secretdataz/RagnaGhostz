@@ -95,9 +95,6 @@
     <ClInclude Include="winapi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="enum_operator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cli.c">

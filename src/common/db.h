@@ -45,7 +45,6 @@
 #include <cstdarg>
 
 #include "cbasetypes.h"
-#include "enum_operator.h"
 
 #ifdef	__cplusplus
 extern "C" {
@@ -131,17 +130,15 @@ typedef enum DBType {
  * @see #db_default_release(DBType,DBOptions)
  * @see #db_alloc(const char *,int,DBType,DBOptions,unsigned short)
  */
-
 typedef enum DBOptions {
 	DB_OPT_BASE            = 0x00,
 	DB_OPT_DUP_KEY         = 0x01,
 	DB_OPT_RELEASE_KEY     = 0x02,
 	DB_OPT_RELEASE_DATA    = 0x04,
-	DB_OPT_RELEASE_BOTH    = 0x02|0x04, // DB_OPT_RELEASE_KEY|DB_OPT_RELEASE_DATA TODO : Find a better way to do this
+	DB_OPT_RELEASE_BOTH    = DB_OPT_RELEASE_KEY|DB_OPT_RELEASE_DATA,
 	DB_OPT_ALLOW_NULL_KEY  = 0x08,
 	DB_OPT_ALLOW_NULL_DATA = 0x10,
 } DBOptions;
-ENUM_ENABLE_BITWISE_OPERATORS(DBOptions);
 
 /**
  * Union of key types used by the database.
