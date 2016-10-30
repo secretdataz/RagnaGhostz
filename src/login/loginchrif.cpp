@@ -7,8 +7,6 @@
  * @author rAthena Dev Team
  */
 
-#include "loginchrif.h"
-
 #include <cstdlib>
 #include <cstring>
 
@@ -18,6 +16,7 @@
 #include "../common/socket.h" //wfifo session
 #include "account.h"
 #include "login.h"
+#include "loginchrif.h"
 #include "loginlog.h"
 
 

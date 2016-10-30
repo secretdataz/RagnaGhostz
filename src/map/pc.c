@@ -11657,18 +11657,13 @@ void pc_crimson_marker_clear(struct map_session_data *sd) {
 * @param sd: Player
 **/
 void pc_show_version(struct map_session_data *sd) {
-	const char* svn = get_svn_revision();
 	char buf[CHAT_SIZE_MAX];
 
-	if( svn[0] != UNKNOWN_VERSION )
-		sprintf(buf,msg_txt(sd,1295),"SVN: r",svn); //rAthena Version SVN: r%s
-	else {
-		const char* git = get_git_hash();
-		if( git[0] != UNKNOWN_VERSION )
-			sprintf(buf,msg_txt(sd,1295),"Git Hash: ",git); //rAthena Version Git Hash: %s
-		else
-			sprintf(buf,"%s",msg_txt(sd,1296)); //Cannot determine SVN/Git version.
-	}
+	const char* git = get_git_hash();
+	if( git[0] != UNKNOWN_VERSION )
+		sprintf(buf,msg_txt(sd,1295),"Git Hash: ",git); //rAthena Version Git Hash: %s
+	else
+		sprintf(buf,"%s",msg_txt(sd,1296)); //Cannot determine SVN/Git version.
 	clif_displaymessage(sd->fd,buf);
 }
 

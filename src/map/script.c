@@ -19836,18 +19836,7 @@ BUILDIN_FUNC(is_function) {
 		script_pushint(st,0);
 	return SCRIPT_CMD_SUCCESS;
 }
-/**
- * get_revision() -> retrieves the current svn revision (if available)
- **/
-BUILDIN_FUNC(get_revision) {
-	const char *svn = get_svn_revision();
 
-	if ( svn[0] != UNKNOWN_VERSION )
-		script_pushint(st,atoi(svn));
-	else
-		script_pushint(st,-1); //unknown
-	return SCRIPT_CMD_SUCCESS;
-}
 /* get_hash() -> retrieves the current git hash (if available)*/
 BUILDIN_FUNC(get_githash) {
 	const char* git = get_git_hash();
@@ -22433,7 +22422,6 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(getargcount,""),
 	BUILDIN_DEF(getcharip,"?"),
 	BUILDIN_DEF(is_function,"s"),
-	BUILDIN_DEF(get_revision,""),
 	BUILDIN_DEF(get_githash,""),
 	BUILDIN_DEF(freeloop,"?"),
 	BUILDIN_DEF(getrandgroupitem,"i??"),

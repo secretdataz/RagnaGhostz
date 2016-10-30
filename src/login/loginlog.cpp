@@ -7,8 +7,6 @@
  * @author rAthena Dev Team
  */
 
-#include "loginlog.h"
-
 #include <cstdlib> // exit
 #include <cstring>
 
@@ -18,7 +16,7 @@
 #include "../common/sql.h"
 #include "../common/strlib.h"
 #include "../common/showmsg.h"
-
+#include "loginlog.h"
 
 // global sql settings (in ipban_sql.c)
 static char   global_db_hostname[64] = "127.0.0.1"; // Doubled to reflect the change on commit #0f2dd7f

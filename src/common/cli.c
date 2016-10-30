@@ -64,20 +64,17 @@ bool opt_has_next_value(const char* option, int i, int argc){
  *   svn version
  *   website/forum address
  *   irc hangout
+ *   Discord server
  * @param do_exit: terminate execution ?
  */
 void display_versionscreen(bool do_exit)
 {
-	const char* svn = get_svn_revision();
-	if( svn[0] != UNKNOWN_VERSION )
-		ShowInfo("rAthena SVN Revision: '" CL_WHITE "%s" CL_RESET "'\n", svn);
-	else {
-		const char* git = get_git_hash();
-		if( git[0] != UNKNOWN_VERSION )
-			ShowInfo("rAthena Git Hash: '" CL_WHITE "%s" CL_RESET "'\n", git);
-	}
+	const char* git = get_git_hash();
+	if( git[0] != UNKNOWN_VERSION )
+		ShowInfo("rAthena Git Hash: '" CL_WHITE "%s" CL_RESET "'\n", git);
 	ShowInfo(CL_GREEN"Website/Forum:" CL_RESET "\thttp://rathena.org/\n");
 	ShowInfo(CL_GREEN"IRC Channel:" CL_RESET "\tirc://irc.rizon.net/#rathena\n");
+	ShowInfo(CL_GREEN"Discord Server:" CL_RESET "\thttps://discord.gg/0XP9qqhUV9GLSfCh\n");
 	ShowInfo("Open " CL_WHITE "readme.txt" CL_RESET " for more information.\n");
 	if (do_exit)
 		exit(EXIT_SUCCESS);

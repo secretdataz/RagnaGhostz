@@ -7,8 +7,6 @@
  * @author rAthena Dev Team
  */
 
-#include "loginclif.h"
-
 #include <cstdlib>
 #include <cstring>
 
@@ -24,6 +22,7 @@
 #include "account.h"
 #include "ipban.h" //ipban_check
 #include "login.h"
+#include "loginclif.h"
 #include "loginlog.h"
 #include "loginchrif.h"
 

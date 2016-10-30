@@ -8,9 +8,6 @@
  * @author rAthena Dev Team
  */
 
-
-#include "ipban.h"
-
 #include <cstdlib>
 #include <cstring>
 
@@ -19,6 +16,7 @@
 #include "../common/sql.h"
 #include "../common/strlib.h"
 #include "../common/timer.h"
+#include "ipban.h"
 #include "login.h"
 #include "loginlog.h"
 

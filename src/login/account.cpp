@@ -7,8 +7,6 @@
  * @author rAthena Dev Team
  */
 
-#include "account.h"
-
 #include <cstdlib>
 #include <cstring>
 
@@ -19,6 +17,7 @@
 #include "../common/socket.h"
 #include "../common/sql.h"
 #include "../common/strlib.h"
+#include "account.h"
 
 /// global defines
 #define ACCOUNT_SQL_DB_VERSION 20140928

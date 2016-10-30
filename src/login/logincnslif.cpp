@@ -7,8 +7,6 @@
  * @author rAthena Dev Team
  */
 
-#include "logincnslif.h"
-
 #include <cstdlib>
 #include <cstring>
 
@@ -20,6 +18,7 @@
 #include "../common/timer.h"
 #include "../common/strlib.h"
 #include "login.h"
+#include "logincnslif.h"
 
 /**
  * Login-server console help: starting option info.

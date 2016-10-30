@@ -8,10 +8,9 @@
  * @author rAthena Dev Team
  */
 
-#include "login.h"
-
 #include <cstdlib>
 #include <cstring>
+#include <string>
 
 #include "../common/core.h"
 #include "../common/db.h"
@@ -30,6 +29,7 @@
 
 #include "account.h"
 #include "ipban.h"
+#include "login.h"
 #include "loginlog.h"
 #include "loginclif.h"
 #include "loginchrif.h"
