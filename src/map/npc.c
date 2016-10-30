@@ -5,7 +5,7 @@
 
 #include <cstring>
 #include <cstdlib>
-#include <errno.h>
+#include <cerrno>
 
 #include "../common/cbasetypes.h"
 #include "../common/timer.h"

@@ -5,7 +5,7 @@
 
 #include <cstdlib>
 #include <cstring>
-#include <math.h> // floor()
+#include <cmath> // floor()
 
 #ifdef WIN32
 	#include "winapi.h"

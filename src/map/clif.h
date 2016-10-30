@@ -31,7 +31,7 @@ struct battleground_data;
 struct quest;
 struct party_booking_ad_info;
 enum e_party_member_withdraw;
-#include <stdarg.h>
+#include <cstdarg>
 
 enum { // packet DB
 	MIN_PACKET_DB  = 0x064,

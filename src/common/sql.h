@@ -5,7 +5,7 @@
 #define _COMMON_SQL_H_
 
 #include "cbasetypes.h"
-#include <stdarg.h>// va_list
+#include <cstdarg>// va_list
 
 #ifdef	__cplusplus
 extern "C" {

@@ -5,7 +5,7 @@
 
 #include <cstdlib>
 #include <cstring>
-#include <time.h>
+#include <ctime>
 
 #include "core.h"
 #include "showmsg.h"

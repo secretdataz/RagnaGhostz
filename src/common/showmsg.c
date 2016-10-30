@@ -3,7 +3,7 @@
 
 #include "showmsg.h"
 
-#include <time.h>
+#include <ctime>
 #include <cstdlib> // atexit
 #include <cstring> // atexit
 

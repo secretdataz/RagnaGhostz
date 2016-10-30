@@ -3,8 +3,8 @@
 
 #include "char.h"
 
-#include <time.h>
-#include <stdarg.h>
+#include <ctime>
+#include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>

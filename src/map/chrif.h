@@ -6,7 +6,7 @@
 
 #include "../common/cbasetypes.h"
 #include "../common/socket.h" // enum chrif_req_op
-#include <time.h>
+#include <ctime>
 
 enum sd_state { ST_LOGIN, ST_LOGOUT, ST_MAPCHANGE };
 struct auth_node {

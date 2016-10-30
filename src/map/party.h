@@ -4,7 +4,7 @@
 #ifndef _PARTY_H_
 #define _PARTY_H_
 
-#include <stdarg.h>
+#include <cstdarg>
 
 #include "../common/mmo.h" // struct party
 

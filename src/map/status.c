@@ -4,7 +4,7 @@
 #include "status.h"
 
 #include <cstdlib>
-#include <math.h>
+#include <cmath>
 #include <cstring>
 
 #include "../common/cbasetypes.h"

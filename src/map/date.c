@@ -2,7 +2,7 @@
 // For more information, see LICENCE in the main folder
 
 #include "date.h"
-#include <time.h>
+#include <ctime>
 
 /*
  * Get the current year

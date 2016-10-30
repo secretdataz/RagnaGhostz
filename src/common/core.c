@@ -5,7 +5,7 @@
 
 #include <cstring>
 #include <cstdlib>
-#include <signal.h>
+#include <csignal>
 #ifndef _WIN32
 #include <unistd.h>
 #else

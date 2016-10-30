@@ -4,7 +4,7 @@
 #include "mercenary.h"
 
 #include <cstdlib>
-#include <math.h>
+#include <cmath>
 #include <cstring>
 
 #include "../common/malloc.h"

@@ -12,9 +12,9 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <math.h>
-#include <setjmp.h>
-#include <errno.h>
+#include <cmath>
+#include <csetjmp>
+#include <cerrno>
 
 #ifdef PCRE_SUPPORT
 #include "../../3rdparty/pcre/include/pcre.h" // preg_match

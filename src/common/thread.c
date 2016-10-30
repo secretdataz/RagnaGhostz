@@ -16,7 +16,7 @@
 #include <cstdlib>
 #include <unistd.h>
 #include <cstring>
-#include <signal.h>
+#include <csignal>
 #include <pthread.h>
 #include <sched.h>
 #endif

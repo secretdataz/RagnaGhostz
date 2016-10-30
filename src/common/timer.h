@@ -5,7 +5,7 @@
 #define	_TIMER_H_
 
 #include "cbasetypes.h"
-#include <time.h>
+#include <ctime>
 
 #ifdef	__cplusplus
 extern "C" {

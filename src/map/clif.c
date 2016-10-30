@@ -5,8 +5,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <stdarg.h>
-#include <time.h>
+#include <cstdarg>
+#include <ctime>
 
 #include "../common/socket.h"
 #include "../common/timer.h"

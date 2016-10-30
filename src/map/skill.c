@@ -6,8 +6,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <time.h>
-#include <math.h>
+#include <ctime>
+#include <cmath>
 
 #include "../common/timer.h"
 #include "../common/nullpo.h"

@@ -15,7 +15,7 @@
 	#include <netinet/in.h>
 #endif
 
-#include <time.h>
+#include <ctime>
 
 #ifdef	__cplusplus
 extern "C" {

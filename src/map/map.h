@@ -4,7 +4,7 @@
 #ifndef _MAP_H_
 #define _MAP_H_
 
-#include <stdarg.h>
+#include <cstdarg>
 
 #include "../config/core.h"
 

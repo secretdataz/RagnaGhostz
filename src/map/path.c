@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cmath>
-#include <math.h>
+#include <cmath>
 
 #include "../common/db.h"
 #include "../common/malloc.h"

@@ -9,7 +9,7 @@
 #ifdef WIN32
 	#include "winapi.h"
 #else
-	#include <errno.h>
+	#include <cerrno>
 	#include <netinet/tcp.h>
 	#include <net/if.h>
 	#include <unistd.h>
