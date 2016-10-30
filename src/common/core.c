@@ -4,6 +4,9 @@
 #include <cstring>
 #include <cstdlib>
 #include <csignal>
+#include <fstream>
+#include <iostream>
+#include <string>
 
 #ifndef _WIN32
 #include <unistd.h>
@@ -154,30 +157,21 @@ void signals_init (void) {
 
 // Grabs the hash from the last time the user updated their working copy (last pull)
 const char *get_git_hash (void) {
-	static char GitHash[41] = ""; //Sha(40) + 1
-	FILE *fp;
+	static std::string GitHash;
+	std::ifstream file (".git/" GIT_ORIGIN);
 
-	if( GitHash[0] != '\0' )
-		return GitHash;
+	if(!GitHash.empty())
+		return GitHash.c_str();
 
-	if( (fp = fopen(".git/" GIT_ORIGIN, "r")) != NULL ) {
-		char line[64];
-		char *rev = (char*)malloc(sizeof(char) * 50);
-
-		if( fgets(line, sizeof(line), fp) && sscanf(line, "%40s", rev) )
-			snprintf(GitHash, sizeof(GitHash), "%s", rev);
-
-		free(rev);
-		fclose(fp);
-	} else {
-		GitHash[0] = UNKNOWN_VERSION;
+	if (file.is_open()) {
+		std::getline(file, GitHash);
 	}
-
-	if ( !(*GitHash) ) {
-		GitHash[0] = UNKNOWN_VERSION;
+	else {
+		GitHash = UNKNOWN_VERSION;
 	}
+	file.close();
 
-	return GitHash;
+	return GitHash.c_str();
 }
 
 /*======================================
@@ -203,9 +197,6 @@ static void display_title(void) {
 	if( git[0] != UNKNOWN_VERSION )
 		ShowInfo("Git Hash: '" CL_WHITE "%s" CL_RESET "'\n", git);
 	ShowInfo("Server compiled for packet version %d.\n", PACKETVER);
-#ifdef __cplusplus
-	ShowInfo(CL_RED "Using Alpha C++ build!" CL_RESET "\n");
-#endif
 }
 
 // Warning if executed as superuser (root)
