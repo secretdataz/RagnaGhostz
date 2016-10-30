@@ -567,7 +567,7 @@ bool login_config_read(const char* cfgName, bool normal) {
 			else if( !strcmpi(w1, "login_port") )
 				login_config.login_port = (uint16)atoi(w2);
 			else if(!strcmpi(w1, "console"))
-				login_config.console = (bool)config_switch(w2);
+				login_config.console = config_switch(w2) != 0;
 		}
 
 		if(!strcmpi(w1,"timestamp_format"))
@@ -586,19 +586,19 @@ bool login_config_read(const char* cfgName, bool normal) {
 		else if  (strcmpi(w1, "console_log_filepath") == 0)
 			safestrncpy(console_log_filepath, w2, sizeof(console_log_filepath));
 		else if(!strcmpi(w1, "log_login"))
-			login_config.log_login = (bool)config_switch(w2);
+			login_config.log_login = config_switch(w2) != 0;
 		else if(!strcmpi(w1, "new_account"))
-			login_config.new_account_flag = (bool)config_switch(w2);
+			login_config.new_account_flag = config_switch(w2) != 0;
 		else if(!strcmpi(w1, "new_acc_length_limit"))
-			login_config.new_acc_length_limit = (bool)config_switch(w2);
+			login_config.new_acc_length_limit = config_switch(w2) != 0;
 		else if(!strcmpi(w1, "start_limited_time"))
 			login_config.start_limited_time = atoi(w2);
 		else if(!strcmpi(w1, "check_client_version"))
-			login_config.check_client_version = (bool)config_switch(w2);
+			login_config.check_client_version = config_switch(w2) != 0;
 		else if(!strcmpi(w1, "client_version_to_connect"))
 			login_config.client_version_to_connect = strtoul(w2, NULL, 10);
 		else if(!strcmpi(w1, "use_MD5_passwords"))
-			login_config.use_md5_passwds = (bool)config_switch(w2);
+			login_config.use_md5_passwds = config_switch(w2) != 0;
 		else if(!strcmpi(w1, "group_id_to_connect"))
 			login_config.group_id_to_connect = atoi(w2);
 		else if(!strcmpi(w1, "min_group_id_to_connect"))
@@ -610,7 +610,7 @@ bool login_config_read(const char* cfgName, bool normal) {
 		else if(!strcmpi(w1, "time_allowed"))
 			login_config.time_allowed = atoi(w2);
 		else if(!strcmpi(w1, "use_dnsbl"))
-			login_config.use_dnsbl = (bool)config_switch(w2);
+			login_config.use_dnsbl = config_switch(w2) != 0;
 		else if(!strcmpi(w1, "dnsbl_servers"))
 			safestrncpy(login_config.dnsbl_servs, w2, sizeof(login_config.dnsbl_servs));
 		else if(!strcmpi(w1, "ipban_cleanup_interval"))
