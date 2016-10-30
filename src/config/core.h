@@ -86,6 +86,11 @@
 /// This requires PACKETVER 2011-08-17 or newer.
 #define PACKET_OBFUSCATION
 
+/// Uncomment to enable RagexeRE exclusive features.
+#ifndef RAGEXERE
+//#define RAGEXERE
+#endif
+
 /**
  * No settings past this point
  **/
