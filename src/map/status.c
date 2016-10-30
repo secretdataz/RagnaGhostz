@@ -2736,7 +2736,7 @@ int status_calc_mob_(struct mob_data* md, enum e_status_calc_opt opt)
 					break;
 				case AM_CANNIBALIZE:
 					status->max_hp = 1500 + 200*ud->skill_lv + 10*status_get_lv(mbl);
-					status->mode|= MD_CANATTACK|MD_AGGRESSIVE;
+					status->mode = status->mode|MD_CANATTACK|MD_AGGRESSIVE;
 					break;
 				case MH_SUMMON_LEGION:
 				{
@@ -2798,7 +2798,7 @@ void status_calc_pet_(struct pet_data *pd, enum e_status_calc_opt opt)
 
 		if(battle_config.pet_attack_support || battle_config.pet_damage_support) {
 			// Attack support requires the pet to be able to attack
-			pd->status.mode |= MD_CANATTACK;
+			pd->status.mode = pd->status.mode|MD_CANATTACK;
 		}
 	}
 
@@ -3218,7 +3218,7 @@ int status_calc_pc_(struct map_session_data* sd, enum e_status_calc_opt opt)
 
 	// !FIXME: Most of these stuff should be calculated once, but how do I fix the memset above to do that? [Skotlex]
 	// Give them all modes except these (useful for clones)
-	base_status->mode = MD_MASK&~(MD_STATUS_IMMUNE|MD_IGNOREMELEE|MD_IGNOREMAGIC|MD_IGNORERANGED|MD_IGNOREMISC|MD_DETECTOR|MD_ANGRY|MD_TARGETWEAK);
+	base_status->mode = static_cast<e_mode>(MD_MASK&~(MD_STATUS_IMMUNE|MD_IGNOREMELEE|MD_IGNOREMAGIC|MD_IGNORERANGED|MD_IGNOREMISC|MD_DETECTOR|MD_ANGRY|MD_TARGETWEAK));
 
 	base_status->size = (sd->class_&JOBL_BABY || (sd->class_&MAPID_BASEMASK) == MAPID_SUMMONER) ? SZ_SMALL : SZ_MEDIUM;
 	if (battle_config.character_size && pc_isriding(sd)) { // [Lupus]
@@ -4140,7 +4140,7 @@ int status_calc_elemental_(struct elemental_data *ed, enum e_status_calc_opt opt
 		if( !ele->mode )
 			status->mode = EL_MODE_PASSIVE;
 		else
-			status->mode = ele->mode;
+			status->mode = static_cast<e_mode>(ele->mode);
 
 		status->class_ = CLASS_NORMAL;
 		status_calc_misc(&ed->bl, status, 0);
@@ -6954,19 +6954,19 @@ unsigned char status_calc_attack_element(struct block_list *bl, struct status_ch
  * @param mode: Original mode
  * @return mode with cap_value(mode, 0, INT_MAX)
  */
-static enum e_mode status_calc_mode(struct block_list *bl, struct status_change *sc, enum e_mode mode)
+static enum e_mode status_calc_mode(struct block_list *bl, struct status_change *sc, e_mode mode)
 {
 	if(!sc || !sc->count)
-		return cap_value((int)mode, 0, INT_MAX);
+		return static_cast<e_mode>(cap_value((int)mode, 0, INT_MAX));
 	if(sc->data[SC_MODECHANGE]) {
 		if (sc->data[SC_MODECHANGE]->val2)
-			mode = (mode&~MD_MASK)|sc->data[SC_MODECHANGE]->val2; // Set mode
+			mode = static_cast<e_mode>((mode&~MD_MASK)|sc->data[SC_MODECHANGE]->val2); // Set mode
 		if (sc->data[SC_MODECHANGE]->val3)
-			mode|= sc->data[SC_MODECHANGE]->val3; // Add mode
+			mode = mode|static_cast<e_mode>(sc->data[SC_MODECHANGE]->val3); // Add mode
 		if (sc->data[SC_MODECHANGE]->val4)
-			mode&=~sc->data[SC_MODECHANGE]->val4; // Del mode
+			mode = mode&static_cast<e_mode>(~sc->data[SC_MODECHANGE]->val4); // Del mode
 	}
-	return cap_value(mode, 0, INT_MAX);
+	return static_cast<e_mode>(cap_value(mode, 0, INT_MAX));
 }
 
 /**
@@ -8239,7 +8239,7 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 	break;
 	case SC_MODECHANGE:
 	{
-		enum e_mode mode;
+		e_mode mode;
 		struct status_data *bstatus = status_get_base_status(bl);
 		if (!bstatus) return 0;
 		if (sc->data[type]) { // Pile up with previous values.
@@ -8247,9 +8247,9 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 			val3 |= sc->data[type]->val3;
 			val4 |= sc->data[type]->val4;
 		}
-		mode = val2 ? ((val2&~MD_MASK)|val2) : bstatus->mode; // Base mode
-		if (val4) mode&=~val4; // Del mode
-		if (val3) mode|= val3; // Add mode
+		mode = val2 ? static_cast<e_mode>(((val2&~MD_MASK)|val2)) : bstatus->mode; // Base mode
+		if (val4) mode = mode&static_cast<e_mode>(~val4); // Del mode
+		if (val3) mode = mode|static_cast<e_mode>(val3); // Add mode
 		if (mode == bstatus->mode) { // No change.
 			if (sc->data[type]) // Abort previous status
 				return status_change_end(bl, type, INVALID_TIMER);
@@ -12828,7 +12828,7 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr_t data)
 		if( !status_charge(bl,0,sce->val2) ) {
 			struct block_list *s_bl = battle_get_master(bl);
 			if (bl->type == BL_ELEM)
-				elemental_change_mode(BL_CAST(BL_ELEM, bl), MAX_ELESKILLTREE);
+				elemental_change_mode(BL_CAST(BL_ELEM, bl), static_cast<e_mode>(MAX_ELESKILLTREE));
 			if( s_bl )
 				status_change_end(s_bl,type+1,INVALID_TIMER);
 			status_change_end(bl,type,INVALID_TIMER);
