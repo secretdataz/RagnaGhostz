@@ -42,10 +42,10 @@
 #ifndef _DB_H_
 #define _DB_H_
 
+#include <cstdarg>
+
 #include "cbasetypes.h"
 #include "enum_operator.h"
-
-#include <cstdarg>
 
 #ifdef	__cplusplus
 extern "C" {

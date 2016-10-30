@@ -83,10 +83,12 @@
 #define __STDC_LIMIT_MACROS
 #endif
 
+#include <cctype>
 #include <cinttypes>
-#include <cstdint>
 #include <climits>
-
+#include <cstdarg>
+#include <cstddef>
+#include <cstdint>
 // temporary fix for bugreport:4961 (unintended conversion from signed to unsigned)
 // (-20 >= UCHAR_MAX) returns true
 // (-20 >= USHRT_MAX) returns true
@@ -176,7 +178,6 @@ typedef unsigned long int   ppuint32;
 //////////////////////////////////////////////////////////////////////////
 // integer with exact processor width (and best speed)
 //////////////////////////////
-#include <cstddef> // size_t
 //#include <cstdbool> //boolean
 
 #if defined(WIN32) && !defined(MINGW) // does not have a signed size_t
@@ -338,7 +339,6 @@ typedef char bool;
 //////////////////////////////////////////////////////////////////////////
 // Has to be unsigned to avoid problems in some systems
 // Problems arise when these functions expect an argument in the range [0,256[ and are fed a signed char.
-#include <cctype>
 #define ISALNUM(c) (isalnum((unsigned char)(c)))
 #define ISALPHA(c) (isalpha((unsigned char)(c)))
 #define ISCNTRL(c) (iscntrl((unsigned char)(c)))
@@ -360,7 +360,6 @@ typedef char bool;
 
 //////////////////////////////////////////////////////////////////////////
 // Make sure va_copy exists
-#include <cstdarg> // va_list, va_copy(?)
 #if !defined(va_copy)
 #if defined(__va_copy)
 #define va_copy __va_copy

@@ -4,8 +4,8 @@
 #ifndef _UTILS_H_
 #define _UTILS_H_
 
+#include <cstdio>
 #include "cbasetypes.h"
-#include <cstdio> // FILE*
 
 #ifdef	__cplusplus
 extern "C" {

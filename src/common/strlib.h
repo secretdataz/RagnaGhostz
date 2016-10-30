@@ -4,14 +4,13 @@
 #ifndef _STRLIB_H_
 #define _STRLIB_H_
 
-#include "cbasetypes.h"
 #include <cstdarg>
-
 #ifndef __USE_GNU
     #define __USE_GNU  // required to enable strnlen on some platforms
     #include <cstring>
     #undef __USE_GNU
 #endif
+#include "cbasetypes.h"
 
 #ifdef	__cplusplus
 extern "C" {

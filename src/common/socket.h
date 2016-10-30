@@ -4,6 +4,8 @@
 #ifndef	_SOCKET_H_
 #define _SOCKET_H_
 
+#include <ctime>
+
 #include "cbasetypes.h"
 
 #ifdef WIN32
@@ -14,8 +16,6 @@
 	#include <sys/socket.h>
 	#include <netinet/in.h>
 #endif
-
-#include <ctime>
 
 #ifdef	__cplusplus
 extern "C" {
