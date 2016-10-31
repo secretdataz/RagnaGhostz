@@ -3,10 +3,9 @@
 
 #ifdef PCRE_SUPPORT
 
-#include "../../3rdparty/pcre/include/pcre.h"
-
 #include <cstring>
 
+#include "../../3rdparty/pcre/include/pcre.h"
 #include "../common/timer.h"
 #include "../common/malloc.h"
 #include "../common/showmsg.h"

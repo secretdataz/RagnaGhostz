@@ -1,6 +1,5 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
-#include "atcommand.h"
 
 #include <cstdlib>
 #include <cmath>
@@ -18,6 +17,7 @@
 #include "../common/utils.h"
 #include "../common/conf.h"
 
+#include "atcommand.h"
 #include "map.h"
 #include "battle.h"
 #include "chat.h"

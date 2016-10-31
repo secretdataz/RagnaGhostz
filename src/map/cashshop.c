@@ -1,14 +1,13 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "cashshop.h"
-
 #include <cstring> // memset
 #include <cstdlib> // atoi
 
 #include "../common/malloc.h" // CREATE, RECREATE, aFree
 #include "../common/showmsg.h" // ShowWarning, ShowStatus
 
+#include "cashshop.h"
 #include "pc.h" // struct map_session_data
 #include "pet.h" // pet_create_egg
 #include "clif.h"

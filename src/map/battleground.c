@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "battleground.h"
-
 #include <cstring>
 
 #include "../common/timer.h"
@@ -12,6 +10,7 @@
 #include "../common/strlib.h"
 
 #include "battle.h"
+#include "battleground.h"
 #include "clif.h"
 #include "npc.h"
 #include "pc.h"

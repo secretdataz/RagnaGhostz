@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "battle.h"
-
 #include <cstdlib>
 #include <cmath>
 #include <cstring>
@@ -17,6 +15,7 @@
 #include "../common/strlib.h"
 #include "../common/utils.h"
 
+#include "battle.h"
 #include "map.h"
 #include "path.h"
 #include "pc.h"

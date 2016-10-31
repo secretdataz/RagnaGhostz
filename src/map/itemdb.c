@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "itemdb.h"
-
 #include <cstdlib>
 #include <cstring>
 
@@ -16,6 +14,7 @@
 #include "battle.h" // struct battle_config
 #include "cashshop.h"
 #include "intif.h"
+#include "itemdb.h"
 #include "pc.h"
 #include "status.h"
 #include "clif.h"

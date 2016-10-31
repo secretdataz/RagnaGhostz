@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "map.h"
-
 #include <cstdlib>
 #include <cmath>
 #include <cstring>
@@ -21,6 +19,7 @@
 #include "../common/cli.h"
 #include "../common/ers.h"
 
+#include "map.h"
 #include "path.h"
 #include "chrif.h"
 #include "clif.h"

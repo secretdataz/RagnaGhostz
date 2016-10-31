@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "npc.h"
-
 #include <cstring>
 #include <cstdlib>
 #include <cerrno>
@@ -17,6 +15,7 @@
 #include "../common/ers.h"
 #include "../common/db.h"
 #include "map.h"
+#include "npc.h"
 #include "log.h"
 #include "clif.h"
 #include "intif.h"

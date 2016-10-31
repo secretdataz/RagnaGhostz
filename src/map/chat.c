@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "chat.h"
-
 #include <cstring>
 
 #include "../common/cbasetypes.h"
@@ -14,6 +12,7 @@
 #include "map.h"
 #include "atcommand.h" // msg_txt()
 #include "battle.h" // struct battle_config
+#include "chat.h"
 #include "clif.h"
 #include "npc.h" // npc_event_do()
 #include "pc.h"

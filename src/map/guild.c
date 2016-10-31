@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "guild.h"
-
 #include <cstring>
 #include <cstdlib>
 
@@ -18,6 +16,7 @@
 #include "map.h"
 #include "storage.h"
 #include "battle.h"
+#include "guild.h"
 #include "npc.h"
 #include "pc.h"
 #include "instance.h"

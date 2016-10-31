@@ -7,8 +7,6 @@
 //#define DEBUG_HASH
 //#define DEBUG_DUMP_STACK
 
-#include "script.h"
-
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -37,6 +35,7 @@
 	#include "../common/mutex.h"
 #endif
 
+#include "script.h"
 #include "map.h"
 #include "path.h"
 #include "clif.h"

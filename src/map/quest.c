@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "quest.h"
-
 #include <cstdlib>
 #include <cstring>
 
@@ -23,6 +21,7 @@
 #include "mob.h"
 #include "battle.h"
 #include "log.h"
+#include "quest.h"
 
 static DBMap *questdb;
 struct quest_db quest_dummy;

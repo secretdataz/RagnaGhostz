@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "trade.h"
-
 #include <cstdio>
 #include <cstring>
 
@@ -19,6 +17,7 @@
 #include "log.h"
 #include "pc_groups.h"
 #include "battle.h"
+#include "trade.h"
 
 #define TRADE_DISTANCE 2 ///Max distance from traders to enable a trade to take place.
 

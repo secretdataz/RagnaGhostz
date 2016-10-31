@@ -2,8 +2,6 @@
 // For more information, see LICENCE in the main folder
 // Duel organizing functions [LuzZza]
 
-#include "duel.h"
-
 #include <cstdio>
 #include <cstring>
 
@@ -11,6 +9,7 @@
 
 #include "atcommand.h"  // msg_txt
 #include "clif.h"
+#include "duel.h"
 #include "pc.h"
 #include "battle.h"
 

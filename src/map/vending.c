@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "vending.h"
-
 #include <cstdlib> // atoi
 #include <cstring>
 
@@ -24,6 +22,7 @@
 #include "npc.h"
 #include "battle.h"
 #include "log.h"
+#include "vending.h"
 
 static uint32 vending_nextid = 0; ///Vending_id counter
 static DBMap *vending_db; ///DB holder the vender : charid -> map_session_data

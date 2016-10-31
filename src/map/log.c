@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "log.h"
-
 #include <cstdlib>
 #include <cstring>
 
@@ -13,6 +11,7 @@
 #include "map.h"
 #include "battle.h"
 #include "itemdb.h"
+#include "log.h"
 #include "homunculus.h"
 #include "mob.h"
 #include "pet.h"

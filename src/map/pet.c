@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "pet.h"
-
 #include <cstdlib>
 #include <cstring>
 
@@ -17,6 +15,7 @@
 #include "../common/ers.h"
 
 #include "pc.h"
+#include "pet.h"
 #include "intif.h"
 #include "chrif.h"
 #include "npc.h"

@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "pc.h"
-
 #include <cstdlib>
 #include <cmath>
 #include <cstring>
@@ -34,6 +32,7 @@
 #include "instance.h"
 #include "mercenary.h"
 #include "elemental.h"
+#include "pc.h"
 #include "pet.h" // pet_unlocktarget()
 #include "party.h" // party_search()
 #include "storage.h"

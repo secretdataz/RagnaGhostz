@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "mob.h"
-
 #include <cstdlib>
 #include <cmath>
 #include <cstring>
@@ -20,6 +18,7 @@
 #include "../common/socket.h"
 
 #include "map.h"
+#include "mob.h"
 #include "path.h"
 #include "clif.h"
 #include "intif.h"

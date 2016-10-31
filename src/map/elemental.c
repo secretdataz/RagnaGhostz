@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "elemental.h"
-
 #include <cstdlib>
 #include <cmath>
 #include <cstring>
@@ -19,6 +17,7 @@
 
 #include "log.h"
 #include "clif.h"
+#include "elemental.h"
 #include "intif.h"
 #include "itemdb.h"
 #include "pc.h"

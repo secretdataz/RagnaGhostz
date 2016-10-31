@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "intif.h"
-
 #include <cstring>
 #include <cstdlib>
 
@@ -17,6 +15,7 @@
 #include "battle.h"
 #include "chrif.h"
 #include "clif.h"
+#include "intif.h"
 #include "pc.h"
 #include "storage.h"
 #include "party.h"

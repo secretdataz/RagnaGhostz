@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "buyingstore.h"  // struct s_buyingstore
-
 #include <cstdlib> // atoi
 #include <cstring> // atoi
 
@@ -15,6 +13,7 @@
 #include "../common/timer.h"  // gettick
 #include "atcommand.h"  // msg_txt
 #include "battle.h"  // battle_config.*
+#include "buyingstore.h"  // struct s_buyingstore
 #include "clif.h"  // clif_buyingstore_*
 #include "log.h"  // log_pick_pc, log_zeny
 #include "pc.h"  // struct map_session_data

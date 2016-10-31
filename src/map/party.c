@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "party.h"
-
 #include <cstdlib>
 #include <cstring>
 
@@ -26,6 +24,7 @@
 #include "battle.h"
 #include "mob.h"
 #include "log.h"
+#include "party.h"
 #include "pc_groups.h"
 
 static DBMap* party_db; // int party_id -> struct party_data* (releases data)

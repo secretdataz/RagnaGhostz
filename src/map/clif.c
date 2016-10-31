@@ -1,6 +1,5 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
-#include "clif.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -22,6 +21,7 @@
 
 #include "map.h"
 #include "chrif.h"
+#include "clif.h"
 #include "pc.h"
 #include "pc_groups.h"
 #include "status.h"

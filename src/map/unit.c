@@ -1,7 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "unit.h"
 #include <cstdlib>
 #include <cstring>
 
@@ -15,6 +14,7 @@
 #include "../common/ers.h"  // ers_destroy
 
 #include "map.h"
+#include "unit.h"
 #include "path.h"
 #include "pc.h"
 #include "pet.h"

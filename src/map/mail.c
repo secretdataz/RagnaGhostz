@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "mail.h"
-
 #include <cstring>
 
 #include "../common/nullpo.h"
@@ -13,6 +11,7 @@
 #include "atcommand.h"
 #include "itemdb.h"
 #include "clif.h"
+#include "mail.h"
 #include "pc.h"
 #include "intif.h"
 #include "log.h"

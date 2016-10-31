@@ -1,6 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
-#include "storage.h"
+
 #include <cstdlib>
 #include <cstring>
 
@@ -19,6 +19,7 @@
 #include "guild.h"
 #include "log.h"
 #include "battle.h"
+#include "storage.h"
 
 static DBMap* guild_storage_db; ///Databases of guild_storage : int guild_id -> struct guild_storage*
 

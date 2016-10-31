@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "path.h"
-
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -14,8 +12,9 @@
 #include "../common/nullpo.h"
 #include "../common/random.h"
 #include "../common/showmsg.h"
-#include "map.h"
 #include "battle.h"
+#include "map.h"
+#include "path.h"
 
 #define SET_OPEN 0
 #define SET_CLOSED 1

@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "skill.h"
-
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -18,6 +16,7 @@
 #include "../common/utils.h"
 #include "../common/ers.h"
 
+#include "skill.h"
 #include "map.h"
 #include "path.h"
 #include "clif.h"

@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "pc_groups.h"
-
 #include <cstring>
 
 #include "../common/conf.h"
@@ -14,6 +12,7 @@
 
 #include "atcommand.h" // atCommandType
 #include "pc.h" // e_pc_permission
+#include "pc_groups.h"
 
 typedef struct GroupSettings GroupSettings;
 

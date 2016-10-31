@@ -1,8 +1,6 @@
 // Copyright (c) rAthena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "channel.h"
-
 #include <cstdlib>
 #include <cstring>
 
@@ -14,6 +12,7 @@
 #include "../common/socket.h" //set_eof
 #include "../common/timer.h"  // DIFF_TICK
 
+#include "channel.h"
 #include "map.h" //msg_conf
 #include "clif.h" //clif_chsys_msg
 #include "pc.h"
