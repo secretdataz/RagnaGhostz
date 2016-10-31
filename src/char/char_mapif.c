@@ -7,8 +7,7 @@
  * @author rAthena Dev Team
  */
 
-#include "char_mapif.h"
-
+#include <cstdlib>
 #include <cstring> //memcpy
 
 #include "../common/socket.h"
@@ -19,9 +18,7 @@
 #include "inter.h"
 #include "char.h"
 #include "char_logif.h"
-
-
-#include <cstdlib>
+#include "char_mapif.h"
 
 /**
  * Packet send to all map-servers, attach to ourself

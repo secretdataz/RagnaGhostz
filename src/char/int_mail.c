@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include"int_mail.h"
-
 #include <cstdlib>
 #include <cstring>
 
@@ -14,6 +12,7 @@
 #include "char.h"
 #include "char_mapif.h"
 #include "inter.h"
+#include"int_mail.h"
 
 int mail_fromsql(uint32 char_id, struct mail_data* md)
 {

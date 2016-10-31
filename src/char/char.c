@@ -1,13 +1,11 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "char.h"
-
-#include <ctime>
 #include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 
 #include "../common/core.h"
 #include "../common/db.h"
@@ -20,6 +18,7 @@
 #include "../common/timer.h"
 #include "../common/cli.h"
 #include "../common/msg_conf.h"
+#include "char.h"
 #include "int_guild.h"
 #include "int_homun.h"
 #include "int_mercenary.h"

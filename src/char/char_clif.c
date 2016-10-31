@@ -1,8 +1,6 @@
 // Copyright (c) rAthena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "char_clif.h"
-
 #include <cstdlib>
 #include <cstring>
 
@@ -18,6 +16,7 @@
 #include "../common/timer.h"
 #include "inter.h"
 #include "char.h"
+#include "char_clif.h"
 #include "char_logif.h"
 #include "char_mapif.h"
 

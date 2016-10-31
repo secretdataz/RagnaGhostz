@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "int_auction.h"
-
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
@@ -18,6 +16,7 @@
 #include "char.h"
 #include "char_mapif.h"
 #include "inter.h"
+#include "int_auction.h"
 #include "int_mail.h"
 
 static DBMap* auction_db_ = NULL; // int auction_id -> struct auction_data*

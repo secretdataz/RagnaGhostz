@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "int_quest.h"
-
 #include <cstdlib>
 #include <cstring>
 
@@ -14,7 +12,7 @@
 
 #include "char.h"
 #include "inter.h"
-
+#include "int_quest.h"
 
 /**
  * Loads the entire questlog for a character.

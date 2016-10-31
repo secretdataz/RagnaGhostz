@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "int_guild.h"
-
 #include <cstdlib>
 #define __STDC_WANT_LIB_EXT1__ 1
 #include <cstring>
@@ -17,6 +15,7 @@
 #include "char.h"
 #include "char_mapif.h"
 #include "inter.h"
+#include "int_guild.h"
 
 #define GS_MEMBER_UNMODIFIED 0x00
 #define GS_MEMBER_MODIFIED 0x01

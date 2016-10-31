@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "int_storage.h"
-
 #include <cstdlib>
 #include <cstring>
 //#include <string>
@@ -14,6 +12,7 @@
 #include "../common/sql.h"
 #include "char.h"
 #include "inter.h"
+#include "int_storage.h"
 
 #define STORAGE_MEMINC	16
 

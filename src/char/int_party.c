@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "int_party.h"
-
 #include <cstdlib>
 #include <cstring>
 
@@ -17,7 +15,7 @@
 #include "char.h"
 #include "char_mapif.h"
 #include "inter.h"
-
+#include "int_party.h"
 
 struct party_data {
 	struct party party;

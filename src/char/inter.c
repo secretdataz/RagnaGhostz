@@ -1,8 +1,6 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
-#include "inter.h"
-
 #include <cstring>
 //#include <string>
 #include <cstdlib>
@@ -17,7 +15,7 @@
 #include "char.h"
 #include "char_logif.h"
 #include "char_mapif.h"
-
+#include "inter.h"
 #include "int_party.h"
 #include "int_guild.h"
 #include "int_storage.h"
