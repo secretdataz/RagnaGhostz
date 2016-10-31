@@ -2961,7 +2961,7 @@ bool char_config_read(const char* cfgName, bool normal){
 		} else if (strcmpi(w1, "char_maintenance") == 0) {
 			charserv_config.char_maintenance = atoi(w2);
 		} else if (strcmpi(w1, "char_new") == 0) {
-			charserv_config.char_new = (bool)atoi(w2);
+			charserv_config.char_new = atoi(w2) != 0;
 		} else if (strcmpi(w1, "char_new_display") == 0) {
 			charserv_config.char_new_display = atoi(w2);
 		} else if (strcmpi(w1, "max_connect_user") == 0) {
@@ -3002,7 +3002,7 @@ bool char_config_read(const char* cfgName, bool normal){
 			safestrncpy(charserv_config.char_config.unknown_char_name, w2, sizeof(charserv_config.char_config.unknown_char_name));
 			charserv_config.char_config.unknown_char_name[NAME_LENGTH-1] = '\0';
 		} else if (strcmpi(w1, "name_ignoring_case") == 0) {
-			charserv_config.char_config.name_ignoring_case = (bool)config_switch(w2);
+			charserv_config.char_config.name_ignoring_case = config_switch(w2) != 0;
 		} else if (strcmpi(w1, "char_name_option") == 0) {
 			charserv_config.char_config.char_name_option = atoi(w2);
 		} else if (strcmpi(w1, "char_name_letters") == 0) {
@@ -3039,28 +3039,28 @@ bool char_config_read(const char* cfgName, bool normal){
 			charserv_config.guild_exp_rate = atoi(w2);
 		} else if (strcmpi(w1, "pincode_enabled") == 0) {
 #if PACKETVER_SUPPORTS_PINCODE
-			charserv_config.pincode_config.pincode_enabled = config_switch(w2);
+			charserv_config.pincode_config.pincode_enabled = config_switch(w2) != 0;
 		} else if (strcmpi(w1, "pincode_changetime") == 0) {
 			charserv_config.pincode_config.pincode_changetime = atoi(w2)*60*60*24;
 		} else if (strcmpi(w1, "pincode_maxtry") == 0) {
 			charserv_config.pincode_config.pincode_maxtry = atoi(w2);
 		} else if (strcmpi(w1, "pincode_force") == 0) {
-			charserv_config.pincode_config.pincode_force = config_switch(w2);
+			charserv_config.pincode_config.pincode_force = config_switch(w2) != 0;
 		}  else if (strcmpi(w1, "pincode_allow_repeated") == 0) {
-			charserv_config.pincode_config.pincode_allow_repeated = config_switch(w2);
+			charserv_config.pincode_config.pincode_allow_repeated = config_switch(w2) != 0;
 		}  else if (strcmpi(w1, "pincode_allow_sequential") == 0) {
-			charserv_config.pincode_config.pincode_allow_sequential = config_switch(w2);
+			charserv_config.pincode_config.pincode_allow_sequential = config_switch(w2) != 0;
 #else
 			if( config_switch(w2) ) {
 				ShowWarning("pincode_enabled requires PACKETVER 20110309 or higher.\n");
 			}
 #endif
 		} else if (strcmpi(w1, "char_move_enabled") == 0) {
-			charserv_config.charmove_config.char_move_enabled = config_switch(w2);
+			charserv_config.charmove_config.char_move_enabled = config_switch(w2) != 0;
 		} else if (strcmpi(w1, "char_movetoused") == 0) {
-			charserv_config.charmove_config.char_movetoused = config_switch(w2);
+			charserv_config.charmove_config.char_movetoused = config_switch(w2) != 0;
 		} else if (strcmpi(w1, "char_moves_unlimited") == 0) {
-			charserv_config.charmove_config.char_moves_unlimited = config_switch(w2);
+			charserv_config.charmove_config.char_moves_unlimited = config_switch(w2) != 0;
 		} else if (strcmpi(w1, "char_checkdb") == 0) {
 			charserv_config.char_check_db = config_switch(w2);
 		} else if (strcmpi(w1, "default_map") == 0) {
