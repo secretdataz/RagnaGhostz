@@ -12,10 +12,6 @@
 #endif
 #include "cbasetypes.h"
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
 char* jstrescape (char* pt);
 char* jstrescapecpy (char* pt, const char* spt);
 int jmemescapecpy (char* pt, const char* spt, int size);
@@ -61,7 +57,6 @@ int strline(const char* str, size_t pos);
 /// The output buffer must be at least count*2+1 in size.
 /// Returns true on success, false on failure.
 bool bin2hex(char* output, unsigned char* input, size_t count);
-
 
 /// Bitfield determining the behaviour of sv_parse and sv_split.
 typedef enum e_svopt
@@ -156,9 +151,5 @@ char* StringBuf_Value(StringBuf* self);
 void StringBuf_Clear(StringBuf* self);
 void StringBuf_Destroy(StringBuf* self);
 void StringBuf_Free(StringBuf* self);
-
-#ifdef	__cplusplus
-}
-#endif
 
 #endif /* _STRLIB_H_ */
