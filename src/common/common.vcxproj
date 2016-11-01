@@ -26,6 +26,7 @@
     <ClInclude Include="core.h" />
     <ClInclude Include="db.h" />
     <ClInclude Include="des.h" />
+    <ClInclude Include="enum_operators.h" />
     <ClInclude Include="ers.h" />
     <ClInclude Include="grfio.h" />
     <ClInclude Include="malloc.h" />
