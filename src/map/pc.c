@@ -5266,7 +5266,7 @@ int pc_steal_item(struct map_session_data *sd,struct block_list *bl, uint16 skil
 	sd_status= status_get_status_data(&sd->bl);
 	md_status= status_get_status_data(bl);
 
-	if (md->master_id || status_has_mode(md_status, MD_STATUS_IMMUNE) || status_get_race2(&md->bl) == RC2_TREASURE ||
+	if (md->master_id || status_has_mode(md_status, MonsterMode::STATUS_IMMUNE) || status_get_race2(&md->bl) == RC2_TREASURE ||
 		map[bl->m].flag.nomobloot || // check noloot map flag [Lorky]
 		(battle_config.skill_steal_max_tries && //Reached limit of steal attempts. [Lupus]
 			md->state.steal_flag++ >= battle_config.skill_steal_max_tries)
@@ -5338,7 +5338,7 @@ int pc_steal_coin(struct map_session_data *sd,struct block_list *target)
 
 	md = (TBL_MOB*)target;
 
-	if (md->state.steal_coin_flag || md->sc.data[SC_STONE] || md->sc.data[SC_FREEZE] || status_bl_has_mode(target,MD_STATUS_IMMUNE) || status_get_race2(&md->bl) == RC2_TREASURE)
+	if (md->state.steal_coin_flag || md->sc.data[SC_STONE] || md->sc.data[SC_FREEZE] || status_bl_has_mode(target,MonsterMode::STATUS_IMMUNE) || status_get_race2(&md->bl) == RC2_TREASURE)
 		return 0;
 
 	// FIXME: This formula is either custom or outdated.
@@ -10611,11 +10611,11 @@ void pc_delspiritcharm(struct map_session_data *sd, int count, int type)
  * @param type: 1 - EXP, 2 - Item Drop
  * @return Penalty rate
  */
-int pc_level_penalty_mod(int level_diff, uint32 mob_class, enum e_mode mode, int type)
+int pc_level_penalty_mod(int level_diff, uint32 mob_class, MonsterMode mode, int type)
 {
 	int rate = 100;
 
-	if (type == 2 && (mode&MD_FIXED_ITEMDROP))
+	if (type == 2 && static_cast<int>(mode&MonsterMode::FIXED_ITEMDROP) != 0)
 		return rate;
 
 	if (level_diff < 0)

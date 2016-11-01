@@ -6752,7 +6752,7 @@ ACMD_FUNC(summon)
 	md->deletetimer=add_timer(tick+(duration*60000),mob_timer_delete,md->bl.id,0);
 	clif_specialeffect(&md->bl,344,AREA);
 	mob_spawn(md);
-	sc_start4(NULL,&md->bl, SC_MODECHANGE, 100, 1, 0, MD_AGGRESSIVE, 0, 60000);
+	sc_start4(NULL,&md->bl, SC_MODECHANGE, 100, 1, 0, static_cast<int>(MonsterMode::AGGRESSIVE), 0, 60000);
 	clif_skill_poseffect(&sd->bl,AM_CALLHOMUN,1,md->bl.x,md->bl.y,tick);
 	clif_displaymessage(fd, msg_txt(sd,39));	// All monster summoned!
 
@@ -7271,7 +7271,7 @@ ACMD_FUNC(showmobs)
 		return 0;
 	}
 
-	if(status_has_mode(&mob_db(mob_id)->status,MD_STATUS_IMMUNE) && !pc_has_permission(sd, PC_PERM_SHOW_BOSS)){	// If player group does not have access to boss mobs.
+	if(status_has_mode(&mob_db(mob_id)->status,MonsterMode::STATUS_IMMUNE) && !pc_has_permission(sd, PC_PERM_SHOW_BOSS)){	// If player group does not have access to boss mobs.
 		clif_displaymessage(fd, msg_txt(sd,1251)); // Can't show boss mobs!
 		return 0;
 	}
@@ -8459,7 +8459,7 @@ ACMD_FUNC(clone)
 		y = sd->bl.y;
 	}
 
-	if((x = mob_clone_spawn(pl_sd, sd->bl.m, x, y, "", master, (e_mode)0, flag?1:0, 0)) > 0) {
+	if((x = mob_clone_spawn(pl_sd, sd->bl.m, x, y, "", master, (MonsterMode)0, flag?1:0, 0)) > 0) {
 		clif_displaymessage(fd, msg_txt(sd,128+flag*2));	// Evil Clone spawned. Clone spawned. Slave clone spawned.
 		return 0;
 	}

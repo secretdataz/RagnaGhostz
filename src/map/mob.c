@@ -347,7 +347,7 @@ struct mob_data* mob_spawn_dataset(struct spawn_data *data)
 		md->special_state.size = data->state.size;
 	if (data->eventname[0] && strlen(data->eventname) >= 4)
 		memcpy(md->npc_event, data->eventname, 50);
-	if(status_has_mode(&md->db->status,MD_LOOTER))
+	if(status_has_mode(&md->db->status,MonsterMode::LOOTER))
 		md->lootitems = (struct s_mob_lootitem *)aCalloc(LOOTITEM_SIZE,sizeof(struct s_mob_lootitem));
 	md->spawn_timer = INVALID_TIMER;
 	md->deletetimer = INVALID_TIMER;
@@ -403,9 +403,9 @@ int mob_get_random_id(int type, int flag, int lv)
 		mob_is_clone(mob_id) ||
 		(flag&0x01 && (entry->rate < 1000000 && entry->rate <= static_cast<size_t>(rnd()) % 1000000)) ||
 		(flag&0x02 && lv < mob->lv) ||
-		(flag&0x04 && status_has_mode(&mob->status,MD_STATUS_IMMUNE) ) ||
+		(flag&0x04 && status_has_mode(&mob->status,MonsterMode::STATUS_IMMUNE) ) ||
 		(flag&0x08 && mob->spawn[0].qty < 1) ||
-		(flag&0x10 && status_has_mode(&mob->status,MD_IGNOREMELEE|MD_IGNOREMAGIC|MD_IGNORERANGED|MD_IGNOREMISC) )
+		(flag&0x10 && status_has_mode(&mob->status,MonsterMode::IGNOREMELEE|MonsterMode::IGNOREMAGIC|MonsterMode::IGNORERANGED|MonsterMode::IGNOREMISC) )
 	) && (i++) < MAX_MOB_DB && msummon->count > 1);
 
 	if (i >= MAX_MOB_DB && &msummon->list[0])  // no suitable monster found, use fallback for given list
@@ -585,7 +585,7 @@ int mob_once_spawn(struct map_session_data* sd, int16 m, int16 x, int16 y, const
 		if (mob_id < 0 && battle_config.dead_branch_active)
 			//Behold Aegis's masterful decisions yet again...
 			//"I understand the "Aggressive" part, but the "Can Move" and "Can Attack" is just stupid" - Poki#3
-			sc_start4(NULL,&md->bl, SC_MODECHANGE, 100, 1, 0, MD_AGGRESSIVE|MD_CANATTACK|MD_CANMOVE|MD_ANGRY, 0, 60000);
+			sc_start4(NULL,&md->bl, SC_MODECHANGE, 100, 1, 0, static_cast<int>(MonsterMode::AGGRESSIVE|MonsterMode::CANATTACK|MonsterMode::CANMOVE|MonsterMode::ANGRY), 0, 60000);
 	}
 
 	return (md) ? md->bl.id : 0; // id of last spawned mob
@@ -939,13 +939,13 @@ int mob_setdelayspawn(struct mob_data *md)
 
 	//Apply the spawn delay fix [Skotlex]
 	db = mob_db(md->spawn->id);
-	if (status_has_mode(&db->status,MD_STATUS_IMMUNE)) { // Status Immune
+	if (status_has_mode(&db->status,MonsterMode::STATUS_IMMUNE)) { // Status Immune
 		if (battle_config.boss_spawn_delay != 100) {
 			// Divide by 100 first to prevent overflows
 			//(precision loss is minimal as duration is in ms already)
 			spawntime = spawntime/100*battle_config.boss_spawn_delay;
 		}
-	} else if (status_has_mode(&db->status,MD_IGNOREMELEE|MD_IGNOREMAGIC|MD_IGNORERANGED|MD_IGNOREMISC)) { // Plant type
+	} else if (status_has_mode(&db->status,MonsterMode::IGNOREMELEE|MonsterMode::IGNOREMAGIC|MonsterMode::IGNORERANGED|MonsterMode::IGNOREMISC)) { // Plant type
 		if (battle_config.plant_spawn_delay != 100) {
 			spawntime = spawntime/100*battle_config.plant_spawn_delay;
 		}
@@ -1037,7 +1037,7 @@ int mob_spawn (struct mob_data *md)
 //	md->master_id = 0;
 	md->master_dist = 0;
 
-	md->state.aggressive = status_has_mode(&md->status,MD_ANGRY)?1:0;
+	md->state.aggressive = status_has_mode(&md->status,MonsterMode::ANGRY)?1:0;
 	md->state.skillstate = MSS_IDLE;
 	md->next_walktime = tick+rnd()%1000+MIN_RANDOMWALKTIME;
 	md->last_linktime = tick;
@@ -1075,7 +1075,7 @@ int mob_spawn (struct mob_data *md)
 /*==========================================
  * Determines if the mob can change target. [Skotlex]
  *------------------------------------------*/
-static int mob_can_changetarget(struct mob_data* md, struct block_list* target, enum e_mode mode)
+static int mob_can_changetarget(struct mob_data* md, struct block_list* target, MonsterMode mode)
 {
 	// Special feature that makes monsters always attack the person that provoked them
 	if(battle_config.mob_ai&0x800 && md->state.provoke_flag)
@@ -1088,13 +1088,13 @@ static int mob_can_changetarget(struct mob_data* md, struct block_list* target, 
 
 	switch (md->state.skillstate) {
 		case MSS_BERSERK:
-			if (!(mode&MD_CHANGETARGET_MELEE))
+			if (static_cast<int>(mode&MonsterMode::CHANGETARGET_MELEE) == 0)
 				return 0;
 			if (!(battle_config.mob_ai&0x80) && md->norm_attacked_id != target->id)
 				return 0;
 			return (battle_config.mob_ai&0x4 || check_distance_bl(&md->bl, target, md->status.rhw.range+1));
 		case MSS_RUSH:
-			return (mode&MD_CHANGETARGET_CHASE);
+			return static_cast<int>(mode&MonsterMode::CHANGETARGET_CHASE);
 		case MSS_FOLLOW:
 		case MSS_ANGRY:
 		case MSS_IDLE:
@@ -1140,19 +1140,19 @@ static int mob_ai_sub_hard_activesearch(struct block_list *bl,va_list ap)
 {
 	struct mob_data *md;
 	struct block_list **target;
-	enum e_mode mode;
+	MonsterMode mode;
 	int dist;
 
 	nullpo_ret(bl);
 	md=va_arg(ap,struct mob_data *);
 	target= va_arg(ap,struct block_list**);
-	mode=(e_mode) va_arg(ap,int);
+	mode=(MonsterMode) va_arg(ap,int);
 
 	//If can't seek yet, not an enemy, or you can't attack it, skip.
 	if ((*target) == bl || !status_check_skilluse(&md->bl, bl, 0, 0))
 		return 0;
 
-	if ((mode&MD_TARGETWEAK) && status_get_lv(bl) >= md->level-5)
+	if (static_cast<int>(mode&MonsterMode::TARGETWEAK) != 0 && status_get_lv(bl) >= md->level-5)
 		return 0;
 
 	if(battle_check_target(&md->bl,bl,BCT_ENEMY)<=0)
@@ -1162,7 +1162,7 @@ static int mob_ai_sub_hard_activesearch(struct block_list *bl,va_list ap)
 	{
 	case BL_PC:
 		if (((TBL_PC*)bl)->state.gangsterparadise &&
-			!status_has_mode(&md->status,MD_STATUS_IMMUNE))
+			!status_has_mode(&md->status,MonsterMode::STATUS_IMMUNE))
 			return 0; //Gangster paradise protection.
 	default:
 		if (battle_config.hom_setting&HOMSET_FIRST_TARGET &&
@@ -1311,7 +1311,7 @@ static int mob_ai_sub_hard_slavemob(struct mob_data *md,unsigned int tick)
 	if (bl->prev == NULL)
 		return 0; //Master not on a map? Could be warping, do not process.
 
-	if(status_has_mode(&md->status,MD_CANMOVE))
+	if(status_has_mode(&md->status,MonsterMode::CANMOVE))
 	{	//If the mob can move, follow around. [Check by Skotlex]
 		int old_dist;
 
@@ -1406,7 +1406,7 @@ int mob_unlocktarget(struct mob_data *md, unsigned int tick)
 	default:
 		mob_stop_attack(md);
 		mob_stop_walking(md,1); //Stop chasing.
-		if (status_has_mode(&md->status,MD_ANGRY) && !md->state.aggressive)
+		if (status_has_mode(&md->status,MonsterMode::ANGRY) && !md->state.aggressive)
 			md->state.aggressive = 1; //Restore angry state when switching to idle
 		md->state.skillstate = MSS_IDLE;
 		if(battle_config.mob_ai&0x8) //Walk instantly after dropping target
@@ -1439,9 +1439,9 @@ int mob_randomwalk(struct mob_data *md,unsigned int tick)
 	nullpo_ret(md);
 
 	if(DIFF_TICK(md->next_walktime,tick)>0 ||
-	   status_has_mode(&md->status,MD_NORANDOM_WALK) ||
+	   status_has_mode(&md->status,MonsterMode::NORANDOM_WALK) ||
 	   !unit_can_move(&md->bl) ||
-	   !status_has_mode(&md->status,MD_CANMOVE))
+	   !status_has_mode(&md->status,MonsterMode::CANMOVE))
 		return 0;
 
 	r=rnd();
@@ -1554,7 +1554,7 @@ int mob_warpchase(struct mob_data *md, struct block_list *target)
 static bool mob_ai_sub_hard(struct mob_data *md, unsigned int tick)
 {
 	struct block_list *tbl = NULL, *abl = NULL;
-	enum e_mode mode;
+	MonsterMode mode;
 	int view_range, can_move;
 
 	if(md->bl.prev == NULL || md->status.hp == 0)
@@ -1581,7 +1581,7 @@ static bool mob_ai_sub_hard(struct mob_data *md, unsigned int tick)
 		view_range = md->db->range2;
 	mode = status_get_mode(&md->bl);
 
-	can_move = (mode&MD_CANMOVE) && unit_can_move(&md->bl);
+	can_move = (static_cast<int>(mode&MonsterMode::CANMOVE) != 0 && unit_can_move(&md->bl) != 0);
 
 	if (md->target_id)
 	{	//Check validity of current target. [Skotlex]
@@ -1591,7 +1591,7 @@ static bool mob_ai_sub_hard(struct mob_data *md, unsigned int tick)
 			(md->ud.walktimer != INVALID_TIMER && !(battle_config.mob_ai&0x1) && !check_distance_bl(&md->bl, tbl, md->min_chase)) ||
 			(
 				tbl->type == BL_PC &&
-				((((TBL_PC*)tbl)->state.gangsterparadise && !(mode&MD_STATUS_IMMUNE)) ||
+				((((TBL_PC*)tbl)->state.gangsterparadise && static_cast<int>((mode&MonsterMode::STATUS_IMMUNE)) == 0) ||
 				((TBL_PC*)tbl)->invincible_timer != INVALID_TIMER)
 		)) {	//No valid target
 			if (mob_warpchase(md, tbl))
@@ -1605,7 +1605,7 @@ static bool mob_ai_sub_hard(struct mob_data *md, unsigned int tick)
 	}
 
 	// Check for target change.
-	if( md->attacked_id && mode&MD_CANATTACK )
+	if( md->attacked_id && static_cast<int>(mode&MonsterMode::CANATTACK) != 0 )
 	{
 		if( md->attacked_id == md->target_id )
 		{	//Rude attacked check.
@@ -1682,18 +1682,18 @@ static bool mob_ai_sub_hard(struct mob_data *md, unsigned int tick)
 		return true;
 
 	// Scan area for targets
-	if (!tbl && can_move && mode&MD_LOOTER && md->lootitems && DIFF_TICK(tick, md->ud.canact_tick) > 0 &&
+	if (!tbl && can_move && static_cast<int>(mode&MonsterMode::LOOTER) != 0 && md->lootitems && DIFF_TICK(tick, md->ud.canact_tick) > 0 &&
 		(md->lootitem_count < LOOTITEM_SIZE || battle_config.monster_loot_type != 1))
 	{	// Scan area for items to loot, avoid trying to loot if the mob is full and can't consume the items.
 		map_foreachinshootrange (mob_ai_sub_hard_lootsearch, &md->bl, view_range, BL_ITEM, md, &tbl);
 	}
 
-	if ((!tbl && mode&MD_AGGRESSIVE) || md->state.skillstate == MSS_FOLLOW)
+	if ((!tbl && static_cast<int>(mode&MonsterMode::AGGRESSIVE) != 0) || md->state.skillstate == MSS_FOLLOW)
 	{
 		map_foreachinrange (mob_ai_sub_hard_activesearch, &md->bl, view_range, DEFAULT_ENEMY_TYPE(md), md, &tbl, mode);
 	}
 	else
-	if (mode&MD_CHANGECHASE && (md->state.skillstate == MSS_RUSH || md->state.skillstate == MSS_FOLLOW))
+	if (static_cast<int>(mode&MonsterMode::CHANGECHASE) != 0 && (md->state.skillstate == MSS_RUSH || md->state.skillstate == MSS_FOLLOW))
 	{
 		int search_size;
 		search_size = view_range<md->status.rhw.range ? view_range:md->status.rhw.range;
@@ -1702,7 +1702,7 @@ static bool mob_ai_sub_hard(struct mob_data *md, unsigned int tick)
 
 	if (!tbl) { //No targets available.
 		/* bg guardians follow allies when no targets nearby */
-		if( md->bg_id && mode&MD_CANATTACK ) {
+		if( md->bg_id && static_cast<int>(mode&MonsterMode::CANATTACK) != 0 ) {
 			if( md->ud.walktimer != INVALID_TIMER )
 				return true;/* we are already moving */
 			map_foreachinrange (mob_ai_sub_hard_bg_ally, &md->bl, view_range, BL_PC, md, &tbl, mode);
@@ -1730,7 +1730,7 @@ static bool mob_ai_sub_hard(struct mob_data *md, unsigned int tick)
 		}
 		if (!check_distance_bl(&md->bl, tbl, 0))
 		{	//Still not within loot range.
-			if (!(mode&MD_CANMOVE))
+			if (static_cast<int>(mode&MonsterMode::CANMOVE) == 0)
 			{	//A looter that can't move? Real smart.
 				mob_unlocktarget(md, tick);
 				return true;
@@ -1783,7 +1783,7 @@ static bool mob_ai_sub_hard(struct mob_data *md, unsigned int tick)
 			if(tbl->type == BL_PC)
 				mob_log_damage(md, tbl, 0); //Log interaction (counts as 'attacker' for the exp bonus)
 
-			if( !(mode&MD_RANDOMTARGET) )
+			if( static_cast<int>(mode&MonsterMode::RANDOMTARGET) == 0)
 				unit_attack(&md->bl,tbl->id,1);
 			else { // Attack once and find a new random target
 				int search_size = (view_range < md->status.rhw.range) ? view_range : md->status.rhw.range;
@@ -1816,7 +1816,7 @@ static bool mob_ai_sub_hard(struct mob_data *md, unsigned int tick)
 		return true;
 
 	//Out of range...
-	if (!(mode&MD_CANMOVE) || (!can_move && DIFF_TICK(tick, md->ud.canmove_tick) > 0))
+	if (static_cast<int>(mode&MonsterMode::CANMOVE) == 0 || (!can_move && DIFF_TICK(tick, md->ud.canmove_tick) > 0))
 	{	//Can't chase. Immobile and trapped mobs should unlock target and use an idle skill.
 		if (md->ud.attacktimer == INVALID_TIMER)
 		{ //Only unlock target if no more attack delay left
@@ -1889,7 +1889,7 @@ static int mob_ai_sub_lazy(struct mob_data *md, va_list args)
 
 	if(battle_config.mob_active_time &&
 		md->last_pcneartime &&
- 		!status_has_mode(&md->status,MD_STATUS_IMMUNE) &&
+ 		!status_has_mode(&md->status,MonsterMode::STATUS_IMMUNE) &&
 		DIFF_TICK(tick,md->last_thinktime) > MIN_MOBTHINKTIME)
 	{
 		if (DIFF_TICK(tick,md->last_pcneartime) < battle_config.mob_active_time)
@@ -1899,7 +1899,7 @@ static int mob_ai_sub_lazy(struct mob_data *md, va_list args)
 
 	if(battle_config.boss_active_time &&
 		md->last_pcneartime &&
-		status_has_mode(&md->status,MD_STATUS_IMMUNE) &&
+		status_has_mode(&md->status,MonsterMode::STATUS_IMMUNE) &&
 		DIFF_TICK(tick,md->last_thinktime) > MIN_MOBTHINKTIME)
 	{
 		if (DIFF_TICK(tick,md->last_pcneartime) < battle_config.boss_active_time)
@@ -1917,7 +1917,7 @@ static int mob_ai_sub_lazy(struct mob_data *md, va_list args)
 		return 0;
 	}
 
-	if( DIFF_TICK(md->next_walktime,tick) < 0 && status_has_mode(&md->status,MD_CANMOVE) && unit_can_move(&md->bl) )
+	if( DIFF_TICK(md->next_walktime,tick) < 0 && status_has_mode(&md->status,MonsterMode::CANMOVE) && unit_can_move(&md->bl) )
 	{
 		if( rnd()%1000 < MOB_LAZYMOVEPERC(md) )
 			mob_randomwalk(md, tick);
@@ -3051,7 +3051,7 @@ int mob_class_change (struct mob_data *md, int mob_id)
 	for(i=0,c=tick-MOB_MAX_DELAY;i<MAX_MOBSKILL;i++)
 		md->skilldelay[i] = c;
 
-	if (md->lootitems == NULL && status_has_mode(&md->db->status,MD_LOOTER))
+	if (md->lootitems == NULL && status_has_mode(&md->db->status,MonsterMode::LOOTER))
 		md->lootitems = (struct s_mob_lootitem *)aCalloc(LOOTITEM_SIZE,sizeof(struct s_mob_lootitem));
 
 	//Targets should be cleared no morph
@@ -3351,7 +3351,7 @@ int mobskill_use(struct mob_data *md, unsigned int tick, int event)
 	nullpo_ret(md);
 	nullpo_ret(ms = md->db->skill);
 
-	if (!battle_config.mob_skill_rate || md->ud.skilltimer != INVALID_TIMER || !md->db->maxskill || status_has_mode(&md->status,MD_NOCAST_SKILL))
+	if (!battle_config.mob_skill_rate || md->ud.skilltimer != INVALID_TIMER || !md->db->maxskill || status_has_mode(&md->status,MonsterMode::NOCAST_SKILL))
 		return 0;
 
 	if (event == -1 && DIFF_TICK(md->ud.canact_tick, tick) > 0)
@@ -3446,7 +3446,7 @@ int mobskill_use(struct mob_data *md, unsigned int tick, int event)
 			continue; //Skill requisite failed to be fulfilled.
 
 		//Execute skill
-		skill_target = status_has_mode(&md->db->status,MD_RANDOMTARGET) ? MST_RANDOM : ms[i].target;
+		skill_target = status_has_mode(&md->db->status,MonsterMode::RANDOMTARGET) ? MST_RANDOM : ms[i].target;
 		if (skill_get_casttype(ms[i].skill_id) == CAST_GROUND)
 		{	//Ground skill.
 			short x, y;
@@ -3619,7 +3619,7 @@ static bool mob_clone_disabled_skills(uint16 skill_id) {
 //If mode is not passed, a default aggressive mode is used.
 //If master_id is passed, clone is attached to him.
 //Returns: ID of newly crafted copy.
-int mob_clone_spawn(struct map_session_data *sd, int16 m, int16 x, int16 y, const char *event, int master_id, enum e_mode mode, int flag, unsigned int duration)
+int mob_clone_spawn(struct map_session_data *sd, int16 m, int16 x, int16 y, const char *event, int master_id, MonsterMode mode, int flag, unsigned int duration)
 {
 	int mob_id;
 	int i,j,inf, fd;
@@ -3650,10 +3650,10 @@ int mob_clone_spawn(struct map_session_data *sd, int16 m, int16 x, int16 y, cons
 		status->lhw.atk2= status->dex + status->lhw.atk + status->lhw.atk2; //Max ATK
 		status->lhw.atk = status->dex; //Min ATK
 	}
-	if (mode) //User provided mode.
+	if (static_cast<int>(mode) != 0) //User provided mode.
 		status->mode = mode;
 	else if (flag&1) //Friendly Character, remove looting.
-		status->mode = (e_mode)(status->mode & ~MD_LOOTER);
+		status->mode = (MonsterMode)(status->mode & ~MonsterMode::LOOTER);
 	status->hp = status->max_hp;
 	status->sp = status->max_sp;
 	memcpy(&db->vd, &sd->vd, sizeof(struct view_data));
@@ -4013,11 +4013,11 @@ static bool mob_parse_dbrow(char** str)
 		return false;
 	}
 
-	status->mode = (e_mode)strtol(str[25], NULL, 0);
+	status->mode = (MonsterMode)strtol(str[25], NULL, 0);
 	if (!battle_config.monster_active_enable)
-		status->mode = (e_mode)(status->mode & ~MD_AGGRESSIVE);
+		status->mode = (MonsterMode)(status->mode & ~MonsterMode::AGGRESSIVE);
 
-	if (status_has_mode(status,MD_STATUS_IMMUNE|MD_KNOCKBACK_IMMUNE|MD_DETECTOR))
+	if (status_has_mode(status,MonsterMode::STATUS_IMMUNE|MonsterMode::KNOCKBACK_IMMUNE|MonsterMode::DETECTOR))
 		status->class_ = CLASS_BOSS;
 	else // Store as Normal and overwrite in mob_race2_db for special Class
 		status->class_ = CLASS_NORMAL;
@@ -4546,8 +4546,8 @@ static bool mob_parse_row_mobskilldb(char** str, int columns, int current)
 	if(ms->skill_id == NPC_EMOTION_ON && mob_id > 0 && ms->val[1])
 	{	//Adds a mode to the mob.
 		//Remove aggressive mode when the new mob type is passive.
-		if (!(ms->val[1]&MD_AGGRESSIVE))
-			ms->val[3] |= MD_AGGRESSIVE;
+		if (!(ms->val[1]&MonsterMode::AGGRESSIVE))
+			ms->val[3] |= static_cast<int>(MonsterMode::AGGRESSIVE);
 		ms->val[2] |= ms->val[1]; //Add the new mode.
 		ms->val[1] = 0; //Do not "set" it.
 	}
@@ -4813,7 +4813,7 @@ static void mob_drop_ratio_adjust(void){
 				ratemin = battle_config.item_drop_treasure_min;
 				ratemax = battle_config.item_drop_treasure_max;
 			} else {
-				bool is_mvp = status_has_mode(&mob->status,MD_MVP);
+				bool is_mvp = status_has_mode(&mob->status,MonsterMode::MVP);
 				bool is_boss = (mob->status.class_ == CLASS_BOSS);
 
 				is_treasurechest = false;
@@ -4930,8 +4930,8 @@ static void mob_skill_db_set_single(struct s_mob_skill *skill) {
 			mob = mob_db(i);
 			if (mob == mob_dummy)
 				continue;
-			if (   (!(id&1) && status_has_mode(&mob->status,MD_STATUS_IMMUNE)) // Bosses
-				|| (!(id&2) && !status_has_mode(&mob->status,MD_STATUS_IMMUNE)) // Normal monsters
+			if (   (!(id&1) && status_has_mode(&mob->status,MonsterMode::STATUS_IMMUNE)) // Bosses
+				|| (!(id&2) && !status_has_mode(&mob->status,MonsterMode::STATUS_IMMUNE)) // Normal monsters
 				)
 				continue;
 			mob_skill_db_set_single_sub(mob, skill);

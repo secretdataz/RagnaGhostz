@@ -370,7 +370,7 @@ static int unit_walktoxy_timer(int tid, unsigned int tick, int id, intptr_t data
 	dy = diry[(int)dir];
 
 	// Get icewall walk block depending on Status Immune mode (players can't be trapped)
-	if(md && status_has_mode(&md->status,MD_STATUS_IMMUNE))
+	if(md && status_has_mode(&md->status,MonsterMode::STATUS_IMMUNE))
 		icewall_walk_block = battle_config.boss_icewall_walk_block;
 	else if(md)
 		icewall_walk_block = battle_config.mob_icewall_walk_block;
@@ -648,7 +648,7 @@ int unit_walktoxy( struct block_list *bl, short x, short y, unsigned char flag)
 		}
 	}
 
-	if(!(flag&2) && (!status_bl_has_mode(bl,MD_CANMOVE) || !unit_can_move(bl)))
+	if(!(flag&2) && (!status_bl_has_mode(bl,MonsterMode::CANMOVE) || !unit_can_move(bl)))
 		return 0;
 
 	ud->state.walk_easy = flag&1;
@@ -742,7 +742,7 @@ int unit_walktobl(struct block_list *bl, struct block_list *tbl, int range, unsi
 	if(ud == NULL)
 		return 0;
 
-	if (!status_bl_has_mode(bl,MD_CANMOVE))
+	if (!status_bl_has_mode(bl,MonsterMode::CANMOVE))
 		return 0;
 
 	if (!unit_can_reach_bl(bl, tbl, distance_bl(bl, tbl)+1, flag&1, &ud->to_x, &ud->to_y)) {
@@ -1124,7 +1124,7 @@ uint8 unit_blown_immune(struct block_list* bl, uint8 flag)
 	switch (bl->type) {
 		case BL_MOB:
 			// Immune can't be knocked back
-			if (((flag&0x1) && status_bl_has_mode(bl,MD_KNOCKBACK_IMMUNE))
+			if (((flag&0x1) && status_bl_has_mode(bl,MonsterMode::KNOCKBACK_IMMUNE))
 				&& ((flag&0x2) || !(battle_config.skill_trap_type&0x2)))
 				return 2;
 			break;
@@ -1382,8 +1382,8 @@ int unit_can_move(struct block_list *bl) {
 	// Icewall walk block special trapped monster mode
 	if(bl->type == BL_MOB) {
 		struct mob_data *md = BL_CAST(BL_MOB, bl);
-		if(md && ((status_has_mode(&md->status,MD_STATUS_IMMUNE) && battle_config.boss_icewall_walk_block == 1 && map_getcell(bl->m,bl->x,bl->y,CELL_CHKICEWALL))
-			|| (!status_has_mode(&md->status,MD_STATUS_IMMUNE) && battle_config.mob_icewall_walk_block == 1 && map_getcell(bl->m,bl->x,bl->y,CELL_CHKICEWALL)))) {
+		if(md && ((status_has_mode(&md->status,MonsterMode::STATUS_IMMUNE) && battle_config.boss_icewall_walk_block == 1 && map_getcell(bl->m,bl->x,bl->y,CELL_CHKICEWALL))
+			|| (!status_has_mode(&md->status,MonsterMode::STATUS_IMMUNE) && battle_config.mob_icewall_walk_block == 1 && map_getcell(bl->m,bl->x,bl->y,CELL_CHKICEWALL)))) {
 			md->walktoxy_fail_count = 1; //Make sure rudeattacked skills are invoked
 			return 0;
 		}
@@ -1436,7 +1436,7 @@ int unit_set_walkdelay(struct block_list *bl, unsigned int tick, int delay, int 
 
 	if (type) {
 		//Bosses can ignore skill induced walkdelay (but not damage induced)
-		if(bl->type == BL_MOB && status_has_mode(status_get_status_data(bl),MD_STATUS_IMMUNE))
+		if(bl->type == BL_MOB && status_has_mode(status_get_status_data(bl),MonsterMode::STATUS_IMMUNE))
 			return 0;
 		//Make sure walk delay is not decreased
 		if (DIFF_TICK(ud->canmove_tick, tick+delay) > 0)
@@ -1837,24 +1837,24 @@ int unit_skilluse_id2(struct block_list *src, int target_id, uint16 skill_id, ui
 
 		mobskill_event(md, src, tick, -1); // Cast targetted skill event.
 
-		if ((status_has_mode(tstatus,MD_CASTSENSOR_IDLE) || status_has_mode(tstatus,MD_CASTSENSOR_CHASE)) && battle_check_target(target, src, BCT_ENEMY) > 0) {
+		if ((status_has_mode(tstatus,MonsterMode::CASTSENSOR_IDLE) || status_has_mode(tstatus,MonsterMode::CASTSENSOR_CHASE)) && battle_check_target(target, src, BCT_ENEMY) > 0) {
 			switch (md->state.skillstate) {
 				case MSS_RUSH:
 				case MSS_FOLLOW:
-					if (!status_has_mode(tstatus,MD_CASTSENSOR_CHASE))
+					if (!status_has_mode(tstatus,MonsterMode::CASTSENSOR_CHASE))
 						break;
 
 					md->target_id = src->id;
-					md->state.aggressive = status_has_mode(tstatus,MD_ANGRY)?1:0;
+					md->state.aggressive = status_has_mode(tstatus,MonsterMode::ANGRY)?1:0;
 					md->min_chase = md->db->range3;
 					break;
 				case MSS_IDLE:
 				case MSS_WALK:
-					if (!status_has_mode(tstatus,MD_CASTSENSOR_IDLE))
+					if (!status_has_mode(tstatus,MonsterMode::CASTSENSOR_IDLE))
 						break;
 
 					md->target_id = src->id;
-					md->state.aggressive = status_has_mode(tstatus,MD_ANGRY)?1:0;
+					md->state.aggressive = status_has_mode(tstatus,MonsterMode::ANGRY)?1:0;
 					md->min_chase = md->db->range3;
 					break;
 			}
@@ -2585,7 +2585,7 @@ static int unit_attack_timer_sub(struct block_list* src, int tid, unsigned int t
 			// Set mob's ANGRY/BERSERK states.
 			md->state.skillstate = md->state.aggressive?MSS_ANGRY:MSS_BERSERK;
 
-			if (status_has_mode(sstatus,MD_ASSIST) && DIFF_TICK(md->last_linktime, tick) < MIN_MOBLINKTIME) { 
+			if (status_has_mode(sstatus,MonsterMode::ASSIST) && DIFF_TICK(md->last_linktime, tick) < MIN_MOBLINKTIME) { 
 				// Link monsters nearby [Skotlex]
 				md->last_linktime = tick;
 				map_foreachinrange(mob_linksearch, src, md->db->range2, BL_MOB, md->mob_id, target, tick);

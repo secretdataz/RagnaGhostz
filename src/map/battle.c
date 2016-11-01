@@ -1039,7 +1039,7 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 		return damage; //These skills bypass everything else.
 
 	if( sc && sc->count ) { // SC_* that reduce damage to 0.
-		if( sc->data[SC_BASILICA] && !status_bl_has_mode(src,MD_STATUS_IMMUNE) ) {
+		if( sc->data[SC_BASILICA] && !status_bl_has_mode(src,MonsterMode::STATUS_IMMUNE) ) {
 			d->dmg_lv = ATK_BLOCK;
 			return 0;
 		}
@@ -1607,7 +1607,7 @@ bool battle_can_hit_gvg_target(struct block_list *src,struct block_list *bl,uint
 	int class_ = status_get_class(bl);
 
 	if(md && md->guardian_data) {
-		if ((status_bl_has_mode(bl,MD_SKILL_IMMUNE) || (class_ == MOBID_EMPERIUM && !(skill_get_inf3(skill_id)&INF3_HIT_EMP))) && flag&BF_SKILL) //Skill immunity.
+		if ((status_bl_has_mode(bl,MonsterMode::SKILL_IMMUNE) || (class_ == MOBID_EMPERIUM && !(skill_get_inf3(skill_id)&INF3_HIT_EMP))) && flag&BF_SKILL) //Skill immunity.
 			return false;
 		if(src->type != BL_MOB) {
 			struct guild *g = src->type == BL_PC ? ((TBL_PC *)src)->guild : guild_search(status_get_guild_id(src));
@@ -2213,13 +2213,13 @@ bool is_infinite_defense(struct block_list *target, int flag)
 			return true;
 	}
 
-	if(status_has_mode(tstatus,MD_IGNOREMELEE) && (flag&(BF_WEAPON|BF_SHORT)) == (BF_WEAPON|BF_SHORT) )
+	if(status_has_mode(tstatus,MonsterMode::IGNOREMELEE) && (flag&(BF_WEAPON|BF_SHORT)) == (BF_WEAPON|BF_SHORT) )
 		return true;
-	if(status_has_mode(tstatus,MD_IGNOREMAGIC) && flag&(BF_MAGIC) )
+	if(status_has_mode(tstatus,MonsterMode::IGNOREMAGIC) && flag&(BF_MAGIC) )
 		return true;
-	if(status_has_mode(tstatus,MD_IGNORERANGED) && (flag&(BF_WEAPON|BF_LONG)) == (BF_WEAPON|BF_LONG) )
+	if(status_has_mode(tstatus,MonsterMode::IGNORERANGED) && (flag&(BF_WEAPON|BF_LONG)) == (BF_WEAPON|BF_LONG) )
 		return true;
-	if(status_has_mode(tstatus,MD_IGNOREMISC) && flag&(BF_MISC) )
+	if(status_has_mode(tstatus,MonsterMode::IGNOREMISC) && flag&(BF_MISC) )
 		return true;
 
 	return false;
@@ -3634,7 +3634,7 @@ static int battle_calc_attack_skill_ratio(struct Damage wd, struct block_list *s
 			break;
 		case GS_BULLSEYE:
 			//Only works well against brute/demihumans non bosses.
-			if((tstatus->race == RC_BRUTE || tstatus->race == RC_DEMIHUMAN || tstatus->race == RC_PLAYER) && !status_has_mode(tstatus,MD_STATUS_IMMUNE))
+			if((tstatus->race == RC_BRUTE || tstatus->race == RC_DEMIHUMAN || tstatus->race == RC_PLAYER) && !status_has_mode(tstatus,MonsterMode::STATUS_IMMUNE))
 				skillratio += 400;
 			break;
 		case GS_TRACKING:
@@ -5681,7 +5681,7 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 #endif
 				if(i > 700)
 					i = 700;
-				if(rnd()%1000 < i && !status_has_mode(tstatus,MD_STATUS_IMMUNE))
+				if(rnd()%1000 < i && !status_has_mode(tstatus,MonsterMode::STATUS_IMMUNE))
 					ad.damage = tstatus->hp;
 				else {
 #ifdef RENEWAL
@@ -6770,7 +6770,7 @@ int64 battle_calc_return_damage(struct block_list* bl, struct block_list *src, i
 					}
 				}
 
-				if (sc->data[SC_DEATHBOUND] && skill_id != WS_CARTTERMINATION && skill_id != GN_HELLS_PLANT_ATK && !status_bl_has_mode(src,MD_STATUS_IMMUNE)) {
+				if (sc->data[SC_DEATHBOUND] && skill_id != WS_CARTTERMINATION && skill_id != GN_HELLS_PLANT_ATK && !status_bl_has_mode(src,MonsterMode::STATUS_IMMUNE)) {
 					if (distance_bl(src,bl) <= 0 || !map_check_dir(map_calc_dir(bl,src->x,src->y), unit_getdir(bl))) {
 						int64 rd1 = 0;
 
@@ -6783,7 +6783,7 @@ int64 battle_calc_return_damage(struct block_list* bl, struct block_list *src, i
 					}
 				}
 
-				if( sc->data[SC_SHIELDSPELL_DEF] && sc->data[SC_SHIELDSPELL_DEF]->val1 == 2 && !status_bl_has_mode(src,MD_STATUS_IMMUNE) ){
+				if( sc->data[SC_SHIELDSPELL_DEF] && sc->data[SC_SHIELDSPELL_DEF]->val1 == 2 && !status_bl_has_mode(src,MonsterMode::STATUS_IMMUNE) ){
 						rdamage += damage * sc->data[SC_SHIELDSPELL_DEF]->val2 / 100;
 						if (rdamage < 1) rdamage = 1;
 				}
@@ -6976,7 +6976,7 @@ int battle_damage_area(struct block_list *bl, va_list ap) {
 	dmotion = va_arg(ap,int);
 	damage = va_arg(ap,int);
 
-	if (status_bl_has_mode(bl, MD_SKILL_IMMUNE) || status_get_class(bl) == MOBID_EMPERIUM)
+	if (status_bl_has_mode(bl, MonsterMode::SKILL_IMMUNE) || status_get_class(bl) == MOBID_EMPERIUM)
 		return 0;
 	if( bl != src && battle_check_target(src,bl,BCT_ENEMY) > 0 ) {
 		map_freeblock_lock();

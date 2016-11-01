@@ -14,9 +14,9 @@
 #define MIN_ELEDISTANCE 2
 #define MAX_ELEDISTANCE 5
 
-#define EL_MODE_AGGRESSIVE (MD_CANMOVE|MD_AGGRESSIVE|MD_CANATTACK)
-#define EL_MODE_ASSIST (MD_CANMOVE|MD_ASSIST)
-#define EL_MODE_PASSIVE MD_CANMOVE
+#define EL_MODE_AGGRESSIVE (MonsterMode::CANMOVE|MonsterMode::AGGRESSIVE|MonsterMode::CANATTACK)
+#define EL_MODE_ASSIST (MonsterMode::CANMOVE|MonsterMode::ASSIST)
+#define EL_MODE_PASSIVE MonsterMode::CANMOVE
 
 ///Enum of Elemental Skill Mode
 enum elemental_skillmode : uint8 {
@@ -87,7 +87,7 @@ int elemental_data_received(struct s_elemental *ele, bool flag);
 int elemental_save(struct elemental_data *ed);
 
 int elemental_change_mode_ack(struct elemental_data *ed, enum elemental_skillmode skill_mode);
-int elemental_change_mode(struct elemental_data *ed, enum e_mode mode);
+int elemental_change_mode(struct elemental_data *ed, MonsterMode mode);
 
 void elemental_heal(struct elemental_data *ed, int hp, int sp);
 int elemental_dead(struct elemental_data *ed);

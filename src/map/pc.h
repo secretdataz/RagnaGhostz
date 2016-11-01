@@ -1284,6 +1284,6 @@ void pc_show_questinfo_reinit(struct map_session_data *sd);
 bool pc_job_can_entermap(enum e_job jobid, int m, int group_lv);
 
 #if defined(RENEWAL_DROP) || defined(RENEWAL_EXP)
-int pc_level_penalty_mod(int level_diff, uint32 mob_class, enum e_mode mode, int type);
+int pc_level_penalty_mod(int level_diff, uint32 mob_class, MonsterMode mode, int type);
 #endif
 #endif /* _PC_H_ */

@@ -9972,7 +9972,7 @@ BUILDIN_FUNC(clone)
 	TBL_PC *sd, *msd=NULL;
 	uint32 char_id;
 	int master_id=0,x,y, flag = 0, m;
-	enum e_mode mode = (e_mode) 0;
+	MonsterMode mode = (MonsterMode) 0;
 	unsigned int duration = 0;
 	const char *mapname,*event;
 
@@ -9986,7 +9986,7 @@ BUILDIN_FUNC(clone)
 		master_id=script_getnum(st,7);
 
 	if( script_hasdata(st,8) )
-		mode = static_cast<e_mode>(script_getnum(st,8));
+		mode = static_cast<MonsterMode>(script_getnum(st,8));
 
 	if( script_hasdata(st,9) )
 		flag=script_getnum(st,9);
@@ -14693,7 +14693,7 @@ BUILDIN_FUNC(summon)
 		md->deletetimer = add_timer(tick+(timeout>0?timeout:60000),mob_timer_delete,md->bl.id,0);
 		mob_spawn (md); //Now it is ready for spawning.
 		clif_specialeffect(&md->bl,344,AREA);
-		sc_start4(NULL,&md->bl, SC_MODECHANGE, 100, 1, 0, MD_AGGRESSIVE, 0, 60000);
+		sc_start4(NULL,&md->bl, SC_MODECHANGE, 100, 1, 0, static_cast<int>(MonsterMode::AGGRESSIVE), 0, 60000);
 	}
 	script_pushint(st, md->bl.id);
 
@@ -16581,7 +16581,7 @@ BUILDIN_FUNC(getmonsterinfo)
 		case MOB_SIZE:		script_pushint(st,mob->status.size); break;
 		case MOB_RACE:		script_pushint(st,mob->status.race); break;
 		case MOB_ELEMENT:	script_pushint(st,mob->status.def_ele); break;
-		case MOB_MODE:		script_pushint(st,mob->status.mode); break;
+		case MOB_MODE:		script_pushint(st,static_cast<int64>(mob->status.mode)); break;
 		case MOB_MVPEXP:	script_pushint(st,mob->mexp); break;
 		default: script_pushint(st,-1); //wrong Index
 	}
@@ -17248,7 +17248,7 @@ BUILDIN_FUNC(setunitdata)
 			case UMOB_X: if (!unit_walktoxy(bl, (short)value, md->bl.y, 2)) unit_movepos(bl, (short)value, md->bl.y, 0, 0); break;
 			case UMOB_Y: if (!unit_walktoxy(bl, md->bl.x, (short)value, 2)) unit_movepos(bl, md->bl.x, (short)value, 0, 0); break;
 			case UMOB_SPEED: md->status.speed = (unsigned short)value; status_calc_misc(bl, &md->status, md->level); break;
-			case UMOB_MODE: md->status.mode = (enum e_mode)value; break;
+			case UMOB_MODE: md->status.mode = (MonsterMode)value; break;
 			case UMOB_AI: md->special_state.ai = (enum mob_ai)value; break;
 			case UMOB_SCOPTION: md->sc.option = (unsigned short)value; break;
 			case UMOB_SEX: md->vd->sex = (char)value; break;
@@ -17469,7 +17469,7 @@ BUILDIN_FUNC(setunitdata)
 			case UELE_X: if (!unit_walktoxy(bl, (short)value, ed->bl.y, 2)) unit_movepos(bl, (short)value, ed->bl.y, 0, 0); break;
 			case UELE_Y: if (!unit_walktoxy(bl, ed->bl.x, (short)value, 2)) unit_movepos(bl, ed->bl.x, (short)value, 0, 0); break;
 			case UELE_LIFETIME: ed->elemental.life_time = (unsigned int)value; break;
-			case UELE_MODE: ed->elemental.mode = (enum e_mode)value; break;
+			case UELE_MODE: ed->elemental.mode = value; break;
 			case UELE_SPEED: ed->base_status.speed = (unsigned short)value; status_calc_misc(bl, &ed->base_status, ed->db->lv); break;
 			case UELE_LOOKDIR: unit_setdir(bl, (uint8)value); break;
 			case UELE_CANMOVETICK: ed->ud.canmove_tick = value > 0 ? (unsigned int)value : 0; break;

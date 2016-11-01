@@ -97,7 +97,7 @@ static unsigned int status_calc_maxhp(struct block_list *bl, uint64 maxhp);
 static unsigned int status_calc_maxsp(struct block_list *bl, uint64 maxsp);
 static unsigned char status_calc_element(struct block_list *bl, struct status_change *sc, int element);
 static unsigned char status_calc_element_lv(struct block_list *bl, struct status_change *sc, int lv);
-static enum e_mode status_calc_mode(struct block_list *bl, struct status_change *sc, enum e_mode mode);
+static MonsterMode status_calc_mode(struct block_list *bl, struct status_change *sc, MonsterMode mode);
 #ifdef RENEWAL
 static unsigned short status_calc_ematk(struct block_list *,struct status_change *,int);
 #endif
@@ -1397,7 +1397,7 @@ static void initDummyData(void)
 	dummy_status.amotion = 2000;
 	dummy_status.dmotion = 2000;
 	dummy_status.ele_lv = 1; // Min elemental level.
-	dummy_status.mode = MD_CANMOVE;
+	dummy_status.mode = MonsterMode::CANMOVE;
 }
 
 /**
@@ -1994,7 +1994,7 @@ bool status_check_skilluse(struct block_list *src, struct block_list *target, ui
 
 	if (!skill_id) { // Normal attack checks.
 		// This mode is only needed for melee attacking.
-		if (!status_has_mode(status,MD_CANATTACK))
+		if (!status_has_mode(status,MonsterMode::CANATTACK))
 			return false;
 		// Dead state is not checked for skills as some skills can be used
 		// on dead characters, said checks are left to skill.c [Skotlex]
@@ -2021,7 +2021,7 @@ bool status_check_skilluse(struct block_list *src, struct block_list *target, ui
 		case ALL_ODINS_POWER:
 			// Should fail when used on top of Land Protector [Skotlex]
 			if (src && map_getcell(src->m, src->x, src->y, CELL_CHKLANDPROTECTOR)
-				&& !status_has_mode(status,MD_STATUS_IMMUNE)
+				&& !status_has_mode(status,MonsterMode::STATUS_IMMUNE)
 				&& (src->type != BL_PC || ((TBL_PC*)src)->skillitem != skill_id))
 				return false;
 			break;
@@ -2040,7 +2040,7 @@ bool status_check_skilluse(struct block_list *src, struct block_list *target, ui
 		if (sc->data[SC_ALL_RIDING])
 			return false; //You can't use skills while in the new mounts (The client doesn't let you, this is to make cheat-safe)
 
-		if (flag == 1 && !status_has_mode(status,MD_STATUS_IMMUNE) && ( // Applies to after cast completion only and doesn't apply to Boss monsters.
+		if (flag == 1 && !status_has_mode(status,MonsterMode::STATUS_IMMUNE) && ( // Applies to after cast completion only and doesn't apply to Boss monsters.
 			(sc->data[SC_ASH] && rnd()%2) || // Volcanic Ash has a 50% chance of causing skills to fail.
 			(sc->data[SC_KYOMU] && rnd()%100 < 25) // Kyomu has a 25% chance of causing skills fail.
 		)) {
@@ -2167,7 +2167,7 @@ bool status_check_skilluse(struct block_list *src, struct block_list *target, ui
 		case BL_PC: {
 				struct map_session_data *tsd = (TBL_PC*)target;
 				bool is_boss = (src && status_get_class_(src) == CLASS_BOSS);
-				bool is_detect = status_has_mode(status,MD_DETECTOR);
+				bool is_detect = status_has_mode(status,MonsterMode::DETECTOR);
 
 				if (pc_isinvisible(tsd))
 					return false;
@@ -2185,7 +2185,7 @@ bool status_check_skilluse(struct block_list *src, struct block_list *target, ui
 			break;
 		case BL_ITEM: // Allow targetting of items to pick'em up (or in the case of mobs, to loot them).
 			// !TODO: Would be nice if this could be used to judge whether the player can or not pick up the item it targets. [Skotlex]
-			if (status_has_mode(status,MD_LOOTER))
+			if (status_has_mode(status,MonsterMode::LOOTER))
 				return true;
 			return false;
 		case BL_HOM:
@@ -2200,7 +2200,7 @@ bool status_check_skilluse(struct block_list *src, struct block_list *target, ui
 		default:
 			// Check for chase-walk/hiding/cloaking opponents.
 			if( tsc ) {
-				if( tsc->option&hide_flag && !status_has_mode(status,MD_DETECTOR))
+				if( tsc->option&hide_flag && !status_has_mode(status,MonsterMode::DETECTOR))
 					return false;
 			}
 	}
@@ -2238,7 +2238,7 @@ int status_check_visibility(struct block_list *src, struct block_list *target)
 
 	if (tsc) {
 		bool is_boss = (status_get_class_(src) == CLASS_BOSS);
-		bool is_detector = status_has_mode(status,MD_DETECTOR);
+		bool is_detector = status_has_mode(status,MonsterMode::DETECTOR);
 
 		switch (target->type) {	// Check for chase-walk/hiding/cloaking opponents.
 			case BL_PC: {
@@ -2629,7 +2629,7 @@ int status_calc_mob_(struct mob_data* md, enum e_status_calc_opt opt)
 		struct status_data *mstatus = status_get_base_status(mbl);
 
 		if (mstatus &&
-			battle_config.slaves_inherit_speed&(status_has_mode(mstatus,MD_CANMOVE)?1:2))
+			battle_config.slaves_inherit_speed&(status_has_mode(mstatus,MonsterMode::CANMOVE)?1:2))
 			status->speed = mstatus->speed;
 		if( status->speed < 2 ) // Minimum for the unit to function properly
 			status->speed = 2;
@@ -2735,7 +2735,7 @@ int status_calc_mob_(struct mob_data* md, enum e_status_calc_opt opt)
 					break;
 				case AM_CANNIBALIZE:
 					status->max_hp = 1500 + 200*ud->skill_lv + 10*status_get_lv(mbl);
-					status->mode|= MD_CANATTACK|MD_AGGRESSIVE;
+					status->mode|= MonsterMode::CANATTACK|MonsterMode::AGGRESSIVE;
 					break;
 				case MH_SUMMON_LEGION:
 				{
@@ -2791,13 +2791,13 @@ void status_calc_pet_(struct pet_data *pd, enum e_status_calc_opt opt)
 
 	if (opt&SCO_FIRST) {
 		memcpy(&pd->status, &pd->db->status, sizeof(struct status_data));
-		pd->status.mode = MD_CANMOVE; // Pets discard all modes, except walking
+		pd->status.mode = MonsterMode::CANMOVE; // Pets discard all modes, except walking
 		pd->status.class_ = CLASS_NORMAL;
 		pd->status.speed = pd->petDB->speed;
 
 		if(battle_config.pet_attack_support || battle_config.pet_damage_support) {
 			// Attack support requires the pet to be able to attack
-			pd->status.mode |= MD_CANATTACK;
+			pd->status.mode |= MonsterMode::CANATTACK;
 		}
 	}
 
@@ -3217,7 +3217,7 @@ int status_calc_pc_(struct map_session_data* sd, enum e_status_calc_opt opt)
 
 	// !FIXME: Most of these stuff should be calculated once, but how do I fix the memset above to do that? [Skotlex]
 	// Give them all modes except these (useful for clones)
-	base_status->mode = MD_MASK&~(MD_STATUS_IMMUNE|MD_IGNOREMELEE|MD_IGNOREMAGIC|MD_IGNORERANGED|MD_IGNOREMISC|MD_DETECTOR|MD_ANGRY|MD_TARGETWEAK);
+	base_status->mode = MD_MASK&~(MonsterMode::STATUS_IMMUNE|MonsterMode::IGNOREMELEE|MonsterMode::IGNOREMAGIC|MonsterMode::IGNORERANGED|MonsterMode::IGNOREMISC|MonsterMode::DETECTOR|MonsterMode::ANGRY|MonsterMode::TARGETWEAK);
 
 	base_status->size = (sd->class_&JOBL_BABY || (sd->class_&MAPID_BASEMASK) == MAPID_SUMMONER) ? SZ_SMALL : SZ_MEDIUM;
 	if (battle_config.character_size && pc_isriding(sd)) { // [Lupus]
@@ -4009,7 +4009,7 @@ int status_calc_mercenary_(struct mercenary_data *md, enum e_status_calc_opt opt
 	if (opt&SCO_FIRST) {
 		memcpy(status, &md->db->status, sizeof(struct status_data));
 		status->class_ = CLASS_NORMAL;
-		status->mode = MD_CANMOVE|MD_CANATTACK;
+		status->mode = MonsterMode::CANMOVE|MonsterMode::CANATTACK;
 		status->hp = status->max_hp;
 		status->sp = status->max_sp;
 		md->battle_status.hp = merc->hp;
@@ -4054,7 +4054,7 @@ int status_calc_homunculus_(struct homun_data *hd, enum e_status_calc_opt opt)
 		status->class_ = CLASS_NORMAL;
 		status->size = (hom->class_ == db->evo_class) ? db->evo_size : db->base_size;
 		status->rhw.range = 1 + status->size;
-		status->mode = MD_CANMOVE|MD_CANATTACK;
+		status->mode = MonsterMode::CANMOVE|MonsterMode::CANATTACK;
 		status->speed = DEFAULT_WALK_SPEED;
 		if (battle_config.hom_setting&HOMSET_COPY_SPEED && hd->master)
 			status->speed = status_get_speed(&hd->master->bl);
@@ -4139,7 +4139,7 @@ int status_calc_elemental_(struct elemental_data *ed, enum e_status_calc_opt opt
 		if( !ele->mode )
 			status->mode = EL_MODE_PASSIVE;
 		else
-			status->mode = ele->mode;
+			status->mode = static_cast<MonsterMode>(ele->mode);
 
 		status->class_ = CLASS_NORMAL;
 		status_calc_misc(&ed->bl, status, 0);
@@ -4194,7 +4194,7 @@ int status_calc_npc_(struct npc_data *nd, enum e_status_calc_opt opt)
 		status->class_ = CLASS_NORMAL;
 		status->size = nd->size;
 		status->rhw.range = 1 + status->size;
-		status->mode = (MD_CANMOVE|MD_CANATTACK);
+		status->mode = (MonsterMode::CANMOVE|MonsterMode::CANATTACK);
 		status->speed = nd->speed;
 	}
 
@@ -4740,9 +4740,9 @@ void status_calc_bl_main(struct block_list *bl, /*enum scb_flag*/int flag)
 	if(flag&SCB_MODE) {
 		status->mode = status_calc_mode(bl, sc, b_status->mode);
 		// Since mode changed, reset their state.
-		if (!status_has_mode(status,MD_CANATTACK))
+		if (!status_has_mode(status,MonsterMode::CANATTACK))
 			unit_stop_attack(bl);
-		if (!status_has_mode(status,MD_CANMOVE))
+		if (!status_has_mode(status,MonsterMode::CANMOVE))
 			unit_stop_walking(bl,1);
 	}
 
@@ -6953,10 +6953,10 @@ unsigned char status_calc_attack_element(struct block_list *bl, struct status_ch
  * @param mode: Original mode
  * @return mode with cap_value(mode, 0, INT_MAX)
  */
-static enum e_mode status_calc_mode(struct block_list *bl, struct status_change *sc, enum e_mode mode)
+static MonsterMode status_calc_mode(struct block_list *bl, struct status_change *sc, MonsterMode mode)
 {
 	if(!sc || !sc->count)
-		return cap_value((int)mode, 0, INT_MAX);
+		return static_cast<MonsterMode>(cap_value(static_cast<int>(mode), 0, INT_MAX));
 	if(sc->data[SC_MODECHANGE]) {
 		if (sc->data[SC_MODECHANGE]->val2)
 			mode = (mode&~MD_MASK)|sc->data[SC_MODECHANGE]->val2; // Set mode
@@ -6965,7 +6965,7 @@ static enum e_mode status_calc_mode(struct block_list *bl, struct status_change 
 		if (sc->data[SC_MODECHANGE]->val4)
 			mode&=~sc->data[SC_MODECHANGE]->val4; // Del mode
 	}
-	return cap_value(mode, 0, INT_MAX);
+	return static_cast<MonsterMode>(cap_value(static_cast<int>(mode), 0, INT_MAX));
 }
 
 /**
@@ -6977,21 +6977,21 @@ void status_calc_slave_mode(struct mob_data *md, struct mob_data *mmd)
 {
 	switch (battle_config.slaves_inherit_mode) {
 		case 1: //Always aggressive
-			if (!status_has_mode(&md->status,MD_AGGRESSIVE))
-				sc_start4(NULL, &md->bl, SC_MODECHANGE, 100, 1, 0, MD_AGGRESSIVE, 0, 0);
+			if (!status_has_mode(&md->status,MonsterMode::AGGRESSIVE))
+				sc_start4(NULL, &md->bl, SC_MODECHANGE, 100, 1, 0, static_cast<int>(MonsterMode::AGGRESSIVE), 0, 0);
 			break;
 		case 2: //Always passive
-			if (status_has_mode(&md->status,MD_AGGRESSIVE))
-				sc_start4(NULL, &md->bl, SC_MODECHANGE, 100, 1, 0, 0, MD_AGGRESSIVE, 0);
+			if (status_has_mode(&md->status,MonsterMode::AGGRESSIVE))
+				sc_start4(NULL, &md->bl, SC_MODECHANGE, 100, 1, 0, 0, static_cast<int>(MonsterMode::AGGRESSIVE), 0);
 			break;
 		case 4: // Overwrite with slave mode
-			sc_start4(NULL, &md->bl, SC_MODECHANGE, 100, 1, MD_CANMOVE|MD_NORANDOM_WALK|MD_CANATTACK, 0, 0, 0);
+			sc_start4(NULL, &md->bl, SC_MODECHANGE, 100, 1, static_cast<int>(MonsterMode::CANMOVE|MonsterMode::NORANDOM_WALK|MonsterMode::CANATTACK), 0, 0, 0);
 			break;
 		default: //Copy master
-			if (status_has_mode(&mmd->status,MD_AGGRESSIVE))
-				sc_start4(NULL, &md->bl, SC_MODECHANGE, 100, 1, 0, MD_AGGRESSIVE, 0, 0);
+			if (status_has_mode(&mmd->status,MonsterMode::AGGRESSIVE))
+				sc_start4(NULL, &md->bl, SC_MODECHANGE, 100, 1, 0, static_cast<int>(MonsterMode::AGGRESSIVE), 0, 0);
 			else
-				sc_start4(NULL, &md->bl, SC_MODECHANGE, 100, 1, 0, 0, MD_AGGRESSIVE, 0);
+				sc_start4(NULL, &md->bl, SC_MODECHANGE, 100, 1, 0, 0, static_cast<int>(MonsterMode::AGGRESSIVE), 0);
 			break;
 	}
 }
@@ -7718,7 +7718,7 @@ int status_get_sc_def(struct block_list *src, struct block_list *bl, enum sc_typ
 			sc_def2 = status->mdef*100;
 			break;
 		case SC_ANKLE:
-			if(status_has_mode(status,MD_STATUS_IMMUNE)) // Lasts 5 times less on bosses
+			if(status_has_mode(status,MonsterMode::STATUS_IMMUNE)) // Lasts 5 times less on bosses
 				tick /= 5;
 			sc_def = status->agi*50;
 			break;
@@ -8238,7 +8238,7 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 	break;
 	case SC_MODECHANGE:
 	{
-		enum e_mode mode;
+		MonsterMode mode;
 		struct status_data *bstatus = status_get_base_status(bl);
 		if (!bstatus) return 0;
 		if (sc->data[type]) { // Pile up with previous values.
@@ -8246,9 +8246,9 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 			val3 |= sc->data[type]->val3;
 			val4 |= sc->data[type]->val4;
 		}
-		mode = val2 ? ((val2&~MD_MASK)|val2) : bstatus->mode; // Base mode
-		if (val4) mode&=~val4; // Del mode
-		if (val3) mode|= val3; // Add mode
+		mode = val2 ? static_cast<MonsterMode>((val2&~MD_MASK)|val2) : bstatus->mode; // Base mode
+		if (val4) mode&=static_cast<MonsterMode>(~val4); // Del mode
+		if (val3) mode|= static_cast<MonsterMode>(val3); // Add mode
 		if (mode == bstatus->mode) { // No change.
 			if (sc->data[type]) // Abort previous status
 				return status_change_end(bl, type, INVALID_TIMER);
@@ -8446,7 +8446,7 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 	}
 
 	// Check for resistances
-	if(status_has_mode(status,MD_STATUS_IMMUNE) && !(flag&SCSTART_NOAVOID)) {
+	if(status_has_mode(status,MonsterMode::STATUS_IMMUNE) && !(flag&SCSTART_NOAVOID)) {
 		if (type>=SC_COMMON_MIN && type <= SC_COMMON_MAX)
 			return 0;
 		switch (type) {
@@ -8497,7 +8497,7 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 		}
 	}
 	// Check for mvp resistance // atm only those who OS
-	if(status_has_mode(status,MD_MVP) && !(flag&SCSTART_NOAVOID)) {
+	if(status_has_mode(status,MonsterMode::MVP) && !(flag&SCSTART_NOAVOID)) {
 		 switch (type) {
 		 case SC_COMA:
 		// continue list...
@@ -9743,7 +9743,7 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 			val3= 20*val1; // Int increase
 			break;
 		case SC_SWOO:
-			if(status_has_mode(status,MD_STATUS_IMMUNE))
+			if(status_has_mode(status,MonsterMode::STATUS_IMMUNE))
 				tick /= 5; // !TODO: Reduce skill's duration. But for how long?
 			break;
 		case SC_SPIDERWEB:
@@ -10452,7 +10452,7 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 			val2 = 0; // hit % reduc
 			val3 = 0; // def % reduc
 			val4 = 0; // atk flee & reduc
-			if (!status_bl_has_mode(bl,MD_STATUS_IMMUNE)) {
+			if (!status_bl_has_mode(bl,MonsterMode::STATUS_IMMUNE)) {
 				val2 = 50;
 				if (status_get_race(bl) == RC_PLANT) // plant type
 					val3 = 50;
@@ -10529,7 +10529,7 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 		case SC_VACUUM_EXTREME:
 			// Suck target at n second, only if the n second is lower than the duration
 			// Doesn't apply to BL_PC
-			if (bl->type != BL_PC && val4 < tick && !unit_blown_immune(bl,0x1) && status_has_mode(status,MD_CANMOVE)) {
+			if (bl->type != BL_PC && val4 < tick && !unit_blown_immune(bl,0x1) && status_has_mode(status,MonsterMode::CANMOVE)) {
 				tick_time = val4;
 				val4 = tick - tick_time;
 			}
@@ -12827,9 +12827,9 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr_t data)
 		if( !status_charge(bl,0,sce->val2) ) {
 			struct block_list *s_bl = battle_get_master(bl);
 			if (bl->type == BL_ELEM)
-				elemental_change_mode(BL_CAST(BL_ELEM, bl), MAX_ELESKILLTREE);
+				elemental_change_mode(BL_CAST(BL_ELEM, bl), static_cast<MonsterMode>(MAX_ELESKILLTREE));
 			if( s_bl )
-				status_change_end(s_bl,type+1,INVALID_TIMER);
+				status_change_end(s_bl,static_cast<sc_type>(static_cast<int>(type)+1),INVALID_TIMER);
 			status_change_end(bl,type,INVALID_TIMER);
 			break;
 		}
@@ -13332,7 +13332,7 @@ int status_change_spread(struct block_list *src, struct block_list *bl, bool typ
 	tick = gettick();
 
 	// Status Immunity resistance
-	if (status_bl_has_mode(src,MD_STATUS_IMMUNE) || status_bl_has_mode(bl,MD_STATUS_IMMUNE))
+	if (status_bl_has_mode(src,MonsterMode::STATUS_IMMUNE) || status_bl_has_mode(bl,MonsterMode::STATUS_IMMUNE))
 		return 0;
 
 	for( i = SC_COMMON_MIN; i < SC_MAX; i++ ) {

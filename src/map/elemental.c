@@ -62,7 +62,7 @@ int elemental_create(struct map_session_data *sd, int class_, unsigned int lifet
 
 	ele.char_id = sd->status.char_id;
 	ele.class_ = class_;
-	ele.mode = EL_MODE_PASSIVE; // Initial mode
+	ele.mode = static_cast<int>(EL_MODE_PASSIVE); // Initial mode
 	i = db->status.size+1; // summon level
 
 	//[(Caster's Max HP/ 3 ) + (Caster's INT x 10 )+ (Caster's Job Level x 20 )] x [(Elemental Summon Level + 2) / 3]
@@ -138,7 +138,7 @@ int elemental_get_lifetime(struct elemental_data *ed) {
 }
 
 int elemental_save(struct elemental_data *ed) {
-	ed->elemental.mode = ed->battle_status.mode;
+	ed->elemental.mode = static_cast<int>(ed->battle_status.mode);
 	ed->elemental.hp = ed->battle_status.hp;
 	ed->elemental.sp = ed->battle_status.sp;
 	ed->elemental.max_hp = ed->battle_status.max_hp;
@@ -506,7 +506,7 @@ int elemental_change_mode_ack(struct elemental_data *ed, enum elemental_skillmod
 /*===============================================================
  * Change elemental mode.
  *-------------------------------------------------------------*/
-int elemental_change_mode(struct elemental_data *ed, enum e_mode mode) {
+int elemental_change_mode(struct elemental_data *ed, MonsterMode mode) {
 	enum elemental_skillmode skill_mode;
 
 	nullpo_ret(ed);
@@ -515,10 +515,10 @@ int elemental_change_mode(struct elemental_data *ed, enum e_mode mode) {
 	elemental_unlocktarget(ed);
 
 	// Removes the effects of the previous mode.
-	if(ed->elemental.mode != mode ) elemental_clean_effect(ed);
+	if(ed->elemental.mode != static_cast<int>(mode) ) elemental_clean_effect(ed);
 
-        ed->elemental.mode = mode;
-	ed->battle_status.mode = (e_mode) mode;
+        ed->elemental.mode = static_cast<int>(mode);
+	ed->battle_status.mode = (MonsterMode) mode;
 
 	// Normalize elemental mode to elemental skill mode.
 	if( mode == EL_MODE_AGGRESSIVE ) skill_mode = EL_SKILLMODE_AGGRESSIVE;	// Aggressive spirit mode -> Aggressive spirit skill.
@@ -635,7 +635,7 @@ static int elemental_ai_sub_timer_activesearch(struct block_list *bl, va_list ap
 static int elemental_ai_sub_timer(struct elemental_data *ed, struct map_session_data *sd, unsigned int tick) {
 	struct block_list *target = NULL;
 	int master_dist, view_range;
-	enum e_mode mode;
+	MonsterMode mode;
 
 	nullpo_ret(ed);
 	nullpo_ret(sd);
