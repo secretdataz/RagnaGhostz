@@ -11,13 +11,9 @@ MT19937AR_OBJ = ../../3rdparty/mt19937ar/mt19937ar.o
 MT19937AR_H = ../../3rdparty/mt19937ar/mt19937ar.h
 MT19937AR_INCLUDE = -I../../3rdparty/mt19937ar
 
-#LIBCONFIG_H = $(shell ls ../../3rdparty/libconfig/*.h)
-#LIBCONFIG_AR = ../../3rdparty/libconfig/obj/libconfig.a
-#LIBCONFIG_INCLUDE = -I../../3rdparty/libconfig
-
-LIBCONFIG_H = /usr/include/libconfig.h++
-LIBCONFIG_SO = /usr/lib64/libconfig++.so
-LIBCONFIG_INCLUDE = -I/usr/include
+LIBCONFIG_H = $(shell ls ../../3rdparty/libconfig/*.h)
+LIBCONFIG_AR = ../../3rdparty/libconfig/obj/libconfig.a
+LIBCONFIG_INCLUDE = -I../../3rdparty/libconfig
 
 HAVE_MYSQL=@HAVE_MYSQL@
 ifeq ($(HAVE_MYSQL),yes)
@@ -63,7 +59,7 @@ $(COMMON_AR): $(COMMON_DIR_OBJ)
 	@echo "	AR	$@"
 	@@AR@ rcs $(COMMON_AR) $(COMMON_DIR_OBJ)
 
-common: obj $(COMMON_DIR_OBJ) $(MT19937AR_OBJ) $(COMMON_AR)
+common: obj $(COMMON_DIR_OBJ) $(MT19937AR_OBJ) $(LIBCONFIG_AR) $(COMMON_AR)
 
 obj/%.o: %.c $(COMMON_H) $(MT19937AR_H) $(LIBCONFIG_H)
 	@echo "	CXX	$<"

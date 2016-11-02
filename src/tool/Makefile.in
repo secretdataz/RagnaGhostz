@@ -4,13 +4,9 @@ COMMON_DIR_OBJ = $(COMMON_OBJ:%=../common/obj/%)
 COMMON_H = $(shell ls ../common/*.h)
 COMMON_INCLUDE = -I../common/
 
-#LIBCONFIG_H = $(shell ls ../../3rdparty/libconfig/*.h)
-#LIBCONFIG_AR = ../../3rdparty/libconfig/obj/libconfig.a
-#LIBCONFIG_INCLUDE = -I../../3rdparty/libconfig
-
-LIBCONFIG_H = /usr/include/libconfig.h++
-LIBCONFIG_SO = /usr/lib64/libconfig++.so
-LIBCONFIG_INCLUDE = -I/usr/include
+LIBCONFIG_H = $(shell ls ../../3rdparty/libconfig/*.h)
+LIBCONFIG_AR = ../../3rdparty/libconfig/obj/libconfig.a
+LIBCONFIG_INCLUDE = -I../../3rdparty/libconfig
 
 OTHER_H = ../config/renewal.h
 
@@ -27,7 +23,7 @@ all: mapcache
 
 mapcache: obj_all $(MAPCACHE_OBJ) $(COMMON_DIR_OBJ) $(LIBCONFIG_OBJ)
 	@echo "	LD	$@"
-	@@CXX@ @LDFLAGS@ -o ../../mapcache@EXEEXT@ $(MAPCACHE_OBJ) $(COMMON_DIR_OBJ) $(LIBCONFIG_SO) @LIBS@
+	@@CXX@ @LDFLAGS@ -o ../../mapcache@EXEEXT@ $(MAPCACHE_OBJ) $(COMMON_DIR_OBJ) $(LIBCONFIG_AR) @LIBS@
 
 clean:
 	@echo "	CLEAN	tool"

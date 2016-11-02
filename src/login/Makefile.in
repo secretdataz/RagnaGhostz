@@ -7,13 +7,9 @@ MT19937AR_OBJ = ../../3rdparty/mt19937ar/mt19937ar.o
 MT19937AR_H = ../../3rdparty/mt19937ar/mt19937ar.h
 MT19937AR_INCLUDE = -I../../3rdparty/mt19937ar
 
-#LIBCONFIG_H = $(shell ls ../../3rdparty/libconfig/*.h)
-#LIBCONFIG_AR = ../../3rdparty/libconfig/obj/libconfig.a
-#LIBCONFIG_INCLUDE = -I../../3rdparty/libconfig
-
-LIBCONFIG_H = /usr/include/libconfig.h++
-LIBCONFIG_SO = /usr/lib64/libconfig++.so
-LIBCONFIG_INCLUDE = -I/usr/include
+LIBCONFIG_H = $(shell ls ../../3rdparty/libconfig/*.h)
+LIBCONFIG_AR = ../../3rdparty/libconfig/obj/libconfig.a
+LIBCONFIG_INCLUDE = -I../../3rdparty/libconfig
 
 LOGIN_OBJ = $(shell ls *.c | sed -e "s/\.c/\.o/g")
 LOGIN_DIR_OBJ = $(LOGIN_OBJ:%=obj/%)
@@ -65,7 +61,7 @@ obj:
 
 login-server: obj $(LOGIN_DIR_OBJ) $(COMMON_AR)  $(MT19937AR_OBJ)
 	@echo "	LD	@OLOG@@EXEEXT@"
-	@@CXX@ @LDFLAGS@ -o ../../@OLOG@@EXEEXT@ $(LOGIN_DIR_OBJ) $(COMMON_AR) $(MT19937AR_OBJ) $(LIBCONFIG_SO) @LIBS@ @MYSQL_LIBS@
+	@@CXX@ @LDFLAGS@ -o ../../@OLOG@@EXEEXT@ $(LOGIN_DIR_OBJ) $(COMMON_AR) $(MT19937AR_OBJ) $(LIBCONFIG_AR) @LIBS@ @MYSQL_LIBS@
 	    
 
 # login object files

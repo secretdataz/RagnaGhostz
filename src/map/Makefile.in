@@ -7,14 +7,9 @@ MT19937AR_OBJ = ../../3rdparty/mt19937ar/mt19937ar.o
 MT19937AR_H = ../../3rdparty/mt19937ar/mt19937ar.h
 MT19937AR_INCLUDE = -I../../3rdparty/mt19937ar
 
-# Todo add use system switch
-#LIBCONFIG_H = $(shell ls ../../3rdparty/libconfig/*.h)
-#LIBCONFIG_AR = ../../3rdparty/libconfig/obj/libconfig.a
-#LIBCONFIG_INCLUDE = -I../../3rdparty/libconfig
-
-LIBCONFIG_H = /usr/include/libconfig.h++
-LIBCONFIG_SO = /usr/lib64/libconfig++.so
-LIBCONFIG_INCLUDE = -I/usr/include
+LIBCONFIG_H = $(shell ls ../../3rdparty/libconfig/*.h)
+LIBCONFIG_AR = ../../3rdparty/libconfig/obj/libconfig.a
+LIBCONFIG_INCLUDE = -I../../3rdparty/libconfig
 
 MAP_OBJ = $(shell ls *.c | sed -e "s/\.c/\.o/g")
 MAP_DIR_OBJ = $(MAP_OBJ:%=obj/%)
@@ -72,9 +67,9 @@ obj:
 
 # executables
 
-map-server: obj $(MAP_DIR_OBJ) $(COMMON_AR)
+map-server: obj $(MAP_DIR_OBJ) $(COMMON_AR) $(LIBCONFIG_AR)
 	@echo "	LD	@OMAP@@EXEEXT@"
-	@@CXX@ @LDFLAGS@ -o ../../@OMAP@@EXEEXT@ $(MAP_DIR_OBJ) $(COMMON_AR) $(MT19937AR_OBJ) $(LIBCONFIG_SO) @LIBS@ @PCRE_LIBS@ @MYSQL_LIBS@
+	@@CXX@ @LDFLAGS@ -o ../../@OMAP@@EXEEXT@ $(MAP_DIR_OBJ) $(COMMON_AR) $(MT19937AR_OBJ) $(LIBCONFIG_AR) @LIBS@ @PCRE_LIBS@ @MYSQL_LIBS@
 
 
 # map object files
