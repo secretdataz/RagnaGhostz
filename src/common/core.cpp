@@ -158,10 +158,11 @@ void signals_init (void) {
 // Grabs the hash from the last time the user updated their working copy (last pull)
 const char *get_git_hash (void) {
 	static std::string GitHash;
-	std::ifstream file (".git/" GIT_ORIGIN);
 
-	if(!GitHash.empty())
+	if (!GitHash.empty())
 		return GitHash.c_str();
+
+	std::ifstream file (".git/" GIT_ORIGIN);
 
 	if (file.is_open()) {
 		std::getline(file, GitHash);
