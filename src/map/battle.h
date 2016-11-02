@@ -606,8 +606,9 @@ struct Battle_Config
 	int block_account_in_same_party;
 
 #include "../custom/battle_config_struct.inc"
-} battle_config;
-extern struct Battle_Config battle_config; 
+};
+
+extern struct Battle_Config battle_config;
 
 #define MIN_HAIR_STYLE battle_config.min_hair_style
 #define MAX_HAIR_STYLE battle_config.max_hair_style
