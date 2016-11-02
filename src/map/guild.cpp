@@ -2246,8 +2246,8 @@ void do_init_guild(void) {
 		char* dbsubpath1 = (char*)aMalloc(n1+1);
 		safesnprintf(dbsubpath1,n1+1,"%s%s",db_path,dbsubpath[i]);
 		
-		sv_readdb(dbsubpath1, "castle_db.txt", ',', 4, 4, -1, &guild_read_castledb, i);
-		sv_readdb(dbsubpath1, "guild_skill_tree.txt", ',', 2+MAX_GUILD_SKILL_REQUIRE*2, 2+MAX_GUILD_SKILL_REQUIRE*2, -1, &guild_read_guildskill_tree_db, i); //guild skill tree [Komurka]
+		sv_readdb(dbsubpath1, "castle_db.txt", ',', 4, 4, -1, &guild_read_castledb, i>0);
+		sv_readdb(dbsubpath1, "guild_skill_tree.txt", ',', 2+MAX_GUILD_SKILL_REQUIRE*2, 2+MAX_GUILD_SKILL_REQUIRE*2, -1, &guild_read_guildskill_tree_db, i>0); //guild skill tree [Komurka]
 		
 		aFree(dbsubpath1);
 	}

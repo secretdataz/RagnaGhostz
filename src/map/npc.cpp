@@ -2520,7 +2520,8 @@ static const char* npc_parse_warp(char* w1, char* w2, char* w3, char* w4, const 
 static const char* npc_parse_shop(char* w1, char* w2, char* w3, char* w4, const char* start, const char* buffer, const char* filepath)
 {
 	char *p, point_str[32];
-	int m, is_discount = 0;
+	int m;
+	int is_discount;
 	uint16 dir;
 	short x, y;
 	unsigned short nameid = 0;
@@ -2701,7 +2702,7 @@ static const char* npc_parse_shop(char* w1, char* w2, char* w3, char* w4, const 
 	if (type != NPCTYPE_SHOP) {
 		if (type == NPCTYPE_ITEMSHOP) nd->u.shop.itemshop_nameid = nameid; // Item shop currency
 		else if (type == NPCTYPE_POINTSHOP) safestrncpy(nd->u.shop.pointshop_str,point_str,strlen(point_str)+1); // Point shop currency
-		nd->u.shop.discount = is_discount;
+		nd->u.shop.discount = is_discount != 0;
 	}
 
 	nd->bl.prev = nd->bl.next = NULL;

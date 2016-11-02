@@ -1118,7 +1118,7 @@ bool pc_setreg(struct map_session_data *sd, int64 reg, int val);
 char *pc_readregstr(struct map_session_data *sd, int64 reg);
 bool pc_setregstr(struct map_session_data *sd, int64 reg, const char *str);
 int pc_readregistry(struct map_session_data *sd, int64 reg);
-int pc_setregistry(struct map_session_data *sd, int64 reg, int val);
+bool pc_setregistry(struct map_session_data *sd, int64 reg, int val);
 char *pc_readregistry_str(struct map_session_data *sd, int64 reg);
 int pc_setregistry_str(struct map_session_data *sd, int64 reg, const char *val);
 

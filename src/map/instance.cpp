@@ -914,7 +914,7 @@ void instance_readdb(void) {
 	int f;
 
 	for (f = 0; f<ARRAYLENGTH(filename); f++) {
-		sv_readdb(db_path, filename[f], ',', 7, 7+MAX_MAP_PER_INSTANCE, -1, &instance_readdb_sub, f);
+		sv_readdb(db_path, filename[f], ',', 7, 7+MAX_MAP_PER_INSTANCE, -1, &instance_readdb_sub, f>0);
 	}
 }
 

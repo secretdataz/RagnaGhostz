@@ -624,7 +624,7 @@ int log_config_read(const char* cfgName)
 			if( strcmpi(w1, "enable_logs") == 0 )
 				log_config.enable_logs = (e_log_pick_type)config_switch(w2);
 			else if( strcmpi(w1, "sql_logs") == 0 )
-				log_config.sql_logs = (bool)config_switch(w2);
+				log_config.sql_logs = config_switch(w2) != 0;
 //start of common filter settings
 			else if( strcmpi(w1, "rare_items_log") == 0 )
 				log_config.rare_items_log = atoi(w2);
@@ -642,7 +642,7 @@ int log_config_read(const char* cfgName)
 			else if( strcmpi(w1, "log_zeny") == 0 )
 				log_config.zeny = config_switch(w2);
 			else if( strcmpi( w1, "log_cash" ) == 0 )
-				log_config.cash = config_switch( w2 );
+				log_config.cash = config_switch( w2 ) != 0;
 			else if( strcmpi(w1, "log_commands") == 0 )
 				log_config.commands = config_switch(w2);
 			else if( strcmpi(w1, "log_npc") == 0 )
@@ -654,7 +654,7 @@ int log_config_read(const char* cfgName)
 			else if( strcmpi(w1, "log_feeding") == 0 )
 				log_config.feeding = config_switch(w2);
 			else if( strcmpi(w1, "log_chat_woe_disable") == 0 )
-				log_config.log_chat_woe_disable = (bool)config_switch(w2);
+				log_config.log_chat_woe_disable = config_switch(w2) != 0;
 			else if( strcmpi(w1, "log_branch_db") == 0 )
 				safestrncpy(log_config.log_branch, w2, sizeof(log_config.log_branch));
 			else if( strcmpi(w1, "log_pick_db") == 0 )

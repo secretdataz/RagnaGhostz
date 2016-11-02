@@ -827,7 +827,7 @@ void read_elementaldb(void) {
 	elemental_count = 0;
 	memset(elemental_db, 0, sizeof(elemental_db));
 	for(i = 0; i<ARRAYLENGTH(filename); i++){
-		sv_readdb(db_path, filename[i], ',', 26, 26, -1, &read_elementaldb_sub, i);
+		sv_readdb(db_path, filename[i], ',', 26, 26, -1, &read_elementaldb_sub, i>0);
 	}
 }
 
@@ -875,7 +875,7 @@ void read_elemental_skilldb(void) {
 	const char *filename[] = { "elemental_skill_db.txt", DBIMPORT"/elemental_skill_db.txt" };
 	uint8 i;
 	for(i = 0; i<ARRAYLENGTH(filename); i++){
-		sv_readdb(db_path, filename[i], ',', 4, 4, -1, &read_elemental_skilldb_sub, i);
+		sv_readdb(db_path, filename[i], ',', 4, 4, -1, &read_elemental_skilldb_sub, i>0);
 	}
 }
 
