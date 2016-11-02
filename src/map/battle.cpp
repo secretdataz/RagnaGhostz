@@ -34,7 +34,7 @@
 
 int attr_fix_table[4][ELE_MAX][ELE_MAX];
 
-//struct Battle_Config battle_config;
+struct Battle_Config battle_config;
 static struct eri *delay_damage_ers; //For battle delay damage structures.
 
 /**
@@ -2422,7 +2422,7 @@ static bool battle_skill_get_damage_properties(uint16 skill_id, int is_splash)
 	int nk = skill_get_nk(skill_id);
 	if( !skill_id && is_splash ) //If flag, this is splash damage from Baphomet Card and it always hits.
 		nk |= NK_NO_CARDFIX_ATK|NK_IGNORE_FLEE;
-	return nk;
+	return nk != 0;
 }
 
 /*=============================
@@ -2636,7 +2636,7 @@ static bool attack_ignores_def(struct Damage wd, struct block_list *src, struct 
 		}
 	}
 
-	return (nk&NK_IGNORE_DEF);
+	return (nk&NK_IGNORE_DEF) != 0;
 }
 
 /*================================================
