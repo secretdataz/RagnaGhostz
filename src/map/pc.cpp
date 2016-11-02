@@ -7664,7 +7664,7 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 
 				if( battle_config.show_mob_info&4 )
 				{// update name with new level
-					clif_charnameack(0, &md->bl);
+					clif_name_area(&md->bl);
 				}
 			}
 			src = battle_get_master(src); // Maybe Player Summon
@@ -9140,6 +9140,8 @@ int pc_setregistry_str(struct map_session_data *sd, int64 reg, const char *val)
 				script_array_update(&sd->regs, reg, false);
 			p->value = aStrdup(val);
 		} else {
+			if (p->value)
+				aFree(p->value);
 			p->value = NULL;
 			if( index )
 				script_array_update(&sd->regs, reg, true);
