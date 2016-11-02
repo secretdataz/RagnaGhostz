@@ -7,7 +7,7 @@
 #include <cstdarg>
 #include <string>
 
-std::string string_vsprintf(const char* format, std::va_list args) {
+static std::string string_vsprintf(const char* format, std::va_list args) {
 	va_list tmp_args;
 	va_copy(tmp_args, args);
 	const int required_len = vsnprintf(nullptr, 0, format, tmp_args) + 1;
@@ -20,7 +20,7 @@ std::string string_vsprintf(const char* format, std::va_list args) {
 	return buf;
 }
 
-std::string string_sprintf(const char* format, ...) {
+static std::string string_sprintf(const char* format, ...) {
 	std::va_list args;
 	va_start(args, format);
 	std::string str{ string_vsprintf(format, args) };
