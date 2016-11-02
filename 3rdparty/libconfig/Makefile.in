@@ -29,8 +29,8 @@ obj:
 	@-mkdir obj
 	
 obj/%.o: %.c $(LIBCONFIG_H)
-	@echo "	CXX	$<"
-	@@CXX@ @CFLAGS_AR@ @DEFS@ @CPPFLAGS@ -c $(OUTPUT_OPTION) $<
+	@echo "	CC	$<"
+	@@CC@ @CFLAGS_AR@ @DEFS@ @CPPFLAGS@ -c $(OUTPUT_OPTION) $<
 
 libconfig: obj $(LIBCONFIG_DIR_OBJ) $(LIBCONFIG_AR)
 
