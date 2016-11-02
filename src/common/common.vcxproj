@@ -51,29 +51,29 @@
     <ClInclude Include="winapi.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cli.c" />
-    <ClCompile Include="conf.c" />
-    <ClCompile Include="core.c" />
-    <ClCompile Include="db.c" />
-    <ClCompile Include="des.c" />
-    <ClCompile Include="ers.c" />
-    <ClCompile Include="grfio.c" />
-    <ClCompile Include="malloc.c" />
-    <ClCompile Include="mapindex.c" />
-    <ClCompile Include="md5calc.c" />
-    <ClCompile Include="mempool.c" />
-    <ClCompile Include="msg_conf.c" />
-    <ClCompile Include="mutex.c" />
-    <ClCompile Include="nullpo.c" />
-    <ClCompile Include="raconf.c" />
-    <ClCompile Include="random.c" />
-    <ClCompile Include="showmsg.c" />
-    <ClCompile Include="socket.c" />
-    <ClCompile Include="sql.c" />
-    <ClCompile Include="strlib.c" />
-    <ClCompile Include="thread.c" />
-    <ClCompile Include="timer.c" />
-    <ClCompile Include="utils.c" />
+    <ClCompile Include="cli.cpp" />
+    <ClCompile Include="conf.cpp" />
+    <ClCompile Include="core.cpp" />
+    <ClCompile Include="db.cpp" />
+    <ClCompile Include="des.cpp" />
+    <ClCompile Include="ers.cpp" />
+    <ClCompile Include="grfio.cpp" />
+    <ClCompile Include="malloc.cpp" />
+    <ClCompile Include="mapindex.cpp" />
+    <ClCompile Include="md5calc.cpp" />
+    <ClCompile Include="mempool.cpp" />
+    <ClCompile Include="msg_conf.cpp" />
+    <ClCompile Include="mutex.cpp" />
+    <ClCompile Include="nullpo.cpp" />
+    <ClCompile Include="raconf.cpp" />
+    <ClCompile Include="random.cpp" />
+    <ClCompile Include="showmsg.cpp" />
+    <ClCompile Include="socket.cpp" />
+    <ClCompile Include="sql.cpp" />
+    <ClCompile Include="strlib.cpp" />
+    <ClCompile Include="thread.cpp" />
+    <ClCompile Include="timer.cpp" />
+    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F8FD7B1E-8E1C-4CC3-9CD1-2E28F77B6559}</ProjectGuid>

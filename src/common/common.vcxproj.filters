@@ -103,73 +103,73 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cli.c">
+    <ClCompile Include="cli.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="conf.c">
+    <ClCompile Include="conf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core.c">
+    <ClCompile Include="core.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="db.c">
+    <ClCompile Include="db.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="des.c">
+    <ClCompile Include="des.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ers.c">
+    <ClCompile Include="ers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="grfio.c">
+    <ClCompile Include="grfio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="malloc.c">
+    <ClCompile Include="malloc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mapindex.c">
+    <ClCompile Include="mapindex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="md5calc.c">
+    <ClCompile Include="md5calc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mempool.c">
+    <ClCompile Include="mempool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="msg_conf.c">
+    <ClCompile Include="msg_conf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mutex.c">
+    <ClCompile Include="mutex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="nullpo.c">
+    <ClCompile Include="nullpo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="raconf.c">
+    <ClCompile Include="raconf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="random.c">
+    <ClCompile Include="random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="showmsg.c">
+    <ClCompile Include="showmsg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="socket.c">
+    <ClCompile Include="socket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sql.c">
+    <ClCompile Include="sql.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="strlib.c">
+    <ClCompile Include="strlib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="thread.c">
+    <ClCompile Include="thread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="timer.c">
+    <ClCompile Include="timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="utils.c">
+    <ClCompile Include="utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
