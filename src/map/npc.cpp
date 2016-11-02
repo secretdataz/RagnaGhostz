@@ -2521,7 +2521,7 @@ static const char* npc_parse_shop(char* w1, char* w2, char* w3, char* w4, const 
 {
 	char *p, point_str[32];
 	int m;
-	bool is_discount;
+	int is_discount;
 	uint16 dir;
 	short x, y;
 	unsigned short nameid = 0;
@@ -2602,11 +2602,11 @@ static const char* npc_parse_shop(char* w1, char* w2, char* w3, char* w4, const 
 			ShowError("npc_parse_shop: (MARKETSHOP) Feature is disabled, need client 20131223 or newer. Ignoring file '%s', line '%d\n * w1=%s\n * w2=%s\n * w3=%s\n * w4=%s\n", filepath, strline(buffer, start - buffer), w1, w2, w3, w4);
 			return strchr(start, '\n'); // skip and continue
 #else
-			is_discount = false;
+			is_discount = 0;
 			break;
 #endif
 		default:
-			is_discount = true;
+			is_discount = 1;
 			break;
 	}
 	
@@ -2702,7 +2702,7 @@ static const char* npc_parse_shop(char* w1, char* w2, char* w3, char* w4, const 
 	if (type != NPCTYPE_SHOP) {
 		if (type == NPCTYPE_ITEMSHOP) nd->u.shop.itemshop_nameid = nameid; // Item shop currency
 		else if (type == NPCTYPE_POINTSHOP) safestrncpy(nd->u.shop.pointshop_str,point_str,strlen(point_str)+1); // Point shop currency
-		nd->u.shop.discount = is_discount;
+		nd->u.shop.discount = is_discount != 0;
 	}
 
 	nd->bl.prev = nd->bl.next = NULL;

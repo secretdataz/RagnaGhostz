@@ -12232,7 +12232,7 @@ int status_change_timer(int tid, unsigned int tick, int id, intptr_t data)
 				damage = (type == SC_DPOISON) ? 2 + status->max_hp / 50 : 2 + status->max_hp * 3 / 200;
 			else
 				damage = (type == SC_DPOISON) ? 2 + status->max_hp / 100 : 2 + status->max_hp / 200;
-			if (status->hp > max(status->max_hp / 4, damage)) // Stop damaging after 25% HP left.
+			if (status->hp > i64max(status->max_hp / 4, damage)) // Stop damaging after 25% HP left.
 				status_zap(bl, damage, 0);
 		}
 		break;
