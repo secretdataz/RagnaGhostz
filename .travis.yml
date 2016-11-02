@@ -1,7 +1,8 @@
-language: c
+language: cpp
+dist: trusty
 compiler:
   - clang
-  - gcc
+  - g++
 
 before_script:
   - uname -a
