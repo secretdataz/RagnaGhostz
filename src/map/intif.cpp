@@ -2223,7 +2223,7 @@ int intif_parse_Mail_delete(int fd)
 {
 	uint32 char_id = RFIFOL(fd,2);
 	int mail_id = RFIFOL(fd,6);
-	bool failed = RFIFOB(fd,10);
+	bool failed = RFIFOB(fd,10) != 0;
 
 	struct map_session_data *sd = map_charid2sd(char_id);
 	if (sd == NULL)
@@ -2685,7 +2685,7 @@ int intif_parse_mercenary_received(int fd)
 		return 0;
 	}
 
-	mercenary_recv_data((struct s_mercenary*)RFIFOP(fd,5), RFIFOB(fd,4));
+	mercenary_recv_data((struct s_mercenary*)RFIFOP(fd,5), RFIFOB(fd,4)!=0);
 	return 1;
 }
 
@@ -2810,7 +2810,7 @@ int intif_parse_elemental_received(int fd)
 		return 0;
 	}
 
-	elemental_data_received((struct s_elemental*)RFIFOP(fd,5), RFIFOB(fd,4));
+	elemental_data_received((struct s_elemental*)RFIFOP(fd,5), RFIFOB(fd,4)!=0);
 	return 1;
 }
 

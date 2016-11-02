@@ -682,7 +682,7 @@ void chrif_authok(int fd) {
 	login_id2 = RFIFOL(fd,12);
 	expiration_time = (time_t)(int32)RFIFOL(fd,16);
 	group_id = RFIFOL(fd,20);
-	changing_mapservers = (RFIFOB(fd,24));
+	changing_mapservers = RFIFOB(fd,24) != 0;
 	status = (struct mmo_charstatus*)RFIFOP(fd,25);
 	char_id = status->char_id;
 

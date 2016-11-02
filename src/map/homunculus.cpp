@@ -1072,7 +1072,7 @@ bool hom_call(struct map_session_data *sd)
 
 	// If homunc not yet loaded, load it
 	if (!sd->hd)
-		return intif_homunculus_requestload(sd->status.account_id, sd->status.hom_id);
+		return intif_homunculus_requestload(sd->status.account_id, sd->status.hom_id) != 0;
 
 	hd = sd->hd;
 
@@ -1515,7 +1515,7 @@ void read_homunculusdb(void) {
 	homunculus_count = 0;
 	memset(homunculus_db,0,sizeof(homunculus_db));
 	for(i = 0; i<ARRAYLENGTH(filename); i++){
-		sv_readdb(db_path, filename[i], ',', 50, 50, MAX_HOMUNCULUS_CLASS, &read_homunculusdb_sub, i);
+		sv_readdb(db_path, filename[i], ',', 50, 50, MAX_HOMUNCULUS_CLASS, &read_homunculusdb_sub, i>0);
 	}
 }
 
@@ -1568,7 +1568,7 @@ static void read_homunculus_skilldb(void) {
 	int i;
 	memset(hskill_tree,0,sizeof(hskill_tree));
 	for (i = 0; i<ARRAYLENGTH(filename); i++) {
-		sv_readdb(db_path, filename[i], ',', 15, 15, -1, &read_homunculus_skilldb_sub, i);
+		sv_readdb(db_path, filename[i], ',', 15, 15, -1, &read_homunculus_skilldb_sub, i>0);
 	}
 }
 

@@ -2520,7 +2520,8 @@ static const char* npc_parse_warp(char* w1, char* w2, char* w3, char* w4, const 
 static const char* npc_parse_shop(char* w1, char* w2, char* w3, char* w4, const char* start, const char* buffer, const char* filepath)
 {
 	char *p, point_str[32];
-	int m, is_discount = 0;
+	int m;
+	bool is_discount;
 	uint16 dir;
 	short x, y;
 	unsigned short nameid = 0;
@@ -2601,11 +2602,11 @@ static const char* npc_parse_shop(char* w1, char* w2, char* w3, char* w4, const 
 			ShowError("npc_parse_shop: (MARKETSHOP) Feature is disabled, need client 20131223 or newer. Ignoring file '%s', line '%d\n * w1=%s\n * w2=%s\n * w3=%s\n * w4=%s\n", filepath, strline(buffer, start - buffer), w1, w2, w3, w4);
 			return strchr(start, '\n'); // skip and continue
 #else
-			is_discount = 0;
+			is_discount = false;
 			break;
 #endif
 		default:
-			is_discount = 1;
+			is_discount = true;
 			break;
 	}
 	

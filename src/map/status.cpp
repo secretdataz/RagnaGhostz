@@ -107,7 +107,7 @@ static unsigned int status_calc_maxhpsp_pc(struct map_session_data* sd, unsigned
 static int status_get_sc_interval(enum sc_type type);
 
 static bool status_change_isDisabledOnMap_(sc_type type, bool mapIsVS, bool mapIsPVP, bool mapIsGVG, bool mapIsBG, unsigned int mapZone, bool mapIsTE);
-#define status_change_isDisabledOnMap(type, m) ( status_change_isDisabledOnMap_((type), map_flag_vs2((m)), map[(m)].flag.pvp, map_flag_gvg2_no_te((m)), map[(m)].flag.battleground, map[(m)].zone << 3, map_flag_gvg2_te((m))) )
+#define status_change_isDisabledOnMap(type, m) ( status_change_isDisabledOnMap_((type), map_flag_vs2((m)), map[(m)].flag.pvp != 0, map_flag_gvg2_no_te((m)), map[(m)].flag.battleground, map[(m)].zone << 3, map_flag_gvg2_te((m))) )
 
 /**
  * Returns the status change associated with a skill.
@@ -13673,7 +13673,7 @@ void status_change_clear_onChangeMap(struct block_list *bl, struct status_change
 		bool mapIsVS = map_flag_vs2(bl->m);
 		bool mapIsPVP = map[bl->m].flag.pvp;
 		bool mapIsGVG = map_flag_gvg2_no_te(bl->m);
-		bool mapIsBG = map[bl->m].flag.battleground;
+		bool mapIsBG = map[bl->m].flag.battleground != 0;
 		bool mapIsTE = map_flag_gvg2_te(bl->m);
 		unsigned int mapZone = map[bl->m].zone << 3;
 
@@ -13885,10 +13885,10 @@ int status_readdb(void)
 			safesnprintf(dbsubpath2,n1,"%s%s",db_path,dbsubpath[i]);
 		}
 		
-		status_readdb_attrfix(dbsubpath2,i); // !TODO use sv_readdb ?
-		sv_readdb(dbsubpath1, "status_disabled.txt", ',', 2, 2, -1, &status_readdb_status_disabled, i);
-		sv_readdb(dbsubpath1, "size_fix.txt",',',MAX_WEAPON_TYPE,MAX_WEAPON_TYPE,ARRAYLENGTH(atkmods),&status_readdb_sizefix, i);
-		sv_readdb(dbsubpath2, "refine_db.txt", ',', 4+MAX_REFINE, 4+MAX_REFINE, ARRAYLENGTH(refine_info), &status_readdb_refine, i);
+		status_readdb_attrfix(dbsubpath2,i>0); // !TODO use sv_readdb ?
+		sv_readdb(dbsubpath1, "status_disabled.txt", ',', 2, 2, -1, &status_readdb_status_disabled, i>0);
+		sv_readdb(dbsubpath1, "size_fix.txt",',',MAX_WEAPON_TYPE,MAX_WEAPON_TYPE,ARRAYLENGTH(atkmods),&status_readdb_sizefix, i>0);
+		sv_readdb(dbsubpath2, "refine_db.txt", ',', 4+MAX_REFINE, 4+MAX_REFINE, ARRAYLENGTH(refine_info), &status_readdb_refine, i>0);
 		aFree(dbsubpath1);
 		aFree(dbsubpath2);
 	}

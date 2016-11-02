@@ -2259,7 +2259,7 @@ static void read_constdb(void)
 		if(sscanf(line,"%1023[A-Za-z0-9/_],%1023[A-Za-z0-9/_-],%11d",name,val,&type)>=2 ||
 		   sscanf(line,"%1023[A-Za-z0-9/_] %1023[A-Za-z0-9/_-] %11d",name,val,&type)>=2){
 			entries++;
-			script_set_constant(name, (int)strtol(val, NULL, 0), (bool)type);
+			script_set_constant(name, (int)strtol(val, NULL, 0), type != 0);
 		}
 		else {
 			skipped++;
@@ -13039,7 +13039,7 @@ BUILDIN_FUNC(setwall)
 	y = script_getnum(st,4);
 	size = script_getnum(st,5);
 	dir = script_getnum(st,6);
-	shootable = script_getnum(st,7);
+	shootable = script_getnum(st,7) != 0;
 	name = script_getstr(st,8);
 
 	if( (m = map_mapname2mapid(mapname)) < 0 )
@@ -18213,7 +18213,7 @@ BUILDIN_FUNC(setcell)
 	int16 x2 = script_getnum(st,5);
 	int16 y2 = script_getnum(st,6);
 	cell_t type = (cell_t)script_getnum(st,7);
-	bool flag = (bool)script_getnum(st,8);
+	bool flag = script_getnum(st,8) != 0;
 
 	int x,y;
 
@@ -20780,7 +20780,7 @@ BUILDIN_FUNC(bonus_script_clear) {
 	bool flag = false;
 
 	if (script_hasdata(st,2))
-		flag = script_getnum(st,2);
+		flag = script_getnum(st,2) != 0;
 
 	if (script_hasdata(st,3))
 		sd = map_charid2sd(script_getnum(st,3));

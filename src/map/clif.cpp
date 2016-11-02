@@ -13013,7 +13013,7 @@ void clif_parse_OpenVending(int fd, struct map_session_data* sd){
 		bool flag;
 
 		len -= 85;
-		flag = (bool)RFIFOB(fd,info->pos[2]);
+		flag = RFIFOB(fd,info->pos[2])!=0;
 		if (!flag) {
 			sd->state.prevend = 0;
 			sd->state.workinprogress = WIP_DISABLE_NONE;
@@ -15851,7 +15851,7 @@ void clif_parse_ViewPlayerEquip(int fd, struct map_session_data* sd)
 void clif_parse_EquipTick(int fd, struct map_session_data* sd)
 {
 	//int type = RFIFOL(fd,packet_db[sd->packet_ver][cmd].pos[0]);
-	bool flag = (bool)RFIFOL(fd,packet_db[sd->packet_ver][RFIFOW(fd,0)].pos[1]);
+	bool flag = RFIFOL(fd,packet_db[sd->packet_ver][RFIFOW(fd,0)].pos[1]) != 0;
 	sd->status.show_equip = flag;
 	clif_equiptickack(sd, flag);
 }

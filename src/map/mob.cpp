@@ -5009,7 +5009,7 @@ static void mob_load(void)
 				safesnprintf(dbsubpath2,n2,"%s%s",db_path,dbsubpath[i]);
 			}
 
-			sv_readdb(dbsubpath2, "mob_db.txt", ',', 31+2*MAX_MVP_DROP+2*MAX_MOB_DROP, 31+2*MAX_MVP_DROP+2*MAX_MOB_DROP, -1, &mob_readdb_sub, i);
+			sv_readdb(dbsubpath2, "mob_db.txt", ',', 31+2*MAX_MVP_DROP+2*MAX_MOB_DROP, 31+2*MAX_MVP_DROP+2*MAX_MOB_DROP, -1, &mob_readdb_sub, i>0);
 
 			aFree(dbsubpath2);
 		}
@@ -5032,19 +5032,19 @@ static void mob_load(void)
 		}
 		
 		if( !db_use_sqldbs ){
-			mob_readskilldb(dbsubpath2,i);
+			mob_readskilldb(dbsubpath2,i>0);
 		}
 
-		sv_readdb(dbsubpath1, "mob_avail.txt", ',', 2, 12, -1, &mob_readdb_mobavail, i);
-		sv_readdb(dbsubpath2, "mob_race2_db.txt", ',', 2, MAX_RACE2_MOBS, -1, &mob_readdb_race2, i);
-		sv_readdb(dbsubpath1, "mob_item_ratio.txt", ',', 2, 2+MAX_ITEMRATIO_MOBS, -1, &mob_readdb_itemratio, i);
-		sv_readdb(dbsubpath1, "mob_chat_db.txt", '#', 3, 3, MAX_MOB_CHAT, &mob_parse_row_chatdb, i);
-		sv_readdb(dbsubpath2, "mob_random_db.txt", ',', 4, 4, -1, &mob_readdb_group, i );
-		sv_readdb(dbsubpath2, "mob_branch.txt", ',', 4, 4, -1, &mob_readdb_group, i );
-		sv_readdb(dbsubpath2, "mob_poring.txt", ',', 4, 4, -1, &mob_readdb_group, i );
-		sv_readdb(dbsubpath2, "mob_boss.txt", ',', 4, 4, -1, &mob_readdb_group, i );
-		sv_readdb(dbsubpath1, "mob_pouch.txt", ',', 4, 4, -1, &mob_readdb_group, i );
-		sv_readdb(dbsubpath1, "mob_classchange.txt", ',', 4, 4, -1, &mob_readdb_group, i );
+		sv_readdb(dbsubpath1, "mob_avail.txt", ',', 2, 12, -1, &mob_readdb_mobavail, i>0);
+		sv_readdb(dbsubpath2, "mob_race2_db.txt", ',', 2, MAX_RACE2_MOBS, -1, &mob_readdb_race2, i>0);
+		sv_readdb(dbsubpath1, "mob_item_ratio.txt", ',', 2, 2+MAX_ITEMRATIO_MOBS, -1, &mob_readdb_itemratio, i>0);
+		sv_readdb(dbsubpath1, "mob_chat_db.txt", '#', 3, 3, MAX_MOB_CHAT, &mob_parse_row_chatdb, i>0);
+		sv_readdb(dbsubpath2, "mob_random_db.txt", ',', 4, 4, -1, &mob_readdb_group, i>0);
+		sv_readdb(dbsubpath2, "mob_branch.txt", ',', 4, 4, -1, &mob_readdb_group, i>0);
+		sv_readdb(dbsubpath2, "mob_poring.txt", ',', 4, 4, -1, &mob_readdb_group, i>0);
+		sv_readdb(dbsubpath2, "mob_boss.txt", ',', 4, 4, -1, &mob_readdb_group, i>0);
+		sv_readdb(dbsubpath1, "mob_pouch.txt", ',', 4, 4, -1, &mob_readdb_group, i>0);
+		sv_readdb(dbsubpath1, "mob_classchange.txt", ',', 4, 4, -1, &mob_readdb_group, i>0);
 		
 		aFree(dbsubpath1);
 		aFree(dbsubpath2);
