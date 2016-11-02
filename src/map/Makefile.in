@@ -11,7 +11,7 @@ LIBCONFIG_H = $(shell ls ../../3rdparty/libconfig/*.h)
 LIBCONFIG_AR = ../../3rdparty/libconfig/obj/libconfig.a
 LIBCONFIG_INCLUDE = -I../../3rdparty/libconfig
 
-MAP_OBJ = $(shell ls *.c | sed -e "s/\.c/\.o/g")
+MAP_OBJ = $(shell ls *.cpp | sed -e "s/\.cpp/\.o/g")
 MAP_DIR_OBJ = $(MAP_OBJ:%=obj/%)
 MAP_H = $(shell ls ../map/*.h) \
 	$(shell ls ../config/*.h) 
@@ -74,7 +74,7 @@ map-server: obj $(MAP_DIR_OBJ) $(COMMON_AR) $(LIBCONFIG_AR)
 
 # map object files
 
-obj/%.o: %.c $(MAP_H) $(COMMON_H)  $(MT19937AR_H) $(LIBCONFIG_H)
+obj/%.o: %.cpp $(MAP_H) $(COMMON_H)  $(MT19937AR_H) $(LIBCONFIG_H)
 	@echo "	CXX	$<"
 	@@CXX@ $(TMP_LAZY_CXXFLAG) @CFLAGS@ $(COMMON_INCLUDE) $(MT19937AR_INCLUDE) $(LIBCONFIG_INCLUDE) $(PCRE_CFLAGS) @MYSQL_CFLAGS@ @CPPFLAGS@ -c $(OUTPUT_OPTION) $<
 
