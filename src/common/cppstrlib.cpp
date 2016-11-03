@@ -9,7 +9,7 @@
 std::string string_vsprintf(std::string format, std::va_list args) {
 	va_list tmp_args;
 	va_copy(tmp_args, args);
-	const int required_len = vsnprintf(nullptr, 0, format.c_str(), tmp_args);
+	const int required_len = std::vsnprintf(nullptr, 0, format.c_str(), tmp_args);
 	va_end(tmp_args);
 
 	std::string buf(required_len + 1, '\0');
