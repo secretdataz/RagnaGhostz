@@ -4,6 +4,7 @@
 #ifndef _COMMON_SQL_H_
 #define _COMMON_SQL_H_
 
+#include <string>
 #include <cstdarg>
 #include "cbasetypes.h"
 
@@ -130,7 +131,7 @@ size_t Sql_EscapeStringLen(Sql* self, char* out_to, const char* from, size_t fro
 /// The query is constructed as if it was sprintf.
 ///
 /// @return SQL_SUCCESS or SQL_ERROR
-int Sql_Query(Sql* self, const char* query, ...);
+int Sql_Query(Sql* self, std::string query, ...);
 
 
 
@@ -139,7 +140,7 @@ int Sql_Query(Sql* self, const char* query, ...);
 /// The query is constructed as if it was svprintf.
 ///
 /// @return SQL_SUCCESS or SQL_ERROR
-int Sql_QueryV(Sql* self, const char* query, va_list args);
+int Sql_QueryV(Sql* self, std::string query, va_list args);
 
 
 
@@ -148,7 +149,7 @@ int Sql_QueryV(Sql* self, const char* query, va_list args);
 /// The query is used directly.
 ///
 /// @return SQL_SUCCESS or SQL_ERROR
-int Sql_QueryStr(Sql* self, const char* query);
+int Sql_QueryStr(Sql* self, std::string query);
 
 
 
@@ -256,7 +257,7 @@ int SqlStmt_PrepareV(SqlStmt* self, const char* query, va_list args);
 /// The query is used directly.
 ///
 /// @return SQL_SUCCESS or SQL_ERROR
-int SqlStmt_PrepareStr(SqlStmt* self, const char* query);
+int SqlStmt_PrepareStr(SqlStmt* self, std::string );
 
 
 

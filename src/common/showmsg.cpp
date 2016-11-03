@@ -4,10 +4,12 @@
 #include <ctime>
 #include <cstdlib> // atexit
 #include <cstring> // atexit
+#include <string>
+#include <vector>
+#include "cppstrlib.hpp"
 
 #include "core.h"
 #include "showmsg.h"
-#include "strlib.h" // StringBuf
 
 #ifdef WIN32
 	#include "winapi.h"
@@ -49,47 +51,6 @@ int stdout_with_ansisequence = 0;
 int msg_silent = 0; //Specifies how silent the console is.
 int console_msg_log = 0;//[Ind] msg error logging
 char console_log_filepath[32] = "./log/unknown.log";
-
-///////////////////////////////////////////////////////////////////////////////
-/// static/dynamic buffer for the messages
-
-#define SBUF_SIZE 2054 // never put less that what's required for the debug message
-
-#define NEWBUF(buf)				\
-	struct {					\
-		char s_[SBUF_SIZE];		\
-		StringBuf *d_;			\
-		char *v_;				\
-		int l_;					\
-	} buf ={"",NULL,NULL,0};	\
-//define NEWBUF
-
-#define BUFVPRINTF(buf,fmt,args)						\
-	buf.l_ = vsnprintf(buf.s_, SBUF_SIZE, fmt, args);	\
-	if( buf.l_ >= 0 && buf.l_ < SBUF_SIZE )				\
-	{/* static buffer */								\
-		buf.v_ = buf.s_;								\
-	}													\
-	else												\
-	{/* dynamic buffer */								\
-		buf.d_ = StringBuf_Malloc();					\
-		buf.l_ = StringBuf_Vprintf(buf.d_, fmt, args);	\
-		buf.v_ = StringBuf_Value(buf.d_);				\
-		ShowDebug("showmsg: dynamic buffer used, increase the static buffer size to %d or more.\n", buf.l_+1);\
-	}													\
-//define BUFVPRINTF
-
-#define BUFVAL(buf) buf.v_
-#define BUFLEN(buf) buf.l_
-
-#define FREEBUF(buf)			\
-	if( buf.d_ )				\
-	{							\
-		StringBuf_Free(buf.d_);	\
-		buf.d_ = NULL;			\
-	}							\
-	buf.v_ = NULL;				\
-//define FREEBUF
 
 ///////////////////////////////////////////////////////////////////////////////
 #ifdef _WIN32
@@ -189,7 +150,7 @@ Escape sequences for Select Character Set
 #define is_console(handle) (FILE_TYPE_CHAR==GetFileType(handle))
 
 ///////////////////////////////////////////////////////////////////////////////
-int	VFPRINTF(HANDLE handle, const char *fmt, va_list argptr)
+int	VFPRINTF(HANDLE handle, std::string fmt, va_list argptr)
 {
 	/////////////////////////////////////////////////////////////////
 	/* XXX Two streams are being used. Disabled to avoid inconsistency [flaviojs]
@@ -199,22 +160,25 @@ int	VFPRINTF(HANDLE handle, const char *fmt, va_list argptr)
 	/////////////////////////////////////////////////////////////////
 	DWORD written;
 	char *p, *q;
-	NEWBUF(tempbuf); // temporary buffer
+	std::string tempbuf; // temporary buffer
 
-	if(!fmt || !*fmt)
+	if(fmt.empty())
 		return 0;
 
 	// Print everything to the buffer
-	BUFVPRINTF(tempbuf,fmt,argptr);
+	tempbuf = string_vsprintf(fmt.c_str(), argptr);
 
 	if( !is_console(handle) && stdout_with_ansisequence )
 	{
-		WriteFile(handle, BUFVAL(tempbuf), BUFLEN(tempbuf), &written, 0);
+		WriteFile(handle, tempbuf.c_str(), tempbuf.length(), &written, 0);
 		return 0;
 	}
 
 	// start with processing
-	p = BUFVAL(tempbuf);
+	std::vector<char> vchar(tempbuf.begin(), tempbuf.end());
+	// append null terminator to the string
+	vchar.push_back('\0');
+	p = &vchar[0];
 	while ((q = strchr(p, 0x1b)) != NULL)
 	{	// find the escape character
 		if( 0==WriteConsole(handle, p, (DWORD)(q-p), &written, 0) ) // write up to the escape
@@ -502,7 +466,6 @@ int	VFPRINTF(HANDLE handle, const char *fmt, va_list argptr)
 	if (*p)	// write the rest of the buffer
 		if( 0==WriteConsole(handle, p, (DWORD)strlen(p), &written, 0) )
 			WriteFile(handle, p, (DWORD)strlen(p), &written, 0);
-	FREEBUF(tempbuf);
 	return 0;
 }
 
@@ -527,25 +490,26 @@ int	FPRINTF(HANDLE handle, const char *fmt, ...)
 #define is_console(file) (0!=isatty(fileno(file)))
 
 //vprintf_without_ansiformats
-int	VFPRINTF(FILE *file, const char *fmt, va_list argptr)
+int	VFPRINTF(FILE *file, std::string fmt, va_list argptr)
 {
 	char *p, *q;
-	NEWBUF(tempbuf); // temporary buffer
+	std::string tempbuf; // temporary buffer
 
-	if(!fmt || !*fmt)
+	if(fmt.empty())
 		return 0;
 
 	if( is_console(file) || stdout_with_ansisequence )
 	{
-		vfprintf(file, fmt, argptr);
+		vfprintf(file, fmt.c_str(), argptr);
 		return 0;
 	}
 
 	// Print everything to the buffer
-	BUFVPRINTF(tempbuf,fmt,argptr);
+	tempbuf = string_vsprintf(fmt,argptr);
 
 	// start with processing
-	p = BUFVAL(tempbuf);
+	std::vector<char> vchar(tempbuf.begin(), tempbuf.end());
+	p = &vchar[0];
 	while ((q = strchr(p, 0x1b)) != NULL)
 	{	// find the escape character
 		fprintf(file, "%.*s", (int)(q-p), p); // write up to the escape
@@ -639,7 +603,6 @@ int	VFPRINTF(FILE *file, const char *fmt, va_list argptr)
 	}
 	if (*p)	// write the rest of the buffer
 		fprintf(file, "%s", p);
-	FREEBUF(tempbuf);
 	return 0;
 }
 int	FPRINTF(FILE *file, const char *fmt, ...)
@@ -661,7 +624,7 @@ int	FPRINTF(FILE *file, const char *fmt, ...)
 
 char timestamp_format[20] = ""; //For displaying Timestamps
 
-int _vShowMessage(enum msg_type flag, const char *string, va_list ap)
+int _vShowMessage(enum msg_type flag, std::string string, va_list ap)
 {
 	va_list apcopy;
 	char prefix[100];
@@ -669,7 +632,7 @@ int _vShowMessage(enum msg_type flag, const char *string, va_list ap)
 	FILE *fp;
 #endif
 	
-	if (!string || *string == '\0') {
+	if (string.empty() || string.at(0) == '\0') {
 		ShowError("Empty string passed to _vShowMessage().\n");
 		return 1;
 	}
@@ -701,7 +664,7 @@ int _vShowMessage(enum msg_type flag, const char *string, va_list ap)
 				flag == MSG_DEBUG ? "Debug" :
 				"Unknown");
 			va_copy(apcopy, ap);
-			vfprintf(log,string,apcopy);
+			vfprintf(log,string.c_str(),apcopy);
 			va_end(apcopy);
 			fclose(log);
 		}
@@ -846,17 +809,15 @@ void ShowWarning(const char *string, ...) {
 	_vShowMessage(MSG_WARNING, string, ap);
 	va_end(ap);
 }
-void ShowConfigWarning(config_setting_t *config, const char *string, ...)
+void ShowConfigWarning(config_setting_t *config, std::string string, ...)
 {
-	StringBuf buf;
+	std::string buf;
 	va_list ap;
-	StringBuf_Init(&buf);
-	StringBuf_AppendStr(&buf, string);
-	StringBuf_Printf(&buf, " (%s:%d)\n", config_setting_source_file(config), config_setting_source_line(config));
+	buf += string;
+	buf += string_sprintf(" (%s:%d)\n", config_setting_source_file(config), config_setting_source_line(config));
 	va_start(ap, string);
-	_vShowMessage(MSG_WARNING, StringBuf_Value(&buf), ap);
+	_vShowMessage(MSG_WARNING, buf, ap);
 	va_end(ap);
-	StringBuf_Destroy(&buf);
 }
 void ShowDebug(const char *string, ...) {
 	va_list ap;

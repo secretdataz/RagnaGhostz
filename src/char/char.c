@@ -1,11 +1,13 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include <string>
 #include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
+#include "../common/cppstrlib.hpp"
 
 #include "../common/core.h"
 #include "../common/db.h"
@@ -272,13 +274,12 @@ int char_mmo_char_tosql(uint32 char_id, struct mmo_charstatus* p){
 	char save_status[128]; //For displaying save information. [Skotlex]
 	struct mmo_charstatus *cp;
 	int errors = 0; //If there are any errors while saving, "cp" will not be updated at the end.
-	StringBuf buf;
+	std::string buf;
 
 	if (char_id!=p->char_id) return 0;
 
 	cp = (struct mmo_charstatus *)idb_ensure(char_db_, char_id, char_create_charstatus);
 
-	StringBuf_Init(&buf);
 	memset(save_status, 0, sizeof(save_status));
 
 	//map inventory data
@@ -407,22 +408,21 @@ int char_mmo_char_tosql(uint32 char_id, struct mmo_charstatus* p){
 		}
 
 		//insert here.
-		StringBuf_Clear(&buf);
-		StringBuf_Printf(&buf, "INSERT INTO `%s`(`char_id`,`map`,`x`,`y`) VALUES ", schema_config.memo_db);
+		buf = string_sprintf("INSERT INTO `%s`(`char_id`,`map`,`x`,`y`) VALUES ", schema_config.memo_db);
 		for( i = 0, count = 0; i < MAX_MEMOPOINTS; ++i )
 		{
 			if( p->memo_point[i].map )
 			{
-				if( count )
-					StringBuf_AppendStr(&buf, ",");
+				if(count)
+					buf += ",";
 				Sql_EscapeString(sql_handle, esc_mapname, mapindex_id2name(p->memo_point[i].map));
-				StringBuf_Printf(&buf, "('%d', '%s', '%d', '%d')", char_id, esc_mapname, p->memo_point[i].x, p->memo_point[i].y);
+				buf += string_sprintf("('%d', '%s', '%d', '%d')", char_id, esc_mapname, p->memo_point[i].x, p->memo_point[i].y);
 				++count;
 			}
 		}
 		if( count )
 		{
-			if( SQL_ERROR == Sql_QueryStr(sql_handle, StringBuf_Value(&buf)) )
+			if( SQL_ERROR == Sql_QueryStr(sql_handle, buf))
 			{
 				Sql_ShowDebug(sql_handle);
 				errors++;
@@ -441,8 +441,8 @@ int char_mmo_char_tosql(uint32 char_id, struct mmo_charstatus* p){
 			errors++;
 		}
 
-		StringBuf_Clear(&buf);
-		StringBuf_Printf(&buf, "INSERT INTO `%s`(`char_id`,`id`,`lv`,`flag`) VALUES ", schema_config.skill_db);
+		buf = "";
+		buf = string_sprintf("INSERT INTO `%s`(`char_id`,`id`,`lv`,`flag`) VALUES ", schema_config.skill_db);
 		//insert here.
 		for( i = 0, count = 0; i < MAX_SKILL; ++i ) {
 			if( p->skill[i].id != 0 && p->skill[i].flag != SKILL_FLAG_TEMPORARY ) {
@@ -451,9 +451,9 @@ int char_mmo_char_tosql(uint32 char_id, struct mmo_charstatus* p){
 					continue;
 				if( p->skill[i].flag != SKILL_FLAG_PERMANENT && p->skill[i].flag != SKILL_FLAG_PERM_GRANTED && (p->skill[i].flag - SKILL_FLAG_REPLACED_LV_0) == 0 )
 					continue;
-				if( count )
-					StringBuf_AppendStr(&buf, ",");
-				StringBuf_Printf(&buf, "('%d','%d','%d','%d')", char_id, p->skill[i].id,
+				if (count)
+					buf += ",";
+				buf += string_sprintf("('%d','%d','%d','%d')", char_id, p->skill[i].id,
 								 ( (p->skill[i].flag == SKILL_FLAG_PERMANENT || p->skill[i].flag == SKILL_FLAG_PERM_GRANTED) ? p->skill[i].lv : p->skill[i].flag - SKILL_FLAG_REPLACED_LV_0),
 								 p->skill[i].flag == SKILL_FLAG_PERM_GRANTED ? p->skill[i].flag : 0);/* other flags do not need to be saved */
 				++count;
@@ -461,7 +461,7 @@ int char_mmo_char_tosql(uint32 char_id, struct mmo_charstatus* p){
 		}
 		if( count )
 		{
-			if( SQL_ERROR == Sql_QueryStr(sql_handle, StringBuf_Value(&buf)) )
+			if( SQL_ERROR == Sql_QueryStr(sql_handle, buf) )
 			{
 				Sql_ShowDebug(sql_handle);
 				errors++;
@@ -487,22 +487,21 @@ int char_mmo_char_tosql(uint32 char_id, struct mmo_charstatus* p){
 			Sql_ShowDebug(sql_handle);
 			errors++;
 		}
-
-		StringBuf_Clear(&buf);
-		StringBuf_Printf(&buf, "INSERT INTO `%s` (`char_id`, `friend_account`, `friend_id`) VALUES ", schema_config.friend_db);
+		
+		buf = string_sprintf("INSERT INTO `%s` (`char_id`, `friend_account`, `friend_id`) VALUES ", schema_config.friend_db);
 		for( i = 0, count = 0; i < MAX_FRIENDS; ++i )
 		{
 			if( p->friends[i].char_id > 0 )
 			{
-				if( count )
-					StringBuf_AppendStr(&buf, ",");
-				StringBuf_Printf(&buf, "('%d','%d','%d')", char_id, p->friends[i].account_id, p->friends[i].char_id);
+				if(count)
+					buf += ",";
+				buf += string_sprintf("('%d','%d','%d')", char_id, p->friends[i].account_id, p->friends[i].char_id);
 				count++;
 			}
 		}
 		if( count )
 		{
-			if( SQL_ERROR == Sql_QueryStr(sql_handle, StringBuf_Value(&buf)) )
+			if( SQL_ERROR == Sql_QueryStr(sql_handle, buf) )
 			{
 				Sql_ShowDebug(sql_handle);
 				errors++;
@@ -513,20 +512,19 @@ int char_mmo_char_tosql(uint32 char_id, struct mmo_charstatus* p){
 
 #ifdef HOTKEY_SAVING
 	// hotkeys
-	StringBuf_Clear(&buf);
-	StringBuf_Printf(&buf, "REPLACE INTO `%s` (`char_id`, `hotkey`, `type`, `itemskill_id`, `skill_lvl`) VALUES ", schema_config.hotkey_db);
+	buf = string_sprintf("REPLACE INTO `%s` (`char_id`, `hotkey`, `type`, `itemskill_id`, `skill_lvl`) VALUES ", schema_config.hotkey_db);
 	diff = 0;
 	for(i = 0; i < ARRAYLENGTH(p->hotkeys); i++){
 		if(memcmp(&p->hotkeys[i], &cp->hotkeys[i], sizeof(struct hotkey)))
 		{
-			if( diff )
-				StringBuf_AppendStr(&buf, ",");// not the first hotkey
-			StringBuf_Printf(&buf, "('%d','%u','%u','%u','%u')", char_id, (unsigned int)i, (unsigned int)p->hotkeys[i].type, p->hotkeys[i].id , (unsigned int)p->hotkeys[i].lv);
+			if (diff)
+				buf += ","; // not the first hotkey
+			buf += string_sprintf("('%d','%u','%u','%u','%u')", char_id, (unsigned int)i, (unsigned int)p->hotkeys[i].type, p->hotkeys[i].id , (unsigned int)p->hotkeys[i].lv);
 			diff = 1;
 		}
 	}
 	if(diff) {
-		if( SQL_ERROR == Sql_QueryStr(sql_handle, StringBuf_Value(&buf)) )
+		if( SQL_ERROR == Sql_QueryStr(sql_handle, buf) )
 		{
 			Sql_ShowDebug(sql_handle);
 			errors++;
@@ -534,7 +532,6 @@ int char_mmo_char_tosql(uint32 char_id, struct mmo_charstatus* p){
 			strcat(save_status, " hotkeys");
 	}
 #endif
-	StringBuf_Destroy(&buf);
 	if (save_status[0]!='\0' && charserv_config.save_log)
 		ShowInfo("Saved char %d - %s:%s.\n", char_id, p->name, save_status);
 	if (!errors)
@@ -544,7 +541,7 @@ int char_mmo_char_tosql(uint32 char_id, struct mmo_charstatus* p){
 
 /// Saves an array of 'item' entries into the specified table.
 int char_memitemdata_to_sql(const struct item items[], int max, int id, int tableswitch) {
-	StringBuf buf;
+	std::string buf;
 	SqlStmt* stmt;
 	int i,j;
 	const char* tablename;
@@ -570,25 +567,23 @@ int char_memitemdata_to_sql(const struct item items[], int max, int id, int tabl
 	// This approach is more complicated than a trivial delete&insert, but
 	// it significantly reduces cpu load on the database server.
 
-	StringBuf_Init(&buf);
-	StringBuf_AppendStr(&buf, "SELECT `id`, `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `expire_time`, `bound`, `unique_id`");
+	buf = "SELECT `id`, `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `expire_time`, `bound`, `unique_id`";
 
 	for( i = 0; i < MAX_SLOTS; ++i )
-		StringBuf_Printf(&buf, ", `card%d`", i);
+		buf += string_sprintf(", `card%d`", i);
 	for( i = 0; i < MAX_ITEM_RDM_OPT; ++i ) {
-		StringBuf_Printf(&buf, ", `option_id%d`", i);
-		StringBuf_Printf(&buf, ", `option_val%d`", i);
-		StringBuf_Printf(&buf, ", `option_parm%d`", i);
+		buf += string_sprintf(", `option_id%d`", i);
+		buf += string_sprintf(", `option_val%d`", i);
+		buf += string_sprintf(", `option_parm%d`", i);
 	}
-	StringBuf_Printf(&buf, " FROM `%s` WHERE `%s`='%d'", tablename, selectoption, id);
+	buf += string_sprintf(" FROM `%s` WHERE `%s`='%d'", tablename, selectoption, id);
 
 	stmt = SqlStmt_Malloc(sql_handle);
-	if( SQL_ERROR == SqlStmt_PrepareStr(stmt, StringBuf_Value(&buf))
+	if( SQL_ERROR == SqlStmt_PrepareStr(stmt, buf)
 	||  SQL_ERROR == SqlStmt_Execute(stmt) )
 	{
 		SqlStmt_ShowDebug(stmt);
 		SqlStmt_Free(stmt);
-		StringBuf_Destroy(&buf);
 		return 1;
 	}
 
@@ -646,19 +641,18 @@ int char_memitemdata_to_sql(const struct item items[], int max, int id, int tabl
 				else
 				{
 					// update all fields.
-					StringBuf_Clear(&buf);
-					StringBuf_Printf(&buf, "UPDATE `%s` SET `amount`='%d', `equip`='%d', `identify`='%d', `refine`='%d',`attribute`='%d', `expire_time`='%u', `bound`='%d', `unique_id`='%llu'",
+					buf = string_sprintf("UPDATE `%s` SET `amount`='%d', `equip`='%d', `identify`='%d', `refine`='%d',`attribute`='%d', `expire_time`='%u', `bound`='%d', `unique_id`='%llu'",
 						tablename, items[i].amount, items[i].equip, items[i].identify, items[i].refine, items[i].attribute, items[i].expire_time, items[i].bound, items[i].unique_id);
 					for( j = 0; j < MAX_SLOTS; ++j )
-						StringBuf_Printf(&buf, ", `card%d`=%hu", j, items[i].card[j]);
+						buf += string_sprintf(", `card%d`=%hu", j, items[i].card[j]);
 					for( j = 0; j < MAX_ITEM_RDM_OPT; ++j ) {
-						StringBuf_Printf(&buf, ", `option_id%d`=%d", j, items[i].option[j].id);
-						StringBuf_Printf(&buf, ", `option_val%d`=%d", j, items[i].option[j].value);
-						StringBuf_Printf(&buf, ", `option_parm%d`=%d", j, items[i].option[j].param);
+						buf += string_sprintf(", `option_id%d`=%d", j, items[i].option[j].id);
+						buf += string_sprintf(", `option_val%d`=%d", j, items[i].option[j].value);
+						buf += string_sprintf(", `option_parm%d`=%d", j, items[i].option[j].param);
 					}
-					StringBuf_Printf(&buf, " WHERE `id`='%d' LIMIT 1", item.id);
+					buf += string_sprintf(" WHERE `id`='%d' LIMIT 1", item.id);
 
-					if( SQL_ERROR == Sql_QueryStr(sql_handle, StringBuf_Value(&buf)) )
+					if( SQL_ERROR == Sql_QueryStr(sql_handle, buf) )
 					{
 						Sql_ShowDebug(sql_handle);
 						errors++;
@@ -680,16 +674,15 @@ int char_memitemdata_to_sql(const struct item items[], int max, int id, int tabl
 	}
 	SqlStmt_Free(stmt);
 
-	StringBuf_Clear(&buf);
-	StringBuf_Printf(&buf, "INSERT INTO `%s`(`%s`, `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `expire_time`, `bound`, `unique_id`", tablename, selectoption);
+	buf = string_sprintf("INSERT INTO `%s`(`%s`, `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `expire_time`, `bound`, `unique_id`", tablename, selectoption);
 	for( j = 0; j < MAX_SLOTS; ++j )
-		StringBuf_Printf(&buf, ", `card%d`", j);
+		buf += string_sprintf(", `card%d`", j);
 	for( j = 0; j < MAX_ITEM_RDM_OPT; ++j ) {
-		StringBuf_Printf(&buf, ", `option_id%d`", j);
-		StringBuf_Printf(&buf, ", `option_val%d`", j);
-		StringBuf_Printf(&buf, ", `option_parm%d`", j);
+		buf += string_sprintf(", `option_id%d`", j);
+		buf += string_sprintf(", `option_val%d`", j);
+		buf += string_sprintf(", `option_parm%d`", j);
 	}
-	StringBuf_AppendStr(&buf, ") VALUES ");
+	buf += ") VALUES ";
 
 	found = false;
 	// insert non-matched items into the db as new items
@@ -700,29 +693,28 @@ int char_memitemdata_to_sql(const struct item items[], int max, int id, int tabl
 			continue;
 
 		if( found )
-			StringBuf_AppendStr(&buf, ",");
+			buf += ",";
 		else
 			found = true;
 
-		StringBuf_Printf(&buf, "('%d', '%hu', '%d', '%d', '%d', '%d', '%d', '%u', '%d', '%llu'",
+		buf += string_sprintf("('%d', '%hu', '%d', '%d', '%d', '%d', '%d', '%u', '%d', '%llu'",
 			id, items[i].nameid, items[i].amount, items[i].equip, items[i].identify, items[i].refine, items[i].attribute, items[i].expire_time, items[i].bound, items[i].unique_id);
 		for( j = 0; j < MAX_SLOTS; ++j )
-			StringBuf_Printf(&buf, ", '%hu'", items[i].card[j]);
+			buf += string_sprintf(", '%hu'", items[i].card[j]);
 		for( j = 0; j < MAX_ITEM_RDM_OPT; ++j ) {
-			StringBuf_Printf(&buf, ", '%d'", items[i].option[j].id);
-			StringBuf_Printf(&buf, ", '%d'", items[i].option[j].value);
-			StringBuf_Printf(&buf, ", '%d'", items[i].option[j].param);
+			buf += string_sprintf(", '%d'", items[i].option[j].id);
+			buf += string_sprintf(", '%d'", items[i].option[j].value);
+			buf += string_sprintf(", '%d'", items[i].option[j].param);
 		}
-		StringBuf_AppendStr(&buf, ")");
+		buf += ")";
 	}
 
-	if( found && SQL_ERROR == Sql_QueryStr(sql_handle, StringBuf_Value(&buf)) )
+	if( found && SQL_ERROR == Sql_QueryStr(sql_handle, buf) )
 	{
 		Sql_ShowDebug(sql_handle);
 		errors++;
 	}
 
-	StringBuf_Destroy(&buf);
 	aFree(flag);
 
 	return errors;
@@ -730,7 +722,7 @@ int char_memitemdata_to_sql(const struct item items[], int max, int id, int tabl
 /* pretty much a copy of memitemdata_to_sql except it handles inventory_db exclusively,
  * - this is required because inventory db is the only one with the 'favorite' column. */
 int char_inventory_to_sql(const struct item items[], int max, int id) {
-	StringBuf buf;
+	std::string buf;
 	SqlStmt* stmt;
 	int i, j;
 	struct item item; // temp storage variable
@@ -744,24 +736,22 @@ int char_inventory_to_sql(const struct item items[], int max, int id) {
 	// This approach is more complicated than a trivial delete&insert, but
 	// it significantly reduces cpu load on the database server.
 
-	StringBuf_Init(&buf);
-	StringBuf_AppendStr(&buf, "SELECT `id`, `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `expire_time`, `favorite`, `bound`, `unique_id`");
+	buf = "SELECT `id`, `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `expire_time`, `favorite`, `bound`, `unique_id`";
 	for( i = 0; i < MAX_SLOTS; ++i )
-		StringBuf_Printf(&buf, ", `card%d`", i);
+		buf += string_sprintf(", `card%d`", i);
 	for( i = 0; i < MAX_ITEM_RDM_OPT; ++i ) {
-		StringBuf_Printf(&buf, ", `option_id%d`", i);
-		StringBuf_Printf(&buf, ", `option_val%d`", i);
-		StringBuf_Printf(&buf, ", `option_parm%d`", i);
+		buf += string_sprintf(", `option_id%d`", i);
+		buf += string_sprintf(", `option_val%d`", i);
+		buf += string_sprintf(", `option_parm%d`", i);
 	}
-	StringBuf_Printf(&buf, " FROM `%s` WHERE `char_id`='%d'", schema_config.inventory_db, id);
+	buf += string_sprintf(" FROM `%s` WHERE `char_id`='%d'", schema_config.inventory_db, id);
 
 	stmt = SqlStmt_Malloc(sql_handle);
-	if( SQL_ERROR == SqlStmt_PrepareStr(stmt, StringBuf_Value(&buf))
+	if( SQL_ERROR == SqlStmt_PrepareStr(stmt, buf)
 	   ||  SQL_ERROR == SqlStmt_Execute(stmt) )
 	{
 		SqlStmt_ShowDebug(stmt);
 		SqlStmt_Free(stmt);
-		StringBuf_Destroy(&buf);
 		return 1;
 	}
 
@@ -819,19 +809,18 @@ int char_inventory_to_sql(const struct item items[], int max, int id) {
 					;	//Do nothing.
 				else {
 					// update all fields.
-					StringBuf_Clear(&buf);
-					StringBuf_Printf(&buf, "UPDATE `%s` SET `amount`='%d', `equip`='%d', `identify`='%d', `refine`='%d',`attribute`='%d', `expire_time`='%u', `favorite`='%d', `bound`='%d', `unique_id`='%llu'",
+					buf = string_sprintf("UPDATE `%s` SET `amount`='%d', `equip`='%d', `identify`='%d', `refine`='%d',`attribute`='%d', `expire_time`='%u', `favorite`='%d', `bound`='%d', `unique_id`='%llu'",
 					    schema_config.inventory_db, items[i].amount, items[i].equip, items[i].identify, items[i].refine, items[i].attribute, items[i].expire_time, items[i].favorite, items[i].bound, items[i].unique_id);
 					for( j = 0; j < MAX_SLOTS; ++j )
-						StringBuf_Printf(&buf, ", `card%d`=%hu", j, items[i].card[j]);
+						buf += string_sprintf(", `card%d`=%hu", j, items[i].card[j]);
 					for( j = 0; j < MAX_ITEM_RDM_OPT; ++j ) {
-						StringBuf_Printf(&buf, ", `option_id%d`=%d", j, items[i].option[j].id);
-						StringBuf_Printf(&buf, ", `option_val%d`=%d", j, items[i].option[j].value);
-						StringBuf_Printf(&buf, ", `option_parm%d`=%d", j, items[i].option[j].param);
+						buf += string_sprintf(", `option_id%d`=%d", j, items[i].option[j].id);
+						buf += string_sprintf(", `option_val%d`=%d", j, items[i].option[j].value);
+						buf += string_sprintf(", `option_parm%d`=%d", j, items[i].option[j].param);
 					}
-					StringBuf_Printf(&buf, " WHERE `id`='%d' LIMIT 1", item.id);
+					buf += string_sprintf(" WHERE `id`='%d' LIMIT 1", item.id);
 
-					if( SQL_ERROR == Sql_QueryStr(sql_handle, StringBuf_Value(&buf)) ) {
+					if( SQL_ERROR == Sql_QueryStr(sql_handle, buf) ) {
 						Sql_ShowDebug(sql_handle);
 						errors++;
 					}
@@ -850,16 +839,15 @@ int char_inventory_to_sql(const struct item items[], int max, int id) {
 	}
 	SqlStmt_Free(stmt);
 
-	StringBuf_Clear(&buf);
-	StringBuf_Printf(&buf, "INSERT INTO `%s` (`char_id`, `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `expire_time`, `favorite`, `bound`, `unique_id`", schema_config.inventory_db);
+	buf = string_sprintf("INSERT INTO `%s` (`char_id`, `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `expire_time`, `favorite`, `bound`, `unique_id`", schema_config.inventory_db);
 	for( i = 0; i < MAX_SLOTS; ++i )
-		StringBuf_Printf(&buf, ", `card%d`", i);
+		buf += string_sprintf(", `card%d`", i);
 	for( i = 0; i < MAX_ITEM_RDM_OPT; ++i ) {
-		StringBuf_Printf(&buf, ", `option_id%d`", i);
-		StringBuf_Printf(&buf, ", `option_val%d`", i);
-		StringBuf_Printf(&buf, ", `option_parm%d`", i);
+		buf += string_sprintf(", `option_id%d`", i);
+		buf += string_sprintf(", `option_val%d`", i);
+		buf += string_sprintf(", `option_parm%d`", i);
 	}
-	StringBuf_AppendStr(&buf, ") VALUES ");
+	buf += ") VALUES ";
 
 	found = false;
 	// insert non-matched items into the db as new items
@@ -869,28 +857,27 @@ int char_inventory_to_sql(const struct item items[], int max, int id) {
 			continue;
 
 		if( found )
-			StringBuf_AppendStr(&buf, ",");
+			buf += ",";
 		else
 			found = true;
 
-		StringBuf_Printf(&buf, "('%d', '%hu', '%d', '%d', '%d', '%d', '%d', '%u', '%d', '%d', '%llu'",
+		buf += string_sprintf("('%d', '%hu', '%d', '%d', '%d', '%d', '%d', '%u', '%d', '%d', '%llu'",
 						 id, items[i].nameid, items[i].amount, items[i].equip, items[i].identify, items[i].refine, items[i].attribute, items[i].expire_time, items[i].favorite, items[i].bound, items[i].unique_id);
 		for( j = 0; j < MAX_SLOTS; ++j )
-			StringBuf_Printf(&buf, ", '%hu'", items[i].card[j]);
+			buf += string_sprintf(", '%hu'", items[i].card[j]);
 		for( j = 0; j < MAX_ITEM_RDM_OPT; ++j ) {
-			StringBuf_Printf(&buf, ", '%d'", items[i].option[j].id);
-			StringBuf_Printf(&buf, ", '%d'", items[i].option[j].value);
-			StringBuf_Printf(&buf, ", '%d'", items[i].option[j].param);
+			buf += string_sprintf(", '%d'", items[i].option[j].id);
+			buf += string_sprintf(", '%d'", items[i].option[j].value);
+			buf += string_sprintf(", '%d'", items[i].option[j].param);
 		}
-		StringBuf_AppendStr(&buf, ")");
+		buf += ")";
 	}
 
-	if( found && SQL_ERROR == Sql_QueryStr(sql_handle, StringBuf_Value(&buf)) ) {
+	if( found && SQL_ERROR == Sql_QueryStr(sql_handle, buf) ) {
 		Sql_ShowDebug(sql_handle);
 		errors++;
 	}
 
-	StringBuf_Destroy(&buf);
 	aFree(flag);
 
 	return errors;
@@ -1050,7 +1037,7 @@ int char_mmo_chars_fromsql(struct char_session_data* sd, uint8* buf) {
 int char_mmo_char_fromsql(uint32 char_id, struct mmo_charstatus* p, bool load_everything) {
 	int i, j;
 	struct mmo_charstatus* cp;
-	StringBuf buf;
+	std::string buf;
 	SqlStmt* stmt;
 	char last_map[MAP_NAME_LENGTH_EXT];
 	char save_map[MAP_NAME_LENGTH_EXT];
@@ -1064,7 +1051,7 @@ int char_mmo_char_fromsql(uint32 char_id, struct mmo_charstatus* p, bool load_ev
 	struct hotkey tmp_hotkey;
 	int hotkey_num;
 #endif
-	StringBuf msg_buf;
+	std::string msg_buf;
 	char sex[2];
 
 	memset(p, 0, sizeof(struct mmo_charstatus));
@@ -1176,13 +1163,11 @@ int char_mmo_char_fromsql(uint32 char_id, struct mmo_charstatus* p, bool load_ev
 		p->save_point.y = charserv_config.default_map_y;
 	}
 
-	StringBuf_Init(&msg_buf);
-	StringBuf_AppendStr(&msg_buf, " status");
+	msg_buf += " status";
 
 	if (!load_everything) // For quick selection of data when displaying the char menu
 	{
 		SqlStmt_Free(stmt);
-		StringBuf_Destroy(&msg_buf);
 		return 1;
 	}
 
@@ -1201,22 +1186,21 @@ int char_mmo_char_fromsql(uint32 char_id, struct mmo_charstatus* p, bool load_ev
 		tmp_point.map = mapindex_name2id(point_map);
 		memcpy(&p->memo_point[i], &tmp_point, sizeof(tmp_point));
 	}
-	StringBuf_AppendStr(&msg_buf, " memo");
+	buf += " memo";
 
 	//read inventory
 	//`inventory` (`id`,`char_id`, `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `card0`, `card1`, `card2`, `card3`, `option_id0`, `option_val0`, `option_id1`, `option_val1`, `option_id2`, `option_val2`, `option_id3`, `option_val3`, `option_id4`, `option_val4`, `expire_time`, `favorite`, `unique_id`)
-	StringBuf_Init(&buf);
-	StringBuf_AppendStr(&buf, "SELECT `id`, `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `expire_time`, `favorite`, `bound`, `unique_id`");
+	buf += "SELECT `id`, `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `expire_time`, `favorite`, `bound`, `unique_id`";
 	for( i = 0; i < MAX_SLOTS; ++i )
-		StringBuf_Printf(&buf, ", `card%d`", i);
+		buf += string_sprintf(", `card%d`", i);
 	for( i = 0; i < MAX_ITEM_RDM_OPT; ++i ) {
-		StringBuf_Printf(&buf, ", `option_id%d`", i);
-		StringBuf_Printf(&buf, ", `option_val%d`", i);
-		StringBuf_Printf(&buf, ", `option_parm%d`", i);
+		buf += string_sprintf(", `option_id%d`", i);
+		buf += string_sprintf(", `option_val%d`", i);
+		buf += string_sprintf(", `option_parm%d`", i);
 	}
-	StringBuf_Printf(&buf, " FROM `%s` WHERE `char_id`=? LIMIT %d", schema_config.inventory_db, MAX_INVENTORY);
+	buf += string_sprintf(" FROM `%s` WHERE `char_id`=? LIMIT %d", schema_config.inventory_db, MAX_INVENTORY);
 
-	if( SQL_ERROR == SqlStmt_PrepareStr(stmt, StringBuf_Value(&buf))
+	if( SQL_ERROR == SqlStmt_PrepareStr(stmt, buf)
 	||	SQL_ERROR == SqlStmt_BindParam(stmt, 0, SQLDT_INT, &char_id, 0)
 	||	SQL_ERROR == SqlStmt_Execute(stmt)
 	||	SQL_ERROR == SqlStmt_BindColumn(stmt, 0, SQLDT_INT,       &tmp_item.id, 0, NULL, NULL)
@@ -1244,22 +1228,21 @@ int char_mmo_char_fromsql(uint32 char_id, struct mmo_charstatus* p, bool load_ev
 	for( i = 0; i < MAX_INVENTORY && SQL_SUCCESS == SqlStmt_NextRow(stmt); ++i )
 		memcpy(&p->inventory[i], &tmp_item, sizeof(tmp_item));
 
-	StringBuf_AppendStr(&msg_buf, " inventory");
+	msg_buf += " inventory";
 
 	//read cart
 	//`cart_inventory` (`id`,`char_id`, `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `card0`, `card1`, `card2`, `card3`, `option_id0`, `option_val0`, `option_id1`, `option_val1`, `option_id2`, `option_val2`, `option_id3`, `option_val3`, `option_id4`, `option_val4`, `expire_time`, `favorite`, `unique_id`)
-	StringBuf_Clear(&buf);
-	StringBuf_AppendStr(&buf, "SELECT `id`, `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `expire_time`, `bound`, `unique_id`");
+	buf = "SELECT `id`, `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `expire_time`, `bound`, `unique_id`";
 	for( j = 0; j < MAX_SLOTS; ++j )
-		StringBuf_Printf(&buf, ", `card%d`", j);
+		buf += string_sprintf(", `card%d`", j);
 	for( i = 0; i < MAX_ITEM_RDM_OPT; ++i ) {
-		StringBuf_Printf(&buf, ", `option_id%d`", i);
-		StringBuf_Printf(&buf, ", `option_val%d`", i);
-		StringBuf_Printf(&buf, ", `option_parm%d`", i);
+		buf += string_sprintf(", `option_id%d`", i);
+		buf += string_sprintf(", `option_val%d`", i);
+		buf += string_sprintf(", `option_parm%d`", i);
 	}
-	StringBuf_Printf(&buf, " FROM `%s` WHERE `char_id`=? LIMIT %d", schema_config.cart_db, MAX_CART);
+	buf += string_sprintf(" FROM `%s` WHERE `char_id`=? LIMIT %d", schema_config.cart_db, MAX_CART);
 
-	if( SQL_ERROR == SqlStmt_PrepareStr(stmt, StringBuf_Value(&buf))
+	if( SQL_ERROR == SqlStmt_PrepareStr(stmt, buf)
 	||	SQL_ERROR == SqlStmt_BindParam(stmt, 0, SQLDT_INT, &char_id, 0)
 	||	SQL_ERROR == SqlStmt_Execute(stmt)
 	||	SQL_ERROR == SqlStmt_BindColumn(stmt, 0, SQLDT_INT,         &tmp_item.id, 0, NULL, NULL)
@@ -1284,11 +1267,11 @@ int char_mmo_char_fromsql(uint32 char_id, struct mmo_charstatus* p, bool load_ev
 	}
 	for( i = 0; i < MAX_CART && SQL_SUCCESS == SqlStmt_NextRow(stmt); ++i )
 		memcpy(&p->cart[i], &tmp_item, sizeof(tmp_item));
-	StringBuf_AppendStr(&msg_buf, " cart");
+	msg_buf += " cart";
 
 	//read storage
 	storage_fromsql(p->account_id, &p->storage);
-	StringBuf_AppendStr(&msg_buf, " storage");
+	msg_buf += " storage";
 
 	//read skill
 	//`skill` (`char_id`, `id`, `lv`)
@@ -1311,7 +1294,7 @@ int char_mmo_char_fromsql(uint32 char_id, struct mmo_charstatus* p, bool load_ev
 		else
 			ShowWarning("mmo_char_fromsql: ignoring invalid skill (id=%u,lv=%u) of character %s (AID=%d,CID=%d)\n", tmp_skill.id, tmp_skill.lv, p->name, p->account_id, p->char_id);
 	}
-	StringBuf_Printf(&msg_buf, " %d skills", skill_count);
+	msg_buf += string_sprintf(" %d skills", skill_count);
 
 	//read friends
 	//`friends` (`char_id`, `friend_account`, `friend_id`)
@@ -1325,7 +1308,7 @@ int char_mmo_char_fromsql(uint32 char_id, struct mmo_charstatus* p, bool load_ev
 
 	for( i = 0; i < MAX_FRIENDS && SQL_SUCCESS == SqlStmt_NextRow(stmt); ++i )
 		memcpy(&p->friends[i], &tmp_friend, sizeof(tmp_friend));
-	StringBuf_AppendStr(&msg_buf, " friends");
+	msg_buf += " friends";
 
 #ifdef HOTKEY_SAVING
 	//read hotkeys
@@ -1346,21 +1329,19 @@ int char_mmo_char_fromsql(uint32 char_id, struct mmo_charstatus* p, bool load_ev
 		else
 			ShowWarning("mmo_char_fromsql: ignoring invalid hotkey (hotkey=%d,type=%u,id=%u,lv=%u) of character %s (AID=%d,CID=%d)\n", hotkey_num, tmp_hotkey.type, tmp_hotkey.id, tmp_hotkey.lv, p->name, p->account_id, p->char_id);
 	}
-	StringBuf_AppendStr(&msg_buf, " hotkeys");
+	msg_buf += " hotkeys";
 #endif
 
 	/* Mercenary Owner DataBase */
 	mercenary_owner_fromsql(char_id, p);
-	StringBuf_AppendStr(&msg_buf, " mercenary");
+	msg_buf += " mercenary";
 
 
-	if (charserv_config.save_log) ShowInfo("Loaded char (%d - %s): %s\n", char_id, p->name, StringBuf_Value(&msg_buf));	//ok. all data load successfuly!
+	if (charserv_config.save_log) ShowInfo("Loaded char (%d - %s): %s\n", char_id, p->name, msg_buf.c_str());	//ok. all data load successfuly!
 	SqlStmt_Free(stmt);
-	StringBuf_Destroy(&buf);
 
 	cp = (struct mmo_charstatus *)idb_ensure(char_db_, char_id, char_create_charstatus);
 	memcpy(cp, p, sizeof(struct mmo_charstatus));
-	StringBuf_Destroy(&msg_buf);
 	return 1;
 }
 

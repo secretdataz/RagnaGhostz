@@ -8,12 +8,13 @@
 
 std::string string_vsprintf(std::string format, std::va_list args) {
 	va_list tmp_args;
+	const char* p = format.c_str();
 	va_copy(tmp_args, args);
-	const int required_len = std::vsnprintf(nullptr, 0, format.c_str(), tmp_args);
+	const int required_len = std::vsnprintf(nullptr, 0, p, tmp_args);
 	va_end(tmp_args);
 
 	std::string buf(required_len + 1, '\0');
-	if (std::vsnprintf(&buf[0], buf.size(), format.c_str(), args) < 0) {
+	if (std::vsnprintf(&buf[0], buf.size(), p, args) < 0) {
 		throw std::runtime_error{ "string_vsprintf encoding error" };
 	}
 	return std::string(buf.c_str());

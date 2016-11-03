@@ -44,7 +44,7 @@
     <ClInclude Include="spinlock.h" />
     <ClInclude Include="sql.h" />
     <ClInclude Include="strlib.h" />
-    <ClInclude Include="strlib.hpp" />
+    <ClInclude Include="cppstrlib.hpp" />
     <ClInclude Include="thread.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="utils.h" />
@@ -54,6 +54,7 @@
     <ClCompile Include="cli.cpp" />
     <ClCompile Include="conf.cpp" />
     <ClCompile Include="core.cpp" />
+    <ClCompile Include="cppstrlib.cpp" />
     <ClCompile Include="db.cpp" />
     <ClCompile Include="des.cpp" />
     <ClCompile Include="ers.cpp" />

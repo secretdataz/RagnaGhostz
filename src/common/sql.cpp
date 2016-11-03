@@ -1,8 +1,10 @@
 // Copyright (c) Athena Dev Teams - Licensed under GNU GPL
 // For more information, see LICENCE in the main folder
 
+#include <string>
 #include <cstdlib>// strtoul
 #include <cstring>// memset
+#include "cppstrlib.hpp"
 
 #ifdef WIN32
 #include "winapi.h"
@@ -25,7 +27,7 @@ unsigned int mysql_reconnect_count;
 /// Sql handle
 struct Sql
 {
-	StringBuf buf;
+	std::string buf;
 	MYSQL handle;
 	MYSQL_RES* result;
 	MYSQL_ROW row;
@@ -49,7 +51,7 @@ typedef struct s_column_length s_column_length;
 /// Sql statement
 struct SqlStmt
 {
-	StringBuf buf;
+	std::string buf;
 	MYSQL_STMT* stmt;
 	MYSQL_BIND* params;
 	MYSQL_BIND* columns;
@@ -75,7 +77,6 @@ Sql* Sql_Malloc(void)
 
 	CREATE(self, Sql, 1);
 	mysql_init(&self->handle);
-	StringBuf_Init(&self->buf);
 	self->lengths = NULL;
 	self->result = NULL;
 	self->keepalive = INVALID_TIMER;
@@ -102,7 +103,7 @@ int Sql_Connect(Sql* self, const char* user, const char* passwd, const char* hos
 	if( self == NULL )
 		return SQL_ERROR;
 
-	StringBuf_Clear(&self->buf);
+	self->buf = "";
 	if( !mysql_real_connect(&self->handle, host, user, passwd, db, (unsigned int)port, NULL/*unix_socket*/, 0/*clientflag*/) )
 	{
 		ShowSQL("%s\n", mysql_error(&self->handle));
@@ -254,7 +255,7 @@ size_t Sql_EscapeStringLen(Sql* self, char *out_to, const char *from, size_t fro
 
 
 /// Executes a query.
-int Sql_Query(Sql* self, const char* query, ...)
+int Sql_Query(Sql* self, std::string query, ...)
 {
 	int res;
 	va_list args;
@@ -269,15 +270,14 @@ int Sql_Query(Sql* self, const char* query, ...)
 
 
 /// Executes a query.
-int Sql_QueryV(Sql* self, const char* query, va_list args)
+int Sql_QueryV(Sql* self, std::string query, va_list args)
 {
 	if( self == NULL )
 		return SQL_ERROR;
 
 	Sql_FreeResult(self);
-	StringBuf_Clear(&self->buf);
-	StringBuf_Vprintf(&self->buf, query, args);
-	if( mysql_real_query(&self->handle, StringBuf_Value(&self->buf), (unsigned long)StringBuf_Length(&self->buf)) )
+	self->buf = string_vsprintf(query.c_str(), args);
+	if( mysql_real_query(&self->handle, self->buf.c_str(), self->buf.length()) )
 	{
 		ShowSQL("DB error - %s\n", mysql_error(&self->handle));
 		ra_mysql_error_handler(mysql_errno(&self->handle));
@@ -296,15 +296,14 @@ int Sql_QueryV(Sql* self, const char* query, va_list args)
 
 
 /// Executes a query.
-int Sql_QueryStr(Sql* self, const char* query)
+int Sql_QueryStr(Sql* self, std::string query)
 {
 	if( self == NULL )
 		return SQL_ERROR;
 
 	Sql_FreeResult(self);
-	StringBuf_Clear(&self->buf);
-	StringBuf_AppendStr(&self->buf, query);
-	if( mysql_real_query(&self->handle, StringBuf_Value(&self->buf), (unsigned long)StringBuf_Length(&self->buf)) )
+	self->buf = query;
+	if( mysql_real_query(&self->handle, self->buf.c_str(), self->buf.length()) )
 	{
 		ShowSQL("DB error - %s\n", mysql_error(&self->handle));
 		ra_mysql_error_handler(mysql_errno(&self->handle));
@@ -414,8 +413,8 @@ void Sql_ShowDebug_(Sql* self, const char* debug_file, const unsigned long debug
 {
 	if( self == NULL )
 		ShowDebug("at %s:%lu - self is NULL\n", debug_file, debug_line);
-	else if( StringBuf_Length(&self->buf) > 0 )
-		ShowDebug("at %s:%lu - %s\n", debug_file, debug_line, StringBuf_Value(&self->buf));
+	else if( self->buf.length() > 0 )
+		ShowDebug("at %s:%lu - %s\n", debug_file, debug_line, self->buf.c_str());
 	else
 		ShowDebug("at %s:%lu\n", debug_file, debug_line);
 }
@@ -428,7 +427,6 @@ void Sql_Free(Sql* self)
 	if( self )
 	{
 		Sql_FreeResult(self);
-		StringBuf_Destroy(&self->buf);
 		if( self->keepalive != INVALID_TIMER ) delete_timer(self->keepalive, Sql_P_KeepaliveTimer);
 		aFree(self);
 	}
@@ -615,7 +613,7 @@ SqlStmt* SqlStmt_Malloc(Sql* sql)
 		return NULL;
 	}
 	CREATE(self, SqlStmt, 1);
-	StringBuf_Init(&self->buf);
+	self->buf = "";
 	self->stmt = stmt;
 	self->params = NULL;
 	self->columns = NULL;
@@ -652,9 +650,9 @@ int SqlStmt_PrepareV(SqlStmt* self, const char* query, va_list args)
 		return SQL_ERROR;
 
 	SqlStmt_FreeResult(self);
-	StringBuf_Clear(&self->buf);
-	StringBuf_Vprintf(&self->buf, query, args);
-	if( mysql_stmt_prepare(self->stmt, StringBuf_Value(&self->buf), (unsigned long)StringBuf_Length(&self->buf)) )
+	self->buf = "";
+	self->buf = string_vsprintf(query, args);
+	if( mysql_stmt_prepare(self->stmt, self->buf.c_str(), self->buf.length()) )
 	{
 		ShowSQL("DB error - %s\n", mysql_stmt_error(self->stmt));
 		ra_mysql_error_handler(mysql_stmt_errno(self->stmt));
@@ -668,15 +666,14 @@ int SqlStmt_PrepareV(SqlStmt* self, const char* query, va_list args)
 
 
 /// Prepares the statement.
-int SqlStmt_PrepareStr(SqlStmt* self, const char* query)
+int SqlStmt_PrepareStr(SqlStmt* self, std::string query)
 {
 	if( self == NULL )
 		return SQL_ERROR;
 
 	SqlStmt_FreeResult(self);
-	StringBuf_Clear(&self->buf);
-	StringBuf_AppendStr(&self->buf, query);
-	if( mysql_stmt_prepare(self->stmt, StringBuf_Value(&self->buf), (unsigned long)StringBuf_Length(&self->buf)) )
+	self->buf = query;
+	if( mysql_stmt_prepare(self->stmt, self->buf.c_str(), self->buf.length()) )
 	{
 		ShowSQL("DB error - %s\n", mysql_stmt_error(self->stmt));
 		ra_mysql_error_handler(mysql_stmt_errno(self->stmt));
@@ -941,8 +938,8 @@ void SqlStmt_ShowDebug_(SqlStmt* self, const char* debug_file, const unsigned lo
 {
 	if( self == NULL )
 		ShowDebug("at %s:%lu -  self is NULL\n", debug_file, debug_line);
-	else if( StringBuf_Length(&self->buf) > 0 )
-		ShowDebug("at %s:%lu - %s\n", debug_file, debug_line, StringBuf_Value(&self->buf));
+	else if( self->buf.length() > 0 )
+		ShowDebug("at %s:%lu - %s\n", debug_file, debug_line, self->buf.c_str());
 	else
 		ShowDebug("at %s:%lu\n", debug_file, debug_line);
 }
@@ -955,7 +952,6 @@ void SqlStmt_Free(SqlStmt* self)
 	if( self )
 	{
 		SqlStmt_FreeResult(self);
-		StringBuf_Destroy(&self->buf);
 		mysql_stmt_close(self->stmt);
 		if( self->params )
 			aFree(self->params);

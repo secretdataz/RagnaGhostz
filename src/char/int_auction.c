@@ -4,6 +4,9 @@
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
+#include <iostream>
+#include <string>
+#include "../common/cppstrlib.hpp"
 
 #include "../common/mmo.h"
 #include "../common/malloc.h"
@@ -43,26 +46,25 @@ int auction_count(int char_id, bool buy)
 void auction_save(struct auction_data *auction)
 {
 	int j;
-	StringBuf buf;
+	std::string query;
 	SqlStmt* stmt;
 
 	if( !auction )
 		return;
 
-	StringBuf_Init(&buf);
-	StringBuf_Printf(&buf, "UPDATE `%s` SET `seller_id` = '%d', `seller_name` = ?, `buyer_id` = '%d', `buyer_name` = ?, `price` = '%d', `buynow` = '%d', `hours` = '%d', `timestamp` = '%lu', `nameid` = '%hu', `item_name` = ?, `type` = '%d', `refine` = '%d', `attribute` = '%d'",
+	query = string_sprintf("UPDATE `%s` SET `seller_id` = '%d', `seller_name` = ?, `buyer_id` = '%d', `buyer_name` = ?, `price` = '%d', `buynow` = '%d', `hours` = '%d', `timestamp` = '%lu', `nameid` = '%hu', `item_name` = ?, `type` = '%d', `refine` = '%d', `attribute` = '%d'",
 		schema_config.auction_db, auction->seller_id, auction->buyer_id, auction->price, auction->buynow, auction->hours, (unsigned long)auction->timestamp, auction->item.nameid, auction->type, auction->item.refine, auction->item.attribute);
 	for( j = 0; j < MAX_SLOTS; j++ )
-		StringBuf_Printf(&buf, ", `card%d` = '%hu'", j, auction->item.card[j]);
+		query += string_sprintf(", `card%d` = '%hu'", j, auction->item.card[j]);
 	for (j = 0; j < MAX_ITEM_RDM_OPT; j++) {
-		StringBuf_Printf(&buf, ", `option_id%d` = '%d'", j, auction->item.option[j].id);
-		StringBuf_Printf(&buf, ", `option_val%d` = '%d'", j, auction->item.option[j].value);
-		StringBuf_Printf(&buf, ", `option_parm%d` = '%d'", j, auction->item.option[j].param);
+		query += string_sprintf(", `option_id%d` = '%d'", j, auction->item.option[j].id);
+		query += string_sprintf(", `option_val%d` = '%d'", j, auction->item.option[j].value);
+		query += string_sprintf(", `option_parm%d` = '%d'", j, auction->item.option[j].param);
 	}
-	StringBuf_Printf(&buf, " WHERE `auction_id` = '%d'", auction->auction_id);
+	query += string_sprintf(" WHERE `auction_id` = '%d'", auction->auction_id);
 
 	stmt = SqlStmt_Malloc(sql_handle);
-	if( SQL_SUCCESS != SqlStmt_PrepareStr(stmt, StringBuf_Value(&buf))
+	if( SQL_SUCCESS != SqlStmt_PrepareStr(stmt, query)
 	||  SQL_SUCCESS != SqlStmt_BindParam(stmt, 0, SQLDT_STRING, auction->seller_name, strnlen(auction->seller_name, NAME_LENGTH))
 	||  SQL_SUCCESS != SqlStmt_BindParam(stmt, 1, SQLDT_STRING, auction->buyer_name, strnlen(auction->buyer_name, NAME_LENGTH))
 	||  SQL_SUCCESS != SqlStmt_BindParam(stmt, 2, SQLDT_STRING, auction->item_name, strnlen(auction->item_name, ITEM_NAME_LENGTH))
@@ -72,13 +74,12 @@ void auction_save(struct auction_data *auction)
 	}
 
 	SqlStmt_Free(stmt);
-	StringBuf_Destroy(&buf);
 }
 
 unsigned int auction_create(struct auction_data *auction)
 {
 	int j;
-	StringBuf buf;
+	std::string query;
 	SqlStmt* stmt;
 
 	if( !auction )
@@ -86,28 +87,27 @@ unsigned int auction_create(struct auction_data *auction)
 
 	auction->timestamp = time(NULL) + (auction->hours * 3600);
 
-	StringBuf_Init(&buf);
-	StringBuf_Printf(&buf, "INSERT INTO `%s` (`seller_id`,`seller_name`,`buyer_id`,`buyer_name`,`price`,`buynow`,`hours`,`timestamp`,`nameid`,`item_name`,`type`,`refine`,`attribute`,`unique_id`", schema_config.auction_db);
+	query = string_sprintf("INSERT INTO `%s` (`seller_id`,`seller_name`,`buyer_id`,`buyer_name`,`price`,`buynow`,`hours`,`timestamp`,`nameid`,`item_name`,`type`,`refine`,`attribute`,`unique_id`", schema_config.auction_db);
 	for( j = 0; j < MAX_SLOTS; j++ )
-		StringBuf_Printf(&buf, ",`card%d`", j);
+		query += string_sprintf(",`card%d`", j);
 	for (j = 0; j < MAX_ITEM_RDM_OPT; ++j) {
-		StringBuf_Printf(&buf, ", `option_id%d`", j);
-		StringBuf_Printf(&buf, ", `option_val%d`", j);
-		StringBuf_Printf(&buf, ", `option_parm%d`", j);
+		query += string_sprintf(", `option_id%d`", j);
+		query += string_sprintf(", `option_val%d`", j);
+		query += string_sprintf(", `option_parm%d`", j);
 	}
-	StringBuf_Printf(&buf, ") VALUES ('%d',?,'%d',?,'%d','%d','%d','%lu','%hu',?,'%d','%d','%d','%" PRIu64 "'",
+	query += string_sprintf(") VALUES ('%d',?,'%d',?,'%d','%d','%d','%lu','%hu',?,'%d','%d','%d','%" PRIu64 "'",
 		auction->seller_id, auction->buyer_id, auction->price, auction->buynow, auction->hours, (unsigned long)auction->timestamp, auction->item.nameid, auction->type, auction->item.refine, auction->item.attribute, auction->item.unique_id);
 	for( j = 0; j < MAX_SLOTS; j++ )	
-		StringBuf_Printf(&buf, ",'%hu'", auction->item.card[j]);
+		query += string_sprintf(",'%hu'", auction->item.card[j]);
 	for (j = 0; j < MAX_ITEM_RDM_OPT; ++j) {
-		StringBuf_Printf(&buf, ", '%d'", auction->item.option[j].id);
-		StringBuf_Printf(&buf, ", '%d'", auction->item.option[j].value);
-		StringBuf_Printf(&buf, ", '%d'", auction->item.option[j].param);
+		query += string_sprintf(", '%d'", auction->item.option[j].id);
+		query += string_sprintf(", '%d'", auction->item.option[j].value);
+		query += string_sprintf(", '%d'", auction->item.option[j].param);
 	}
-	StringBuf_AppendStr(&buf, ")");
+	query += ")";
 
 	stmt = SqlStmt_Malloc(sql_handle);
-	if( SQL_SUCCESS != SqlStmt_PrepareStr(stmt, StringBuf_Value(&buf))
+	if( SQL_SUCCESS != SqlStmt_PrepareStr(stmt, query)
 	||  SQL_SUCCESS != SqlStmt_BindParam(stmt, 0, SQLDT_STRING, auction->seller_name, strnlen(auction->seller_name, NAME_LENGTH))
 	||  SQL_SUCCESS != SqlStmt_BindParam(stmt, 1, SQLDT_STRING, auction->buyer_name, strnlen(auction->buyer_name, NAME_LENGTH))
 	||  SQL_SUCCESS != SqlStmt_BindParam(stmt, 2, SQLDT_STRING, auction->item_name, strnlen(auction->item_name, ITEM_NAME_LENGTH))
@@ -135,7 +135,6 @@ unsigned int auction_create(struct auction_data *auction)
 	}
 
 	SqlStmt_Free(stmt);
-	StringBuf_Destroy(&buf);
 
 	return auction->auction_id;
 }
@@ -190,26 +189,22 @@ void inter_auctions_fromsql(void)
 {
 	int i;
 	char *data;
-	StringBuf buf;
+	std::string buf;
 	unsigned int tick = gettick(), endtick;
 	time_t now = time(NULL);
 
-	StringBuf_Init(&buf);
-	StringBuf_AppendStr(&buf, "SELECT `auction_id`,`seller_id`,`seller_name`,`buyer_id`,`buyer_name`,"
-		"`price`,`buynow`,`hours`,`timestamp`,`nameid`,`item_name`,`type`,`refine`,`attribute`,`unique_id`");
+	buf = "SELECT `auction_id`,`seller_id`,`seller_name`,`buyer_id`,`buyer_name`,`price`,`buynow`,`hours`,`timestamp`,`nameid`,`item_name`,`type`,`refine`,`attribute`,`unique_id`";
 	for( i = 0; i < MAX_SLOTS; i++ )
-		StringBuf_Printf(&buf, ",`card%d`", i);
+		buf += string_sprintf(",`card%d`", i);
 	for (i = 0; i < MAX_ITEM_RDM_OPT; ++i) {
-		StringBuf_Printf(&buf, ", `option_id%d`", i);
-		StringBuf_Printf(&buf, ", `option_val%d`", i);
-		StringBuf_Printf(&buf, ", `option_parm%d`", i);
+		buf += string_sprintf(", `option_id%d`", i);
+		buf += string_sprintf(", `option_val%d`", i);
+		buf += string_sprintf(", `option_parm%d`", i);
 	}
-	StringBuf_Printf(&buf, " FROM `%s` ORDER BY `auction_id` DESC", schema_config.auction_db);
+	buf += string_sprintf(" FROM `%s` ORDER BY `auction_id` DESC", schema_config.auction_db);
 
-	if( SQL_ERROR == Sql_Query(sql_handle, StringBuf_Value(&buf)) )
+	if( SQL_ERROR == Sql_Query(sql_handle, buf) )
 		Sql_ShowDebug(sql_handle);
-
-	StringBuf_Destroy(&buf);
 
 	while( SQL_SUCCESS == Sql_NextRow(sql_handle) )
 	{

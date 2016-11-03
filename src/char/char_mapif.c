@@ -9,6 +9,8 @@
 
 #include <cstdlib>
 #include <cstring> //memcpy
+#include <string>
+#include "../common/cppstrlib.hpp"
 
 #include "../common/socket.h"
 #include "../common/sql.h"
@@ -510,21 +512,19 @@ int chmapif_parse_req_saveskillcooldown(int fd){
 		if( count > 0 )
 		{
 			struct skill_cooldown_data data;
-			StringBuf buf;
+			std::string query;
 			int i;
 
-			StringBuf_Init(&buf);
-			StringBuf_Printf(&buf, "INSERT INTO `%s` (`account_id`, `char_id`, `skill`, `tick`) VALUES ", schema_config.skillcooldown_db);
+			query = string_sprintf("INSERT INTO `%s` (`account_id`, `char_id`, `skill`, `tick`) VALUES ", schema_config.skillcooldown_db);
 			for( i = 0; i < count; ++i )
 			{
 				memcpy(&data,RFIFOP(fd,14+i*sizeof(struct skill_cooldown_data)),sizeof(struct skill_cooldown_data));
 				if( i > 0 )
-					StringBuf_AppendStr(&buf, ", ");
-				StringBuf_Printf(&buf, "('%d','%d','%d','%d')", aid, cid, data.skill_id, data.tick);
+					query += ", ";
+				query +=  string_sprintf("('%d','%d','%d','%d')", aid, cid, data.skill_id, data.tick);
 			}
-			if( SQL_ERROR == Sql_QueryStr(sql_handle, StringBuf_Value(&buf)) )
+			if( SQL_ERROR == Sql_QueryStr(sql_handle, query))
 				Sql_ShowDebug(sql_handle);
-			StringBuf_Destroy(&buf);
 		}
 		RFIFOSKIP(fd, RFIFOW(fd, 2));
 	}
@@ -965,22 +965,20 @@ int chmapif_parse_save_scdata(int fd){
 		else if( count > 0 )
 		{
 			struct status_change_data data;
-			StringBuf buf;
+			std::string query;
 			int i;
 
-			StringBuf_Init(&buf);
-			StringBuf_Printf(&buf, "INSERT INTO `%s` (`account_id`, `char_id`, `type`, `tick`, `val1`, `val2`, `val3`, `val4`) VALUES ", schema_config.scdata_db);
+			query = string_sprintf("INSERT INTO `%s` (`account_id`, `char_id`, `type`, `tick`, `val1`, `val2`, `val3`, `val4`) VALUES ", schema_config.scdata_db);
 			for( i = 0; i < count; ++i )
 			{
 				memcpy (&data, RFIFOP(fd, 14+i*sizeof(struct status_change_data)), sizeof(struct status_change_data));
 				if( i > 0 )
-					StringBuf_AppendStr(&buf, ", ");
-				StringBuf_Printf(&buf, "('%d','%d','%hu','%d','%d','%d','%d','%d')", aid, cid,
+					query += ", ";
+				query += string_sprintf("('%d','%d','%hu','%d','%d','%d','%d','%d')", aid, cid,
 					data.type, data.tick, data.val1, data.val2, data.val3, data.val4);
 			}
-			if( SQL_ERROR == Sql_QueryStr(sql_handle, StringBuf_Value(&buf)) )
+			if( SQL_ERROR == Sql_QueryStr(sql_handle, query) )
 				Sql_ShowDebug(sql_handle);
-			StringBuf_Destroy(&buf);
 		}
 #endif
 		RFIFOSKIP(fd, RFIFOW(fd, 2));
@@ -1394,22 +1392,20 @@ int chmapif_bonus_script_save(int fd) {
 		if (count > 0) {
 			char esc_script[MAX_BONUS_SCRIPT_LENGTH*2];
 			struct bonus_script_data bsdata;
-			StringBuf buf;
+			std::string query;
 			uint8 i;
 
-			StringBuf_Init(&buf);
-			StringBuf_Printf(&buf, "INSERT INTO `%s` (`char_id`, `script`, `tick`, `flag`, `type`, `icon`) VALUES ", schema_config.bonus_script_db);
+			query = string_sprintf("INSERT INTO `%s` (`char_id`, `script`, `tick`, `flag`, `type`, `icon`) VALUES ", schema_config.bonus_script_db);
 			for (i = 0; i < count; ++i) {
 				memcpy(&bsdata, RFIFOP(fd, 9 + i*sizeof(struct bonus_script_data)), sizeof(struct bonus_script_data));
 				Sql_EscapeString(sql_handle, esc_script, bsdata.script_str);
 				if (i > 0)
-					StringBuf_AppendStr(&buf,", ");
-				StringBuf_Printf(&buf, "('%d','%s','%d','%d','%d','%d')", cid, esc_script, bsdata.tick, bsdata.flag, bsdata.type, bsdata.icon);
+					query += ", ";
+				query += string_sprintf("('%d','%s','%d','%d','%d','%d')", cid, esc_script, bsdata.tick, bsdata.flag, bsdata.type, bsdata.icon);
 			}
-			if (SQL_ERROR == Sql_QueryStr(sql_handle,StringBuf_Value(&buf)))
+			if (SQL_ERROR == Sql_QueryStr(sql_handle, query))
 				Sql_ShowDebug(sql_handle);
 
-			StringBuf_Destroy(&buf);
 			ShowInfo("Bonus Script saved for CID=%d. Total: %d.\n", cid, count);
 		}
 		RFIFOSKIP(fd,RFIFOW(fd,2));

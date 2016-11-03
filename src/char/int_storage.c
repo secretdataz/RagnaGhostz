@@ -3,12 +3,12 @@
 
 #include <cstdlib>
 #include <cstring>
-//#include <string>
+#include <string>
+#include "../common/cppstrlib.hpp"
 
 #include "../common/mmo.h"
 #include "../common/showmsg.h"
 #include "../common/socket.h"
-#include "../common/strlib.h" // StringBuf
 #include "../common/sql.h"
 #include "char.h"
 #include "inter.h"
@@ -26,28 +26,25 @@ int storage_tosql(int account_id, struct storage_data* p)
 /// Load storage data to mem
 int storage_fromsql(uint32 account_id, struct storage_data* p)
 {
-	StringBuf buf;
+	std::string query;
 	int i, j;
 
 	memset(p, 0, sizeof(struct storage_data)); //clean up memory
 	p->storage_amount = 0;
 
 	// storage {`account_id`/`id`/`nameid`/`amount`/`equip`/`identify`/`refine`/`attribute`/`card0`/`card1`/`card2`/`card3`/`option_id0`/`option_val0`/`option_parm0`/`option_id1`/`option_val1`/`option_parm1`/`option_id2`/`option_val2`/`option_parm2`/`option_id3`/`option_val3`/`option_parm3`/`option_id4`/`option_val4`/`option_parm4`}
-	StringBuf_Init(&buf);
-	StringBuf_AppendStr(&buf, "SELECT `id`,`nameid`,`amount`,`equip`,`identify`,`refine`,`attribute`,`expire_time`,`bound`,`unique_id`");
+	query = "SELECT `id`,`nameid`,`amount`,`equip`,`identify`,`refine`,`attribute`,`expire_time`,`bound`,`unique_id`";
 	for( j = 0; j < MAX_SLOTS; ++j )
-		StringBuf_Printf(&buf, ",`card%d`", j);
+		query += string_sprintf(",`card%d`", j);
 	for( i = 0; i < MAX_ITEM_RDM_OPT; ++i ) {
-		StringBuf_Printf(&buf, ", `option_id%d`", i);
-		StringBuf_Printf(&buf, ", `option_val%d`", i);
-		StringBuf_Printf(&buf, ", `option_parm%d`", i);
+		query += string_sprintf(", `option_id%d`", i);
+		query += string_sprintf(", `option_val%d`", i);
+		query += string_sprintf(", `option_parm%d`", i);
 	}
-	StringBuf_Printf(&buf, " FROM `%s` WHERE `account_id`='%d' ORDER BY `nameid`", schema_config.storage_db, account_id);
+	query += string_sprintf(" FROM `%s` WHERE `account_id`='%d' ORDER BY `nameid`", schema_config.storage_db, account_id);
 
-	if( SQL_ERROR == Sql_Query(sql_handle, StringBuf_Value(&buf)) )
+	if( SQL_ERROR == Sql_Query(sql_handle, query) )
 		Sql_ShowDebug(sql_handle);
-
-	StringBuf_Destroy(&buf);
 
 	for( i = 0; i < MAX_STORAGE && SQL_SUCCESS == Sql_NextRow(sql_handle); ++i )
 	{
@@ -91,7 +88,7 @@ int guild_storage_tosql(int guild_id, struct guild_storage* p)
 /// Load guild_storage data to mem
 int guild_storage_fromsql(int guild_id, struct guild_storage* p)
 {
-	StringBuf buf;
+	std::string query;
 	int i, j;
 
 	memset(p, 0, sizeof(struct guild_storage)); //clean up memory
@@ -99,21 +96,18 @@ int guild_storage_fromsql(int guild_id, struct guild_storage* p)
 	p->guild_id = guild_id;
 
 	// storage {`guild_id`/`id`/`nameid`/`amount`/`equip`/`identify`/`refine`/`attribute`/`card0`/`card1`/`card2`/`card3`/`option_id0`/`option_val0`/`option_parm0`/`option_id1`/`option_val1`/`option_parm1`/`option_id2`/`option_val2`/`option_parm2`/`option_id3`/`option_val3`/`option_parm3`/`option_id4`/`option_val4`/`option_parm4`}
-	StringBuf_Init(&buf);
-	StringBuf_AppendStr(&buf, "SELECT `id`,`nameid`,`amount`,`equip`,`identify`,`refine`,`attribute`,`bound`,`unique_id`");
+	query = "SELECT `id`,`nameid`,`amount`,`equip`,`identify`,`refine`,`attribute`,`bound`,`unique_id`";
 	for( j = 0; j < MAX_SLOTS; ++j )
-		StringBuf_Printf(&buf, ",`card%d`", j);
+		query += string_sprintf(",`card%d`", j);
 	for( j = 0; j < MAX_ITEM_RDM_OPT; ++j ) {
-		StringBuf_Printf(&buf, ", `option_id%d`", j);
-		StringBuf_Printf(&buf, ", `option_val%d`", j);
-		StringBuf_Printf(&buf, ", `option_parm%d`", j);
+		query += string_sprintf(", `option_id%d`", j);
+		query += string_sprintf(", `option_val%d`", j);
+		query += string_sprintf(", `option_parm%d`", j);
 	}
-	StringBuf_Printf(&buf, " FROM `%s` WHERE `guild_id`='%d' ORDER BY `nameid`", schema_config.guild_storage_db, guild_id);
+	query += string_sprintf(" FROM `%s` WHERE `guild_id`='%d' ORDER BY `nameid`", schema_config.guild_storage_db, guild_id);
 
-	if( SQL_ERROR == Sql_Query(sql_handle, StringBuf_Value(&buf)) )
+	if( SQL_ERROR == Sql_Query(sql_handle, query) )
 		Sql_ShowDebug(sql_handle);
-
-	StringBuf_Destroy(&buf);
 
 	for( i = 0; i < MAX_GUILD_STORAGE && SQL_SUCCESS == Sql_NextRow(sql_handle); ++i )
 	{
@@ -302,33 +296,30 @@ void mapif_itembound_store2gstorage(int fd, int guild_id, struct item items[], u
 */
 int mapif_parse_itembound_retrieve(int fd)
 {
-	StringBuf buf;
+	std::string query;
 	SqlStmt* stmt;
 	unsigned short i = 0, count = 0;
 	struct item item, items[MAX_INVENTORY];
 	int j, guild_id = RFIFOW(fd,10);
 	uint32 char_id = RFIFOL(fd,2), account_id = RFIFOL(fd,6);
 
-	StringBuf_Init(&buf);
-
 	// Get bound items from player's inventory
-	StringBuf_AppendStr(&buf, "SELECT `id`, `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `expire_time`, `bound`");
+	query = "SELECT `id`, `nameid`, `amount`, `equip`, `identify`, `refine`, `attribute`, `expire_time`, `bound`";
 	for( j = 0; j < MAX_SLOTS; ++j )
-		StringBuf_Printf(&buf, ", `card%d`", j);
+		query += string_sprintf(", `card%d`", j);
 	for( j = 0; j < MAX_ITEM_RDM_OPT; ++j ) {
-		StringBuf_Printf(&buf, ", `option_id%d`", j);
-		StringBuf_Printf(&buf, ", `option_val%d`", j);
-		StringBuf_Printf(&buf, ", `option_parm%d`", j);
+		query += string_sprintf(", `option_id%d`", j);
+		query += string_sprintf(", `option_val%d`", j);
+		query += string_sprintf(", `option_parm%d`", j);
 	}
-	StringBuf_Printf(&buf, " FROM `%s` WHERE `char_id`='%d' AND `bound` = %d", schema_config.inventory_db,char_id, BOUND_GUILD);
+	query += string_sprintf(" FROM `%s` WHERE `char_id`='%d' AND `bound` = %d", schema_config.inventory_db,char_id, BOUND_GUILD);
 
 	stmt = SqlStmt_Malloc(sql_handle);
-	if( SQL_ERROR == SqlStmt_PrepareStr(stmt, StringBuf_Value(&buf)) ||
+	if( SQL_ERROR == SqlStmt_PrepareStr(stmt, query) ||
 		SQL_ERROR == SqlStmt_Execute(stmt) )
 	{
 		SqlStmt_ShowDebug(stmt);
 		SqlStmt_Free(stmt);
-		StringBuf_Destroy(&buf);
 		mapif_itembound_ack(fd,account_id,guild_id);
 		return 1;
 	}
@@ -356,7 +347,6 @@ int mapif_parse_itembound_retrieve(int fd)
 
 	ShowInfo("Found '" CL_WHITE "%d" CL_RESET "' guild bound item(s) from CID = " CL_WHITE "%d" CL_RESET ", AID = %d, Guild ID = " CL_WHITE "%d" CL_RESET ".\n", count, char_id, account_id, guild_id);
 	if (!count) { //No items found - No need to continue
-		StringBuf_Destroy(&buf);
 		SqlStmt_Free(stmt);
 		mapif_itembound_ack(fd,account_id,guild_id);
 		return 1;
@@ -365,14 +355,12 @@ int mapif_parse_itembound_retrieve(int fd)
 	char_set_session_flag(account_id, 1);
 
 	// Delete bound items from player's inventory
-	StringBuf_Clear(&buf);
-	StringBuf_Printf(&buf, "DELETE FROM `%s` WHERE `bound` = %d",schema_config.inventory_db, BOUND_GUILD);
-	if( SQL_ERROR == SqlStmt_PrepareStr(stmt, StringBuf_Value(&buf)) ||
+	query = string_sprintf("DELETE FROM `%s` WHERE `bound` = %d",schema_config.inventory_db, BOUND_GUILD);
+	if( SQL_ERROR == SqlStmt_PrepareStr(stmt, query) ||
 		SQL_ERROR == SqlStmt_Execute(stmt) )
 	{
 		SqlStmt_ShowDebug(stmt);
 		SqlStmt_Free(stmt);
-		StringBuf_Destroy(&buf);
 		mapif_itembound_ack(fd,account_id,guild_id);
 		return 1;
 	}
@@ -384,13 +372,13 @@ int mapif_parse_itembound_retrieve(int fd)
 #define CHECK_REMOVE(var,mask,token,num) {\
 	if ((var)&(mask) && !(j&(num))) {\
 		if (j)\
-			StringBuf_AppendStr(&buf, ",");\
-		StringBuf_AppendStr(&buf, "`"#token"`='0'");\
+			query += ','; \
+		query += "`"#token"`='0'";\
 		j |= (1<<num);\
 	}\
 }
 
-	StringBuf_Clear(&buf);
+	query = "";
 	j = 0;
 	for (i = 0; i < count && i < MAX_INVENTORY; i++) {
 		if (!&items[i] || !items[i].equip)
@@ -408,24 +396,18 @@ int mapif_parse_itembound_retrieve(int fd)
 
 	// Update player's view
 	if (j) {
-		StringBuf buf2;
-		StringBuf_Init(&buf2);
-		StringBuf_Printf(&buf2, "UPDATE `%s` SET %s WHERE `char_id`='%d'", schema_config.char_db, StringBuf_Value(&buf), char_id);
+		std::string query2;
+		query2 = string_sprintf("UPDATE `%s` SET %s WHERE `char_id`='%d'", schema_config.char_db, query, char_id);
 
-		if( SQL_ERROR == SqlStmt_PrepareStr(stmt, StringBuf_Value(&buf)) ||
+		if( SQL_ERROR == SqlStmt_PrepareStr(stmt, query) ||
 			SQL_ERROR == SqlStmt_Execute(stmt) )
 		{
 			SqlStmt_ShowDebug(stmt);
 			SqlStmt_Free(stmt);
-			StringBuf_Destroy(&buf);
-			StringBuf_Destroy(&buf2);
 			mapif_itembound_ack(fd,account_id,guild_id);
 			return 1;
 		}
-		StringBuf_Destroy(&buf2);
 	}
-
-	StringBuf_Destroy(&buf);
 	SqlStmt_Free(stmt);
 
 	char_unset_session_flag(account_id, 1);

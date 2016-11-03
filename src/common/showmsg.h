@@ -4,6 +4,7 @@
 #ifndef _SHOWMSG_H_
 #define _SHOWMSG_H_
 
+#include <string>
 
 #include "../../3rdparty/libconfig/libconfig.h"
 #include "cbasetypes.h"
@@ -101,7 +102,7 @@ void ShowWarning(const char *, ...);
 void ShowDebug(const char *, ...);
 void ShowError(const char *, ...);
 void ShowFatalError(const char *, ...);
-void ShowConfigWarning(config_setting_t *config, const char *string, ...);
+void ShowConfigWarning(config_setting_t *config, std::string string, ...);
 
 #ifdef	__cplusplus
 }

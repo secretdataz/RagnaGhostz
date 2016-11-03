@@ -3,6 +3,8 @@
 
 #include <cstdlib>
 #include <cstring>
+#include <string>
+#include "../common/cppstrlib.hpp"
 
 #include "../common/mmo.h"
 #include "../common/showmsg.h"
@@ -19,30 +21,27 @@ int mail_fromsql(uint32 char_id, struct mail_data* md)
 	int i, j;
 	struct mail_message *msg;
 	char *data;
-	StringBuf buf;
+	std::string query;
 
 	memset(md, 0, sizeof(struct mail_data));
 	md->amount = 0;
 	md->full = false;
 
-	StringBuf_Init(&buf);
-	StringBuf_AppendStr(&buf, "SELECT `id`,`send_name`,`send_id`,`dest_name`,`dest_id`,`title`,`message`,`time`,`status`,"
-		"`zeny`,`amount`,`nameid`,`refine`,`attribute`,`identify`,`unique_id`,`bound`");
+	query = "SELECT `id`,`send_name`,`send_id`,`dest_name`,`dest_id`,`title`,`message`,`time`,`status`,`zeny`,`amount`,`nameid`,`refine`,`attribute`,`identify`,`unique_id`,`bound`";
 	for (i = 0; i < MAX_SLOTS; i++)
-		StringBuf_Printf(&buf, ",`card%d`", i);
+		query += string_sprintf(",`card%d`", i);
 	for (i = 0; i < MAX_ITEM_RDM_OPT; ++i) {
-		StringBuf_Printf(&buf, ", `option_id%d`", i);
-		StringBuf_Printf(&buf, ", `option_val%d`", i);
-		StringBuf_Printf(&buf, ", `option_parm%d`", i);
+		query += string_sprintf(", `option_id%d`", i);
+		query += string_sprintf(", `option_val%d`", i);
+		query += string_sprintf(", `option_parm%d`", i);
 	}
 	// I keep the `status` < 3 just in case someone forget to apply the sqlfix
-	StringBuf_Printf(&buf, " FROM `%s` WHERE `dest_id`='%d' AND `status` < 3 ORDER BY `id` LIMIT %d",
+	query += string_sprintf(" FROM `%s` WHERE `dest_id`='%d' AND `status` < 3 ORDER BY `id` LIMIT %d",
 		schema_config.mail_db, char_id, MAIL_MAX_INBOX + 1);
 
-	if( SQL_ERROR == Sql_Query(sql_handle, StringBuf_Value(&buf)) )
+	if( SQL_ERROR == Sql_Query(sql_handle, query) )
 		Sql_ShowDebug(sql_handle);
 
-	StringBuf_Destroy(&buf);
 
 	for (i = 0; i < MAIL_MAX_INBOX && SQL_SUCCESS == Sql_NextRow(sql_handle); ++i )
 	{
@@ -115,34 +114,33 @@ int mail_fromsql(uint32 char_id, struct mail_data* md)
 /// Returns the message's ID if successful (or 0 if it fails).
 int mail_savemessage(struct mail_message* msg)
 {
-	StringBuf buf;
+	std::string query;
 	SqlStmt* stmt;
 	int j;
 
 	// build message save query
-	StringBuf_Init(&buf);
-	StringBuf_Printf(&buf, "INSERT INTO `%s` (`send_name`, `send_id`, `dest_name`, `dest_id`, `title`, `message`, `time`, `status`, `zeny`, `amount`, `nameid`, `refine`, `attribute`, `identify`, `unique_id`, `bound`", schema_config.mail_db);
+	query = string_sprintf("INSERT INTO `%s` (`send_name`, `send_id`, `dest_name`, `dest_id`, `title`, `message`, `time`, `status`, `zeny`, `amount`, `nameid`, `refine`, `attribute`, `identify`, `unique_id`, `bound`", schema_config.mail_db);
 	for (j = 0; j < MAX_SLOTS; j++)
-		StringBuf_Printf(&buf, ", `card%d`", j);
+		query += string_sprintf(", `card%d`", j);
 	for (j = 0; j < MAX_ITEM_RDM_OPT; ++j) {
-		StringBuf_Printf(&buf, ", `option_id%d`", j);
-		StringBuf_Printf(&buf, ", `option_val%d`", j);
-		StringBuf_Printf(&buf, ", `option_parm%d`", j);
+		query += string_sprintf(", `option_id%d`", j);
+		query += string_sprintf(", `option_val%d`", j);
+		query += string_sprintf(", `option_parm%d`", j);
 	}
-	StringBuf_Printf(&buf, ") VALUES (?, '%d', ?, '%d', ?, ?, '%lu', '%d', '%d', '%d', '%hu', '%d', '%d', '%d', '%" PRIu64 "', '%d'",
+	query += string_sprintf(") VALUES (?, '%d', ?, '%d', ?, ?, '%lu', '%d', '%d', '%d', '%hu', '%d', '%d', '%d', '%" PRIu64 "', '%d'",
 		msg->send_id, msg->dest_id, (unsigned long)msg->timestamp, msg->status, msg->zeny, msg->item.amount, msg->item.nameid, msg->item.refine, msg->item.attribute, msg->item.identify, msg->item.unique_id, msg->item.bound);
 	for (j = 0; j < MAX_SLOTS; j++)
-		StringBuf_Printf(&buf, ", '%hu'", msg->item.card[j]);
+		query += string_sprintf(", '%hu'", msg->item.card[j]);
 	for (j = 0; j < MAX_ITEM_RDM_OPT; ++j) {
-		StringBuf_Printf(&buf, ", '%d'", msg->item.option[j].id);
-		StringBuf_Printf(&buf, ", '%d'", msg->item.option[j].value);
-		StringBuf_Printf(&buf, ", '%d'", msg->item.option[j].param);
+		query += string_sprintf(", '%d'", msg->item.option[j].id);
+		query += string_sprintf(", '%d'", msg->item.option[j].value);
+		query += string_sprintf(", '%d'", msg->item.option[j].param);
 	}
-	StringBuf_AppendStr(&buf, ")");
+	query += ')';
 
 	// prepare and execute query
 	stmt = SqlStmt_Malloc(sql_handle);
-	if( SQL_SUCCESS != SqlStmt_PrepareStr(stmt, StringBuf_Value(&buf))
+	if( SQL_SUCCESS != SqlStmt_PrepareStr(stmt, query)
 	||  SQL_SUCCESS != SqlStmt_BindParam(stmt, 0, SQLDT_STRING, msg->send_name, strnlen(msg->send_name, NAME_LENGTH))
 	||  SQL_SUCCESS != SqlStmt_BindParam(stmt, 1, SQLDT_STRING, msg->dest_name, strnlen(msg->dest_name, NAME_LENGTH))
 	||  SQL_SUCCESS != SqlStmt_BindParam(stmt, 2, SQLDT_STRING, msg->title, strnlen(msg->title, MAIL_TITLE_LENGTH))
@@ -155,7 +153,6 @@ int mail_savemessage(struct mail_message* msg)
 		msg->id = (int)SqlStmt_LastInsertId(stmt);
 
 	SqlStmt_Free(stmt);
-	StringBuf_Destroy(&buf);
 
 	return msg->id;
 }
@@ -165,26 +162,23 @@ int mail_savemessage(struct mail_message* msg)
 bool mail_loadmessage(int mail_id, struct mail_message* msg)
 {
 	int j;
-	StringBuf buf;
+	std::string query;
 
-	StringBuf_Init(&buf);
-	StringBuf_AppendStr(&buf, "SELECT `id`,`send_name`,`send_id`,`dest_name`,`dest_id`,`title`,`message`,`time`,`status`,"
-		"`zeny`,`amount`,`nameid`,`refine`,`attribute`,`identify`,`unique_id`,`bound`");
+	query = "SELECT `id`,`send_name`,`send_id`,`dest_name`,`dest_id`,`title`,`message`,`time`,`status`,`zeny`,`amount`,`nameid`,`refine`,`attribute`,`identify`,`unique_id`,`bound`";
 	for( j = 0; j < MAX_SLOTS; j++ )
-		StringBuf_Printf(&buf, ",`card%d`", j);
+		query += string_sprintf(",`card%d`", j);
 	for (j = 0; j < MAX_ITEM_RDM_OPT; ++j) {
-		StringBuf_Printf(&buf, ", `option_id%d`", j);
-		StringBuf_Printf(&buf, ", `option_val%d`", j);
-		StringBuf_Printf(&buf, ", `option_parm%d`", j);
+		query += string_sprintf(", `option_id%d`", j);
+		query += string_sprintf(", `option_val%d`", j);
+		query += string_sprintf(", `option_parm%d`", j);
 	}
-	StringBuf_Printf(&buf, " FROM `%s` WHERE `id` = '%d'", schema_config.mail_db, mail_id);
+	query += string_sprintf(" FROM `%s` WHERE `id` = '%d'", schema_config.mail_db, mail_id);
 
-	if( SQL_ERROR == Sql_Query(sql_handle, StringBuf_Value(&buf))
+	if( SQL_ERROR == Sql_Query(sql_handle, query)
 	||  SQL_SUCCESS != Sql_NextRow(sql_handle) )
 	{
 		Sql_ShowDebug(sql_handle);
 		Sql_FreeResult(sql_handle);
-		StringBuf_Destroy(&buf);
 		return false;
 	}
 	else
@@ -225,7 +219,6 @@ bool mail_loadmessage(int mail_id, struct mail_message* msg)
 		}
 	}
 
-	StringBuf_Destroy(&buf);
 	Sql_FreeResult(sql_handle);
 
 	return true;
@@ -269,29 +262,25 @@ void mapif_parse_Mail_read(int fd)
  *------------------------------------------*/
 bool mail_DeleteAttach(int mail_id)
 {
-	StringBuf buf;
+	std::string query;
 	int i;
 
-	StringBuf_Init(&buf);
-	StringBuf_Printf(&buf, "UPDATE `%s` SET `zeny` = '0', `nameid` = '0', `amount` = '0', `refine` = '0', `attribute` = '0', `identify` = '0'", schema_config.mail_db);
+	query = string_sprintf("UPDATE `%s` SET `zeny` = '0', `nameid` = '0', `amount` = '0', `refine` = '0', `attribute` = '0', `identify` = '0'", schema_config.mail_db);
 	for (i = 0; i < MAX_SLOTS; i++)
-		StringBuf_Printf(&buf, ", `card%d` = '0'", i);
+		query += string_sprintf(", `card%d` = '0'", i);
 	for (i = 0; i < MAX_ITEM_RDM_OPT; ++i) {
-		StringBuf_Printf(&buf, ", `option_id%d` = 0", i);
-		StringBuf_Printf(&buf, ", `option_val%d` = 0", i);
-		StringBuf_Printf(&buf, ", `option_parm%d` = 0", i);
+		query += string_sprintf(", `option_id%d` = 0", i);
+		query += string_sprintf(", `option_val%d` = 0", i);
+		query += string_sprintf(", `option_parm%d` = 0", i);
 	}
-	StringBuf_Printf(&buf, " WHERE `id` = '%d'", mail_id);
+	query += string_sprintf(" WHERE `id` = '%d'", mail_id);
 
-	if( SQL_ERROR == Sql_Query(sql_handle, StringBuf_Value(&buf)) )
+	if( SQL_ERROR == Sql_Query(sql_handle, query) )
 	{
 		Sql_ShowDebug(sql_handle);
-		StringBuf_Destroy(&buf);
-
 		return false;
 	}
 
-	StringBuf_Destroy(&buf);
 	return true;
 }
 
