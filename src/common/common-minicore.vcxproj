@@ -24,6 +24,7 @@
     <ClInclude Include="cli.h" />
     <ClInclude Include="conf.h" />
     <ClInclude Include="core.h" />
+    <ClInclude Include="cppstrlib.hpp" />
     <ClInclude Include="db.h" />
     <ClInclude Include="des.h" />
     <ClInclude Include="ers.h" />
@@ -52,6 +53,7 @@
     <ClCompile Include="cli.cpp" />
     <ClCompile Include="conf.cpp" />
     <ClCompile Include="core.cpp" />
+    <ClCompile Include="cppstrlib.cpp" />
     <ClCompile Include="db.cpp" />
     <ClCompile Include="des.cpp" />
     <ClCompile Include="ers.cpp" />

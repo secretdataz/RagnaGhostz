@@ -95,6 +95,9 @@
     <ClInclude Include="mempool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cppstrlib.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cli.cpp">
@@ -164,6 +167,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cppstrlib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
