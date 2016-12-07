@@ -2010,6 +2010,14 @@ enum e_status_bonus {
 	STATUS_BONUS_RATE = 1,
 };
 
+/// Enum for status_calc_weight and status_calc_cart_weight
+enum e_status_calc_weight_opt {
+	CALCWT_NONE = 0x0,
+	CALCWT_ITEM = 0x1,		///< Recalculate item weight
+	CALCWT_MAXBONUS = 0x2,	///< Recalculate max weight based on skill/status/configuration bonuses
+	CALCWT_CARTSTATE = 0x4,	///< Whether to check for cart state
+};
+
 ///Define to determine who gets HP/SP consumed on doing skills/etc. [Skotlex]
 #define BL_CONSUME (BL_PC|BL_HOM|BL_MER|BL_ELEM)
 ///Define to determine who has regen
@@ -2266,8 +2274,7 @@ int status_get_sc_def(struct block_list *src,struct block_list *bl, enum sc_type
 
 int status_change_start(struct block_list* src, struct block_list* bl,enum sc_type type,int rate,int val1,int val2,int val3,int val4,int tick,unsigned char flag);
 int status_change_end_(struct block_list* bl, enum sc_type type, int tid, const char* file, int line);
-#define status_change_end(bl,type,tid) status_change_end_(bl,(sc_type)type,tid,__FILE__,__LINE__)
-int kaahi_heal_timer(int tid, unsigned int tick, int id, intptr_t data);
+#define status_change_end(bl,type,tid) status_change_end_(bl,type,tid,__FILE__,__LINE__)
 int status_change_timer(int tid, unsigned int tick, int id, intptr_t data);
 int status_change_timer_sub(struct block_list* bl, va_list ap);
 int status_change_clear(struct block_list* bl, int type);
@@ -2283,8 +2290,6 @@ void status_change_clear_onChangeMap(struct block_list *bl, struct status_change
 #define status_calc_elemental(ed, opt) status_calc_bl_(&(ed)->bl,(scb_flag) SCB_ALL,(e_status_calc_opt) opt)
 #define status_calc_npc(nd, opt) status_calc_bl_(&(nd)->bl,(scb_flag) SCB_ALL,(e_status_calc_opt) opt)
 
-bool status_calc_weight(struct map_session_data *sd, uint8 flag);
-bool status_calc_cart_weight(struct map_session_data *sd, uint8 flag);
 void status_calc_bl_(struct block_list *bl, enum scb_flag flag, enum e_status_calc_opt opt);
 int status_calc_mob_(struct mob_data* md, enum e_status_calc_opt opt);
 void status_calc_pet_(struct pet_data* pd, enum e_status_calc_opt opt);

@@ -281,9 +281,9 @@ bool mapif_parse_SaveGuildStorage(int fd)
 
 #ifdef BOUND_ITEMS
 /**
-* IZ 0x3856 <account_id>.L <guild_id>.W
-* Tells map-server if the process if complete, unlock the guild storage
-*/
+ * IZ 0x3856 <account_id>.L <guild_id>.W
+ * Tells map-server if the process if complete, unlock the guild storage
+ */
 static void mapif_itembound_ack(int fd, int account_id, int guild_id)
 {
 	WFIFOHEAD(fd, 8);
@@ -295,17 +295,17 @@ static void mapif_itembound_ack(int fd, int account_id, int guild_id)
 }
 
 /**
-* IZ 0x3857 <size>.W <count>.W <guild_id>.W { <item>.?B }.*MAX_INVENTORY
-* Send the retrieved guild bound items to map-server, store them to guild storage.
-* By using this method, stackable items will looks how it should be, and overflowed
-* item's stack won't disturbs the guild storage table and the leftover items (when
-* storage is full) will be discarded.
-* @param fd
-* @param guild_id
-* @param items[]
-* @param count
-* @author [Cydh]
-*/
+ * IZ 0x3857 <size>.W <count>.W <guild_id>.W { <item>.?B }.*MAX_INVENTORY
+ * Send the retrieved guild bound items to map-server, store them to guild storage.
+ * By using this method, stackable items will looks how it should be, and overflowed
+ * item's stack won't disturbs the guild storage table and the leftover items (when
+ * storage is full) will be discarded.
+ * @param fd
+ * @param guild_id
+ * @param items[]
+ * @param count
+ * @author [Cydh]
+ */
 static void mapif_itembound_store2gstorage(int fd, int guild_id, struct item items[], unsigned short count) {
 	int size = 8 + sizeof(struct item) * MAX_INVENTORY, i;
 
@@ -593,7 +593,7 @@ bool inter_storage_parse_frommap(int fd)
 	case 0x3018: mapif_parse_LoadGuildStorage(fd); break;
 	case 0x3019: mapif_parse_SaveGuildStorage(fd); break;
 #ifdef BOUND_ITEMS
-	case 0x3056: mapif_parse_itembound_retrieve(fd); break;
+		case 0x3056: mapif_parse_itembound_retrieve(fd); break;
 #endif
 	case 0x308a: mapif_parse_StorageLoad(fd); break;
 	case 0x308b: mapif_parse_StorageSave(fd); break;

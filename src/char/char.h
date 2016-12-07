@@ -277,8 +277,6 @@ int char_married(int pl1,int pl2);
 int char_child(int parent_id, int child_id);
 int char_family(int pl1,int pl2,int pl3);
 
-int char_request_accreg2(uint32 account_id, uint32 char_id);
-
 //extern bool char_gm_read;
 int char_loadName(uint32 char_id, char* name);
 int char_check_char_name(char * name, char * esc_name);

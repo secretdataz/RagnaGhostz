@@ -330,6 +330,10 @@
 
 	script_set_constant("EAJ_SUMMONER",MAPID_SUMMONER,false);
 
+	/* sex */
+	export_constant(SEX_FEMALE);
+	export_constant(SEX_MALE);
+
 	/* broadcasts */
 	export_constant(BC_ALL);
 	export_constant(BC_MAP);
@@ -408,6 +412,7 @@
 	export_constant(MF_NOCOSTUME);
 	export_constant(MF_GVG_TE_CASTLE);
 	export_constant(MF_GVG_TE);
+	export_constant(MF_HIDEMOBHPBAR);
 
 	/* setcell types */
 	export_constant(CELL_WALKABLE);

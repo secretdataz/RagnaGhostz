@@ -3133,11 +3133,11 @@ static unsigned int status_calc_maxhpsp_pc(struct map_session_data* sd, unsigned
  * Calculates player's weight
  * @param sd: Player object
  * @param flag: Calculation type
- *   1 - Item weight
- *   2 - Skill/Status/Configuration max weight bonus
+ *   CALCWT_ITEM - Item weight
+ *   CALCWT_MAXBONUS - Skill/Status/Configuration max weight bonus
  * @return false - failed, true - success
  */
-bool status_calc_weight(struct map_session_data *sd, uint8 flag)
+bool status_calc_weight(struct map_session_data *sd, enum e_status_calc_weight_opt flag)
 {
 	int b_weight, b_max_weight, skill, i;
 	struct status_change *sc;
@@ -3149,7 +3149,7 @@ bool status_calc_weight(struct map_session_data *sd, uint8 flag)
 	b_weight = sd->weight; // Store current weight for later comparison
 	sd->max_weight = job_info[pc_class2idx(sd->status.class_)].max_weight_base + sd->status.str * 300; // Recalculate max weight
 
-	if (flag&1) {
+	if (flag&CALCWT_ITEM) {
 		sd->weight = 0; // Reset current weight
 
 		for(i = 0; i < MAX_INVENTORY; i++) {
@@ -3159,8 +3159,9 @@ bool status_calc_weight(struct map_session_data *sd, uint8 flag)
 		}
 	}
 
-	if (flag&2) {
+	if (flag&CALCWT_MAXBONUS) {
 		// Skill/Status bonus weight increases
+		sd->max_weight += sd->add_max_weight; // From bAddMaxWeight
 		if ((skill = pc_checkskill(sd, MC_INCCARRY)) > 0)
 			sd->max_weight += 2000 * skill;
 		if (pc_isriding(sd) && pc_checkskill(sd, KN_RIDING) > 0)
@@ -3188,24 +3189,24 @@ bool status_calc_weight(struct map_session_data *sd, uint8 flag)
  * Calculates player's cart weight
  * @param sd: Player object
  * @param flag: Calculation type
- *   1 - Cart item weight
- *   2 - Skill/Status/Configuration max weight bonus
- *   4 - Whether to check for cart status
+ *   CALCWT_ITEM - Cart item weight
+ *   CALCWT_MAXBONUS - Skill/Status/Configuration max weight bonus
+ *   CALCWT_CARTSTATE - Whether to check for cart state
  * @return false - failed, true - success
  */
-bool status_calc_cart_weight(struct map_session_data *sd, uint8 flag)
+bool status_calc_cart_weight(struct map_session_data *sd, enum e_status_calc_weight_opt flag)
 {
 	int b_cart_weight_max, i;
 
 	nullpo_retr(false, sd);
 
-	if (!pc_iscarton(sd) && !(flag&4))
+	if (!pc_iscarton(sd) && !(flag&CALCWT_CARTSTATE))
 		return false;
 
 	b_cart_weight_max = sd->cart_weight_max; // Store cart max weight for later comparison
 	sd->cart_weight_max = battle_config.max_cart_weight; // Recalculate max weight
 
-	if (flag&1) {
+	if (flag&CALCWT_ITEM) {
 		sd->cart_weight = 0; // Reset current cart weight
 		sd->cart_num = 0; // Reset current cart item count
 
@@ -3218,7 +3219,7 @@ bool status_calc_cart_weight(struct map_session_data *sd, uint8 flag)
 	}
 
 	// Skill bonus max weight increases
-	if (flag&2)
+	if (flag&CALCWT_MAXBONUS)
 		sd->cart_weight_max += (pc_checkskill(sd, GN_REMODELING_CART) * 5000);
 
 	// Update the client if the new weight calculations don't match
@@ -3273,6 +3274,7 @@ int status_calc_pc_(struct map_session_data* sd, enum e_status_calc_opt opt)
 	sd->critical_rate = sd->hit_rate = sd->flee_rate = sd->flee2_rate = 100;
 	sd->def_rate = sd->def2_rate = sd->mdef_rate = sd->mdef2_rate = 100;
 	sd->regen.state.block = 0;
+	sd->add_max_weight = 0;
 
 	// Zeroed arrays, order follows the order in pc.h.
 	// Add new arrays to the end of zeroed area in pc.h (see comments) and size here. [zzo]
@@ -3309,7 +3311,10 @@ int status_calc_pc_(struct map_session_data* sd, enum e_status_calc_opt opt)
 		+ sizeof(sd->ignore_mdef_by_race)
 		+ sizeof(sd->ignore_mdef_by_class)
 		+ sizeof(sd->ignore_def_by_race)
+		+ sizeof(sd->ignore_def_by_class)
 		+ sizeof(sd->sp_gain_race)
+		+ sizeof(sd->magic_addrace2)
+		+ sizeof(sd->ignore_mdef_by_race2)
 		+ sizeof(sd->dropaddrace)
 		+ sizeof(sd->dropaddclass)
 		);
@@ -3373,6 +3378,8 @@ int status_calc_pc_(struct map_session_data* sd, enum e_status_calc_opt opt)
 		+ sizeof(sd->sp_loss)
 		+ sizeof(sd->hp_regen)
 		+ sizeof(sd->sp_regen)
+		+ sizeof(sd->percent_hp_regen)
+		+ sizeof(sd->percent_sp_regen)
 		+ sizeof(sd->add_def)
 		+ sizeof(sd->add_mdef)
 		+ sizeof(sd->add_mdmg)
@@ -3948,8 +3955,8 @@ int status_calc_pc_(struct map_session_data* sd, enum e_status_calc_opt opt)
 // ----- MISC CALCULATIONS -----
 
 	// Weight
-	status_calc_weight(sd, 2);
-	status_calc_cart_weight(sd, 2);
+	status_calc_weight(sd, CALCWT_MAXBONUS);
+	status_calc_cart_weight(sd, CALCWT_MAXBONUS);
 
 	if (pc_checkskill(sd,SM_MOVINGRECOVERY)>0)
 		sd->regen.state.walk = 1;
@@ -7980,7 +7987,7 @@ int status_get_sc_def(struct block_list *src, struct block_list *bl, enum sc_typ
 
 		// Item resistance (only applies to rate%)
 		if(sd && SC_COMMON_MIN <= type && type <= SC_COMMON_MAX) {
-			if( sd->reseff[type-SC_COMMON_MIN] > 0 )
+			if( sd->reseff[type-SC_COMMON_MIN] )
 				rate -= rate*sd->reseff[type-SC_COMMON_MIN]/10000;
 			if( sd->sc.data[SC_COMMONSC_RESIST] )
 				rate -= rate*sd->sc.data[SC_COMMONSC_RESIST]->val1/100;
@@ -9985,9 +9992,29 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 			val2 = 500 + 100 * val1;
 			break;
 		case SC_STONEHARDSKIN:
-			if( sd )
-				val1 = sd->status.job_level * pc_checkskill(sd, RK_RUNEMASTERY) / 4; // DEF/MDEF Increase
+			{
+				int hp = status->hp / 5; // 20% of HP
+
+				if (sd)
+					val1 = sd->status.job_level * pc_checkskill(sd, RK_RUNEMASTERY) / 4; // DEF/MDEF Increase
+				if (!status_charge(bl, hp, 0))
+					return 0;
+				val2 = hp;
+			}
 			break;
+		case SC_REFRESH:
+			status_heal(bl, status_get_max_hp(bl) * 25 / 100, 0, 1);
+			status_change_clear_buffs(bl, SCCB_REFRESH);
+			break;
+		case SC_MILLENNIUMSHIELD:
+			{
+				int8 chance = rnd()%100;
+
+				val2 = ((chance < 20) ? 4 : (chance < 50) ? 3 : 2); // Shield count
+				val3 = 1000; // Shield HP
+				clif_millenniumshield(bl, val2);
+			}
+ 			break;
 		case SC_ABUNDANCE:
 			val4 = tick / 10000;
 			tick_time = 10000; // [GodLesZ] tick time
