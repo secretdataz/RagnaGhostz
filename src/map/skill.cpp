@@ -5270,7 +5270,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 					}
 
 			if(j == 5) { // If 5 spheres, remove last one and only do 4 actions (Official behavior)
-				status_change_end(src, spheres[4], INVALID_TIMER);
+				status_change_end(src, static_cast<sc_type>(spheres[4]), INVALID_TIMER);
 				j = 4;
 			}
 
@@ -5284,7 +5284,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 				}
 				skill_addtimerskill(src, tick + i * 200, bl->id, k, 0, subskill, skill_lv, i, flag);
 				clif_skill_nodamage(src, bl, subskill, skill_lv, 1);
-				status_change_end(src, spheres[i], INVALID_TIMER);
+				status_change_end(src, static_cast<sc_type>(spheres[i]), INVALID_TIMER);
 			}
 		}
 		break;
@@ -5386,7 +5386,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 					int skele = WL_RELEASE - 5 + sc->data[spheres[i]]->val1 - WLS_FIRE; // Convert Ball Element into Skill ATK for balls
 					// WL_SUMMON_ATK_FIRE, WL_SUMMON_ATK_WIND, WL_SUMMON_ATK_WATER, WL_SUMMON_ATK_GROUND
 					skill_addtimerskill(src,tick+status_get_adelay(src)*i,bl->id,0,0,skele,sc->data[spheres[i]]->val3,BF_MAGIC,flag|SD_LEVEL);
-					status_change_end(src, spheres[i], INVALID_TIMER); // Eliminate ball
+					status_change_end(src, static_cast<sc_type>(spheres[i]), INVALID_TIMER); // Eliminate ball
 				}
 				clif_skill_nodamage(src,bl,skill_id,0,1);
 			}

@@ -203,8 +203,6 @@ enum send_target : uint8 {
 	BG_SAMEMAP_WOS,
 	BG_AREA,
 	BG_AREA_WOS,
-} send_target;
-
 	CLAN,				// Clan System
 };
 

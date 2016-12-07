@@ -19,9 +19,9 @@ struct npc_data;
 struct status_change;
 
 /**
- * Max Refine available to your server
- * Changing this limit requires edits to refine_db.txt
- **/
+* Max Refine available to your server
+* Changing this limit requires edits to refine_db.txt
+**/
 #ifdef RENEWAL
 #	define MAX_REFINE 20
 #else
@@ -30,12 +30,12 @@ struct status_change;
 
 /// Refine type
 enum refine_type {
-	REFINE_TYPE_ARMOR	= 0,
-	REFINE_TYPE_WEAPON1	= 1,
-	REFINE_TYPE_WEAPON2	= 2,
-	REFINE_TYPE_WEAPON3	= 3,
-	REFINE_TYPE_WEAPON4	= 4,
-	REFINE_TYPE_MAX		= 5
+	REFINE_TYPE_ARMOR = 0,
+	REFINE_TYPE_WEAPON1 = 1,
+	REFINE_TYPE_WEAPON2 = 2,
+	REFINE_TYPE_WEAPON3 = 3,
+	REFINE_TYPE_WEAPON4 = 4,
+	REFINE_TYPE_MAX = 5
 };
 
 /// Get refine chance
@@ -60,308 +60,308 @@ enum sc_type : int16 {
 	SC_DPOISON, //10
 	SC_COMMON_MAX = 10, // end
 
-	//Next up, we continue on 20, to leave enough room for additional "common" ailments in the future.
-	SC_PROVOKE = 20,
-	SC_ENDURE,
-	SC_TWOHANDQUICKEN,
-	SC_CONCENTRATE,
-	SC_HIDING,
-	SC_CLOAKING,
-	SC_ENCPOISON,
-	SC_POISONREACT,
-	SC_QUAGMIRE,
-	SC_ANGELUS,
-	SC_BLESSING, //30
-	SC_SIGNUMCRUCIS,
-	SC_INCREASEAGI,
-	SC_DECREASEAGI,
-	SC_SLOWPOISON,
-	SC_IMPOSITIO  ,
-	SC_SUFFRAGIUM,
-	SC_ASPERSIO,
-	SC_BENEDICTIO,
-	SC_KYRIE,
-	SC_MAGNIFICAT, //40
-	SC_GLORIA,
-	SC_AETERNA,
-	SC_ADRENALINE,
-	SC_WEAPONPERFECTION,
-	SC_OVERTHRUST,
-	SC_MAXIMIZEPOWER,
-	SC_TRICKDEAD,
-	SC_LOUD,
-	SC_ENERGYCOAT,
-	SC_BROKENARMOR, //50 - NOTE: These two aren't used anywhere, and they have an icon...
-	SC_BROKENWEAPON,
-	SC_HALLUCINATION,
-	SC_WEIGHT50,
-	SC_WEIGHT90,
-	SC_ASPDPOTION0,
-	SC_ASPDPOTION1,
-	SC_ASPDPOTION2,
-	SC_ASPDPOTION3,
-	SC_SPEEDUP0,
-	SC_SPEEDUP1, //60
-	SC_ATKPOTION,
-	SC_MATKPOTION,
-	SC_WEDDING,
-	SC_SLOWDOWN,
-	SC_ANKLE,
-	SC_KEEPING,
-	SC_BARRIER,
-	SC_STRIPWEAPON,
-	SC_STRIPSHIELD,
-	SC_STRIPARMOR, //70
-	SC_STRIPHELM,
-	SC_CP_WEAPON,
-	SC_CP_SHIELD,
-	SC_CP_ARMOR,
-	SC_CP_HELM,
-	SC_AUTOGUARD,
-	SC_REFLECTSHIELD,
-	SC_SPLASHER,
-	SC_PROVIDENCE,
-	SC_DEFENDER, //80
-	SC_MAGICROD,
-	SC_SPELLBREAKER,
-	SC_AUTOSPELL,
-	SC_SIGHTTRASHER,
-	SC_AUTOBERSERK,
-	SC_SPEARQUICKEN,
-	SC_AUTOCOUNTER,
-	SC_SIGHT,
-	SC_SAFETYWALL,
-	SC_RUWACH, //90
-	SC_EXTREMITYFIST,
-	SC_EXPLOSIONSPIRITS,
-	SC_COMBO,
-	SC_BLADESTOP_WAIT,
-	SC_BLADESTOP,
-	SC_FIREWEAPON,
-	SC_WATERWEAPON,
-	SC_WINDWEAPON,
-	SC_EARTHWEAPON,
-	SC_VOLCANO, //100,
-	SC_DELUGE,
-	SC_VIOLENTGALE,
-	SC_WATK_ELEMENT,
-	SC_ARMOR,
-	SC_ARMOR_ELEMENT,
-	SC_NOCHAT,
-	SC_BABY,
-	SC_AURABLADE,
-	SC_PARRYING,
-	SC_CONCENTRATION, //110
-	SC_TENSIONRELAX,
-	SC_BERSERK,
-	SC_FURY,
-	SC_GOSPEL,
-	SC_ASSUMPTIO,
-	SC_BASILICA,
-	SC_GUILDAURA,
-	SC_MAGICPOWER,
-	SC_EDP,
-	SC_TRUESIGHT, //120
-	SC_WINDWALK,
-	SC_MELTDOWN,
-	SC_CARTBOOST,
-	SC_CHASEWALK,
-	SC_REJECTSWORD,
-	SC_MARIONETTE,
-	SC_MARIONETTE2,
-	SC_CHANGEUNDEAD,
-	SC_JOINTBEAT,
-	SC_MINDBREAKER, //130
-	SC_MEMORIZE,
-	SC_FOGWALL,
-	SC_SPIDERWEB,
-	SC_DEVOTION,
-	SC_SACRIFICE,
-	SC_STEELBODY,
-	SC_ORCISH,
-	SC_READYSTORM,
-	SC_READYDOWN,
-	SC_READYTURN, //140
-	SC_READYCOUNTER,
-	SC_DODGE,
-	SC_RUN,
-	SC_SHADOWWEAPON,
-	SC_ADRENALINE2,
-	SC_GHOSTWEAPON,
-	SC_KAIZEL,
-	SC_KAAHI,
-	SC_KAUPE,
-	SC_ONEHAND, //150
-	SC_PRESERVE,
-	SC_BATTLEORDERS,
-	SC_REGENERATION,
-	SC_DOUBLECAST,
-	SC_GRAVITATION,
-	SC_MAXOVERTHRUST,
-	SC_LONGING,
-	SC_HERMODE,
-	SC_SHRINK,
-	SC_SIGHTBLASTER, //160
-	SC_WINKCHARM,
-	SC_CLOSECONFINE,
-	SC_CLOSECONFINE2,
-	SC_DANCING,
-	SC_ELEMENTALCHANGE,
-	SC_RICHMANKIM,
-	SC_ETERNALCHAOS,
-	SC_DRUMBATTLE,
-	SC_NIBELUNGEN,
-	SC_ROKISWEIL, //170
-	SC_INTOABYSS,
-	SC_SIEGFRIED,
-	SC_WHISTLE,
-	SC_ASSNCROS,
-	SC_POEMBRAGI,
-	SC_APPLEIDUN,
-	SC_MODECHANGE,
-	SC_HUMMING,
-	SC_DONTFORGETME,
-	SC_FORTUNE, //180
-	SC_SERVICE4U,
-	SC_STOP,	//Prevents inflicted chars from walking. [Skotlex]
-	SC_SPURT,
-	SC_SPIRIT,
-	SC_COMA, //Not a real SC_, it makes a char's HP/SP hit 1.
-	SC_INTRAVISION,
-	SC_INCALLSTATUS,
-	SC_INCSTR,
-	SC_INCAGI,
-	SC_INCVIT, //190
-	SC_INCINT,
-	SC_INCDEX,
-	SC_INCLUK,
-	SC_INCHIT,
-	SC_INCHITRATE,
-	SC_INCFLEE,
-	SC_INCFLEERATE,
-	SC_INCMHPRATE,
-	SC_INCMSPRATE,
-	SC_INCATKRATE, //200
-	SC_INCMATKRATE,
-	SC_INCDEFRATE,
-	SC_STRFOOD,
-	SC_AGIFOOD,
-	SC_VITFOOD,
-	SC_INTFOOD,
-	SC_DEXFOOD,
-	SC_LUKFOOD,
-	SC_HITFOOD,
-	SC_FLEEFOOD, //210
-	SC_BATKFOOD,
-	SC_WATKFOOD,
-	SC_MATKFOOD,
-	SC_SCRESIST, //Increases resistance to status changes.
-	SC_XMAS, // Xmas Suit [Valaris]
-	SC_WARM, //SG skills [Komurka]
-	SC_SUN_COMFORT,
-	SC_MOON_COMFORT,
-	SC_STAR_COMFORT,
-	SC_FUSION, //220
-	SC_SKILLRATE_UP,
-	SC_SKE,
-	SC_KAITE,
-	SC_SWOO, // [marquis007]
-	SC_SKA, // [marquis007]
-	SC_EARTHSCROLL,
-	SC_MIRACLE, //SG 'hidden' skill [Komurka]
-	SC_MADNESSCANCEL,
-	SC_ADJUSTMENT,
-	SC_INCREASING,  //230
-	SC_GATLINGFEVER,
-	SC_TATAMIGAESHI,
-	SC_UTSUSEMI,
-	SC_BUNSINJYUTSU,
-	SC_KAENSIN,
-	SC_SUITON,
-	SC_NEN,
-	SC_KNOWLEDGE,
-	SC_SMA,
-	SC_FLING,	//240
-	SC_AVOID,
-	SC_CHANGE,
-	SC_BLOODLUST,
-	SC_FLEET,
-	SC_SPEED,
-	SC_DEFENCE,
-	SC_INCASPDRATE,
-	SC_INCFLEE2 = 248,
-	SC_JAILED,
-	SC_ENCHANTARMS,	//250
-	SC_MAGICALATTACK,
-	SC_ARMORCHANGE,
-	SC_CRITICALWOUND,
-	SC_MAGICMIRROR,
-	SC_SLOWCAST,
-	SC_SUMMER,
-	SC_EXPBOOST,
-	SC_ITEMBOOST,
-	SC_BOSSMAPINFO,
-	SC_LIFEINSURANCE, //260
-	SC_INCCRI,
-	//SC_INCDEF,
-	//SC_INCBASEATK = 263,
-	//SC_FASTCAST,
-	SC_MDEF_RATE = 265,
-	//SC_HPREGEN,
-	SC_INCHEALRATE = 267,
-	SC_PNEUMA,
-	SC_AUTOTRADE,
-	SC_KSPROTECTED, //270
-	SC_ARMOR_RESIST = 271,
-	SC_SPCOST_RATE,
-	SC_COMMONSC_RESIST,
-	SC_SEVENWIND,
-	SC_DEF_RATE,
-	//SC_SPREGEN,
-	SC_WALKSPEED = 277,
+						//Next up, we continue on 20, to leave enough room for additional "common" ailments in the future.
+						SC_PROVOKE = 20,
+						SC_ENDURE,
+						SC_TWOHANDQUICKEN,
+						SC_CONCENTRATE,
+						SC_HIDING,
+						SC_CLOAKING,
+						SC_ENCPOISON,
+						SC_POISONREACT,
+						SC_QUAGMIRE,
+						SC_ANGELUS,
+						SC_BLESSING, //30
+						SC_SIGNUMCRUCIS,
+						SC_INCREASEAGI,
+						SC_DECREASEAGI,
+						SC_SLOWPOISON,
+						SC_IMPOSITIO,
+						SC_SUFFRAGIUM,
+						SC_ASPERSIO,
+						SC_BENEDICTIO,
+						SC_KYRIE,
+						SC_MAGNIFICAT, //40
+						SC_GLORIA,
+						SC_AETERNA,
+						SC_ADRENALINE,
+						SC_WEAPONPERFECTION,
+						SC_OVERTHRUST,
+						SC_MAXIMIZEPOWER,
+						SC_TRICKDEAD,
+						SC_LOUD,
+						SC_ENERGYCOAT,
+						SC_BROKENARMOR, //50 - NOTE: These two aren't used anywhere, and they have an icon...
+						SC_BROKENWEAPON,
+						SC_HALLUCINATION,
+						SC_WEIGHT50,
+						SC_WEIGHT90,
+						SC_ASPDPOTION0,
+						SC_ASPDPOTION1,
+						SC_ASPDPOTION2,
+						SC_ASPDPOTION3,
+						SC_SPEEDUP0,
+						SC_SPEEDUP1, //60
+						SC_ATKPOTION,
+						SC_MATKPOTION,
+						SC_WEDDING,
+						SC_SLOWDOWN,
+						SC_ANKLE,
+						SC_KEEPING,
+						SC_BARRIER,
+						SC_STRIPWEAPON,
+						SC_STRIPSHIELD,
+						SC_STRIPARMOR, //70
+						SC_STRIPHELM,
+						SC_CP_WEAPON,
+						SC_CP_SHIELD,
+						SC_CP_ARMOR,
+						SC_CP_HELM,
+						SC_AUTOGUARD,
+						SC_REFLECTSHIELD,
+						SC_SPLASHER,
+						SC_PROVIDENCE,
+						SC_DEFENDER, //80
+						SC_MAGICROD,
+						SC_SPELLBREAKER,
+						SC_AUTOSPELL,
+						SC_SIGHTTRASHER,
+						SC_AUTOBERSERK,
+						SC_SPEARQUICKEN,
+						SC_AUTOCOUNTER,
+						SC_SIGHT,
+						SC_SAFETYWALL,
+						SC_RUWACH, //90
+						SC_EXTREMITYFIST,
+						SC_EXPLOSIONSPIRITS,
+						SC_COMBO,
+						SC_BLADESTOP_WAIT,
+						SC_BLADESTOP,
+						SC_FIREWEAPON,
+						SC_WATERWEAPON,
+						SC_WINDWEAPON,
+						SC_EARTHWEAPON,
+						SC_VOLCANO, //100,
+						SC_DELUGE,
+						SC_VIOLENTGALE,
+						SC_WATK_ELEMENT,
+						SC_ARMOR,
+						SC_ARMOR_ELEMENT,
+						SC_NOCHAT,
+						SC_BABY,
+						SC_AURABLADE,
+						SC_PARRYING,
+						SC_CONCENTRATION, //110
+						SC_TENSIONRELAX,
+						SC_BERSERK,
+						SC_FURY,
+						SC_GOSPEL,
+						SC_ASSUMPTIO,
+						SC_BASILICA,
+						SC_GUILDAURA,
+						SC_MAGICPOWER,
+						SC_EDP,
+						SC_TRUESIGHT, //120
+						SC_WINDWALK,
+						SC_MELTDOWN,
+						SC_CARTBOOST,
+						SC_CHASEWALK,
+						SC_REJECTSWORD,
+						SC_MARIONETTE,
+						SC_MARIONETTE2,
+						SC_CHANGEUNDEAD,
+						SC_JOINTBEAT,
+						SC_MINDBREAKER, //130
+						SC_MEMORIZE,
+						SC_FOGWALL,
+						SC_SPIDERWEB,
+						SC_DEVOTION,
+						SC_SACRIFICE,
+						SC_STEELBODY,
+						SC_ORCISH,
+						SC_READYSTORM,
+						SC_READYDOWN,
+						SC_READYTURN, //140
+						SC_READYCOUNTER,
+						SC_DODGE,
+						SC_RUN,
+						SC_SHADOWWEAPON,
+						SC_ADRENALINE2,
+						SC_GHOSTWEAPON,
+						SC_KAIZEL,
+						SC_KAAHI,
+						SC_KAUPE,
+						SC_ONEHAND, //150
+						SC_PRESERVE,
+						SC_BATTLEORDERS,
+						SC_REGENERATION,
+						SC_DOUBLECAST,
+						SC_GRAVITATION,
+						SC_MAXOVERTHRUST,
+						SC_LONGING,
+						SC_HERMODE,
+						SC_SHRINK,
+						SC_SIGHTBLASTER, //160
+						SC_WINKCHARM,
+						SC_CLOSECONFINE,
+						SC_CLOSECONFINE2,
+						SC_DANCING,
+						SC_ELEMENTALCHANGE,
+						SC_RICHMANKIM,
+						SC_ETERNALCHAOS,
+						SC_DRUMBATTLE,
+						SC_NIBELUNGEN,
+						SC_ROKISWEIL, //170
+						SC_INTOABYSS,
+						SC_SIEGFRIED,
+						SC_WHISTLE,
+						SC_ASSNCROS,
+						SC_POEMBRAGI,
+						SC_APPLEIDUN,
+						SC_MODECHANGE,
+						SC_HUMMING,
+						SC_DONTFORGETME,
+						SC_FORTUNE, //180
+						SC_SERVICE4U,
+						SC_STOP,	//Prevents inflicted chars from walking. [Skotlex]
+						SC_SPURT,
+						SC_SPIRIT,
+						SC_COMA, //Not a real SC_, it makes a char's HP/SP hit 1.
+						SC_INTRAVISION,
+						SC_INCALLSTATUS,
+						SC_INCSTR,
+						SC_INCAGI,
+						SC_INCVIT, //190
+						SC_INCINT,
+						SC_INCDEX,
+						SC_INCLUK,
+						SC_INCHIT,
+						SC_INCHITRATE,
+						SC_INCFLEE,
+						SC_INCFLEERATE,
+						SC_INCMHPRATE,
+						SC_INCMSPRATE,
+						SC_INCATKRATE, //200
+						SC_INCMATKRATE,
+						SC_INCDEFRATE,
+						SC_STRFOOD,
+						SC_AGIFOOD,
+						SC_VITFOOD,
+						SC_INTFOOD,
+						SC_DEXFOOD,
+						SC_LUKFOOD,
+						SC_HITFOOD,
+						SC_FLEEFOOD, //210
+						SC_BATKFOOD,
+						SC_WATKFOOD,
+						SC_MATKFOOD,
+						SC_SCRESIST, //Increases resistance to status changes.
+						SC_XMAS, // Xmas Suit [Valaris]
+						SC_WARM, //SG skills [Komurka]
+						SC_SUN_COMFORT,
+						SC_MOON_COMFORT,
+						SC_STAR_COMFORT,
+						SC_FUSION, //220
+						SC_SKILLRATE_UP,
+						SC_SKE,
+						SC_KAITE,
+						SC_SWOO, // [marquis007]
+						SC_SKA, // [marquis007]
+						SC_EARTHSCROLL,
+						SC_MIRACLE, //SG 'hidden' skill [Komurka]
+						SC_MADNESSCANCEL,
+						SC_ADJUSTMENT,
+						SC_INCREASING,  //230
+						SC_GATLINGFEVER,
+						SC_TATAMIGAESHI,
+						SC_UTSUSEMI,
+						SC_BUNSINJYUTSU,
+						SC_KAENSIN,
+						SC_SUITON,
+						SC_NEN,
+						SC_KNOWLEDGE,
+						SC_SMA,
+						SC_FLING,	//240
+						SC_AVOID,
+						SC_CHANGE,
+						SC_BLOODLUST,
+						SC_FLEET,
+						SC_SPEED,
+						SC_DEFENCE,
+						SC_INCASPDRATE,
+						SC_INCFLEE2 = 248,
+						SC_JAILED,
+						SC_ENCHANTARMS,	//250
+						SC_MAGICALATTACK,
+						SC_ARMORCHANGE,
+						SC_CRITICALWOUND,
+						SC_MAGICMIRROR,
+						SC_SLOWCAST,
+						SC_SUMMER,
+						SC_EXPBOOST,
+						SC_ITEMBOOST,
+						SC_BOSSMAPINFO,
+						SC_LIFEINSURANCE, //260
+						SC_INCCRI,
+						//SC_INCDEF,
+						//SC_INCBASEATK = 263,
+						//SC_FASTCAST,
+						SC_MDEF_RATE = 265,
+						//SC_HPREGEN,
+						SC_INCHEALRATE = 267,
+						SC_PNEUMA,
+						SC_AUTOTRADE,
+						SC_KSPROTECTED, //270
+						SC_ARMOR_RESIST = 271,
+						SC_SPCOST_RATE,
+						SC_COMMONSC_RESIST,
+						SC_SEVENWIND,
+						SC_DEF_RATE,
+						//SC_SPREGEN,
+						SC_WALKSPEED = 277,
 
-	// Mercenary Only Bonus Effects
-	SC_MERC_FLEEUP,
-	SC_MERC_ATKUP,
-	SC_MERC_HPUP, //280
-	SC_MERC_SPUP,
-	SC_MERC_HITUP,
-	SC_MERC_QUICKEN,
+						// Mercenary Only Bonus Effects
+						SC_MERC_FLEEUP,
+						SC_MERC_ATKUP,
+						SC_MERC_HPUP, //280
+						SC_MERC_SPUP,
+						SC_MERC_HITUP,
+						SC_MERC_QUICKEN,
 
-	SC_REBIRTH,
-	//SC_SKILLCASTRATE, //285
-	//SC_DEFRATIOATK,
-	//SC_HPDRAIN,
-	//SC_SKILLATKBONUS,
-	SC_ITEMSCRIPT = 289,
-	SC_S_LIFEPOTION, //290
-	SC_L_LIFEPOTION,
-	SC_JEXPBOOST,
-	//SC_IGNOREDEF,
-	SC_HELLPOWER = 294,
-	SC_INVINCIBLE, //295
-	SC_INVINCIBLEOFF,
-	SC_MANU_ATK,
-	SC_MANU_DEF,
-	SC_SPL_ATK,
-	SC_SPL_DEF, //300
-	SC_MANU_MATK,
-	SC_SPL_MATK,
-	SC_FOOD_STR_CASH,
-	SC_FOOD_AGI_CASH,
-	SC_FOOD_VIT_CASH,
-	SC_FOOD_DEX_CASH,
-	SC_FOOD_INT_CASH,
-	SC_FOOD_LUK_CASH,//308
-	/**
-	 * 3rd
-	 **/
+						SC_REBIRTH,
+						//SC_SKILLCASTRATE, //285
+						//SC_DEFRATIOATK,
+						//SC_HPDRAIN,
+						//SC_SKILLATKBONUS,
+						SC_ITEMSCRIPT = 289,
+						SC_S_LIFEPOTION, //290
+						SC_L_LIFEPOTION,
+						SC_JEXPBOOST,
+						//SC_IGNOREDEF,
+						SC_HELLPOWER = 294,
+						SC_INVINCIBLE, //295
+						SC_INVINCIBLEOFF,
+						SC_MANU_ATK,
+						SC_MANU_DEF,
+						SC_SPL_ATK,
+						SC_SPL_DEF, //300
+						SC_MANU_MATK,
+						SC_SPL_MATK,
+						SC_FOOD_STR_CASH,
+						SC_FOOD_AGI_CASH,
+						SC_FOOD_VIT_CASH,
+						SC_FOOD_DEX_CASH,
+						SC_FOOD_INT_CASH,
+						SC_FOOD_LUK_CASH,//308
+										 /**
+										 * 3rd
+										 **/
 	SC_FEAR,//309
 	SC_BURNING,//310
 	SC_FREEZING,//311
-	/**
-	 * Rune Knight
-	 **/
+				/**
+				* Rune Knight
+				**/
 	SC_ENCHANTBLADE,//312
 	SC_DEATHBOUND,//313
 	SC_MILLENNIUMSHIELD,
@@ -375,7 +375,7 @@ enum sc_type : int16 {
 	SC_FIGHTINGSPIRIT,
 	SC_ABUNDANCE,
 	/**
-	 * Arch Bishop
+	* Arch Bishop
 	**/
 	SC_ADORAMUS,
 	SC_EPICLESIS,//325
@@ -387,8 +387,8 @@ enum sc_type : int16 {
 	SC_DUPLELIGHT,
 	SC_SECRAMENT,
 	/**
-	 * Warlock
-	 **/
+	* Warlock
+	**/
 	SC_WHITEIMPRISON,
 	SC_MARSHOFABYSS,
 	SC_RECOGNIZEDSPELL,//335
@@ -401,16 +401,16 @@ enum sc_type : int16 {
 	SC_READING_SB,
 	SC_FREEZE_SP,
 	/**
-	 * Ranger
-	 **/
+	* Ranger
+	**/
 	SC_FEARBREEZE,
 	SC_ELECTRICSHOCKER,//345
 	SC_WUGDASH,
 	SC_BITE,
 	SC_CAMOUFLAGE,
 	/**
-	 * Mechanic
-	 **/
+	* Mechanic
+	**/
 	SC_ACCELERATION,
 	SC_HOVERING,//350
 	SC_SHAPESHIFT,
@@ -423,9 +423,9 @@ enum sc_type : int16 {
 	SC_STEALTHFIELD_MASTER,
 	SC_OVERHEAT,
 	SC_OVERHEAT_LIMITPOINT,//360
-	/**
-	 * Guillotine Cross
-	 **/
+						   /**
+						   * Guillotine Cross
+						   **/
 	SC_VENOMIMPRESS,
 	SC_POISONINGWEAPON,
 	SC_WEAPONBLOCKING,
@@ -441,9 +441,9 @@ enum sc_type : int16 {
 	SC_PYREXIA,
 	SC_OBLIVIONCURSE,
 	SC_LEECHESEND,//375
-	/**
-	 * Royal Guard
-	 **/
+				  /**
+				  * Royal Guard
+				  **/
 	SC_REFLECTDAMAGE,
 	SC_FORCEOFVANGUARD,
 	SC_SHIELDSPELL_DEF,
@@ -456,8 +456,8 @@ enum sc_type : int16 {
 	SC_EARTHDRIVE,//385
 	SC_INSPIRATION,
 	/**
-	 * Sorcerer
-	 **/
+	* Sorcerer
+	**/
 	SC_SPELLFIST,
 	SC_CRYSTALIZE,
 	SC_STRIKING,
@@ -465,8 +465,8 @@ enum sc_type : int16 {
 	SC_VACUUM_EXTREME,
 	SC_PROPERTYWALK,
 	/**
-	 * Minstrel / Wanderer
-	 **/
+	* Minstrel / Wanderer
+	**/
 	SC_SWINGDANCE,
 	SC_SYMPHONYOFLOVER,
 	SC_MOONLITSERENADE,//395
@@ -488,8 +488,8 @@ enum sc_type : int16 {
 	SC_SITDOWN_FORCE,
 	SC_NETHERWORLD,
 	/**
-	 * Sura
-	 **/
+	* Sura
+	**/
 	SC_CRESCENTELBOW,
 	SC_CURSEDCIRCLE_ATKER,
 	SC_CURSEDCIRCLE_TARGET,
@@ -499,8 +499,8 @@ enum sc_type : int16 {
 	SC_GT_CHANGE,
 	SC_GT_REVITALIZE,
 	/**
-	 * Genetic
-	 **/
+	* Genetic
+	**/
 	SC_GN_CARTBOOST,//421
 	SC_THORNSTRAP,
 	SC_BLOODSUCKER,
@@ -527,8 +527,8 @@ enum sc_type : int16 {
 	SC_VITATA_500,
 	SC_EXTRACT_SALAMINE_JUICE,
 	/**
-	 * Shadow Chaser
-	 **/
+	* Shadow Chaser
+	**/
 	SC__REPRODUCE,//446
 	SC__AUTOSHADOWSPELL,
 	SC__SHADOWFORM,
@@ -544,9 +544,9 @@ enum sc_type : int16 {
 	SC__STRIPACCESSORY,
 	SC__MANHOLE,
 	SC__BLOODYLUST,//460
-	/**
-	 * Elemental Spirits
-	 **/
+				   /**
+				   * Elemental Spirits
+				   **/
 	SC_CIRCLE_OF_FIRE,
 	SC_CIRCLE_OF_FIRE_OPTION,
 	SC_FIRE_CLOAK,
@@ -616,18 +616,18 @@ enum sc_type : int16 {
 	SC_SPELLBOOK4,
 	SC_SPELLBOOK5,
 	SC_SPELLBOOK6,
-/**
- * In official server there are only 7 maximum number of spell books that can be memorized
- * To increase the maximum value just add another status type before SC_MAXSPELLBOOK (ex. SC_SPELLBOOK7, SC_SPELLBOOK8 and so on)
- **/
+	/**
+	* In official server there are only 7 maximum number of spell books that can be memorized
+	* To increase the maximum value just add another status type before SC_MAXSPELLBOOK (ex. SC_SPELLBOOK7, SC_SPELLBOOK8 and so on)
+	**/
 	SC_MAXSPELLBOOK,
 	/* Max HP & SP */
 	SC_INCMHP,
 	SC_INCMSP,
 	SC_PARTYFLEE, // 531
-	/**
-	* Kagerou & Oboro [malufett]
-	**/
+				  /**
+				  * Kagerou & Oboro [malufett]
+				  **/
 	SC_MEIKYOUSISUI,
 	SC_JYUMONJIKIRI,
 	SC_KYOUGAKU,
@@ -676,8 +676,8 @@ enum sc_type : int16 {
 	SC_SUPER_STAR,
 
 	/**
-	 * Rebellion [Cydh]
-	 **/
+	* Rebellion [Cydh]
+	**/
 	SC_HEAT_BARREL,
 	SC_HEAT_BARREL_AFTER,
 	SC_P_ALTER,
@@ -748,8 +748,8 @@ enum sc_type : int16 {
 	SC_NORECOVER_STATE,
 
 	/**
-	 * Summoner
-	 */
+	* Summoner
+	*/
 	SC_SUHIDE,
 	SC_SU_STOOP,
 	SC_SPRITEMABLE,
@@ -2290,6 +2290,8 @@ void status_change_clear_onChangeMap(struct block_list *bl, struct status_change
 #define status_calc_elemental(ed, opt) status_calc_bl_(&(ed)->bl,(scb_flag) SCB_ALL,(e_status_calc_opt) opt)
 #define status_calc_npc(nd, opt) status_calc_bl_(&(nd)->bl,(scb_flag) SCB_ALL,(e_status_calc_opt) opt)
 
+bool status_calc_weight(struct map_session_data *sd, e_status_calc_weight_opt flag);
+bool status_calc_cart_weight(struct map_session_data *sd, e_status_calc_weight_opt flag);
 void status_calc_bl_(struct block_list *bl, enum scb_flag flag, enum e_status_calc_opt opt);
 int status_calc_mob_(struct mob_data* md, enum e_status_calc_opt opt);
 void status_calc_pet_(struct pet_data* pd, enum e_status_calc_opt opt);

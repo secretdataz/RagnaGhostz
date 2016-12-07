@@ -3137,7 +3137,7 @@ static unsigned int status_calc_maxhpsp_pc(struct map_session_data* sd, unsigned
  *   CALCWT_MAXBONUS - Skill/Status/Configuration max weight bonus
  * @return false - failed, true - success
  */
-bool status_calc_weight(struct map_session_data *sd, enum e_status_calc_weight_opt flag)
+bool status_calc_weight(map_session_data * sd, e_status_calc_weight_opt flag)
 {
 	int b_weight, b_max_weight, skill, i;
 	struct status_change *sc;
@@ -13263,7 +13263,7 @@ int status_change_timer_sub(struct block_list* bl, va_list ap)
 		// Lock char has released the hold on everyone...
 		if (tsc && tsc->data[type2] && tsc->data[type2]->val2 == src->id) {
 			tsc->data[type2]->val2 = 0;
-			status_change_end(bl, type2, INVALID_TIMER);
+			status_change_end(bl, static_cast<sc_type>(type2), INVALID_TIMER);
 		}
 		break;
 	}

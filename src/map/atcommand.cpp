@@ -9659,7 +9659,7 @@ ACMD_FUNC(costume) {
 			if( sd->sc.data[name2id[k]] ) {
 				sprintf(atcmd_output, msg_txt(sd, 727), names[k]); // '%s' Costume removed.
 				clif_displaymessage(sd->fd, atcmd_output);
-				status_change_end(&sd->bl, name2id[k], INVALID_TIMER);
+				status_change_end(&sd->bl, static_cast<sc_type>(name2id[k]), INVALID_TIMER);
 				return 0;
 			}
 		}
