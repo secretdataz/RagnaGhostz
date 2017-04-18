@@ -13033,11 +13033,14 @@ BUILDIN_FUNC(divorce)
 {
 	TBL_PC *sd;
 
-	if (!script_charid2sd(2,sd) || !pc_divorce(sd)) {
-		script_pushint(st,0);
+	if( !script_charid2sd(2,sd) )
 		return SCRIPT_CMD_FAILURE;
-	}
-	script_pushint(st,1);
+
+	if (!pc_divorce(sd))
+		script_pushint(st,0);
+	else
+		script_pushint(st,1);
+
 	return SCRIPT_CMD_SUCCESS;
 }
 
@@ -13048,14 +13051,13 @@ BUILDIN_FUNC(ispartneron)
 {
 	TBL_PC *sd;
 
-	if (!script_charid2sd(2,sd) || !pc_ismarried(sd) ||
-		map_charid2sd(sd->status.partner_id) == NULL)
-	{
-		script_pushint(st,0);
+	if( !script_charid2sd(2,sd) )
 		return SCRIPT_CMD_FAILURE;
-	}
 
-	script_pushint(st,1);
+	if ( !pc_ismarried(sd) || map_charid2sd(sd->status.partner_id) == NULL)
+		script_pushint(st,0);
+	else
+		script_pushint(st,1);
 	return SCRIPT_CMD_SUCCESS;
 }
 
