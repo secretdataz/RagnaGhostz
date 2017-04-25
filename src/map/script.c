@@ -14499,7 +14499,7 @@ BUILDIN_FUNC(movenpc)
 
 	if ((nd = npc_name2id(npc)) == NULL){
 		ShowError("script: movenpc: NPC with ID '%s' was not found!\n", npc );
-		return -1;
+		return SCRIPT_CMD_FAILURE;
 	}
 
 	if (script_hasdata(st,5))
