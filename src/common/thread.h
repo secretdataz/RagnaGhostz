@@ -5,6 +5,10 @@
 #ifndef _rA_THREAD_H_
 #define _rA_THREAD_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "cbasetypes.h"
 
 typedef struct rAthread *prAthread;
@@ -115,5 +119,8 @@ void rathread_yield();
 void rathread_init();
 void rathread_final();
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif

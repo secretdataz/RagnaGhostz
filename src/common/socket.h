@@ -4,6 +4,10 @@
 #ifndef	_SOCKET_H_
 #define _SOCKET_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "cbasetypes.h"
 
 #ifdef WIN32
@@ -180,6 +184,10 @@ void set_eof(int fd);
 void send_shortlist_add_fd(int fd);
 // Do pending network sends (and eof handling) from the shortlist.
 void send_shortlist_do_sends();
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* _SOCKET_H_ */

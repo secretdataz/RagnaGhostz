@@ -1,6 +1,10 @@
 #ifndef _rA_MEMPOOL_H_
 #define _rA_MEMPOOL_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "cbasetypes.h"
 
 typedef struct mempool *pMempool;
@@ -96,5 +100,8 @@ void mempool_node_put(pMempool pool, void *node);
  */
 mempool_stats mempool_get_stats(pMempool pool);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -651,6 +651,7 @@ CPPFLAGS
 LDFLAGS
 CFLAGS
 CC
+CXX
 target_alias
 host_alias
 build_alias
@@ -717,6 +718,7 @@ with_zlib
 host_alias
 target_alias
 CC
+CXX
 CFLAGS
 LDFLAGS
 LIBS
