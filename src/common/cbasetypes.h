@@ -230,7 +230,7 @@ typedef uintptr_t uintptr;
 #define strncasecmp			strnicmp
 #define strncmpi			strnicmp
 // MSVC++ does not define snprintf in C++ mode.
-#if defined(__BORLANDC__) || (_MSC_VER < 1900 || defined(__cplusplus))
+#if defined(__BORLANDC__) || (_MSC_VER < 1900)
 #define snprintf			_snprintf
 #endif
 #if defined(_MSC_VER) && _MSC_VER < 1400
