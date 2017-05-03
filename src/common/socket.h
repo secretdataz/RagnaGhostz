@@ -4,10 +4,6 @@
 #ifndef	_SOCKET_H_
 #define _SOCKET_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "cbasetypes.h"
 
 #ifdef WIN32
@@ -20,6 +16,10 @@ extern "C" {
 #endif
 
 #include <time.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define FIFOSIZE_SERVERLINK 256*1024
 
