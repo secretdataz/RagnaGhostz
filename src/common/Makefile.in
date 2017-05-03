@@ -23,7 +23,7 @@ else
 endif
 ALL_DEPENDS=server
 
-CXXFLAG =-std=c++11 -fpermissive
+CXXFLAG =-std=c++11
 
 @SET_MAKE@
 
