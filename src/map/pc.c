@@ -662,28 +662,37 @@ void pc_setnewpc(struct map_session_data *sd, uint32 account_id, uint32 char_id,
 /**
 * Get equip point for an equip
 * @param sd
-* @param n Equip index in inventory
+* @param id
 */
-int pc_equippoint(struct map_session_data *sd,int n){
+int pc_equippoint_sub(struct map_session_data *sd,struct item_data* id){
 	int ep = 0;
 
 	nullpo_ret(sd);
+	nullpo_ret(id);
 
-	if(!sd->inventory_data[n])
-		return 0;
-
-	if (!itemdb_isequip2(sd->inventory_data[n]))
+	if (!itemdb_isequip2(id))
 		return 0; //Not equippable by players.
 
-	ep = sd->inventory_data[n]->equip;
-	if(sd->inventory_data[n]->look == W_DAGGER	||
-		sd->inventory_data[n]->look == W_1HSWORD ||
-		sd->inventory_data[n]->look == W_1HAXE) {
+	ep = id->equip;
+	if(id->look == W_DAGGER	||
+		id->look == W_1HSWORD ||
+		id->look == W_1HAXE) {
 		if(ep == EQP_HAND_R && (pc_checkskill(sd,AS_LEFT) > 0 || (sd->class_&MAPID_UPPERMASK) == MAPID_ASSASSIN ||
 			(sd->class_&MAPID_UPPERMASK) == MAPID_KAGEROUOBORO))//Kagerou and Oboro can dual wield daggers. [Rytech]
 			return EQP_ARMS;
 	}
 	return ep;
+}
+
+/**
+* Get equip point for an equip
+* @param sd
+* @param n Equip index in inventory
+*/
+int pc_equippoint(struct map_session_data *sd,int n){
+	nullpo_ret(sd);
+
+	return pc_equippoint_sub(sd,sd->inventory_data[n]);
 }
 
 /**
@@ -1462,6 +1471,8 @@ void pc_reg_received(struct map_session_data *sd)
 
 		clif_changeoption( &sd->bl );
 	}
+
+	channel_autojoin(sd);
 }
 
 static int pc_calc_skillpoint(struct map_session_data* sd)
@@ -3892,8 +3903,8 @@ void pc_bonus4(struct map_session_data *sd,int type,int type2,int type3,int type
 	case SP_AUTOSPELL_ONSKILL: // bonus4 bAutoSpellOnSkill,sk,x,y,n;
 		if(sd->state.lr_flag != 2)
 		{
-			int target = skill_get_inf(type2); //Support or Self (non-auto-target) skills should pick self.
-			target = target&INF_SUPPORT_SKILL || (target&INF_SELF_SKILL && !(skill_get_inf2(type2)&INF2_NO_TARGET_SELF));
+			int target = skill_get_inf(type3); //Support or Self (non-auto-target) skills should pick self.
+			target = target&INF_SUPPORT_SKILL || (target&INF_SELF_SKILL && !(skill_get_inf2(type3)&INF2_NO_TARGET_SELF));
 
 			pc_bonus_autospell_onskill(sd->autospell3, ARRAYLENGTH(sd->autospell3), type2, target?-type3:type3, type4, val, current_equip_card_id);
 		}
@@ -4720,8 +4731,6 @@ bool pc_isUseitem(struct map_session_data *sd,int n)
 	//Not consumable item
 	if( item->type != IT_HEALING && item->type != IT_USABLE && item->type != IT_CASH )
 		return false;
-	if( !item->script ) //if it has no script, you can't really consume it!
-		return false;
 	if (pc_has_permission(sd,PC_PERM_ITEM_UNCONDITIONAL))
 		return true;
 	if(map[sd->bl.m].flag.noitemconsumption) //consumable but mapflag prevent it
@@ -4757,6 +4766,29 @@ bool pc_isUseitem(struct map_session_data *sd,int n)
 				clif_skill_teleportmessage(sd,0);
 				return false;
 			}
+			if (nameid == ITEMID_GIANT_FLY_WING) {
+				struct party_data *pd = party_search(sd->status.party_id);
+
+				if (pd) {
+					int i;
+
+					ARR_FIND(0, MAX_PARTY, i, pd->data[i].sd == sd && pd->party.member[i].leader);
+					if (i == MAX_PARTY) { // User is not party leader
+						clif_msg(sd, ITEM_PARTY_MEMBER_NOT_SUMMONED);
+						break;
+					}
+
+					ARR_FIND(0, MAX_PARTY, i, pd->data[i].sd && pd->data[i].sd != sd && pd->data[i].sd->bl.m == sd->bl.m && !pc_isdead(pd->data[i].sd));
+					if (i == MAX_PARTY) { // No party members found on same map
+						clif_msg(sd, ITEM_PARTY_NO_MEMBER_IN_MAP);
+						break;
+					}
+				} else {
+					clif_msg(sd, ITEM_PARTY_MEMBER_NOT_SUMMONED);
+					break;
+				}
+			}
+		// Fall through
 		case ITEMID_WING_OF_BUTTERFLY:
 		case ITEMID_N_BUTTERFLY_WING:
 		case ITEMID_DUN_TELE_SCROLL1:
@@ -5252,7 +5284,7 @@ int pc_steal_item(struct map_session_data *sd,struct block_list *bl, uint16 skil
 	// Try dropping one item, in the order from first to last possible slot.
 	// Droprate is affected by the skill success rate.
 	for( i = 0; i < MAX_STEAL_DROP; i++ )
-		if( md->db->dropitem[i].nameid > 0 && itemdb_exists(md->db->dropitem[i].nameid) && rnd() % 10000 < md->db->dropitem[i].p * rate/100. )
+		if( md->db->dropitem[i].nameid > 0 && !md->db->dropitem[i].steal_protected && itemdb_exists(md->db->dropitem[i].nameid) && rnd() % 10000 < md->db->dropitem[i].p * rate/100. )
 			break;
 	if( i == MAX_STEAL_DROP )
 		return 0;
@@ -5262,6 +5294,7 @@ int pc_steal_item(struct map_session_data *sd,struct block_list *bl, uint16 skil
 	tmp_item.nameid = itemid;
 	tmp_item.amount = 1;
 	tmp_item.identify = itemdb_isidentified(itemid);
+	mob_setdropitem_option(&tmp_item, &md->db->dropitem[i]);
 	flag = pc_additem(sd,&tmp_item,1,LOG_TYPE_PICKDROP_PLAYER);
 
 	//TODO: Should we disable stealing when the item you stole couldn't be added to your inventory? Perhaps players will figure out a way to exploit this behaviour otherwise?
@@ -7600,10 +7633,8 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 			pet_unlocktarget(sd->pd);
 	}
 
-	if (sd->status.hom_id > 0) {
-		if(battle_config.homunculus_auto_vapor && sd->hd)
-			hom_vaporize(sd, HOM_ST_ACTIVE);
-	}
+	if (hom_is_active(sd->hd) && battle_config.homunculus_auto_vapor && get_percentage(sd->hd->battle_status.hp, sd->hd->battle_status.max_hp) >= battle_config.homunculus_auto_vapor)
+		hom_vaporize(sd, HOM_ST_ACTIVE);
 
 	if( sd->md )
 		mercenary_delete(sd->md, 3); // Your mercenary soldier has ran away.
@@ -8580,6 +8611,18 @@ bool pc_jobchange(struct map_session_data *sd,int job, char upper)
 	pc_checkallowskill(sd);
 	pc_equiplookall(sd);
 	pc_show_questinfo(sd);
+	if( sd->status.party_id ){
+		struct party_data* p;
+		
+		if( ( p = party_search( sd->status.party_id ) ) != NULL ){
+			ARR_FIND(0, MAX_PARTY, i, p->party.member[i].char_id == sd->status.char_id);
+
+			if( i < MAX_PARTY ){
+				p->party.member[i].class_ = sd->status.class_;
+				clif_party_job_and_level(sd);
+			}
+		}
+	}
 
 	chrif_save(sd, CSAVE_NORMAL);
 	//if you were previously famous, not anymore.
