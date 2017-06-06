@@ -3995,7 +3995,6 @@ int run_func(struct script_state *st)
 		}
 #endif
 
-		if (str_data[func].func(st) == SCRIPT_CMD_FAILURE) //Report error
 		if (str_data[func].func(st) == SCRIPT_CMD_FAILURE) { //Report error
 			ShowError("script:run_func: execution of command '%s' failed!\n", get_str(func));
 			script_reportsrc(st);
