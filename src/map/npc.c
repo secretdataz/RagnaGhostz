@@ -148,7 +148,7 @@ int npc_isnear_sub(struct block_list* bl, va_list args) {
 bool npc_isnear(struct block_list * bl) {
 
     if( battle_config.min_npc_vendchat_distance > 0 &&
-            map_foreachinrange(npc_isnear_sub,bl, battle_config.min_npc_vendchat_distance, BL_NPC, 0) )
+            map_foreachinallrange(npc_isnear_sub,bl, battle_config.min_npc_vendchat_distance, BL_NPC, 0) )
         return true;
 
     return false;
@@ -242,7 +242,7 @@ int npc_enable(const char* name, int flag)
 		clif_changeoption(&nd->bl);
 
 	if( flag&3 && (nd->u.scr.xs >= 0 || nd->u.scr.ys >= 0) ) 	//check if player standing on a OnTouchArea
-		map_foreachinarea( npc_enable_sub, nd->bl.m, nd->bl.x-nd->u.scr.xs, nd->bl.y-nd->u.scr.ys, nd->bl.x+nd->u.scr.xs, nd->bl.y+nd->u.scr.ys, BL_PC, nd );
+		map_foreachinallarea( npc_enable_sub, nd->bl.m, nd->bl.x-nd->u.scr.xs, nd->bl.y-nd->u.scr.ys, nd->bl.x+nd->u.scr.xs, nd->bl.y+nd->u.scr.ys, BL_PC, nd );
 
 	return 0;
 }
@@ -2079,6 +2079,7 @@ void npc_unload_duplicates(struct npc_data* nd)
 int npc_unload(struct npc_data* nd, bool single) {
 	nullpo_ret(nd);
 
+	status_change_clear(&nd->bl, 1);
 	npc_remove_map(nd);
 	map_deliddb(&nd->bl);
 	if( single )
@@ -2160,6 +2161,15 @@ int npc_unload(struct npc_data* nd, bool single) {
 		}
 		if( nd->u.scr.guild_id )
 			guild_flag_remove(nd);
+		if( nd->sc_display_count ){
+			unsigned char i;
+
+			for( i = 0; i < nd->sc_display_count; i++ )
+				ers_free(npc_sc_display_ers, nd->sc_display[i]);
+			nd->sc_display_count = 0;
+			aFree(nd->sc_display);
+			nd->sc_display = NULL;
+		}
 	}
 
 	script_stop_sleeptimers(nd->bl.id);
@@ -2391,6 +2401,28 @@ bool npc_viewisid(const char * viewid)
 }
 
 /**
+ * Create a bare NPC object.
+ * @param m: Map ID
+ * @param x: X location
+ * @param y: Y location
+ * @return npc_data
+ */
+struct npc_data *npc_create_npc(int16 m, int16 x, int16 y){
+	struct npc_data *nd;
+
+	CREATE(nd, struct npc_data, 1);
+	nd->bl.id = npc_get_new_npc_id();
+	nd->bl.prev = nd->bl.next = NULL;
+	nd->bl.m = m;
+	nd->bl.x = x;
+	nd->bl.y = y;
+	nd->sc_display = NULL;
+	nd->sc_display_count = 0;
+
+	return nd;
+}
+
+/**
  * Add then display an npc warp on map
  * @param name : warp unique name
  * @param from_mapid : mapid to warp from
@@ -2408,13 +2440,8 @@ struct npc_data* npc_add_warp(char* name, short from_mapid, short from_x, short 
 	int i, flag = 0;
 	struct npc_data *nd;
 
-	CREATE(nd, struct npc_data, 1);
-	nd->bl.id = npc_get_new_npc_id();
+	nd = npc_create_npc(from_mapid, from_x, from_y);
 	map_addnpc(from_mapid, nd);
-	nd->bl.prev = nd->bl.next = NULL;
-	nd->bl.m = from_mapid;
-	nd->bl.x = from_x;
-	nd->bl.y = from_y;
 
 	safestrncpy(nd->exname, name, ARRAYLENGTH(nd->exname));
 	if (npc_name2id(nd->exname) != NULL)
@@ -2495,14 +2522,8 @@ static const char* npc_parse_warp(char* w1, char* w2, char* w3, char* w4, const 
 		ShowWarning("npc_parse_warp: coordinates %d/%d are out of bounds in map %s(%dx%d), in file '%s', line '%d'\n", x, y, map[m].name, map[m].xs, map[m].ys,filepath,strline(buffer,start-buffer));
 	}
 
-	CREATE(nd, struct npc_data, 1);
-
-	nd->bl.id = npc_get_new_npc_id();
+	nd = npc_create_npc(m, x, y);
 	map_addnpc(m, nd);
-	nd->bl.prev = nd->bl.next = NULL;
-	nd->bl.m = m;
-	nd->bl.x = x;
-	nd->bl.y = y;
 	npc_parsename(nd, w3, start, buffer, filepath);
 
 	if (!battle_config.warp_point_debug)
@@ -2645,8 +2666,7 @@ static const char* npc_parse_shop(char* w1, char* w2, char* w3, char* w4, const 
 			break;
 	}
 	
-	CREATE(nd, struct npc_data, 1);
-
+	nd = npc_create_npc(m, x, y);
 	nd->u.shop.count = 0;
 	while ( p ) {
 		unsigned short nameid2, qty = 0;
@@ -2740,11 +2760,6 @@ static const char* npc_parse_shop(char* w1, char* w2, char* w3, char* w4, const 
 		nd->u.shop.discount = is_discount;
 	}
 
-	nd->bl.prev = nd->bl.next = NULL;
-	nd->bl.m = m;
-	nd->bl.x = x;
-	nd->bl.y = y;
-	nd->bl.id = npc_get_new_npc_id();
 	npc_parsename(nd, w3, start, buffer, filepath);
 	nd->class_ = m == -1 ? -1 : npc_parseview(w4, start, buffer, filepath);
 	nd->speed = 200;
@@ -2967,7 +2982,7 @@ static const char* npc_parse_script(char* w1, char* w2, char* w3, char* w4, cons
 		db_clear(label_db); // not needed anymore, so clear the db
 	}
 
-	CREATE(nd, struct npc_data, 1);
+	nd = npc_create_npc(m, x, y);
 
 	if( sscanf(w4, "%*[^,],%6hd,%6hd", &xs, &ys) == 2 )
 	{// OnTouch area defined
@@ -2980,12 +2995,7 @@ static const char* npc_parse_script(char* w1, char* w2, char* w3, char* w4, cons
 		nd->u.scr.ys = -1;
 	}
 
-	nd->bl.prev = nd->bl.next = NULL;
-	nd->bl.m = m;
-	nd->bl.x = x;
-	nd->bl.y = y;
 	npc_parsename(nd, w3, start, buffer, filepath);
-	nd->bl.id = npc_get_new_npc_id();
 	nd->class_ = m == -1 ? -1 : npc_parseview(w4, start, buffer, filepath);
 	nd->speed = 200;
 	nd->u.scr.script = script;
@@ -3112,14 +3122,8 @@ const char* npc_parse_duplicate(char* w1, char* w2, char* w3, char* w4, const ch
 		return end;// next line, try to continue
 	}
 
-	CREATE(nd, struct npc_data, 1);
-
-	nd->bl.prev = nd->bl.next = NULL;
-	nd->bl.m = m;
-	nd->bl.x = x;
-	nd->bl.y = y;
+	nd = npc_create_npc(m, x, y);
 	npc_parsename(nd, w3, start, buffer, filepath);
-	nd->bl.id = npc_get_new_npc_id();
 	nd->class_ = m == -1 ? -1 : npc_parseview(w4, start, buffer, filepath);
 	nd->speed = 200;
 	nd->src_id = src_id;
@@ -3233,13 +3237,8 @@ int npc_duplicate4instance(struct npc_data *snd, int16 m) {
 			return 1;
 		}
 
-		CREATE(wnd, struct npc_data, 1);
-		wnd->bl.id = npc_get_new_npc_id();
+		wnd = npc_create_npc(m, snd->bl.x, snd->bl.y);
 		map_addnpc(m, wnd);
-		wnd->bl.prev = wnd->bl.next = NULL;
-		wnd->bl.m = m;
-		wnd->bl.x = snd->bl.x;
-		wnd->bl.y = snd->bl.y;
 		safestrncpy(wnd->name, "", ARRAYLENGTH(wnd->name));
 		safestrncpy(wnd->exname, newname, ARRAYLENGTH(wnd->exname));
 		wnd->class_ = WARP_CLASS;
@@ -3547,7 +3546,7 @@ void npc_unsetcells(struct npc_data* nd)
 			map_setcell(m, j, i, CELL_NPC, false);
 
 	//Re-deploy NPC cells for other nearby npcs.
-	map_foreachinarea( npc_unsetcells_sub, m, x0, y0, x1, y1, BL_NPC, nd->bl.id );
+	map_foreachinallarea( npc_unsetcells_sub, m, x0, y0, x1, y1, BL_NPC, nd->bl.id );
 }
 
 void npc_movenpc(struct npc_data* nd, int16 x, int16 y)
@@ -3558,9 +3557,9 @@ void npc_movenpc(struct npc_data* nd, int16 x, int16 y)
 	x = cap_value(x, 0, map[m].xs-1);
 	y = cap_value(y, 0, map[m].ys-1);
 
-	map_foreachinrange(clif_outsight, &nd->bl, AREA_SIZE, BL_PC, &nd->bl);
+	map_foreachinallrange(clif_outsight, &nd->bl, AREA_SIZE, BL_PC, &nd->bl);
 	map_moveblock(&nd->bl, x, y, gettick());
-	map_foreachinrange(clif_insight, &nd->bl, AREA_SIZE, BL_PC, &nd->bl);
+	map_foreachinallrange(clif_insight, &nd->bl, AREA_SIZE, BL_PC, &nd->bl);
 }
 
 /// Changes the display name of the npc.
@@ -3689,6 +3688,7 @@ static const char* npc_parse_function(char* w1, char* w2, char* w3, char* w4, co
 		struct script_code *oldscript = (struct script_code*)db_data2ptr(&old_data);
 
 		ShowInfo("npc_parse_function: Overwriting user function [%s] (%s:%d)\n", w3, filepath, strline(buffer,start-buffer));
+		script_stop_scriptinstances(oldscript);
 		script_free_vars(oldscript->local.vars);
 		aFree(oldscript->script_buf);
 		aFree(oldscript);
@@ -4656,6 +4656,7 @@ void do_final_npc(void) {
 	NPCMarketDB->destroy(NPCMarketDB, npc_market_free);
 #endif
 	ers_destroy(timer_event_ers);
+	ers_destroy(npc_sc_display_ers);
 	npc_clearsrcfile();
 }
 
@@ -4716,7 +4717,8 @@ void do_init_npc(void){
 	npc_market_fromsql();
 #endif
 
-	timer_event_ers = ers_new(sizeof(struct timer_event_data),"clif.c::timer_event_ers",ERS_OPT_NONE);
+	timer_event_ers = ers_new(sizeof(struct timer_event_data),"npc.c::timer_event_ers",ERS_OPT_NONE);
+	npc_sc_display_ers = ers_new(sizeof(struct sc_display_entry), "npc.c:npc_sc_display_ers", ERS_OPT_NONE);
 
 	// process all npc files
 	ShowStatus("Loading NPCs...\r");

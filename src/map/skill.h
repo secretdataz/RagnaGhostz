@@ -4,6 +4,10 @@
 #ifndef _SKILL_H_
 #define _SKILL_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "../common/mmo.h" // MAX_SKILL, struct square
 #include "../common/db.h"
 #include "map.h" // struct block_list
@@ -14,7 +18,7 @@ struct skill_unit;
 struct skill_unit_group;
 struct status_change_entry;
 
-#define MAX_SKILL_PRODUCE_DB	270 /// Max Produce DB
+#define MAX_SKILL_PRODUCE_DB	280 /// Max Produce DB
 #define MAX_PRODUCE_RESOURCE	12 /// Max Produce requirements
 #define MAX_SKILL_ARROW_DB		150 /// Max Arrow Creation DB
 #define MAX_ARROW_RESULT		5 /// Max Arrow results/created
@@ -2166,5 +2170,9 @@ enum e_skill_damage_caster {
 #define SKILL_CHK_MERC(skill_id)  ( (skill_id) >= MC_SKILLBASE && (skill_id) < MC_SKILLBASE+MAX_MERCSKILL )
 #define SKILL_CHK_ELEM(skill_id)  ( (skill_id) >= EL_SKILLBASE && (skill_id) < EL_SKILLBASE+MAX_ELEMENTALSKILL )
 #define SKILL_CHK_GUILD(skill_id) ( (skill_id) >= GD_SKILLBASE && (skill_id) < GD_SKILLBASE+MAX_GUILDSKILL )
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _SKILL_H_ */
