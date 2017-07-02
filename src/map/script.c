@@ -22826,21 +22826,18 @@ BUILDIN_FUNC(channel_kick) {
 	if (data_isstring(data)) {
 		if (!(tsd = map_nick2sd(conv_str(st,data),false))) {
 			ShowError("buildin_channel_kick: Player with nick '%s' is not online\n", conv_str(st,data));
-			script_reportsrc(st);
 			return SCRIPT_CMD_FAILURE;
 		}
 	}
 	else {
 		if (!(tsd = map_charid2sd(conv_num(st,data)))) {
 			ShowError("buildin_channel_kick: Player with char_id '%d' is not online\n", conv_num(st,data));
-			script_reportsrc(st);
 			return SCRIPT_CMD_FAILURE;
 		}
 	}
 
 	if (!(ch = channel_name2channel((char *)chname, tsd, 0))) {
 		ShowError("buildin_channel_kick: Channel name '%s' is invalid.\n", chname);
-		script_reportsrc(st);
 		return SCRIPT_CMD_FAILURE;
 	}
 
