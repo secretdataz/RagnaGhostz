@@ -21675,7 +21675,7 @@ BUILDIN_FUNC(clan_join){
 	struct map_session_data *sd;
 	int clan_id = script_getnum(st,2);
 
-	if( !script_charid2sd( 3, sd ) ){
+	if( !script_charid2sd( 3, sd ) )
 		return SCRIPT_CMD_FAILURE;
 
 	if( clan_member_join( sd, clan_id, sd->status.account_id, sd->status.char_id ) )
