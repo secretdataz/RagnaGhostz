@@ -15,7 +15,6 @@ EmitterState::EmitterState()
   m_charset.set(EmitNonAscii);
   m_strFmt.set(Auto);
   m_boolFmt.set(TrueFalseBool);
-  m_nullFmt.set(NullAsTilde);
   m_boolLengthFmt.set(LongBool);
   m_boolCaseFmt.set(LowerCase);
   m_intFmt.set(Dec);
@@ -40,7 +39,6 @@ void EmitterState::SetLocalValue(EMITTER_MANIP value) {
   SetBoolFormat(value, FmtScope::Local);
   SetBoolCaseFormat(value, FmtScope::Local);
   SetBoolLengthFormat(value, FmtScope::Local);
-  SetNullFormat(value, FmtScope::Local);
   SetIntFormat(value, FmtScope::Local);
   SetFlowType(GroupType::Seq, value, FmtScope::Local);
   SetFlowType(GroupType::Map, value, FmtScope::Local);
@@ -223,7 +221,6 @@ bool EmitterState::SetOutputCharset(EMITTER_MANIP value,
   switch (value) {
     case EmitNonAscii:
     case EscapeNonAscii:
-    case EscapeAsJson:
       _Set(m_charset, value, scope);
       return true;
     default:
@@ -278,17 +275,6 @@ bool EmitterState::SetBoolCaseFormat(EMITTER_MANIP value,
       return true;
     default:
       return false;
-  }
-}
-
-bool EmitterState::SetNullFormat(EMITTER_MANIP value, FmtScope::value scope) {
-  switch (value) {
-  case NullAsTilde:
-  case NullAsNull:
-    _Set(m_nullFmt, value, scope);
-    return true;
-  default:
-    return false;
   }
 }
 

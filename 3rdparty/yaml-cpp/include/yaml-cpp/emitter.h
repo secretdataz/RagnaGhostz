@@ -46,7 +46,6 @@ class YAML_CPP_API Emitter : private noncopyable {
   bool SetOutputCharset(EMITTER_MANIP value);
   bool SetStringFormat(EMITTER_MANIP value);
   bool SetBoolFormat(EMITTER_MANIP value);
-  bool SetNullFormat(EMITTER_MANIP value);
   bool SetIntBase(EMITTER_MANIP value);
   bool SetSeqFormat(EMITTER_MANIP value);
   bool SetMapFormat(EMITTER_MANIP value);

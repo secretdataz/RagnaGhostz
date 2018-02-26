@@ -49,10 +49,6 @@ bool Emitter::SetBoolFormat(EMITTER_MANIP value) {
   return ok;
 }
 
-bool Emitter::SetNullFormat(EMITTER_MANIP value) {
-  return m_pState->SetNullFormat(value, FmtScope::Global);
-}
-
 bool Emitter::SetIntBase(EMITTER_MANIP value) {
   return m_pState->SetIntFormat(value, FmtScope::Global);
 }
@@ -682,19 +678,10 @@ Emitter& Emitter::Write(const std::string& str) {
   if (!good())
     return *this;
 
-  StringEscaping::value stringEscaping = StringEscaping::None;
-  switch (m_pState->GetOutputCharset()) {
-    case EscapeNonAscii:
-      stringEscaping = StringEscaping::NonAscii;
-      break;
-    case EscapeAsJson:
-      stringEscaping = StringEscaping::JSON;
-      break;
-  }
-
+  const bool escapeNonAscii = m_pState->GetOutputCharset() == EscapeNonAscii;
   const StringFormat::value strFormat =
       Utils::ComputeStringFormat(str, m_pState->GetStringFormat(),
-                                 m_pState->CurGroupFlowType(), stringEscaping == StringEscaping::NonAscii);
+                                 m_pState->CurGroupFlowType(), escapeNonAscii);
 
   if (strFormat == StringFormat::Literal)
     m_pState->SetMapKeyFormat(YAML::LongKey, FmtScope::Local);
@@ -709,7 +696,7 @@ Emitter& Emitter::Write(const std::string& str) {
       Utils::WriteSingleQuotedString(m_stream, str);
       break;
     case StringFormat::DoubleQuoted:
-      Utils::WriteDoubleQuotedString(m_stream, str, stringEscaping);
+      Utils::WriteDoubleQuotedString(m_stream, str, escapeNonAscii);
       break;
     case StringFormat::Literal:
       Utils::WriteLiteralString(m_stream, str,
@@ -800,10 +787,8 @@ Emitter& Emitter::Write(char ch) {
   if (!good())
     return *this;
 
-  
-
   PrepareNode(EmitterNodeType::Scalar);
-  Utils::WriteChar(m_stream, ch, m_pState->GetOutputCharset() == EscapeAsJson);
+  Utils::WriteChar(m_stream, ch);
   StartedScalar();
 
   return *this;
@@ -904,10 +889,7 @@ Emitter& Emitter::Write(const _Null& /*null*/) {
 
   PrepareNode(EmitterNodeType::Scalar);
 
-  if (m_pState->GetNullFormat() == NullAsNull)
-    m_stream << "null";
-  else
-    m_stream << "~";
+  m_stream << "~";
 
   StartedScalar();
 
