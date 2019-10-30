@@ -564,6 +564,16 @@ enum e_require_state {
 
 /// List of Skills
 enum e_skill {
+	NV_RECOVERYHP = 1020,
+	NV_RECOVERYSP,
+	NV_AUTOLOOT,
+	NV_STORAGE,
+	NV_RETURN,
+	NV_REPAIRALL,
+	NV_PROVOCATION,
+	NV_FASTUSE,
+	NV_BLOCKALL,
+
 	NV_BASIC = 1,
 
 	SM_SWORD,

@@ -8374,6 +8374,10 @@ int pc_readparam(struct map_session_data* sd,int type)
 	nullpo_ret(sd);
 
 	switch(type) {
+		case SP_KF_MOBGID: val = sd->kill_info.last_mob.gid; break;
+		case SP_KF_MOBID: val = sd->kill_info.last_mob.mobid; break;
+		case SP_KF_MOBLVL: val = sd->kill_info.last_mob.level; break;
+
 		case SP_SKILLPOINT:      val = sd->status.skill_point; break;
 		case SP_STATUSPOINT:     val = sd->status.status_point; break;
 		case SP_ZENY:            val = sd->status.zeny; break;
@@ -8544,6 +8548,10 @@ bool pc_setparam(struct map_session_data *sd,int type,int val)
 	nullpo_retr(false,sd);
 
 	switch(type){
+	case SP_KF_MOBGID: sd->kill_info.last_mob.gid = val; return true;
+	case SP_KF_MOBID: sd->kill_info.last_mob.mobid = val; return true;
+	case SP_KF_MOBLVL: sd->kill_info.last_mob.level = val; return true;
+
 	case SP_BASELEVEL:
 		if ((unsigned int)val > pc_maxbaselv(sd)) //Capping to max
 			val = pc_maxbaselv(sd);
@@ -11487,6 +11495,9 @@ static bool pc_readdb_skilltree(char* fields[], int columns, int current)
 	class_  = atoi(fields[0]);
 	skill_id = (uint16)atoi(fields[1]);
 	skill_lv = (uint16)atoi(fields[2]);
+
+	if (skill_id == NV_BASIC)
+		return true;
 
 	if (columns == 5 + MAX_PC_SKILL_REQUIRE * 2) { // Base/Job level requirement extra columns
 		baselv = (uint32)atoi(fields[3]);

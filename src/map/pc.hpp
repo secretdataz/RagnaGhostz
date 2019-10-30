@@ -53,7 +53,7 @@ enum sc_type : int16;
 
 //Update this max as necessary. 55 is the value needed for Super Baby currently
 //Raised to 85 since Expanded Super Baby needs it.
-#define MAX_SKILL_TREE 85
+#define MAX_SKILL_TREE 150
 //Total number of classes (for data storage)
 #define CLASS_COUNT (JOB_MAX - JOB_NOVICE_HIGH + JOB_MAX_BASIC)
 
@@ -754,6 +754,16 @@ struct map_session_data {
 	uint32* hatEffectIDs;
 	uint8 hatEffectCount;
 #endif
+
+	struct {
+		struct
+		{
+			int gid;
+			int mobid;
+			int level;
+		} last_mob;
+
+	} kill_info;
 };
 
 extern struct eri *pc_sc_display_ers; /// Player's SC display table

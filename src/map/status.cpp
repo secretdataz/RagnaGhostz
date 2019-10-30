@@ -14429,9 +14429,6 @@ static int status_natural_heal(struct block_list* bl, va_list args)
  * @return 0
  */
 static TIMER_FUNC(status_natural_heal_timer){
-	natural_heal_diff_tick = DIFF_TICK(tick,natural_heal_prev_tick);
-	map_foreachregen(status_natural_heal);
-	natural_heal_prev_tick = tick;
 	return 0;
 }
 
@@ -14798,13 +14795,13 @@ int status_readdb(void)
 int do_init_status(void)
 {
 	add_timer_func_list(status_change_timer,"status_change_timer");
-	add_timer_func_list(status_natural_heal_timer,"status_natural_heal_timer");
+	//add_timer_func_list(status_natural_heal_timer,"status_natural_heal_timer");
 	initChangeTables();
 	initDummyData();
 	status_readdb();
 	natural_heal_prev_tick = gettick();
 	sc_data_ers = ers_new(sizeof(struct status_change_entry),"status.cpp::sc_data_ers",ERS_OPT_NONE);
-	add_timer_interval(natural_heal_prev_tick + NATURAL_HEAL_INTERVAL, status_natural_heal_timer, 0, 0, NATURAL_HEAL_INTERVAL);
+	//add_timer_interval(natural_heal_prev_tick + NATURAL_HEAL_INTERVAL, status_natural_heal_timer, 0, 0, NATURAL_HEAL_INTERVAL);
 	return 0;
 }
 void do_final_status(void)

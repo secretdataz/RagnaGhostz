@@ -17478,28 +17478,6 @@ void clif_font(struct map_session_data *sd)
 /// S 0x2cb <Instance name>.61B <Standby Position>.W
 void clif_instance_create(unsigned short instance_id, int num)
 {
-#if PACKETVER >= 20071128
-	struct instance_db *db = NULL;
-	struct map_session_data *sd = NULL;
-	enum send_target target = PARTY;
-	unsigned char buf[65];
-
-	instance_getsd(instance_id, &sd, &target);
-
-	if (!sd)
-		return;
-
-	db = instance_searchtype_db(instance_data[instance_id].type);
-
-	if (!db)
-		return;
-
-	WBUFW(buf,0) = 0x2cb;
-	safestrncpy(WBUFCP(buf,2), StringBuf_Value(db->name), INSTANCE_NAME_LENGTH);
-	WBUFW(buf,63) = num;
-	clif_send(buf,packet_len(0x2cb),&sd->bl,target);
-#endif
-
 	return;
 }
 
@@ -17507,21 +17485,6 @@ void clif_instance_create(unsigned short instance_id, int num)
 /// S 0x2cc <Standby Position>.W
 void clif_instance_changewait(unsigned short instance_id, int num)
 {
-#if PACKETVER >= 20071128
-	struct map_session_data *sd = NULL;
-	enum send_target target = PARTY;
-	unsigned char buf[4];
-
-	instance_getsd(instance_id, &sd, &target);
-
-	if (!sd)
-		return;
-
-	WBUFW(buf,0) = 0x2cc;
-	WBUFW(buf,2) = num;
-	clif_send(buf,packet_len(0x2cc),&sd->bl,target);
-#endif
-
 	return;
 }
 
@@ -17529,29 +17492,6 @@ void clif_instance_changewait(unsigned short instance_id, int num)
 /// S 0x2cd <Instance Name>.61B <Instance Remaining Time>.L <Instance Noplayers close time>.L
 void clif_instance_status(unsigned short instance_id, unsigned int limit1, unsigned int limit2)
 {
-#if PACKETVER >= 20071128
-	struct instance_db *db = NULL;
-	struct map_session_data *sd = NULL;
-	enum send_target target = PARTY;
-	unsigned char buf[71];
-
-	instance_getsd(instance_id, &sd, &target);
-
-	if (!sd)
-		return;
-
-	db = instance_searchtype_db(instance_data[instance_id].type);
-
-	if (!db)
-		return;
-
-	WBUFW(buf,0) = 0x2cd;
-	safestrncpy(WBUFCP(buf,2), StringBuf_Value(db->name), INSTANCE_NAME_LENGTH);
-	WBUFL(buf,63) = limit1;
-	WBUFL(buf,67) = limit2;
-	clif_send(buf,packet_len(0x2cd),&sd->bl,target);
-#endif
-
 	return;
 }
 
@@ -17564,22 +17504,6 @@ void clif_instance_status(unsigned short instance_id, unsigned int limit1, unsig
 /// 4 = Create failure (removes the instance window)
 void clif_instance_changestatus(unsigned int instance_id, int type, unsigned int limit)
 {
-#if PACKETVER >= 20071128
-	struct map_session_data *sd = NULL;
-	enum send_target target = PARTY;
-	unsigned char buf[10];
-
-	instance_getsd(instance_id, &sd, &target);
-
-	if (!sd)
-		return;
-
-	WBUFW(buf,0) = 0x2ce;
-	WBUFL(buf,2) = type;
-	WBUFL(buf,6) = limit;
-	clif_send(buf,packet_len(0x2ce),&sd->bl,target);
-#endif
-
 	return;
 }
 

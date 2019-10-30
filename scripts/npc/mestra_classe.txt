@@ -1,0 +1,73 @@
+
+-	Script	Condecoração de Classes	10184,{
+
+	.@n$ = "[^4682B4Condecoração de Classes^000000]";
+	
+	cutin "mestra_classe",2;
+	
+	mes .@n$;
+	
+	if( JobLevel < 10 && Class == 0 )
+	{
+		mes "Volte quando estiver com nível de classe igual a 10.";
+		mes "Certifique-se de gastar também seus pontos de habilidades.";
+		
+		if( select( Sex == 0 ? "Obrigada" : "Obrigado", "Onde consigo evoluir de nível?" ) == 1 )
+		{
+			close2;
+			cutin "mestra_classe",255;
+			end;
+		}
+		
+		next;
+		mes .@n$;
+		mes "Isso é fácil, basta apenas falar com o ^B03060Guardião da Torre da Jornada^000000 e entrar na torre referente ao seu nível atual.";
+		next;
+		mes .@n$;
+		mes "Irei lhe mostrar no mapa a localização dele. Boa sorte!";
+		close2;
+		cutin "mestra_classe",255;
+		viewpoint 1,155,233,1,0xFF0000;
+		end;
+	}
+	
+	if( SkillPoint > 0 )
+	{
+		mes "Não sei o que deseja comigo, mas antes por favor, livre-se dos seus pontos de habilidade.";
+		close2;
+		cutin "mestra_classe",255;
+		end;
+	}
+
+	if( Sex == 0 )
+		setarray .@jobs$[1],"Espadachim","Mago","Arqueiro","Mercador","Gatuno","Noviço";
+	else
+		setarray .@jobs$[1],"Espadachim","Maga","Arqueira","Mercadora","Gatuna","Noviça";
+	
+	setarray .@jobs_id$[1],1,2,3,5,6,4;
+	
+	mes "Você mostrou que tem talento lá na ^B03060Torre da Jornada^000000. Mas agora precisa me provar que você possui talento para a classe que deseja. E qual seria essa classe?";
+	
+	.@menu$ = select( implode( .@jobs$, ":" ) );
+
+	.@option = select( .@menu$ );
+	
+	next;
+	mes .@n$;
+	mes "Certo, então deseja fazer o teste para se tornar " + !Sex ? "uma" : "um" + " " + .@jobs$[.@option] + "?";
+	
+	if( select( "Irei pensar mais sobre.", "Sim, por favor." ) == 1 )
+	{
+		close2;
+		cutin "mestra_classe",255;
+		end;
+	}
+	
+	next;
+	mes .@n$;
+	mes "Muito bem, irei lhe enviar até o instrutor da classe " + .@jobs$[.@option] + ".";
+	close;
+
+}
+
+prontera,151,192,5	duplicate(Condecoração de Classes)	Condecoração de Classes#PRT	10184

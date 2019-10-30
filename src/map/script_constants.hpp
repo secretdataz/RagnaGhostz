@@ -489,6 +489,10 @@
 	export_constant(CELL_CHKICEWALL);
 
 	/* parameters */
+	export_parameter("LastMobLevel", SP_KF_MOBLVL);
+	export_parameter("LastMobGID", SP_KF_MOBGID);
+	export_parameter("LastMobID", SP_KF_MOBID);
+
 	export_parameter("StatusPoint",SP_STATUSPOINT);
 	export_parameter("BaseLevel",SP_BASELEVEL);
 	export_parameter("SkillPoint",SP_SKILLPOINT);
