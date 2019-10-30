@@ -334,7 +334,75 @@ function	script	F_Torre_Monstros	{
 								  "Zenorc|1177|3",
 								  "Esqueleto Arqueiro|1016|5",
 								  "Pedo Bear|1417|5";
-								  break;
+				break;
+		}
+	}
+	else if( .@torre_id == 3 ) // Ouro
+	{
+		switch( .@level )
+		{
+			case 1:
+				setarray .@ms$[0],"Orc Guerreiro|1023|10",
+				                  "Pé Grande|1820|10",
+								  "Orc Esqueleto|1462|10",
+								  "Zenorc|1177|3",
+								  "Esqueleto Arqueiro|1016|5",
+								  "Pedo Bear|1417|5";
+				break;
+								  
+			case 2:
+				setarray .@ms$[0],"Rosa Selvagem|1261|7",
+				                  "Ghoul|1423|9",
+								  "Gangster|1592|5",
+								  "Marduk|1140|3",
+								  "Petite|1465|4",
+								  "Poring|1002|50";
+				break;
+								  
+			case 3:
+				setarray .@ms$[0],"Petite|1465|3",
+				                  "Galapago|2326|5",
+								  "Petite Aborto|1466|5",
+								  "CAPIROTO|1680|1",
+								  "Shouf|1968|2",
+								  "Gargula|1597|1";
+				break;
+				
+			case 4:
+				setarray .@ms$[0],"Petite|1465|1",
+				                  "Petite Aborto|1466|5",
+								  "Obsidian|1615|1",
+								  "Orc Herói|1850|1",
+								  "Palhaçada Isso|1267|1",
+								  "Tilta n kkk|1474|1";
+				break;
+				
+			case 5:
+				setarray .@ms$[0],"Tilta n kkk|1474|5",
+				                  "Mingau|1516|8",
+								  "Nove Caudas|1180|3",
+								  "Raydric|1453|1",
+								  "Jacaré|1687|5",
+								  "Verit|1032|4";
+				break;
+				
+			case 6:
+				setarray .@ms$[0],"Verit|1032|3",
+				                  "Munak|1026|5",
+								  "Minotauro|2749|3",
+								  "Bongun|1188|5",
+								  "Flora|1118|3",
+								  "Selvagem|1166|5";
+				break;
+				
+			case 7:
+				setarray .@ms$[0],"Bongun|1188|10",
+				                  "Munak|1026|10",
+								  "CAPIROTO|1680|2",
+								  "Nove Caudas|1180|5",
+								  "Poring|1002|60",
+								  "Gargula|1597|2";
+				break;				
 		}
 	}
 
