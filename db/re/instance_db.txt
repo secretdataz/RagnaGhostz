@@ -5,4 +5,4 @@
 //
 // EnterMap is considered as Map1
 
-1,Torre da Jornada - Bronze,34400,300,1@tower,50,355,2@tower,3@tower,4@tower,5@tower,6@tower
+1,Torre da Jornada,34400,300,1@tower,50,355,2@tower,3@tower,4@tower,5@tower,6@tower

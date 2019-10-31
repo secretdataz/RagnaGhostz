@@ -12,7 +12,7 @@
 	
 	if( instance_id( IM_PARTY ) > 0 && getcharid(1) > 0 )
 	{
-		if( getmapuser( instance_mapname( "1@tower", instance_id( IM_PARTY ) ) > 0 )
+		if( getmapusers( instance_mapname( "1@tower", instance_id( IM_PARTY ) ) ) > 0 )
 		{
 			mes "Sinto muito, mas parece que ainda existe pessoas do seu grupo na Torre da Jornada.";
 			mes "Aguarde eles saírem ou então saia do seu grupo.";
@@ -36,7 +36,7 @@
 		mes "Existem 5 Torres onde nossos aventureiros podem adquirir experiência.";
 		next;
 		mes .@n$;
-		mes "Eliminar monstros com nível de diferença de até 15 níveis dão uma chance de receber um nível inteiro!";
+		mes "Eliminar monstros com nível de diferença de até 15 níveis dão uma chance de receber um nível inteiro! E isso não é tudo, completar uma torre sozinho dá de 1 a 5 níveis aleatoriamente caso esteja na última torre disponível no seu nível!";
 		next;
 		mes .@n$;
 		mes "Para liberar uma Torre é preciso alcançar o nível da Torre da Jornada.";
@@ -64,7 +64,7 @@
 		warp "prontera",151,190;
 		end;
 	}
-	30,20,15,10,5
+	
 	setarray .@nome$[1],"Torre Bronze (LVL 1 | 30%)",
 	                    "Torre Prata (LVL 10 | 20%)",
 						"Torre Ouro (LVL 50 | 15% )",
@@ -117,7 +117,8 @@
 			npctalk "Boa Sorte " + strcharinfo(0) + "!";
 			
 			$TORRE_ID = .@option;
-
+			$TORRE_ALONE = 1;
+			
 			instance_create( "Torre da Jornada", IM_CHAR );
 			instance_enter( "Torre da Jornada", 50, 355, getcharid(0), instance_id(IM_CHAR));
 			end;
@@ -156,7 +157,8 @@
 			}
 			
 			$TORRE_ID = .@option;
-			
+			$TORRE_ALONE = 0;
+
 			instance_create( "Torre da Jornada", IM_PARTY );
 			
 			npctalk "Boa sorte ao Grupo [" + getpartyname( getcharid(1) ) + "]!";
@@ -208,7 +210,7 @@ function	script	F_Torre_Monstros	{
                       "7|360|16|350",
 					  "6|390|19|379",
 					  "6|390|19|379",
-					  "23|284|35|380";
+					  "23|391|33|380";
 
 	if( .@torre_id == 1 ) // Bronze
 	{
@@ -216,10 +218,10 @@ function	script	F_Torre_Monstros	{
 		{
 			case 1:
 				setarray .@ms$[0],"Poring|1002|3",
-				                  "Fabre|1007|3";
-                                  "Pupa|1008|2";
-								  "Poring|1002|1";
-								  "Lunático|1063|3";
+				                  "Fabre|1007|3",
+                                  "Pupa|1008|2",
+								  "Poring|1002|1",
+								  "Lunático|1063|3",
                                   "Poring|1002|4";
 				break;
 				
@@ -234,11 +236,11 @@ function	script	F_Torre_Monstros	{
 				
 			case 3:
 				setarray .@ms$[0],"Esporo|1014|3",
-				                  "Zumbi|1015|1",
+				                  "Salgueiro|1010|1",
 								  "Chonchon|1011|1",
-								  "Lobinho Fofo|1107|3",
-								  "Chonchon|1011|4",
-								  "Lunático|1063|4";	
+								  "Lobinho Fofo|1107|2",
+								  "Chonchon|1011|3",
+								  "Lunático|1063|1";	
 				break;
 		}
 	}
@@ -246,94 +248,94 @@ function	script	F_Torre_Monstros	{
 	{
 		switch( .@level )
 		{
-			case 1:
-				setarray .@ms$[0],"Esporo|1014|3",
-								  "Zumbi|1015|1",
-								  "Chonchon|1011|1",
-								  "Lobinho Fofo|1107|3",
-								  "Chonchon|1011|4",
-								  "Lunático|1063|4";	
+			case 1: // 15 ~~ 18
+				setarray .@ms$[0],"Rocker|1052|5",
+								  "Snake|1841|3",
+								  "Piere|1238|1",
+								  "Coco|1860|5",
+								  "Fumacento|1811|4",
+								  "Esporo|2446|2";	
 				break;
 
-			case 2:
-				setarray .@ms$[0],"Besouro|1053|5",
-				                  "Plankton|1161|3",
-								  "Esqueleto|1076|2",
-								  "Kukre|1070|1",
-								  "Tarou|1175|4",
-								  "Bicho Estranho|1024|1";
+			case 2: // 18 ~ 24
+				setarray .@ms$[0],"Piere|1238|3",
+				                  "Deniro|1239|3",
+								  "Yoyo|1234|2",
+								  "Creamy|1018|2",
+								  "Muka|1055|5",
+								  "Orc|1235|1";
 				break;
 				
-			case 3:
-				setarray .@ms$[0],"Bicho Estranho|1024|3",
-								  "Esporo|1014|4,
-								  "Poporing|1031|3",
-								  "Cobra|1747|2",
+			case 3: // 24 ~~ 30
+				setarray .@ms$[0],"Orc|1235|2",
+								  "Familiar|1005|3",
+								  "Peco-Peco|1019|2",
+								  "Magnolia|1856|6",
 								  "Esqueleto|1076|3",
-								  "Poring|1002|10";
+								  "Poporing|1031|2";
 				break;
 				
-			case 4:
-				setarray .@ms$[0],"Cobra|1747|5",
-				                  "Poporing|1031|7",
-								  "Marin|1595|3",
+			case 4: // 30 ~~ 35
+				setarray .@ms$[0],"Poporing|1031|5",
+				                  "Besouro|1128|2",
+								  "Salgueiro Ancião|2840|5",
 								  "Zumbi|1015|7",
-								  "Joaninha|1174|1",
-								  "Creamy|1231|1";
+								  "Hidra|1579|2",
+								  "Cookie|1265|4";
 				break;
 				
-			case 5:
-				setarray .@ms$[0],"Zumbi|1014|10",
-				                  "Poporing|1031|3",
-								  "Joaninha|1174|5",
-								  "Creamy|1174|3",
-								  "Esporo|1014|10",
-								  "Andre|1237|1";
+			case 5: // 35 ~~ 42
+				setarray .@ms$[0],"Cookie|1741|5",
+				                  "Rosa Selvagem|1965|5",
+								  "Presente|1743|6",
+								  "Sapo de Thara|2635|5",
+								  "Mastering|1014|1",
+								  "Chepet|1250|1";
 				break;
 				
-			case 6:
-				setarray .@ms$[0],"Creamy|1174|5",
-				                  "Andre|1237|3",
-								  "Joaninha|1174|8",
-								  "Muka|1854|5",
-								  "Chonchon só que verde|1042|5",
-								  "Coco|1104|2";
+			case 6: // 42 ~ 45
+				setarray .@ms$[0],"Chepet|1250|1",
+				                  "Bebe Orc|1686|4",
+								  "Guerreiro Orc|1023|5",
+								  "Esqueleto Operário|1169|2",
+								  "Senhora Orc|1452|2",
+								  "Galapago|1391|4";
 				break;
 				
-			case 7:
-				setarray .@ms$[0],"Coco|1104|5",
-				                  "Chonchon só que verde|1042|8",
-								  "Muka|1854|7",
-								  "Vocal|1088|9",
-								  "Fumacento|1056|3",
-								  "Estrela|1266|1";
+			case 7: // 45 ~~ 50
+				setarray .@ms$[0],"Lobo|1013|7",
+				                  "Argos|1100|7",
+								  "Stouf|1968|5",
+								  "Chung|1519|5",
+								  "Molusco|2666|10",
+								  "Baphome Jr|1729|1";
 				break;
 				
-			case 8:
-				setarray .@ms$[0],"Fumacento|1056|7",
-								  "Estrela|1266|5",
-								  "Pierre|1238|5",
-								  "Horn|1128|3",
-								  "Esporo Venenoso|1428|7",
-								  "Salgueiro só que vermelho|1033|10";
+			case 8: // 50 ~~ 53
+				setarray .@ms$[0],"Baphome Jr|1729|3",
+								  "Esqueleto Arqueiro|1016|5ueiro|1420|5",
+								  "Orc Zumbi|1463|7",
+								  "Mumiã|1593|5",
+								  "Verit|1032|4",
+								  "Eggyra|1116|5";
 				break;
 				
-			case 9:
-				setarray .@ms$[0],"Bebe Orc|1686|5",
-				                  "Sapo de Thara|1034|9",
-								  "Anaconda|1030|5",
-								  "Eggyra|1116|20",
-								  "Lobo Vagabundo|1092|5",
-								  "Drainliar|1434|3";
+			case 9: // 53 ~~ 58
+				setarray .@ms$[0],"Eggyra|1116|10",
+				                  "Pau|1277|5",
+								  "Mimíco|1191|5",
+								  "Jacaré|2907|7",
+								  "Frilldora|1119|5",
+								  "Munak|1026|1";
 				break;
 								  
-			case 10:
-				setarray .@ms$[0],"Orc Guerreiro|1023|10",
-				                  "Pé Grande|1820|10",
-								  "Orc Esqueleto|1462|10",
-								  "Zenorc|1177|3",
-								  "Esqueleto Arqueiro|1016|5",
-								  "Pedo Bear|1417|5";
+			case 10: // 58 ~~ 60
+				setarray .@ms$[0],"Munak|1026|5",
+				                  "Bongun|1611|6",
+								  "Flora|1118|10",
+								  "Deviace|1108|5",
+								  "Mermam|1451|7",
+								  "Poring|1002|20";
 				break;
 		}
 	}
@@ -341,77 +343,338 @@ function	script	F_Torre_Monstros	{
 	{
 		switch( .@level )
 		{
+			case 1: // 60 ~~ 64
+				setarray .@ms$[0],"Golem|1540|5",
+				                  "Ghoul|1423|5",
+								  "Mobster|1851|8",
+								  "Talismã|2004|2",
+								  "Sohee|1170|4",
+								  "Gato|1586|2";
+				break;
+								  
+			case 2: // 65 ~~ 70
+				setarray .@ms$[0],"Driller|1380|3",
+				                  "Sohee|1170|9",
+								  "Goblin|1280|5",
+								  "Wootan|1498|3",
+								  "Dokebi|1110|5",
+								  "Zerom|1178|1";
+				break;
+								  
+			case 3: // 70 ~~ 74
+				setarray .@ms$[0],"Zeom|1178|3",
+				                  "Verme|1281|2",
+								  "Requiem|1164|5",
+								  "Nove Caudas|1471|4",
+								  "Marduk|1140|5",
+								  "Rieword|1195|3";
+				break;
+				
+			case 4: // 74 ~~ 79
+				setarray .@ms$[0],"Rideword|1195|1",
+				                  "Grand Peco|1369|6",
+								  "Wraith|1475|5",
+								  "Orc Arqueiro|1982|5",
+								  "Petite|1466|5",
+								  "Pasana|2719|4";
+				break;
+				
+			case 5: // 79 ~~ 81
+				setarray .@ms$[0],"Iara|2069|2",
+				                  "Li Me|1517|6",
+								  "Druída|1435|6",
+								  "Bode|1372|8",
+								  "Metaling|2855|5",
+								  "Poring|1002|36";
+				break;
+				
+			case 6: // 81 ~~ 83
+				setarray .@ms$[0],"Relógio|1528|6",
+				                  "Comodo|2867|4",
+								  "Chung|1631|5",
+								  "Sangue nos Olhos|2008|3",
+								  "Kapha|1543|2",
+								  "Chepet|2351|1";
+				break;
+				
+			case 7: // 83 ~~ 85
+				setarray .@ms$[0],"Harpia|1376|5",
+				                  "Loli Ruri|2349|3",
+								  "Mavka|1886|4",
+								  "Novus|1718|7",
+								  "Aranha|1304|9",
+								  "Miyabi|1552|4";
+				break;
+
+			case 8: // 86 ~~ 87
+				setarray .@ms$[0],"Bathory|1102|5",
+							      "Rafflesia|1790|3",
+								  "Petite|2714|4",
+								  "Leib|1306|5",
+								  "Hyegun|1512|4",
+								  "Fumaça|1621|3";
+				break;
+				
+			case 9: // 87 ~~ 91
+				setarray .@ms$[0],"Alarme|1193|7",
+				                  "Coelho Drogado|1322|5",
+								  "Chumbinho|1523|6",
+								  "Zumbi Prisioneiro|1197|3",
+								  "Peste|1256|8",
+								  "Joker|1437|5";
+				break;
+				
+			case 10: // 91 ~~ 91
+				setarray .@ms$[0],"PedoBear|1417|1",
+				                  "Escravos Proletariados|1616|10",
+								  "Tortuguita|1601|5",
+								  "Gerente do Relógio|1527|5",
+								  "Drake|1112|1",
+								  "Prisioneiro Esqueleto|1479|4";
+				break;
+				
+			case 11: // 91 ~~ 95
+				setarray .@ms$[0],"Ursinho|2636|5",
+				                  "Elder|1377|8",
+								  "Bebe Hatii|1515|3",
+								  "Borboleta|1408|5",
+								  "Ungoliant|1618|3",
+								  "Shinobi|1560|10";
+				break;
+				
+			case 12: // 95 ~~ 95
+				setarray .@ms$[0],"Stapo|1784|30",
+				                  "Stapo|1784|10",
+								  "Stapo|1784|5",
+								  "Stapo|1784|9",
+								  "Stapo|1784|5",
+								  "Stapo|1784|9";
+				break;
+				
+			case 13: // 96 ~~ 97
+				setarray .@ms$[0],"Hermit|1412|5",
+				                  "Mineral|1614|5",
+								  "Heater|1600|5",
+								  "Bacsojin|1689|5",
+								  "Papel|1375|8",
+								  "Kaho|1072|5";
+				break;
+				
+			case 14: // 98 ~~ 99
+				setarray .@ms$[0],"Siroma|1776|5",
+				                  "Rybio|1201|8",
+								  "Tengu|1405|5",
+								  "Cavalheiro da Morte|1876|1",
+								  "Angeling|1766|1",
+								  "Bradium|2049|1";
+				break;
+				
+			case 15: // 99 ~~
+				setarray .@ms$[0],"Bradium|2049|10",
+				                  "Explosão|1383|5",
+								  "Alice|1521|5",
+								  "Poring|1002|100",
+								  "Tengu|1405|10",
+								  "Stapo|1784|50";
+				break;
+		}
+	}
+	else if( .@torre_id == 4 ) // Platina
+	{
+		switch( .@level )
+		{
+			// 99 ~~ 101
 			case 1:
-				setarray .@ms$[0],"Orc Guerreiro|1023|10",
-				                  "Pé Grande|1820|10",
-								  "Orc Esqueleto|1462|10",
-								  "Zenorc|1177|3",
-								  "Esqueleto Arqueiro|1016|5",
-								  "Pedo Bear|1417|5";
-				break;
-								  
-			case 2:
-				setarray .@ms$[0],"Rosa Selvagem|1261|7",
-				                  "Ghoul|1423|9",
-								  "Gangster|1592|5",
-								  "Marduk|1140|3",
-								  "Petite|1465|4",
-								  "Poring|1002|50";
-				break;
-								  
-			case 3:
-				setarray .@ms$[0],"Petite|1465|3",
-				                  "Galapago|2326|5",
-								  "Petite Aborto|1466|5",
-								  "CAPIROTO|1680|1",
-								  "Shouf|1968|2",
-								  "Gargula|1597|1";
+				setarray .@ms$[0],"Quve|1508|5",
+				                  "Anopheles|2126|10",
+								  "Tartaruga|1315|4",
+								  "Kobold|1547|5",
+								  "Capiroto|2803|6",
+								  "Lude|1509|4";
 				break;
 				
-			case 4:
-				setarray .@ms$[0],"Petite|1465|1",
-				                  "Petite Aborto|1466|5",
-								  "Obsidian|1615|1",
-								  "Orc Herói|1850|1",
-								  "Palhaçada Isso|1267|1",
-								  "Tilta n kkk|1474|1";
+			case 2: // 105 ~~ 107
+				setarray .@ms$[0],"Anjo Fajuto|1371|5",
+				                  "Anubis|1098|3",
+								  "Chuck Possuído|2314|5",
+								  "Pinguicula|1995|4",
+								  "Bitch|1482|5",
+								  "Vacina|2338|3";
 				break;
 				
-			case 5:
-				setarray .@ms$[0],"Tilta n kkk|1474|5",
-				                  "Mingau|1516|8",
-								  "Nove Caudas|1180|3",
-								  "Raydric|1453|1",
-								  "Jacaré|1687|5",
-								  "Verit|1032|4";
+			case 3: // 107 ~~ 110
+				setarray .@ms$[0],"Pesadelo|1554|10",
+				                  "Kobold Arqueiro|1282|5",
+								  "Dullahan|1504|5",
+								  "Anolian|1488|3",
+								  "Titã de Gelo|1777|1",
+								  "Serial Killer|1507|3";
 				break;
 				
-			case 6:
-				setarray .@ms$[0],"Verit|1032|3",
-				                  "Munak|1026|5",
-								  "Minotauro|2749|3",
-								  "Bongun|1188|5",
-								  "Flora|1118|3",
-								  "Selvagem|1166|5";
+			case 4: // 110 ~~ 111
+				setarray .@ms$[0],"Fantasma|2951|5",
+				                  "General Tartaruga|1312|1",
+								  "Coisa|2956|3",
+								  "Aunoe|1796|5",
+								  "Sedora|2204|4",
+								  "Wakwak|2315|2";
 				break;
 				
-			case 7:
-				setarray .@ms$[0],"Bongun|1188|10",
-				                  "Munak|1026|10",
-								  "CAPIROTO|1680|2",
-								  "Nove Caudas|1180|5",
-								  "Poring|1002|60",
-								  "Gargula|1597|2";
-				break;				
+			case 5: // 112 ~~ 118
+				setarray .@ms$[0],"Aliza|1737|5",
+                                  "Raydric|2691|10",
+                                  "Alicel|1739|4",
+								  "Banshee|1974|2",
+								  "Violinista|2623|4",
+								  "Gremlin|1632|8";
+				break;
+				
+			case 6: // 121 ~~ 126
+				setarray .@ms$[0],"Remover|1682|8",
+				                  "Apocalypse|1365|5",
+								  "Abismo|1893|10",
+								  "Solace|1703|5",
+								  "Vanberk|1771|12",
+								  "Echio|1787|3";
+				break;
+
+			case 7: // 126 ~~ 130
+				setarray .@ms$[0],"Skogul|1761|5",
+				                  "Thanatos Odium|1704|6",
+								  "Thanatos Despero|1710|5",
+								  "Thanatos Maero|1706|4",
+								  "Imp|1837|5",
+								  "Banshee|1868|2";
+				break;
+				
+			case 8: // 130 ~~ 137
+				setarray .@ms$[0],"Scaraba|2171|20",
+				                  "Acidus|3178|8",
+								  "Dolomedes|2092|6",
+								  "Rudo|2256|9",
+								  "Lora|2250|2",
+								  "Soheon|2254|6";
+				break;
+				
+			case 9: // 138 ~~ 144
+				setarray .@ms$[0],"Elvira|2252|6",
+				                  "Scaraba|2161|1",
+								  "Lobo Congelado|3442|5",
+								  "Miming|2137|8",
+								  "Menblatt|2363|3",
+								  "Angra|2133|8";
+				break;
+				
+			case 10: // 144 ~~ 150
+				setarray .@ms$[0],"Árvore|2019|2",
+				                  "Watcher|3444|8",
+								  "Golem em Chamas|3023|9",
+								  "Marionete|2994|4",
+								  "Inseto Fogoso|3027|6",
+								  "Big Ben|2916|4";
+				break;
+				
+			case 11: // 150 ~~
+				setarray .@ms$[0],"Quimera|3200|4",
+				                  "Reparador|3155|8",
+								  "Visconde|2922|7",
+								  "Big Ben|2916|8",
+								  "Watcher|3444|5",
+								  "Angra|2133|9";
+				break;
+				
+			case 12:
+				setarray .@ms$[0],"Aranha|1304|9",
+				                  "Aranha|1304|9",
+								  "Aranha|1304|9",
+								  "Aranha|1304|9",
+								  "Aranha|1304|9",
+								  "Brinarena|3091|1";
+				break;
+				
+			case 13:
+				setarray .@ms$[0],"Poring|1002|10",
+				                  "Poring|1002|10",
+								  "Poring|1002|10",
+								  "Poring|1002|10",
+								  "Poring|1002|10",
+								  "T_W_O|3254|1";
+				break;
+				
+			case 14:
+				setarray .@ms$[0],"Marionete|2994|4",
+				                  "Marionete|2994|4",
+				                  "Marionete|2994|4",
+				                  "Marionete|2994|4",
+				                  "Marionete|2994|4",
+								  "Celini|2996|1";
+				break;
+				
+			case 15:
+				setarray .@ms$[0],"Quimera|3200|8",
+				                  "Reparador|3155|8",
+								  "Visconde|2922|7",
+								  "Big Ben|2916|12",
+								  "Watcher|3444|5",
+								  "Angra|2133|10";
+				break;
+				
+			case 16:
+				setarray .@ms$[0],"Neo Punk|2919|8",
+				                  "Neo Punk|2919|8",
+								  "Neo Punk|2919|8",
+								  "Neo Punk|2919|8",
+								  "Neo Punk|2919|8",
+								  "Neo Punk|2919|8";
+				break;
+				
+			case 17:
+				setarray .@ms$[0],"Creepy|2992|7",
+				                  "Creepy|2992|7",
+				                  "Creepy|2992|7",
+				                  "Creepy|2992|7",
+				                  "Creepy|2992|7",
+				                  "Creepy|2992|7";
+				break;
+				
+			case 18:
+				setarray .@ms$[0],"Robot|3250|10",
+				                  "Robot|3250|10",
+				                  "Robot|3250|10",
+				                  "Robot|3250|10",
+				                  "Robot|3250|10",
+				                  "Robot|3250|10";
+				break;
+				
+			case 19:
+				setarray .@ms$[0],"Gigantes|3195|10",
+				                  "Gigantes|3195|10",
+				                  "Gigantes|3195|10",
+				                  "Gigantes|3195|10",
+				                  "Gigantes|3195|10",
+				                  "Gigantes|3195|10";
+				break;
+				
+			case 20:
+				setarray .@ms$[0],"Fenrir|2564|1",
+							      "Fenrir|2564|1",
+							      "Fenrir|2564|1",
+							      "Fenrir|2564|1",
+							      "Fenrir|2564|1",
+							      "Fenrir|2564|1";
+				break;
+				
 		}
 	}
 
 	for( .@i = 0; .@i < getarraysize( .@ms$ ); .@i++ )
 	{
-		explode( .@mobs$, .@ms%[.@i], "|");
-		explode( .@x_y$, .@xy%[.@i], "|");
-					
-		areamonster .@map$,atoi(.@x_y[0]),atoi(.@x_y[1]),atoi(.@x_y[2]),atoi(.@x_y[3]),.@mobs$[0],.@mobs$[1],.@mobs$[2],.@label$;
+		explode( .@mobs$, .@ms$[.@i], "|");
+		explode( .@x_y$, .@xy$[.@i], "|");
+				
+		.@qnt = 'ISALONE ? ( atoi(.@mobs$[2]) / 2 ) : atoi(.@mobs$[2]);
+		
+		areamonster .@map$,atoi(.@x_y$[0]),atoi(.@x_y$[1]),atoi(.@x_y$[2]),atoi(.@x_y$[3]),.@mobs$[0],atoi(.@mobs$[1]),.@qnt,.@label$;
 	}
 	
 	return;
@@ -428,13 +691,14 @@ function	script	F_Torre_Warp	{
 	OnInstanceInit:
 		setarray 'max_floors[1],3, // Bronze
 		                       10, // Prata
-							   20, // Ouro
-							   40, // Platina
-							   80; // Diamante
+							   15, // Ouro
+							   20, // Platina
+							   25; // Diamante
 		
 		// Chance de Conseguir Evoluir 1 Nível caso a diferença de nível entre o monstro morto e você seja de 15 níveis
 		setarray 'chance[1],30,20,15,10,5;
 		
+		'ISALONE = $TORRE_ALONE;
 		'TORREID = $TORRE_ID;
 		'LEVEL = 1;
 		'COMPLETED = 0;
@@ -465,17 +729,26 @@ function	script	F_Torre_Warp	{
 		
 		if (.@mob_dead_num < 1)
 		{
-			'NEXT = 1;
 			'LEVEL++;
 			
 			if( 'LEVEL > 'max_floors['TORREID] )
 			{
-				mapannounce .@map$,"Parabéns, a Torre foi zerada!",bc_map,"0xffff00";
+				if( 'ISALONE &&
+ 				  ( 'TORRE_ID == 1 && BaseLevel < 10 ||
+	                'TORRE_ID == 2 && BaseLevel < 50 ||
+		            'TORRE_ID == 3 && BaseLevel < 100 ||
+		            'TORRE_ID == 4 && BaseLevel < 170 ||
+		            'TORRE_ID == 5 ) )
+		            BaseLevel += rand( 1, 5 );
+				
+				mapannounce .@map$,"Parabéns, a Torre foi zerada!",bc_map,"0x00ff99";
 				sleep 5000;
 				mapwarp instance_mapname("1@tower"),"prontera",155,230;
 				instance_destroy();
 				end;
 			}
+			else
+				'NEXT = 1;
 		
 			initnpctimer;
 		} else
