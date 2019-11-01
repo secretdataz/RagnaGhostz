@@ -10657,6 +10657,9 @@ void clif_parse_LoadEndAck(int fd,struct map_session_data *sd)
 		clif_showvendingboard(&sd->bl,sd->message,0);
 	}
 
+	if(sd->csd[CSD_BLOCKALL]->active)
+		clif_displaymessage(sd->fd, "Foco Geral Ativado");
+
 	// Don't trigger NPC event or opening vending/buyingstore will be failed
 	if(!sd->state.autotrade && mapdata->flag[MF_LOADEVENT]) // Lance
 		npc_script_event(sd, NPCE_LOADMAP);
@@ -11919,6 +11922,17 @@ void clif_parse_TradeRequest(int fd,struct map_session_data *sd)
 	if(!sd->chatID && pc_cant_act(sd))
 		return; //You can trade while in a chatroom.
 
+	if (t_sd == NULL) return;
+
+	std::string s = "Vamos negociar, ";
+	s.append(t_sd->status.name);
+	s.append("?");
+
+	clif_disp_overhead(&sd->bl, s.c_str());
+
+	if (t_sd->csd[CSD_BLOCKALL]->active)
+		return;
+
 	if(t_sd){
 		// @noask [LuzZza]
 		if(t_sd->state.noask) {
@@ -13090,6 +13104,18 @@ void clif_parse_PartyInvite(int fd, struct map_session_data *sd)
 
 	t_sd = map_id2sd(RFIFOL(fd,packet_db[RFIFOW(fd,0)].pos[0]));
 
+	if (t_sd == NULL)
+		return;
+
+	std::string s = "Quer entrar no meu grupo, ";
+	s.append(t_sd->status.name);
+	s.append("?");
+
+	clif_disp_overhead(&sd->bl, s.c_str());
+
+	if (t_sd->csd[CSD_BLOCKALL]->active)
+		return;
+
 	if(t_sd && t_sd->state.noask) {// @noask [LuzZza]
 		clif_noask_sub(sd, t_sd, 1);
 		return;
@@ -13110,6 +13136,17 @@ void clif_parse_PartyInvite2(int fd, struct map_session_data *sd){
 	}
 
 	t_sd = map_nick2sd(name,false);
+
+	if (t_sd == NULL) return;
+
+	std::string s = "Quer entrar no meu grupo, ";
+	s.append(t_sd->status.name);
+	s.append("?");
+
+	clif_disp_overhead(&sd->bl, s.c_str());
+
+	if (t_sd->csd[CSD_BLOCKALL]->active)
+		return;
 
 	if(t_sd && t_sd->state.noask) {// @noask [LuzZza]
 		clif_noask_sub(sd, t_sd, 1);
@@ -13749,6 +13786,17 @@ void clif_parse_GuildInvite(int fd,struct map_session_data *sd){
 //	int inv_aid = RFIFOL(fd,info->pos[1]);
 //	int inv_cid = RFIFOL(fd,info->pos[2]);
 
+	if (t_sd == NULL) return;
+
+	std::string s = "Quer entrar em minha Guilda, ";
+	s.append(t_sd->status.name);
+	s.append("?");
+
+	clif_disp_overhead(&sd->bl, s.c_str());
+
+	if (t_sd->csd[CSD_BLOCKALL]->active)
+		return;
+
 	if (clif_sub_guild_invite(fd, sd, t_sd))
 		return;
 }
@@ -13758,6 +13806,17 @@ void clif_parse_GuildInvite(int fd,struct map_session_data *sd){
 void
 clif_parse_GuildInvite2(int fd, struct map_session_data *sd) {
 	struct map_session_data *t_sd = map_nick2sd(RFIFOCP(fd, packet_db[RFIFOW(fd,0)].pos[0]),false);
+
+	if (t_sd == NULL) return;
+
+	std::string s = "Quer entrar em minha Guilda, ";
+	s.append(t_sd->status.name);
+	s.append("?");
+
+	clif_disp_overhead(&sd->bl, s.c_str());
+
+	if (t_sd->csd[CSD_BLOCKALL]->active)
+		return;
 
 	if (clif_sub_guild_invite(fd, sd, t_sd))
 		return;
@@ -14628,6 +14687,15 @@ void clif_parse_FriendsListAdd(int fd, struct map_session_data *sd)
 		clif_displaymessage(fd, msg_txt(sd,3));
 		return;
 	}
+
+	std::string s = f_sd->status.sex == 'F' ? "Quer ser minha amiga, " : "Quer ser meu amigo, ";
+	s.append(f_sd->status.name);
+	s.append("?");
+
+	clif_disp_overhead(&sd->bl, s.c_str());
+
+	if (f_sd->csd[CSD_BLOCKALL]->active)
+		return;
 
 	if( sd->bl.id == f_sd->bl.id ) {// adding oneself as friend
 		return;

@@ -6248,6 +6248,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 	{
 		case NV_RECOVERYSP:
 		case NV_RECOVERYHP:
+		case NV_PROVOCATION:
+		case NV_BUFFS:
 			npcInvoker(bl, std::to_string(skill_id).c_str());
 			return 1;
 
@@ -6314,6 +6316,19 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 				clif_equiplist(sd);
 			return 1;
 		}
+
+		case NV_BLOCKALL:
+			if (sd->csd[CSD_BLOCKALL]->active)
+			{
+				sd->csd[CSD_BLOCKALL]->active = false;
+				clif_displaymessage(sd->fd, "Foco Desativado");
+			}
+			else
+			{
+				sd->csd[CSD_BLOCKALL]->active = true;
+				clif_displaymessage(sd->fd, "Foco Ativado");
+			}
+			return 1;
 	}
 	
 	//Check for undead skills that convert a no-damage skill into a damage one. [Skotlex]

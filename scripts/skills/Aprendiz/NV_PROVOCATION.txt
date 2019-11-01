@@ -1,0 +1,62 @@
+
+-	Script	1026	-1,{
+
+	if( !NV_PROVOCATION )
+	{
+		.@n$ = "[^A52A2AProvocação^000000 - Configuração]";
+		
+		mes .@n$;
+		mes "Configure suas três fases de provocação.";
+		mes "Máximo de Caracteres: 40";
+		mes " ";
+		
+		while( getstrlen( .@text1$ ) < 1 || getstrlen( .@text1$ ) > 40 )
+			input .@text1$;
+		
+		mes "Frase 1: " + .@text1$;
+		
+		while( getstrlen( .@text2$ ) < 1 || getstrlen( .@text2$ ) > 40 )
+			input .@text2$;
+			
+		mes "Frase 2: " + .@text2$;
+		
+		while( getstrlen( .@text3$ ) < 1 || getstrlen( .@text3$ ) > 40 )
+			input .@text3$;
+			
+		mes "Frase 3: " + .@text2$;
+		next;
+		
+		mes .@n$;
+		mes "Confirmar suas frases?";
+		mes " ";
+		mes "^FF0000ATENÇÃO^000000: Após confirmar, não será mais possível alterar elas!";
+		mes " ";
+		mes "Frase 1: " + .@text1$;
+		mes "Frase 2: " + .@text2$;
+		mes "Frase 3: " + .@text2$;
+		
+		if( select( "Refazer:Confirmar" == 1 ) ) close;
+		
+		NV_PROVOC1$ = .@text1$;
+		NV_PROVOC2$ = .@text2$;
+		NV_PROVOC3$ = .@text3$;
+		
+		next;
+		
+		mes .@n$;
+		mes "Habilidade configurada com sucesso!";
+		close2;
+		
+		NV_PROVOCATION = 1;
+	}
+	
+	switch( rand( 1, 3 ) )
+	{
+		case 1: showscript .@text1$; break;
+		case 2: showscript .@text2$; break;
+		case 3: showscript .@text3$; break;
+	}
+
+	bonus_script "bonus bAllStats,10",30,11;
+	end;
+}

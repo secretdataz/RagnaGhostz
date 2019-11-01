@@ -549,6 +549,7 @@ void skill_reload(void);
 
 enum e_custom_skill_data {
 	CSD_AUTOLOOT,
+	CSD_BLOCKALL,
 	CSD_TOTAL
 };
 
@@ -598,7 +599,7 @@ enum e_skill {
 	NV_RETURN,
 	NV_REPAIRALL,
 	NV_PROVOCATION,
-	NV_FASTUSE,
+	NV_BUFFS,
 	NV_BLOCKALL,
 
 	NV_BASIC = 1,
