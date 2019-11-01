@@ -2189,6 +2189,32 @@ static void mob_item_drop(struct mob_data *md, struct item_drop_list *dlist, str
 		test_autoloot = test_autoloot && sd->bl.m == md->bl.m
 		&& check_distance_blxy(&sd->bl, dlist->x, dlist->y, AUTOLOOT_DISTANCE);
 #endif
+
+	if( sd->csd[CSD_AUTOLOOT]->active )
+	{
+		sd->csd[CSD_AUTOLOOT]->count--;
+
+		if (sd->csd[CSD_AUTOLOOT]->count <= 0 && ( sd->group_id == 0 || sd->group_id == 99))
+		{
+			sd->csd[CSD_AUTOLOOT]->count = 0;
+			sd->csd[CSD_AUTOLOOT]->active = false;
+
+			clif_displaymessage(sd->fd, "Coleta Desativada");
+		}
+		else
+		{
+			std::string s = "Coleta Ativada (";
+
+			s.append(std::to_string(sd->csd[CSD_AUTOLOOT]->count));
+			s.append(" itens)");
+
+			if (sd->group_id == 0 || sd->group_id == 99)
+				clif_displaymessage(sd->fd, s.c_str());
+
+			test_autoloot = true;
+		}
+	}
+
 	if( test_autoloot ) {	//Autoloot.
 		struct party_data *p = party_search(sd->status.party_id);
 

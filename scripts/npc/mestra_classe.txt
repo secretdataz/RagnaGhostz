@@ -67,7 +67,6 @@
 	mes .@n$;
 	mes "Muito bem, irei lhe enviar até o instrutor da classe " + .@jobs$[.@option] + ".";
 	close;
-
 }
 
 prontera,151,192,5	duplicate(Condecoração de Classes)	Condecoração de Classes#PRT	10184

@@ -1405,9 +1405,6 @@ bool pc_authok(struct map_session_data *sd, uint32 login_id2, time_t expiration_
 	for(i = 0; i < MAX_SPIRITBALL; i++)
 		sd->spirit_timer[i] = INVALID_TIMER;
 
-	if (battle_config.item_auto_get)
-		sd->state.autoloot = 10000;
-
 	if (battle_config.disp_experience)
 		sd->state.showexp = 1;
 	if (battle_config.disp_zeny)
@@ -1462,6 +1459,9 @@ bool pc_authok(struct map_session_data *sd, uint32 login_id2, time_t expiration_
 	sd->vars_dirty = false;
 	sd->vars_ok = false;
 	sd->vars_received = 0x0;
+
+	for (int i = 0; i < CSD_TOTAL; i++)
+		sd->csd[i] = newCSD(false);
 
 	sd->qi_display = nullptr;
 	sd->qi_count = 0;
@@ -5808,6 +5808,9 @@ enum e_setpos pc_setpos(struct map_session_data* sd, unsigned short mapindex, in
 		}
 
 		npc_script_event(sd, NPCE_LOGOUT);
+
+		pc_setregistry(sd, add_str("CSD_AUTOLOOT"), sd->csd[CSD_AUTOLOOT]->count);
+
 		//remove from map, THEN change x/y coordinates
 		unit_remove_map_pc(sd,clrtype);
 		sd->mapindex = mapindex;
@@ -6013,7 +6016,13 @@ bool pc_memo(struct map_session_data* sd, int pos)
 int pc_get_skillcooldown(struct map_session_data *sd, uint16 skill_id, uint16 skill_lv) {
 	uint16 idx = skill_get_index(skill_id);
 	int cooldown = 0;
-	
+
+	switch (skill_id)
+	{
+	case NV_STORAGE:
+		return sd->group_id == 0 ? 300000 : 15000;
+	}
+
 	if (!idx) return 0;
 	if (skill_db[idx]->cooldown[skill_lv - 1])
 		cooldown = skill_db[idx]->cooldown[skill_lv - 1];

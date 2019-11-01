@@ -4649,6 +4649,12 @@ void clif_getareachar_unit(struct map_session_data* sd,struct block_list *bl)
 	if(bl->type == BL_NPC && !((TBL_NPC*)bl)->chat_id && (((TBL_NPC*)bl)->sc.option&OPTION_INVISIBLE))
 		return;
 
+	/*
+	 Variable Requirements to See NPC
+	*/
+	if (bl->type == BL_NPC && ((TBL_NPC*)bl)->viewrequire.variable.length() > 0 && pc_readglobalreg(sd, add_str(((TBL_NPC*)bl)->viewrequire.variable.c_str())) != ((TBL_NPC*)bl)->viewrequire.value)
+		return;
+
 	ud = unit_bl2ud(bl);
 	len = ( ud && ud->walktimer != INVALID_TIMER ) ? clif_set_unit_walking(bl,ud,buf) : clif_set_unit_idle(bl,buf,false);
 	clif_send(buf,len,&sd->bl,SELF);
@@ -11679,6 +11685,12 @@ void clif_parse_NpcClicked(int fd,struct map_session_data *sd)
 				if( nd->progressbar.timeout > 0 ){
 					return;
 				}
+
+				/*
+					Variable Requirements to See NPC
+                */
+				if (nd->viewrequire.variable.length() > 0 && pc_readglobalreg(sd, add_str(nd->viewrequire.variable.c_str())) != nd->viewrequire.value)
+					return;
 
 				npc_click(sd,nd);
 			}

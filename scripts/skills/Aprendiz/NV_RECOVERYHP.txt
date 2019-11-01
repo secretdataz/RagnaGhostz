@@ -1,0 +1,33 @@
+
+-	Script	1020	-1,{
+
+	showscript "Recuperar Vida";
+
+	if( MaxHp <= 500 )
+		.@time = 3000;
+	else if( MaxHp <= 3000 )
+		.@time = 7000;
+	else if( MaxHp <= 8000 )
+		.@time = 15000;
+	else if( MaxHp <= 20000 )
+		.@time = 30000;
+	else
+		.@time = 45000;
+
+	if( readparam( bVit ) >= 10 )
+		.@time -= ( readparam( bVit ) / 10 ) * 1000;
+	
+	if( .@time <= 0 )
+		.@time = 1000;
+		
+	if( getgroupid() == 99 )
+		dispbottom sprintf( "[1020] VIT %d / TIME %d", readparam( bVit ), .@time );
+		
+	progressbar "2", .@time / 1000;
+	
+	specialeffect2 9;
+	
+	percentheal 100,0;
+
+	end;
+}

@@ -1,0 +1,33 @@
+
+-	Script	1021	-1,{
+
+	showscript "Recuperar Mana";
+	
+	if( MaxSp <= 100 )
+		.@time = 3000;
+	else if( MaxSp <= 500 )
+		.@time = 7000;
+	else if( MaxSp <= 1000 )
+		.@time = 15000;
+	else if( MaxSp <= 3000 )
+		.@time = 30000;
+	else
+		.@time = 45000;
+
+	if( readparam( bInt ) >= 10 )
+		.@time -= ( readparam( bInt ) / 10 ) * 1000;
+	
+	if( .@time <= 0 )
+		.@time = 1000;
+		
+	if( getgroupid() == 99 )
+		dispbottom sprintf( "[1021] INT %d / TIME %d", readparam( bInt ), .@time );
+		
+	progressbar "BLUE", .@time / 1000;
+	
+	specialeffect2 78;
+	
+	percentheal 0,100;
+
+	end;
+}

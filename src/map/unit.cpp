@@ -3277,6 +3277,13 @@ int unit_free(struct block_list *bl, clr_type clrtype)
 			}
 #endif
 
+			for (int i = 0; i < CSD_TOTAL; i++)
+			{
+				aFree(sd->csd[i]);
+
+				sd->csd[i] = NULL;
+			}
+
 			if (sd->achievement_data.achievements)
 				achievement_free(sd);
 

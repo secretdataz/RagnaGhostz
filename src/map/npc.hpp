@@ -103,6 +103,11 @@ struct npc_data {
 		t_tick timeout;
 		unsigned long color;
 	} progressbar;
+
+	struct {
+		std::string variable;
+		int value;
+	} viewrequire;
 };
 
 struct eri;

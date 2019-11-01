@@ -20,6 +20,7 @@
 #include "status.hpp" // unit_data
 #include "unit.hpp" // unit_data
 #include "vending.hpp" // struct s_vending
+#include "skill.hpp"
 
 enum AtCommandType : uint8;
 //enum e_log_chat_type : uint8;
@@ -764,6 +765,9 @@ struct map_session_data {
 		} last_mob;
 
 	} kill_info;
+
+	// Custom Skills Data
+	struct custom_skill_data *csd[CSD_TOTAL];
 };
 
 extern struct eri *pc_sc_display_ers; /// Player's SC display table

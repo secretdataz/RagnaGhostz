@@ -8356,6 +8356,20 @@ BUILDIN_FUNC(getcharid)
 }
 
 /*==========================================
+ * Set a View Require of an NPC
+ * viewrequire( varname, varvalue )
+ *------------------------------------------*/
+BUILDIN_FUNC(viewrequire)
+{
+	struct npc_data* nd = map_id2nd(st->oid);
+
+	nd->viewrequire.variable = std::string(script_getstr(st, 2));
+	nd->viewrequire.value = script_getnum(st, 3);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
+/*==========================================
  * returns the GID of an NPC
  *------------------------------------------*/
 BUILDIN_FUNC(getnpcid)
@@ -24501,6 +24515,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(readparam,"i?"),
 	BUILDIN_DEF(getcharid,"i?"),
 	BUILDIN_DEF(getnpcid,"i?"),
+	BUILDIN_DEF(viewrequire,"si"),
 	BUILDIN_DEF(getpartyname,"i"),
 	BUILDIN_DEF(getpartymember,"i??"),
 	BUILDIN_DEF(getpartyleader,"i?"),

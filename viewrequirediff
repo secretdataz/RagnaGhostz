@@ -1,0 +1,79 @@
+diff --git a/src/map/clif.cpp b/src/map/clif.cpp
+index d7e8ae44c..138cddf70 100644
+--- a/src/map/clif.cpp
++++ b/src/map/clif.cpp
+@@ -4649,6 +4649,12 @@ void clif_getareachar_unit(struct map_session_data* sd,struct block_list *bl)
+ 	if(bl->type == BL_NPC && !((TBL_NPC*)bl)->chat_id && (((TBL_NPC*)bl)->sc.option&OPTION_INVISIBLE))
+ 		return;
+ 
++	/*
++	 Variable Requirements to See NPC
++	*/
++	if (bl->type == BL_NPC && ((TBL_NPC*)bl)->viewrequire.variable.length() > 0 && pc_readglobalreg(sd, add_str(((TBL_NPC*)bl)->viewrequire.variable.c_str())) != ((TBL_NPC*)bl)->viewrequire.value)
++		return;
++
+ 	ud = unit_bl2ud(bl);
+ 	len = ( ud && ud->walktimer != INVALID_TIMER ) ? clif_set_unit_walking(bl,ud,buf) : clif_set_unit_idle(bl,buf,false);
+ 	clif_send(buf,len,&sd->bl,SELF);
+@@ -11680,6 +11686,12 @@ void clif_parse_NpcClicked(int fd,struct map_session_data *sd)
+ 					return;
+ 				}
+ 
++				/*
++					Variable Requirements to See NPC
++                */
++				if (nd->viewrequire.variable.length() > 0 && pc_readglobalreg(sd, add_str(nd->viewrequire.variable.c_str())) != nd->viewrequire.value)
++					return;
++
+ 				npc_click(sd,nd);
+ 			}
+ 			break;
+diff --git a/src/map/npc.hpp b/src/map/npc.hpp
+index 35773ca70..ae0cf23d3 100644
+--- a/src/map/npc.hpp
++++ b/src/map/npc.hpp
+@@ -103,6 +103,11 @@ struct npc_data {
+ 		t_tick timeout;
+ 		unsigned long color;
+ 	} progressbar;
++
++	struct {
++		std::string variable;
++		int value;
++	} viewrequire;
+ };
+ 
+ struct eri;
+diff --git a/src/map/script.cpp b/src/map/script.cpp
+index 090e22eb1..1f7e1c1ed 100644
+--- a/src/map/script.cpp
++++ b/src/map/script.cpp
+@@ -8355,6 +8355,20 @@ BUILDIN_FUNC(getcharid)
+ 	return SCRIPT_CMD_SUCCESS;
+ }
+ 
++/*==========================================
++ * Set a View Require of an NPC
++ * viewrequire( varname, varvalue )
++ *------------------------------------------*/
++BUILDIN_FUNC(viewrequire)
++{
++	struct npc_data* nd = map_id2nd(st->oid);
++
++	nd->viewrequire.variable = std::string(script_getstr(st, 2));
++	nd->viewrequire.value = script_getnum(st, 3);
++
++	return SCRIPT_CMD_SUCCESS;
++}
++
+ /*==========================================
+  * returns the GID of an NPC
+  *------------------------------------------*/
+@@ -24501,6 +24515,7 @@ struct script_function buildin_func[] = {
+ 	BUILDIN_DEF(readparam,"i?"),
+ 	BUILDIN_DEF(getcharid,"i?"),
+ 	BUILDIN_DEF(getnpcid,"i?"),
++	BUILDIN_DEF(viewrequire,"si"),
+ 	BUILDIN_DEF(getpartyname,"i"),
+ 	BUILDIN_DEF(getpartymember,"i??"),
+ 	BUILDIN_DEF(getpartyleader,"i?"),

@@ -43,6 +43,7 @@
 #include "script.hpp"
 #include "status.hpp"
 #include "unit.hpp"
+#include "storage.hpp"
 
 #define SKILLUNITTIMER_INTERVAL	100
 #define TIMERSKILL_INTERVAL	150
@@ -6157,6 +6158,31 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 	return 0;
 }
 
+/*
+Wrapper para executar um NPC
+*/
+void npcInvoker(struct block_list *bl, const char * npc_name)
+{
+	if (bl->type != BL_PC) return;
+
+	struct npc_data *nd = npc_name2id(npc_name);
+
+	if (nd == NULL || bl == NULL) return;
+
+	run_script(nd->u.scr.script, 0, bl->id, nd->bl.id);
+}
+
+struct custom_skill_data* newCSD(bool active)
+{
+	struct custom_skill_data *sc;
+
+	CREATE(sc, struct custom_skill_data, 1);
+
+	sc->active = active;
+
+	return sc;
+}
+
 /**
  * Use no-damage skill from 'src' to 'bl
  * @param src Caster
@@ -6216,6 +6242,80 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 	tstatus = status_get_status_data(bl);
 	sstatus = status_get_status_data(src);
 
+	// Ragnaghostz Skills
+
+	switch (skill_id)
+	{
+		case NV_RECOVERYSP:
+		case NV_RECOVERYHP:
+			npcInvoker(bl, std::to_string(skill_id).c_str());
+			return 1;
+
+		case NV_AUTOLOOT:
+			if (sd)
+			{
+				int remainDropCount = sd->csd[CSD_AUTOLOOT]->count > 0 ? sd->csd[CSD_AUTOLOOT]->count : pc_readregistry(sd, add_str("CSD_AUTOLOOT"));
+
+				if (sd->csd[CSD_AUTOLOOT]->active)
+				{
+					std::string s = "Coleta Desativada (Restam ";
+
+					s.append(std::to_string(remainDropCount));
+					s.append(" itens)");
+
+					if(sd->group_id == 0 || sd->group_id == 99)
+						clif_displaymessage(sd->fd, s.c_str());
+					else
+						clif_displaymessage(sd->fd, "Coleta Desativada");
+
+					sd->csd[CSD_AUTOLOOT]->active = false;
+				}
+				else
+				{
+					sd->csd[CSD_AUTOLOOT]->active = true;
+					sd->csd[CSD_AUTOLOOT]->count = remainDropCount <= 0 ? 50 : remainDropCount; 
+
+					std::string s = "Coleta Ativada (";
+
+					s.append(std::to_string(sd->csd[CSD_AUTOLOOT]->count));
+					s.append(" itens)");
+
+					if(sd->group_id == 0 || sd->group_id == 99)
+						clif_displaymessage(sd->fd, s.c_str());
+					else
+						clif_displaymessage(sd->fd, "Coleta Ativada");
+				}
+			}
+			return 1;
+
+		case NV_STORAGE:
+			storage_storageopen(sd);
+			return 1;
+
+		case NV_RETURN:
+			unit_warp(src, map_mapname2mapid("prontera"), 155, 185, CLR_TELEPORT);
+			return 1;
+
+		case NV_REPAIRALL:
+		{
+			int repaircounter = 0;
+			for (i = 0; i < MAX_INVENTORY; i++)
+			{
+				if (sd->inventory.u.items_inventory[i].nameid && sd->inventory.u.items_inventory[i].card[0] != CARD0_PET && sd->inventory.u.items_inventory[i].attribute) {
+					sd->inventory.u.items_inventory[i].attribute = 0;
+					clif_produceeffect(sd, 0, sd->inventory.u.items_inventory[i].nameid);
+					repaircounter++;
+				}
+			}
+
+			clif_specialeffect(bl, repaircounter > 0 ? 154 : 155, AREA);
+
+			if (repaircounter)
+				clif_equiplist(sd);
+			return 1;
+		}
+	}
+	
 	//Check for undead skills that convert a no-damage skill into a damage one. [Skotlex]
 	switch (skill_id) {
 		case HLIF_HEAL:	//[orn]

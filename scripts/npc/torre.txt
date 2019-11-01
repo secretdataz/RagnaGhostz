@@ -963,7 +963,7 @@ function	script	F_Torre_Monstros	{
 				break;
 				
 			case 32:
-				setarrray .@ms$[0],"Thanatos|1708|1",
+				setarray .@ms$[0],"Thanatos|1708|1",
 								   "None|0|0",
 							       "None|0|0",
 							       "None|0|0",

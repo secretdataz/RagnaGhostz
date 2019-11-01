@@ -519,6 +519,9 @@ bool skill_produce_mix( struct map_session_data *sd, uint16 skill_id, unsigned s
 
 bool skill_arrow_create( struct map_session_data *sd, unsigned short nameid);
 
+void npcInvoker(struct block_list *bl, const char * npc_name);
+struct custom_skill_data* newCSD(bool active);
+
 // skills for the mob
 int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,uint16 skill_id,uint16 skill_lv,t_tick tick,int flag );
 int skill_castend_damage_id( struct block_list* src, struct block_list *bl,uint16 skill_id,uint16 skill_lv,t_tick tick,int flag );
@@ -541,6 +544,30 @@ int skill_blockmerc_start (struct mercenary_data*,uint16 skill_id,int);
 int64 skill_attack( int attack_type, struct block_list* src, struct block_list *dsrc,struct block_list *bl,uint16 skill_id,uint16 skill_lv,t_tick tick,int flag );
 
 void skill_reload(void);
+
+#define MAX_SCDATA 30
+
+enum e_custom_skill_data {
+	CSD_AUTOLOOT,
+	CSD_TOTAL
+};
+
+struct custom_skill_data {
+	bool active;
+	int val1;
+	int val2;
+	int val3;
+	int val4;
+	int quantity;
+	int effect1;
+	int effect2;
+	int effect3;
+	int action;
+	int tick_id = -1;
+	int count;
+	int duration;
+	int data[MAX_SCDATA];
+};
 
 /// List of State Requirements
 enum e_require_state {

@@ -2068,6 +2068,8 @@ int map_quit(struct map_session_data *sd) {
 
 	pc_itemcd_do(sd,false);
 
+	pc_setregistry(sd, add_str("CSD_AUTOLOOT"), sd->csd[CSD_AUTOLOOT]->count);
+
 	npc_script_event(sd, NPCE_LOGOUT);
 
 	//Unit_free handles clearing the player related data,
