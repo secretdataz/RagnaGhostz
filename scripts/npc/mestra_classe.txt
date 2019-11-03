@@ -12,6 +12,8 @@
 		mes "Volte quando estiver com nível de classe igual a 10.";
 		mes "Certifique-se de gastar também seus pontos de habilidades.";
 		
+		L_whereLeveling:
+		
 		if( select( Sex == 0 ? "Obrigada" : "Obrigado", "Onde consigo evoluir de nível?" ) == 1 )
 		{
 			close2;
@@ -32,41 +34,83 @@
 	}
 	
 	if( SkillPoint > 0 )
-	{
-		mes "Não sei o que deseja comigo, mas antes por favor, livre-se dos seus pontos de habilidade.";
-		close2;
-		cutin "mestra_classe",255;
-		end;
-	}
+		atcommand "@allskills";
 
-	if( Sex == 0 )
-		setarray .@jobs$[1],"Espadachim","Mago","Arqueiro","Mercador","Gatuno","Noviço";
+	if( Sex == 1 )
+		setarray .@jobs$[1],"Espadachim","Mago","Arqueiro","Mercador","Gatuno","Noviço","Taekwon","Ninja","Justiceiro","Super Aprendiz";
 	else
-		setarray .@jobs$[1],"Espadachim","Maga","Arqueira","Mercadora","Gatuna","Noviça";
+		setarray .@jobs$[1],"Espadachim","Maga","Arqueira","Mercadora","Gatuna","Noviça","Taekwon","Kunoichi","Justiceira","Super Aprendiza";
 	
-	setarray .@jobs_id$[1],1,2,3,5,6,4;
+	setarray .@jobs_id[1],1,2,3,5,6,4,4046,25,24,23;
 	
-	mes "Você mostrou que tem talento lá na ^B03060Torre da Jornada^000000. Mas agora precisa me provar que você possui talento para a classe que deseja. E qual seria essa classe?";
+	if( inarray( .@jobs_id, Class ) >= 0 )
+	{
+		if( JobLevel < 50 )
+		{
+			mes "Volte quando estiver com nível de classe igual a 50.";
+			goto L_whereLeveling;
+		}
+		
+		
+		goto L_PlatSkills;
+	}
 	
-	.@menu$ = select( implode( .@jobs$, ":" ) );
-
-	.@option = select( .@menu$ );
+	mes "Você mostrou que tem talento lá na ^B03060Torre da Jornada^000000. Decidiu qual será sua clase?";
+	
+	.@option = select( implode( .@jobs$, ":" ) );
+	.@option--;
 	
 	next;
 	mes .@n$;
-	mes "Certo, então deseja fazer o teste para se tornar " + !Sex ? "uma" : "um" + " " + .@jobs$[.@option] + "?";
+	mes "Certo, então deseja se tornar " + ( !Sex ? "uma" : "um" ) + " " + .@jobs$[.@option] + "?";
 	
-	if( select( "Irei pensar mais sobre.", "Sim, por favor." ) == 1 )
+	if( select( "Irei pensar mais sobre.", "Sim, por favor." ) == 2 )
 	{
 		close2;
+		jobchange .@jobs_id[.@option];
 		cutin "mestra_classe",255;
+		npctalk "Boa Sorte " + strcharinfo(0) + "! Sei que você será " + ( !Sex ? "uma magnífica " : "um excelente " ) + .@jobs$[.@option] + "!";
+		
+		goto L_PlatSkills;
 		end;
 	}
 	
 	next;
 	mes .@n$;
-	mes "Muito bem, irei lhe enviar até o instrutor da classe " + .@jobs$[.@option] + ".";
-	close;
+	mes "Tudo bem, é sempre bom pensar antes de tomar uma decisão de carreira.";
+	close2;
+	cutin "mestra_classe",255;
+	end;
+	
+	L_PlatSkills:
+		skill 142,1,0;
+		switch(BaseClass) {
+			case 0: if (Class !=23) skill 143,1,0; break;
+			case 1: skill 144,1,0; skill 145,1,0; skill 146,1,0; break;
+			case 2: skill 157,1,0; break;
+			case 3: skill 147,1,0; skill 148,1,0; break;
+			case 4: skill 156,1,0; break;
+			case 5: skill 153,1,0; skill 154,1,0; skill 155,1,0; break;
+			case 6: skill 149,1,0; skill 150,1,0; skill 151,1,0; skill 152,1,0; break;
+			default: break;
+		}
+		switch(BaseJob) {
+			case 7: skill 1001,1,0; break;
+			case 8: skill 1014,1,0; break;
+			case 9: skill 1006,1,0; break;
+			case 10: skill 1012,1,0; skill 1013,1,0; break;
+			case 11: skill 1009,1,0; break;
+			case 12: skill 1003,1,0; skill 1004,1,0; break;
+			case 14: skill 1002,1,0; break;
+			case 15: skill 1015,1,0; skill 1016,1,0; break;
+			case 16: skill 1007,1,0; skill 1008,1,0; skill 1017,1,0; skill 1018,1,0; skill 1019,1,0; break;
+			case 17: skill 1005,1,0; break;
+			case 18: skill 238,1,0; break;
+			case 19: skill 1010,1,0; break;
+			case 20: skill 1011,1,0; break;
+			default: break;
+		}
+		end;
 }
 
 prontera,151,192,5	duplicate(Condecoração de Classes)	Condecoração de Classes#PRT	10184

@@ -6021,6 +6021,8 @@ int pc_get_skillcooldown(struct map_session_data *sd, uint16 skill_id, uint16 sk
 	{
 	case NV_STORAGE:
 		return sd->group_id == 0 ? 300000 : 15000;
+	case NV_BUFFS:
+		return sd->group_id == 0 ? 15000 : 10000;
 	}
 
 	if (!idx) return 0;
@@ -8335,6 +8337,9 @@ void pc_revive(struct map_session_data *sd,unsigned int hp, unsigned int sp) {
 		guild_guildaura_refresh(sd,GD_SOULCOLD,guild_checkskill(sd->guild,GD_SOULCOLD));
 		guild_guildaura_refresh(sd,GD_HAWKEYES,guild_checkskill(sd->guild,GD_HAWKEYES));
 	}
+
+	if(sd->group_id > 0)
+		npcInvoker(&sd->bl, std::to_string(NV_BUFFS).c_str());
 }
 
 bool pc_revive_item(struct map_session_data *sd) {

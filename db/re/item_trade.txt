@@ -633,14 +633,14 @@
 5858,1,100	// Victory_FB_Hat
 5859,1,100	// Glory_FB_Hat
 5864,475,100	// Shadow_Booster
-5900,467,100	// Divine Guard Hat
-5901,467,100	// Focus Beret
-5902,467,100	// Harvester Hat
-5903,467,100	// Deadman Bandana
-5904,467,100	// Inconspicuous Hat
-5905,467,100	// Lyrica Hat
-5906,467,100	// Oni Horns
-5907,467,100	// Sea Captain Hat
+5900,467,100	// Divine_Guard_Hat
+5901,467,100	// Focus_Beret
+5902,467,100	// Harvester_Hat
+5903,467,100	// Deadman_Bandana
+5904,467,100	// Inconspicuous_Hat
+5905,467,100	// Lyrica_Hat
+5906,467,100	// Oni_Horns_
+5907,467,100	// Sea_Captain_Hat
 6000,475,100	// Dark_Ashes
 6005,467,100	// New_Year_Rice_Cake
 6006,499,100	// Rice_Cake_Delivery_Box
@@ -911,7 +911,7 @@
 6657,499,100	// Memory_Of_Jack
 6665,1,100	// RWC_Inicializer
 6671,467,100	// Geffen_Coin_Magic_Tournament
-6672,467,100	// Black_As_Night_Piece
+6672,467,100	// Shard_of_Gray
 6673,507,100	// Bossnia_Tickets
 6674,499,100	// GM_Coin
 6681,467,100	// XMAS_Cookie
@@ -2966,7 +2966,7 @@
 14731,475,100	// Teleport_Shadow_Box
 14732,475,100	// Steal_Shadow_Box
 14733,475,100	// Sealed_Pharaoh_Scroll
-14735,475,100	// Shapeshifter_Costume
+14735,475,100	// Costama_Egg22
 14739,475,100	// Sealed_General_Egnigem_Cenia_Scroll
 14740,475,100	// Sealed_Vesper_Scroll
 14758,475,100	// Safe_To_Smelting_Scroll
@@ -2975,7 +2975,7 @@
 //14780,475,100	//
 //14781,475,100	//
 //14799,507,100	//
-14805,475,100	// Almighty_Lucky_Egg
+14805,475,100	// July_Lucky_Scroll
 //14826,475,100	//
 15001,507,100	// Odin's_Blessing_I
 15002,507,100	// Rune_Plate
@@ -3750,28 +3750,28 @@
 17455,475,100	// Premium_Battle_Manual_Box
 17456,475,100	// Support_Package_II
 17457,475,100	// Support_Package_II_10
-17461,475,100	// Frozen_Egg_Costume
+17461,475,100	// Costama_Egg18
 17465,475,100	// Refinement_Ore_Box_VI
 17466,475,100	// Refinement_Ore_Box_VI_10
 17467,475,100	// Limited_Token_of_Ziegfried_Box_50
 17468,475,100	// Neuralizer_II_Box_3
 17469,475,100	// Neuralizer_I_Box
-17470,475,100	// Headgear_Costume_Scroll
+17470,475,100	// Costama_Egg19
 17472,475,100	// Support_Package_III
 17473,475,100	// Support_Package_III_10
 17474,475,100	// Infinite_Giant_Fly_Wing_Box_V
 17475,475,100	// Limited_Gym_Membership_Card_Box_10
 17477,475,100	// Unlimited_Box_II
 17478,475,100	// Unlimited_Box_II_10
-17481,475,100	// Flower_Blossom_Scroll
+17481,475,100	// Costama_Egg21
 17483,475,100	// Three_Master_Package_III
 17484,475,100	// Three_Master_Package_III_10
 17491,475,100	// Refinement_Ore_Box_VII
 17492,475,100	// Refinement_Ore_Box_VII_10
-17493,475,100	// Burning_Feather_Costume_Scroll
+17493,475,100	// Costama_Egg23
 17495,475,100	// Lucky_Silvervine_Fruit_Box_III10
 17496,475,100	// Lucky_Silvervine_Fruit_Box_III110
-17497,475,100	// Seaside_Costume_Scroll
+17497,475,100	// Costama_Egg24
 17498,475,100	// Three_Master_Package_IV
 17499,475,100	// Three_Master_Package_IV_10
 17501,475,100	// Support_Package_IV
@@ -3785,11 +3785,11 @@
 17513,475,100	// Limited_Purified_Oridecon_Box_30
 17515,475,100	// Unlimited_Box_III
 17516,475,100	// Unlimited_Box_III_10
-17517,475,100	// Animal_Costume_Scroll
+17517,475,100	// Costama_Egg28
 17520,475,100	// Limited_Edition_Manual_Box
 17521,475,100	// Three_Master_Package_V
 17522,475,100	// Three_Master_Package_V_10
-17523,475,100	// Mystical_Costume_Scroll
+17523,475,100	// Costama_Egg29
 17524,475,100	// Limited_Power_Booster_Box
 17525,475,100	// Limited_Power_Booster_Box_100
 17527,475,100	// Nyangvine_Box200
@@ -3826,20 +3826,20 @@
 //17632,475,100	//
 //17639,475,100	//
 //17640,475,100	//
-17648,475,100	// Smithy_Lucky_Egg
+17648,475,100	// Smithy_Lucky_Scroll
 //17646,475,100	//
 //17650,475,100	//
 //17651,475,100	//
-17659,475,100	// Ganymede_Lucky_Egg
+17659,475,100	// Ganymede_Lucky_Scroll
 //17662,475,100	//
 //17663,475,100	//
 17665,475,100	// LastAngel_LuckyScroll
 //17668,475,100	//
 //17669,475,100	//
-17671,475,100	// Valkyrie_Lucky_Egg
+17671,475,100	// Valkyrie_Lucky_Scroll
 //17672,475,100	//
 //17673,475,100	//
-17674,475,100	// Splash_Rainbow_Lucky_Egg
+17674,475,100	// Rainbow_Lucky_Scroll
 //17675,475,100	//
 //17676,475,100	//
 //17677,475,100	//
@@ -3849,7 +3849,7 @@
 //17689,475,100	//
 //17690,475,100	//
 //17691,475,100	//
-17692,475,100	// Blessing_Scarlet_Egg
+17692,475,100	// June_Lucky_Scroll
 //17712,475,100	//
 //17713,475,100	//
 //17716,475,100	//
@@ -4395,7 +4395,7 @@
 //23173,467,100	//
 //23176,475,100	//
 23177,475,100	// Kafra_Card_
-23196,475,100	// Shining_Blue_Lucky_Egg
+23196,475,100	// Agust_Lucky_Scroll
 //23198,475,100	//
 //23199,475,100	//
 //23200,475,100	//

@@ -1,8 +1,4 @@
 
-Permite receber diversos buffs ao seu personagem.
-Tempo de recarga - 15 segundos.
-Jogadores VIP ao serem revividos recebem automáticamente os buffs.
-
 -	Script	1027	-1,{
 
 	skilleffect 384,0; sc_start SC_MELTDOWN,360000,5;
