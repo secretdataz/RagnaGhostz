@@ -3,11 +3,11 @@
 
 	if( !NV_PROVOCATION )
 	{
-		.@n$ = "[^A52A2AProvoca√ß√£o^000000 - Configura√ß√£o]";
+		.@n$ = "[^A52A2AProvocaÁ„o^000000 - ConfiguraÁ„o]";
 		
 		mes .@n$;
-		mes "Configure suas tr√™s fases de provoca√ß√£o.";
-		mes "M√°ximo de Caracteres: 40";
+		mes "Configure suas trÍs fases de provocaÁ„o.";
+		mes "M·ximo de Caracteres: 40";
 		mes " ";
 		
 		while( getstrlen( .@text1$ ) < 1 || getstrlen( .@text1$ ) > 40 )
@@ -29,13 +29,13 @@
 		mes .@n$;
 		mes "Confirmar suas frases?";
 		mes " ";
-		mes "^FF0000ATEN√á√ÉO^000000: Ap√≥s confirmar, n√£o ser√° mais poss√≠vel alterar elas!";
+		mes "^FF0000ATEN«√O^000000: ApÛs confirmar, n„o ser· mais possÌvel alterar elas!";
 		mes " ";
 		mes "Frase 1: " + .@text1$;
 		mes "Frase 2: " + .@text2$;
 		mes "Frase 3: " + .@text2$;
 		
-		if( select( "Refazer:Confirmar" == 1 ) ) close;
+		if( select( "Refazer:Confirmar" ) == 1 ) close;
 		
 		NV_PROVOC1$ = .@text1$;
 		NV_PROVOC2$ = .@text2$;

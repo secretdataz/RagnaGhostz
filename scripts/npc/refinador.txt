@@ -1,0 +1,116 @@
+
+prontera,192,172,5	Script	Refinador	63,{
+
+	atcommand "@repairall";
+	
+	.@max_refine = 9;
+	.@max_refine_vip = 15;
+	
+	.@n$ = "[^A52A2ARefinador^000000]";
+	
+	mes .@n$;
+	mes "Deseja refinar algum item?";
+	mes " ";
+	mes "Máximo de Refinamento: " + .@max_refine;
+	mes "Máximo de Refinamento VIP: " + .@max_refine_vip;
+	
+	.@max_refine = getgroupid() == 0 ? .@max_refine : .@max_refine_vip;
+	
+	setarray .@equips[1],EQI_HEAD_TOP,EQI_HEAD_MID,EQI_HEAD_LOW,EQI_ARMOR,EQI_HAND_L,EQI_HAND_R,EQI_GARMENT,EQI_SHOES,EQI_ACC_L,EQI_ACC_R;
+	setarray .@color$[1],"^A52A2A","^228B22","^483D8B","^FFA500","^DAA520","^6B8E23","^A020F0","^2F4F4F","^698B69","^CD6090";
+	
+	
+	switch( select( "Itens Equipados.:Itens no Inventário." ) )
+	{
+		case 1:
+			.@mo = 1;
+			
+			for( .@i = 1; .@i < getarraysize( .@equips ); .@i++ )
+			{
+				if( getequipid( .@equips[.@i] ) == -1 ||
+				    !getequipisenableref( .@equips[.@i] ) ) continue;
+				
+				.@temAlgo = 1;
+				
+				.@actualRefine = getequiprefinerycnt( .@equips[.@i] );
+				
+				.@item_place[.@mo] = .@equips[.@i];
+				.@item_name$[.@mo] = sprintf( "%s%s^000000 %s", .@color$[.@i], getequipname( .@equips[.@i] ), ( .@actualRefine > 0 ? "(+" + .@actualRefine + ")" : "" ) );
+				
+				.@item_name_talk$[.@mo] = getequipname( .@equips[.@i] );
+				
+				.@menu$ += "@" + .@item_name$[.@mo] + ":";
+				
+				if( getgroupid() == 99 )
+				{
+					dispbottom ".@mo == " + .@mo;
+					dispbottom ".@item_place[.@mo] == " + .@item_place[.@mo];
+					dispbottom ".@item_name$[.@mo] == " + .@item_name$[.@mo];
+					dispbottom "-----------------";
+				}
+				
+				.@mo++;
+			}
+			
+			if( !.@temAlgo )
+			{
+				next;
+				mes .@n$;
+				mes "Parece que não há nada que eu possa refinar.";
+				close;
+			}
+
+			next;
+			mes .@n$;
+			mes "Selecione qual item deseja refinar.";
+			
+			.@option = select( .@menu$ );
+			
+			.@place = .@item_place[.@option];
+			
+			.@actual_refine = getequiprefinerycnt( .@place );
+			
+			if( getgroupid() == 99 )
+				dispbottom ".@option = " + .@option;
+			
+			next;
+			mes .@n$;
+			mes "Certo, deseja refinar ou desrefinar o item " + .@item_name$[.@option] + " por quanto?";
+			
+			input .@refine;
+			
+			if( .@refine > 0 && ( ( .@actual_refine + .@refine ) > .@max_refine ) )
+			{
+				next;
+				mes .@n$;
+				mes "Você faltou a aula de matemática? O máximo que posso refinar seus itens é até " + .@max_refine + "!";
+				close;
+			}
+			
+			if( .@refine > 0 )
+				successrefitem .@place,.@refine;
+			else
+				downrefitem .@place,.@refine * -1;
+			
+			if( getgroupid() == 99 )
+			{
+				dispbottom ".@actual_refine: " + .@actual_refine;
+				dispbottom ".@max_refine: " + .@max_refine;
+				dispbottom ".@refine: " + .@refine;
+			}
+			
+			npctalk "Muito bem " + strcharinfo(0) + ", espero que goste do refinamento do seu " + .@item_name_talk$[.@option] + ".";
+			end;
+			
+		case 2:
+			next;
+			mes .@n$;
+			mes "Certo, por quanto devo refinar todos os itens do seu inventário?";
+			
+			input .@refine;
+			
+			npctalk "Consegui refinar " + refinventory( .@refine ) + " items em seu inventário, " + strcharinfo(0) + "!";
+			end;
+	}
+
+}

@@ -1097,7 +1097,7 @@ function	script	F_Torre_Monstros	{
 		
 		if( atoi(.@mobs$[2]) == 0 ) continue;
 		
-		.@qnt = ( 'ISALONE && .@level != 5 && ( .@i == 0 || .@i == 6 )  ) ? ( atoi(.@mobs$[2]) / 2 ) : atoi(.@mobs$[2]);
+		.@qnt = ( 'ISALONE && .@torre_id != 5 && ( .@i == 0 || .@i == 6 )  ) ? ( atoi(.@mobs$[2]) / 2 ) : atoi(.@mobs$[2]);
 		
 		areamonster .@map$,atoi(.@x_y$[0]),atoi(.@x_y$[1]),atoi(.@x_y$[2]),atoi(.@x_y$[3])," ",atoi(.@mobs$[1]),.@qnt,.@label$;
 	}

@@ -11,7 +11,15 @@
 0,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 
 //Swordman
-1,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+1,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+1,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+1,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+1,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+1,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+1,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+1,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+1,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+1,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 1,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 1,2,10,0,0,0,0,0,0,0,0,0,0 //SM_SWORD#Sword Mastery#
 1,3,10,2,1,0,0,0,0,0,0,0,0 //SM_TWOHAND#Two-Handed Sword Mastery#
@@ -25,7 +33,15 @@
 1,146,1,0,0,0,0,0,0,0,0,0,0 //SM_AUTOBERSERK#Auto Berserk#
 1,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Magician
-2,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+2,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+2,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+2,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+2,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+2,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+2,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+2,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+2,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+2,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 2,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 2,9,10,0,0,0,0,0,0,0,0,0,0 //MG_SRECOVERY#Increase SP Recovery#
 2,10,1,0,0,0,0,0,0,0,0,0,0 //MG_SIGHT#Sight#
@@ -43,7 +59,15 @@
 2,157,1,0,0,0,0,0,0,0,0,0,0 //MG_ENERGYCOAT#Energy Coat#
 2,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Archer
-3,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+3,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+3,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+3,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+3,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+3,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+3,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+3,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+3,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+3,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 3,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 3,43,10,0,0,0,0,0,0,0,0,0,0 //AC_OWL#Owl's Eye#
 3,44,10,43,3,0,0,0,0,0,0,0,0 //AC_VULTURE#Vulture's Eye#
@@ -54,7 +78,15 @@
 3,148,1,0,0,0,0,0,0,0,0,0,0 //AC_CHARGEARROW#Arrow Repel#
 3,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Acolyte
-4,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4,22,10,0,0,0,0,0,0,0,0,0,0 //AL_DP#Divine Protection#
 4,23,10,22,3,0,0,0,0,0,0,0,0 //AL_DEMONBANE#Demon Bane#
@@ -73,7 +105,15 @@
 4,156,1,0,0,0,0,0,0,0,0,0,0 //AL_HOLYLIGHT#Holy Light#
 4,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Merchant
-5,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+5,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+5,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+5,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+5,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+5,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+5,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+5,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+5,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+5,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 5,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 5,36,10,0,0,0,0,0,0,0,0,0,0 //MC_INCCARRY#Enlarge Weight Limit#
 5,37,10,36,3,0,0,0,0,0,0,0,0 //MC_DISCOUNT#Discount#
@@ -89,7 +129,15 @@
 5,2535,1,41,1,0,0,0,0,0,0,0,0 //ALL_BUYING_STORE#Open Buying Store#
 5,2544,1,0,0,0,0,0,0,0,0,0,0 //MC_CARTDECORATE#Cart Decorate#
 //Thief
-6,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+6,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+6,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+6,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+6,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+6,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+6,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+6,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+6,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+6,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 6,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 6,48,10,0,0,0,0,0,0,0,0,0,0 //TF_DOUBLE#Double Attack#
 6,49,10,0,0,0,0,0,0,0,0,0,0 //TF_MISS#Improve Dodge#
@@ -103,7 +151,15 @@
 6,152,1,0,0,0,0,0,0,0,0,0,0 //TF_THROWSTONE#Stone Fling#
 6,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Knight
-7,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+7,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+7,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+7,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+7,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+7,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+7,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+7,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+7,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+7,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 7,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 7,2,10,0,0,0,0,0,0,0,0,0,0 //SM_SWORD#Sword Mastery#
 7,3,10,2,1,0,0,0,0,0,0,0,0 //SM_TWOHAND#Two-Handed Sword Mastery#
@@ -129,7 +185,15 @@
 7,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 7,495,1,60,10,0,0,0,0,0,0,0,0	//KN_ONEHAND#Onehand Quicken#
 //Priest
-8,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+8,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+8,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+8,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+8,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+8,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+8,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+8,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+8,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+8,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 8,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 8,22,10,0,0,0,0,0,0,0,0,0,0 //AL_DP#Divine Protection#
 8,23,10,22,3,0,0,0,0,0,0,0,0 //AL_DEMONBANE#Demon Bane#
@@ -167,7 +231,15 @@
 8,1014,1,0,0,0,0,0,0,0,0,0,0 //PR_REDEMPTIO#Redemptio#
 8,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Wizard
-9,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+9,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+9,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+9,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+9,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+9,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+9,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+9,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+9,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+9,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 9,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 9,9,10,0,0,0,0,0,0,0,0,0,0 //MG_SRECOVERY#Increase SP Recovery#
 9,10,1,0,0,0,0,0,0,0,0,0,0 //MG_SIGHT#Sight#
@@ -200,7 +272,15 @@
 9,1006,1,0,0,0,0,0,0,0,0,0,0 //WZ_SIGHTBLASTER#Sight Blaster#
 9,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Blacksmith
-10,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+10,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+10,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+10,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+10,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+10,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+10,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+10,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+10,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+10,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 10,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 10,36,10,0,0,0,0,0,0,0,0,0,0 //MC_INCCARRY#Enlarge Weight Limit#
 10,37,10,36,3,0,0,0,0,0,0,0,0 //MC_DISCOUNT#Discount#
@@ -240,7 +320,15 @@
 10,2535,1,41,1,0,0,0,0,0,0,0,0 //ALL_BUYING_STORE#Open Buying Store#
 10,2544,1,0,0,0,0,0,0,0,0,0,0 //MC_CARTDECORATE#Cart Decorate#
 //Hunter
-11,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+11,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+11,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+11,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+11,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+11,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+11,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+11,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+11,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+11,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 11,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 11,43,10,0,0,0,0,0,0,0,0,0,0 //AC_OWL#Owl's Eye#
 11,44,10,43,3,0,0,0,0,0,0,0,0 //AC_VULTURE#Vulture's Eye#
@@ -270,7 +358,15 @@
 11,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 11,499,1,46,10,0,0,0,0,0,0,0,0	//HT_POWER#Beast Strafing#
 //Assassin
-12,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+12,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+12,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+12,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+12,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+12,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+12,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+12,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+12,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+12,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 12,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 12,48,10,0,0,0,0,0,0,0,0,0,0 //TF_DOUBLE#Double Attack#
 12,49,10,0,0,0,0,0,0,0,0,0,0 //TF_MISS#Improve Dodge#
@@ -296,7 +392,15 @@
 12,1004,1,0,0,0,0,0,0,0,0,0,0 //AS_VENOMKNIFE#Throw Venom Knife#
 12,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Knight(Peco)
-13,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+13,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+13,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+13,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+13,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+13,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+13,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+13,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+13,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+13,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 13,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 13,2,10,0,0,0,0,0,0,0,0,0,0 //SM_SWORD#Sword Mastery#
 13,3,10,2,1,0,0,0,0,0,0,0,0 //SM_TWOHAND#Two-Handed Sword Mastery#
@@ -322,7 +426,15 @@
 13,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 13,495,1,60,10,0,0,0,0,0,0,0,0	//KN_ONEHAND#Onehand Quicken#
 //Crusader
-14,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+14,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+14,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+14,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+14,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+14,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+14,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+14,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+14,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+14,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 14,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 14,2,10,0,0,0,0,0,0,0,0,0,0 //SM_SWORD#Sword Mastery#
 14,3,10,2,1,0,0,0,0,0,0,0,0 //SM_TWOHAND#Two-Handed Sword Mastery#
@@ -355,7 +467,15 @@
 14,1002,1,0,0,0,0,0,0,0,0,0,0 //CR_SHRINK#Shrink#
 14,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Monk
-15,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+15,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+15,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+15,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+15,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+15,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+15,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+15,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+15,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+15,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 15,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 15,22,10,0,0,0,0,0,0,0,0,0,0 //AL_DP#Divine Protection#
 15,23,10,22,3,0,0,0,0,0,0,0,0 //AL_DEMONBANE#Demon Bane#
@@ -391,7 +511,15 @@
 15,1016,1,0,0,0,0,0,0,0,0,0,0 //MO_BALKYOUNG#Ki Explosion#
 15,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Sage
-16,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+16,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+16,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+16,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+16,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+16,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+16,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+16,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+16,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+16,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 16,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 16,9,10,0,0,0,0,0,0,0,0,0,0 //MG_SRECOVERY#Increase SP Recovery#
 16,10,1,0,0,0,0,0,0,0,0,0,0 //MG_SIGHT#Sight#
@@ -434,7 +562,15 @@
 16,1019,1,0,0,0,0,0,0,0,0,0,0 //SA_ELEMENTWIND#Elemental Change Wind#
 16,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Rogue
-17,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+17,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+17,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+17,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+17,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+17,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+17,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+17,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+17,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+17,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 17,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 17,48,10,0,0,0,0,0,0,0,0,0,0 //TF_DOUBLE#Double Attack#
 17,49,10,0,0,0,0,0,0,0,0,0,0 //TF_MISS#Improve Dodge#
@@ -469,7 +605,15 @@
 17,1005,1,0,0,0,0,0,0,0,0,0,0 //RG_CLOSECONFINE#Close Confine#
 17,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Alchemist
-18,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+18,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+18,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+18,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+18,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+18,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+18,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+18,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+18,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+18,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 18,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 18,36,10,0,0,0,0,0,0,0,0,0,0 //MC_INCCARRY#Enlarge Weight Limit#
 18,37,10,36,3,0,0,0,0,0,0,0,0 //MC_DISCOUNT#Discount#
@@ -505,7 +649,15 @@
 18,2535,1,41,1,0,0,0,0,0,0,0,0 //ALL_BUYING_STORE#Open Buying Store#
 18,2544,1,0,0,0,0,0,0,0,0,0,0 //MC_CARTDECORATE#Cart Decorate#
 //Bard
-19,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+19,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+19,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+19,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+19,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+19,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+19,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+19,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+19,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+19,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 19,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 19,43,10,0,0,0,0,0,0,0,0,0,0 //AC_OWL#Owl's Eye#
 19,44,10,43,3,0,0,0,0,0,0,0,0 //AC_VULTURE#Vulture's Eye#
@@ -535,7 +687,15 @@
 19,1010,1,0,0,0,0,0,0,0,0,0,0 //BA_PANGVOICE#Pang Voice#
 19,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Dancer
-20,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+20,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+20,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+20,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+20,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+20,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+20,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+20,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+20,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+20,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 20,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 20,43,10,0,0,0,0,0,0,0,0,0,0 //AC_OWL#Owl's Eye#
 20,44,10,43,3,0,0,0,0,0,0,0,0 //AC_VULTURE#Vulture's Eye#
@@ -565,7 +725,15 @@
 20,1011,1,0,0,0,0,0,0,0,0,0,0 //DC_WINKCHARM#Wink of Charm#
 20,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Crusader(Peco)
-21,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+21,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+21,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+21,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+21,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+21,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+21,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+21,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+21,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+21,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 21,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 21,2,10,0,0,0,0,0,0,0,0,0,0 //SM_SWORD#Sword Mastery#
 21,3,10,2,1,0,0,0,0,0,0,0,0 //SM_TWOHAND#Two-Handed Sword Mastery#
@@ -598,7 +766,15 @@
 21,1002,1,0,0,0,0,0,0,0,0,0,0 //CR_SHRINK#Shrink#
 21,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //WeddingClass
-22,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+22,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+22,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+22,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+22,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+22,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+22,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+22,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+22,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+22,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 22,334,1,0,0,0,0,0,0,0,0,0,0 //WE_MALE#I Will Protect You#
 22,335,1,0,0,0,0,0,0,0,0,0,0 //WE_FEMALE#I Look up to You#
 22,336,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLPARTNER#I miss You#
@@ -606,7 +782,15 @@
 22,5063,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLALLFAMILY#Call All Family#
 22,5064,1,0,0,0,0,0,0,0,0,0,0 //WE_ONEFOREVER#One Forever#
 //SuperNovice
-23,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+23,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+23,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+23,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+23,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+23,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+23,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+23,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+23,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+23,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 23,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 23,2,10,0,0,0,0,0,0,0,0,0,0 //SM_SWORD#Sword Mastery#
 23,4,10,0,0,0,0,0,0,0,0,0,0 //SM_RECOVERY#Increase HP Recovery#
@@ -661,7 +845,15 @@
 23,2535,1,41,1,0,0,0,0,0,0,0,0 //ALL_BUYING_STORE#Open Buying Store#
 23,2544,1,0,0,0,0,0,0,0,0,0,0 //MC_CARTDECORATE#Cart Decorate#
 //Gunslinger
-24,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+24,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+24,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+24,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+24,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+24,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+24,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+24,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+24,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+24,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 24,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 24,500,5,0,0,0,0,0,0,0,0,0,0 //GS_GLITTERING#Flip the Coin#
 24,501,1,500,1,0,0,0,0,0,0,0,0 //GS_FLING#Fling#
@@ -687,7 +879,15 @@
 24,521,10,520,7,0,0,0,0,0,0,0,0 //GS_GROUNDDRIFT#Ground Drift#
 24,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Ninja
-25,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+25,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+25,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+25,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+25,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+25,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+25,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+25,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+25,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+25,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 25,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 25,522,10,0,0,0,0,0,0,0,0,0,0 //NJ_TOBIDOUGU#NJ_TOBIDOUGU#
 25,523,10,522,1,0,0,0,0,0,0,0,0 //NJ_SYURIKEN#NJ_SYURIKEN#
@@ -714,12 +914,28 @@
 25,544,10,522,7,530,5,543,1,0,0,0,0 //NJ_ISSEN#NJ_ISSEN#
 25,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //NoviceHigh
-4001,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4001,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4001,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4001,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4001,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4001,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4001,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4001,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4001,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4001,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4001,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4001,143,1,0,0,0,0,0,0,0,0,0,0 //NV_TRICKDEAD#Act Dead#
 4001,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //SwordmanHigh
-4002,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4002,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4002,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4002,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4002,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4002,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4002,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4002,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4002,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4002,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4002,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4002,2,10,0,0,0,0,0,0,0,0,0,0 //SM_SWORD#Sword Mastery#
 4002,3,10,2,1,0,0,0,0,0,0,0,0 //SM_TWOHAND#Two-Handed Sword Mastery#
@@ -733,7 +949,15 @@
 4002,146,1,0,0,0,0,0,0,0,0,0,0 //SM_AUTOBERSERK#Auto Berserk#
 4002,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //MageHigh
-4003,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4003,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4003,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4003,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4003,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4003,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4003,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4003,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4003,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4003,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4003,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4003,9,10,0,0,0,0,0,0,0,0,0,0 //MG_SRECOVERY#Increase SP Recovery#
 4003,10,1,0,0,0,0,0,0,0,0,0,0 //MG_SIGHT#Sight#
@@ -751,7 +975,15 @@
 4003,157,1,0,0,0,0,0,0,0,0,0,0 //MG_ENERGYCOAT#Energy Coat#
 4003,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //ArcherHigh
-4004,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4004,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4004,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4004,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4004,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4004,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4004,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4004,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4004,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4004,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4004,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4004,43,10,0,0,0,0,0,0,0,0,0,0 //AC_OWL#Owl's Eye#
 4004,44,10,43,3,0,0,0,0,0,0,0,0 //AC_VULTURE#Vulture's Eye#
@@ -762,7 +994,15 @@
 4004,148,1,0,0,0,0,0,0,0,0,0,0 //AC_CHARGEARROW#Arrow Repel#
 4004,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //AcolyteHigh
-4005,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4005,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4005,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4005,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4005,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4005,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4005,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4005,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4005,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4005,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4005,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4005,22,10,0,0,0,0,0,0,0,0,0,0 //AL_DP#Divine Protection#
 4005,23,10,22,3,0,0,0,0,0,0,0,0 //AL_DEMONBANE#Demon Bane#
@@ -781,7 +1021,15 @@
 4005,156,1,0,0,0,0,0,0,0,0,0,0 //AL_HOLYLIGHT#Holy Light#
 4005,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //MerchantHigh
-4006,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4006,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4006,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4006,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4006,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4006,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4006,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4006,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4006,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4006,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4006,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4006,36,10,0,0,0,0,0,0,0,0,0,0 //MC_INCCARRY#Enlarge Weight Limit#
 4006,37,10,36,3,0,0,0,0,0,0,0,0 //MC_DISCOUNT#Discount#
@@ -797,7 +1045,15 @@
 4006,2535,1,41,1,0,0,0,0,0,0,0,0 //ALL_BUYING_STORE#Open Buying Store#
 4006,2544,1,0,0,0,0,0,0,0,0,0,0 //MC_CARTDECORATE#Cart Decorate#
 //ThiefHigh
-4007,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4007,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4007,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4007,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4007,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4007,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4007,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4007,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4007,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4007,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4007,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4007,48,10,0,0,0,0,0,0,0,0,0,0 //TF_DOUBLE#Double Attack#
 4007,49,10,0,0,0,0,0,0,0,0,0,0 //TF_MISS#Improve Dodge#
@@ -811,7 +1067,15 @@
 4007,152,1,0,0,0,0,0,0,0,0,0,0 //TF_THROWSTONE#Stone Fling#
 4007,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //LordKnight
-4008,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4008,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4008,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4008,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4008,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4008,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4008,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4008,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4008,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4008,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4008,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4008,2,10,0,0,0,0,0,0,0,0,0,0 //SM_SWORD#Sword Mastery#
 4008,3,10,2,1,0,0,0,0,0,0,0,0 //SM_TWOHAND#Two-Handed Sword Mastery#
@@ -845,7 +1109,15 @@
 4008,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 4008,495,1,60,10,0,0,0,0,0,0,0,0	//KN_ONEHAND#Onehand Quicken#
 //HighPriest
-4009,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4009,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4009,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4009,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4009,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4009,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4009,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4009,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4009,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4009,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4009,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4009,22,10,0,0,0,0,0,0,0,0,0,0 //AL_DP#Divine Protection#
 4009,23,10,22,3,0,0,0,0,0,0,0,0 //AL_DEMONBANE#Demon Bane#
@@ -887,7 +1159,15 @@
 4009,481,5,65,10,23,10,0,0,0,0,0,0 //HP_MANARECHARGE#Mana Recharge#
 4009,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //HighWizard
-4010,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4010,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4010,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4010,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4010,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4010,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4010,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4010,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4010,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4010,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4010,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4010,9,10,0,0,0,0,0,0,0,0,0,0 //MG_SRECOVERY#Increase SP Recovery#
 4010,10,1,0,0,0,0,0,0,0,0,0,0 //MG_SIGHT#Sight#
@@ -925,7 +1205,15 @@
 4010,484,5,365,1,366,10,92,1,0,0,0,0 //HW_GRAVITATION#Gravitation#
 4010,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Whitesmith
-4011,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4011,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4011,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4011,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4011,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4011,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4011,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4011,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4011,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4011,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4011,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4011,36,10,0,0,0,0,0,0,0,0,0,0 //MC_INCCARRY#Enlarge Weight Limit#
 4011,37,10,36,3,0,0,0,0,0,0,0,0 //MC_DISCOUNT#Discount#
@@ -973,7 +1261,15 @@
 4011,2535,1,41,1,0,0,0,0,0,0,0,0 //ALL_BUYING_STORE#Open Buying Store#
 4011,2544,1,0,0,0,0,0,0,0,0,0,0 //MC_CARTDECORATE#Cart Decorate#
 //Sniper
-4012,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4012,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4012,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4012,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4012,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4012,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4012,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4012,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4012,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4012,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4012,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4012,43,10,0,0,0,0,0,0,0,0,0,0 //AC_OWL#Owl's Eye#
 4012,44,10,43,3,0,0,0,0,0,0,0,0 //AC_VULTURE#Vulture's Eye#
@@ -1007,7 +1303,15 @@
 4012,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 4012,499,1,46,10,0,0,0,0,0,0,0,0	//HT_POWER#Beast Strafing#
 //AssassinCross
-4013,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4013,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4013,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4013,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4013,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4013,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4013,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4013,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4013,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4013,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4013,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4013,48,10,0,0,0,0,0,0,0,0,0,0 //TF_DOUBLE#Double Attack#
 4013,49,10,0,0,0,0,0,0,0,0,0,0 //TF_MISS#Improve Dodge#
@@ -1038,7 +1342,15 @@
 4013,407,1,52,10,53,1,138,5,0,0,0,0 //ASC_CDP#Create Deadly Poison#
 4013,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //LordKnight(Peco)
-4014,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4014,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4014,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4014,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4014,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4014,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4014,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4014,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4014,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4014,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4014,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4014,2,10,0,0,0,0,0,0,0,0,0,0 //SM_SWORD#Sword Mastery#
 4014,3,10,2,1,0,0,0,0,0,0,0,0 //SM_TWOHAND#Two-Handed Sword Mastery#
@@ -1072,7 +1384,15 @@
 4014,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 4014,495,1,60,10,0,0,0,0,0,0,0,0	//KN_ONEHAND#Onehand Quicken#
 //Paladin
-4015,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4015,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4015,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4015,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4015,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4015,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4015,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4015,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4015,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4015,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4015,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4015,2,10,0,0,0,0,0,0,0,0,0,0 //SM_SWORD#Sword Mastery#
 4015,3,10,2,1,0,0,0,0,0,0,0,0 //SM_TWOHAND#Two-Handed Sword Mastery#
@@ -1109,7 +1429,15 @@
 4015,480,5,251,5,0,0,0,0,0,0,0,0 //PA_SHIELDCHAIN#Shield Chain#
 4015,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Champion
-4016,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4016,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4016,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4016,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4016,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4016,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4016,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4016,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4016,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4016,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4016,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4016,22,10,0,0,0,0,0,0,0,0,0,0 //AL_DP#Divine Protection#
 4016,23,10,22,3,0,0,0,0,0,0,0,0 //AL_DEMONBANE#Demon Bane#
@@ -1149,7 +1477,15 @@
 4016,401,1,270,5,0,0,0,0,0,0,0,0 //CH_SOULCOLLECT#Hyper Spirit Sphere#
 4016,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Professor
-4017,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4017,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4017,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4017,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4017,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4017,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4017,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4017,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4017,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4017,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4017,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4017,9,10,0,0,0,0,0,0,0,0,0,0 //MG_SRECOVERY#Increase SP Recovery#
 4017,10,1,0,0,0,0,0,0,0,0,0,0 //MG_SIGHT#Sight#
@@ -1200,7 +1536,15 @@
 4017,482,5,279,1,0,0,0,0,0,0,0,0 //PF_DOUBLECASTING#Double Casting#
 4017,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Stalker
-4018,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4018,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4018,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4018,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4018,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4018,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4018,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4018,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4018,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4018,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4018,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4018,48,10,0,0,0,0,0,0,0,0,0,0 //TF_DOUBLE#Double Attack#
 4018,49,10,0,0,0,0,0,0,0,0,0,0 //TF_MISS#Improve Dodge#
@@ -1239,7 +1583,15 @@
 4018,476,5,215,5,216,5,217,5,218,5,0,0 //ST_FULLSTRIP#Divest All#
 4018,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Creator
-4019,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4019,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4019,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4019,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4019,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4019,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4019,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4019,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4019,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4019,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4019,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4019,36,10,0,0,0,0,0,0,0,0,0,0 //MC_INCCARRY#Enlarge Weight Limit#
 4019,37,10,36,3,0,0,0,0,0,0,0,0 //MC_DISCOUNT#Discount#
@@ -1281,7 +1633,15 @@
 4019,2535,1,41,1,0,0,0,0,0,0,0,0 //ALL_BUYING_STORE#Open Buying Store#
 4019,2544,1,0,0,0,0,0,0,0,0,0,0 //MC_CARTDECORATE#Cart Decorate#
 //Clown
-4020,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4020,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4020,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4020,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4020,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4020,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4020,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4020,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4020,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4020,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4020,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4020,43,10,0,0,0,0,0,0,0,0,0,0 //AC_OWL#Owl's Eye#
 4020,44,10,43,3,0,0,0,0,0,0,0,0 //AC_VULTURE#Vulture's Eye#
@@ -1317,7 +1677,15 @@
 4020,489,5,45,10,317,3,0,0,0,0,0,0 //CG_TAROTCARD#Tarot Card of Fate#
 4020,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Gypsy
-4021,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4021,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4021,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4021,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4021,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4021,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4021,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4021,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4021,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4021,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4021,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4021,43,10,0,0,0,0,0,0,0,0,0,0 //AC_OWL#Owl's Eye#
 4021,44,10,43,3,0,0,0,0,0,0,0,0 //AC_VULTURE#Vulture's Eye#
@@ -1353,7 +1721,15 @@
 4021,489,5,45,10,325,3,0,0,0,0,0,0 //CG_TAROTCARD#Tarot Card of Fate#
 4021,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Paladin(Peco)
-4022,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4022,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4022,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4022,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4022,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4022,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4022,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4022,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4022,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4022,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4022,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4022,2,10,0,0,0,0,0,0,0,0,0,0 //SM_SWORD#Sword Mastery#
 4022,3,10,2,1,0,0,0,0,0,0,0,0 //SM_TWOHAND#Two-Handed Sword Mastery#
@@ -1390,14 +1766,30 @@
 4022,480,5,251,5,0,0,0,0,0,0,0,0 //PA_SHIELDCHAIN#Shield Chain#
 4022,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Baby (Novice)
-4023,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4023,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4023,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4023,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4023,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4023,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4023,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4023,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4023,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4023,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4023,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4023,143,1,0,0,0,0,0,0,0,0,0,0 //NV_TRICKDEAD#Act Dead#
 4023,408,1,0,0,0,0,0,0,0,0,0,0 //WE_BABY#Baby#
 4023,409,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLPARENT#Call Parent#
 4023,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Swordman
-4024,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4024,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4024,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4024,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4024,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4024,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4024,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4024,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4024,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4024,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4024,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4024,2,10,0,0,0,0,0,0,0,0,0,0 //SM_SWORD#Sword Mastery#
 4024,3,10,2,1,0,0,0,0,0,0,0,0 //SM_TWOHAND#Two-Handed Sword Mastery#
@@ -1413,7 +1805,15 @@
 4024,409,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLPARENT#Call Parent#
 4024,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Magician
-4025,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4025,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4025,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4025,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4025,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4025,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4025,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4025,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4025,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4025,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4025,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4025,9,10,0,0,0,0,0,0,0,0,0,0 //MG_SRECOVERY#Increase SP Recovery#
 4025,10,1,0,0,0,0,0,0,0,0,0,0 //MG_SIGHT#Sight#
@@ -1433,7 +1833,15 @@
 4025,409,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLPARENT#Call Parent#
 4025,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Archer
-4026,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4026,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4026,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4026,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4026,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4026,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4026,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4026,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4026,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4026,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4026,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4026,43,10,0,0,0,0,0,0,0,0,0,0 //AC_OWL#Owl's Eye#
 4026,44,10,43,3,0,0,0,0,0,0,0,0 //AC_VULTURE#Vulture's Eye#
@@ -1446,7 +1854,15 @@
 4026,409,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLPARENT#Call Parent#
 4026,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Acolyte
-4027,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4027,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4027,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4027,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4027,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4027,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4027,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4027,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4027,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4027,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4027,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4027,22,10,0,0,0,0,0,0,0,0,0,0 //AL_DP#Divine Protection#
 4027,23,10,22,3,0,0,0,0,0,0,0,0 //AL_DEMONBANE#Demon Bane#
@@ -1467,7 +1883,15 @@
 4027,409,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLPARENT#Call Parent#
 4027,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Merchant
-4028,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4028,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4028,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4028,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4028,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4028,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4028,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4028,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4028,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4028,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4028,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4028,36,10,0,0,0,0,0,0,0,0,0,0 //MC_INCCARRY#Enlarge Weight Limit#
 4028,37,10,36,3,0,0,0,0,0,0,0,0 //MC_DISCOUNT#Discount#
@@ -1485,7 +1909,15 @@
 4028,2544,1,0,0,0,0,0,0,0,0,0,0 //MC_CARTDECORATE#Cart Decorate#
 4028,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Thief
-4029,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4029,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4029,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4029,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4029,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4029,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4029,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4029,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4029,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4029,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4029,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4029,48,10,0,0,0,0,0,0,0,0,0,0 //TF_DOUBLE#Double Attack#
 4029,49,10,0,0,0,0,0,0,0,0,0,0 //TF_MISS#Improve Dodge#
@@ -1501,7 +1933,15 @@
 4029,409,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLPARENT#Call Parent#
 4029,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Knight
-4030,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4030,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4030,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4030,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4030,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4030,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4030,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4030,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4030,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4030,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4030,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4030,2,10,0,0,0,0,0,0,0,0,0,0 //SM_SWORD#Sword Mastery#
 4030,3,10,2,1,0,0,0,0,0,0,0,0 //SM_TWOHAND#Two-Handed Sword Mastery#
@@ -1529,7 +1969,15 @@
 4030,495,1,60,10,0,0,0,0,0,0,0,0	//KN_ONEHAND#Onehand Quicken#
 4030,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Priest
-4031,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4031,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4031,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4031,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4031,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4031,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4031,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4031,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4031,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4031,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4031,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4031,22,10,0,0,0,0,0,0,0,0,0,0 //AL_DP#Divine Protection#
 4031,23,10,22,3,0,0,0,0,0,0,0,0 //AL_DEMONBANE#Demon Bane#
@@ -1569,7 +2017,15 @@
 4031,1014,1,0,0,0,0,0,0,0,0,0,0 //PR_REDEMPTIO#Redemptio#
 4031,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Wizard
-4032,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4032,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4032,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4032,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4032,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4032,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4032,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4032,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4032,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4032,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4032,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4032,9,10,0,0,0,0,0,0,0,0,0,0 //MG_SRECOVERY#Increase SP Recovery#
 4032,10,1,0,0,0,0,0,0,0,0,0,0 //MG_SIGHT#Sight#
@@ -1603,7 +2059,15 @@
 4032,1006,1,0,0,0,0,0,0,0,0,0,0 //WZ_SIGHTBLASTER#Sight Blaster#
 4032,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Blacksmith
-4033,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4033,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4033,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4033,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4033,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4033,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4033,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4033,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4033,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4033,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4033,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4033,36,10,0,0,0,0,0,0,0,0,0,0 //MC_INCCARRY#Enlarge Weight Limit#
 4033,37,10,36,3,0,0,0,0,0,0,0,0 //MC_DISCOUNT#Discount#
@@ -1645,7 +2109,15 @@
 4033,2544,1,0,0,0,0,0,0,0,0,0,0 //MC_CARTDECORATE#Cart Decorate#
 4033,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Hunter
-4034,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4034,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4034,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4034,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4034,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4034,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4034,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4034,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4034,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4034,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4034,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4034,43,10,0,0,0,0,0,0,0,0,0,0 //AC_OWL#Owl's Eye#
 4034,44,10,43,3,0,0,0,0,0,0,0,0 //AC_VULTURE#Vulture's Eye#
@@ -1677,7 +2149,15 @@
 4034,499,1,46,10,0,0,0,0,0,0,0,0	//HT_POWER#Beast Strafing#
 4034,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Assassin
-4035,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4035,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4035,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4035,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4035,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4035,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4035,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4035,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4035,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4035,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4035,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4035,48,10,0,0,0,0,0,0,0,0,0,0 //TF_DOUBLE#Double Attack#
 4035,49,10,0,0,0,0,0,0,0,0,0,0 //TF_MISS#Improve Dodge#
@@ -1705,7 +2185,15 @@
 4035,1004,1,0,0,0,0,0,0,0,0,0,0 //AS_VENOMKNIFE#Throw Venom Knife#
 4035,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Knight(Peco)
-4036,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4036,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4036,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4036,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4036,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4036,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4036,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4036,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4036,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4036,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4036,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4036,2,10,0,0,0,0,0,0,0,0,0,0 //SM_SWORD#Sword Mastery#
 4036,3,10,2,1,0,0,0,0,0,0,0,0 //SM_TWOHAND#Two-Handed Sword Mastery#
@@ -1733,7 +2221,15 @@
 4036,495,1,60,10,0,0,0,0,0,0,0,0	//KN_ONEHAND#Onehand Quicken#
 4036,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Crusader
-4037,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4037,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4037,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4037,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4037,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4037,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4037,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4037,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4037,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4037,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4037,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4037,2,10,0,0,0,0,0,0,0,0,0,0 //SM_SWORD#Sword Mastery#
 4037,3,10,2,1,0,0,0,0,0,0,0,0 //SM_TWOHAND#Two-Handed Sword Mastery#
@@ -1768,7 +2264,15 @@
 4037,1002,1,0,0,0,0,0,0,0,0,0,0 //CR_SHRINK#Shrink#
 4037,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Monk
-4038,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4038,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4038,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4038,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4038,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4038,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4038,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4038,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4038,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4038,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4038,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4038,22,10,0,0,0,0,0,0,0,0,0,0 //AL_DP#Divine Protection#
 4038,23,10,22,3,0,0,0,0,0,0,0,0 //AL_DEMONBANE#Demon Bane#
@@ -1806,7 +2310,15 @@
 4038,1016,1,0,0,0,0,0,0,0,0,0,0 //MO_BALKYOUNG#Ki Explosion#
 4038,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Sage
-4039,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4039,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4039,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4039,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4039,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4039,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4039,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4039,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4039,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4039,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4039,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4039,9,10,0,0,0,0,0,0,0,0,0,0 //MG_SRECOVERY#Increase SP Recovery#
 4039,10,1,0,0,0,0,0,0,0,0,0,0 //MG_SIGHT#Sight#
@@ -1851,7 +2363,15 @@
 4039,1019,1,0,0,0,0,0,0,0,0,0,0 //SA_ELEMENTWIND#Elemental Change Wind#
 4039,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Rogue
-4040,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4040,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4040,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4040,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4040,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4040,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4040,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4040,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4040,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4040,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4040,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4040,48,10,0,0,0,0,0,0,0,0,0,0 //TF_DOUBLE#Double Attack#
 4040,49,10,0,0,0,0,0,0,0,0,0,0 //TF_MISS#Improve Dodge#
@@ -1888,7 +2408,15 @@
 4040,1005,1,0,0,0,0,0,0,0,0,0,0 //RG_CLOSECONFINE#Close Confine#
 4040,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Alchemist
-4041,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4041,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4041,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4041,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4041,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4041,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4041,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4041,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4041,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4041,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4041,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4041,36,10,0,0,0,0,0,0,0,0,0,0 //MC_INCCARRY#Enlarge Weight Limit#
 4041,37,10,36,3,0,0,0,0,0,0,0,0 //MC_DISCOUNT#Discount#
@@ -1926,7 +2454,15 @@
 4041,2544,1,0,0,0,0,0,0,0,0,0,0 //MC_CARTDECORATE#Cart Decorate#
 4041,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Bard
-4042,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4042,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4042,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4042,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4042,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4042,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4042,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4042,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4042,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4042,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4042,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4042,43,10,0,0,0,0,0,0,0,0,0,0 //AC_OWL#Owl's Eye#
 4042,44,10,43,3,0,0,0,0,0,0,0,0 //AC_VULTURE#Vulture's Eye#
@@ -1958,7 +2494,15 @@
 4042,1010,1,0,0,0,0,0,0,0,0,0,0 //BA_PANGVOICE#Pang Voice#
 4042,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Dancer
-4043,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4043,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4043,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4043,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4043,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4043,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4043,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4043,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4043,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4043,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4043,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4043,43,10,0,0,0,0,0,0,0,0,0,0 //AC_OWL#Owl's Eye#
 4043,44,10,43,3,0,0,0,0,0,0,0,0 //AC_VULTURE#Vulture's Eye#
@@ -1990,7 +2534,15 @@
 4043,1011,1,0,0,0,0,0,0,0,0,0,0 //DC_WINKCHARM#Wink of Charm#
 4043,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Crusader(Peco)
-4044,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4044,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4044,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4044,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4044,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4044,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4044,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4044,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4044,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4044,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4044,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4044,2,10,0,0,0,0,0,0,0,0,0,0 //SM_SWORD#Sword Mastery#
 4044,3,10,2,1,0,0,0,0,0,0,0,0 //SM_TWOHAND#Two-Handed Sword Mastery#
@@ -2025,7 +2577,15 @@
 4044,1002,1,0,0,0,0,0,0,0,0,0,0 //CR_SHRINK#Shrink#
 4044,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Super Baby
-4045,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4045,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4045,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4045,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4045,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4045,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4045,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4045,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4045,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4045,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4045,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4045,2,10,0,0,0,0,0,0,0,0,0,0 //SM_SWORD#Sword Mastery#
 4045,4,10,0,0,0,0,0,0,0,0,0,0 //SM_RECOVERY#Increase HP Recovery#
@@ -2082,7 +2642,15 @@
 4045,2544,1,0,0,0,0,0,0,0,0,0,0 //MC_CARTDECORATE#Cart Decorate#
 4045,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Taekwon
-4046,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4046,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4046,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4046,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4046,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4046,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4046,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4046,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4046,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4046,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4046,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4046,411,10,0,0,0,0,0,0,0,0,0,0 //TK_RUN#Running#
 4046,412,1,413,1,0,0,0,0,0,0,0,0 //TK_READYSTORM#Prepare Whirlwind#
@@ -2103,7 +2671,15 @@
 4046,493,1,424,5,0,0,0,0,0,0,0,0 //TK_MISSION#Taekwon Mission#
 4046,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Star Gladiator
-4047,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4047,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4047,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4047,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4047,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4047,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4047,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4047,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4047,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4047,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4047,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4047,411,10,0,0,0,0,0,0,0,0,0,0 //TK_RUN#Running#
 4047,412,1,413,1,0,0,0,0,0,0,0,0 //TK_READYSTORM#Prepare Whirlwind#
@@ -2142,7 +2718,15 @@
 4047,444,1,443,9,0,0,0,0,0,0,0,0	//SG_FUSION#Union of the Sun, Moon and Stars#
 4047,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Star Gladiator (Union)
-4048,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4048,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4048,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4048,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4048,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4048,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4048,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4048,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4048,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4048,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4048,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4048,411,10,0,0,0,0,0,0,0,0,0,0 //TK_RUN#Running#
 4048,412,1,413,1,0,0,0,0,0,0,0,0 //TK_READYSTORM#Prepare Whirlwind#
@@ -2181,7 +2765,15 @@
 4048,444,1,443,9,0,0,0,0,0,0,0,0	//SG_FUSION#Union of the Sun, Moon and Stars#
 4048,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Soul Linker
-4049,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4049,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4049,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4049,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4049,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4049,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4049,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4049,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4049,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4049,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4049,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4049,411,10,0,0,0,0,0,0,0,0,0,0 //TK_RUN#Running#
 4049,412,1,413,1,0,0,0,0,0,0,0,0 //TK_READYSTORM#Prepare Whirlwind#
@@ -2229,7 +2821,15 @@
 4049,494,5,451,5,0,0,0,0,0,0,0,0	//SL_HIGH#Spirit of Rebirth#
 4049,410,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLBABY#Call Baby#
 //Gangsi (Bongun/Munak)
-4050,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4050,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4050,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4050,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4050,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4050,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4050,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4050,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4050,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4050,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4050,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 //4050,545,5,0,0,0,0,0,0,0,0,0,0 //MB_FIGHTING##
 //4050,546,5,0,0,0,0,0,0,0,0,0,0 //MB_NEUTRAL##
@@ -5675,7 +6275,15 @@
 4212,3027,5,3029,3,0,0,0,0,0,0,0,0 //OB_OBOROGENSOU##
 4212,3029,5,3026,2,0,0,0,0,0,0,0,0 //OB_AKAITSUKI##
 //Rebellion
-4215,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4215,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4215,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4215,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4215,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4215,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4215,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4215,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4215,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4215,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4215,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4215,500,5,0,0,0,0,0,0,0,0,0,0 //GS_GLITTERING#Flip the Coin#
 4215,501,1,500,1,0,0,0,0,0,0,0,0 //GS_FLING#Fling#
@@ -5797,7 +6405,15 @@
 4220,409,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLPARENT#Call Parent#
 4220,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Ninja
-4222,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4222,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4222,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4222,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4222,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4222,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4222,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4222,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4222,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4222,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4222,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4222,522,10,0,0,0,0,0,0,0,0,0,0 //NJ_TOBIDOUGU#NJ_TOBIDOUGU#
 4222,523,10,522,1,0,0,0,0,0,0,0,0 //NJ_SYURIKEN#NJ_SYURIKEN#
@@ -5934,7 +6550,15 @@
 4224,3029,5,3026,2,0,0,0,0,0,0,0,0 //OB_AKAITSUKI##
 4224,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Taekwon
-4225,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4225,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4225,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4225,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4225,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4225,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4225,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4225,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4225,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4225,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4225,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4225,411,10,0,0,0,0,0,0,0,0,0,0 //TK_RUN#Running#
 4225,412,1,413,1,0,0,0,0,0,0,0,0 //TK_READYSTORM#Prepare Whirlwind#
@@ -5957,7 +6581,15 @@
 4225,409,1,0,0,0,0,0,0,0,0,0,0 //WE_CALLPARENT#Call Parent#
 4225,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Star Gladiator
-4226,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4226,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4226,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4226,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4226,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4226,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4226,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4226,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4226,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4226,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4226,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4226,411,10,0,0,0,0,0,0,0,0,0,0 //TK_RUN#Running#
 4226,412,1,413,1,0,0,0,0,0,0,0,0 //TK_READYSTORM#Prepare Whirlwind#
@@ -5998,7 +6630,15 @@
 4226,444,1,443,9,0,0,0,0,0,0,0,0	//SG_FUSION#Union of the Sun, Moon and Stars#
 4226,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Soul Linker
-4227,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4227,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4227,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4227,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4227,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4227,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4227,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4227,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4227,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4227,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4227,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4227,411,10,0,0,0,0,0,0,0,0,0,0 //TK_RUN#Running#
 4227,412,1,413,1,0,0,0,0,0,0,0,0 //TK_READYSTORM#Prepare Whirlwind#
@@ -6048,7 +6688,15 @@
 4227,494,5,451,1,0,0,0,0,0,0,0,0	//SL_HIGH#Spirit of Rebirth#
 4227,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Gunslinger
-4228,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4228,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4228,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4228,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4228,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4228,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4228,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4228,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4228,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4228,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4228,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4228,500,5,0,0,0,0,0,0,0,0,0,0 //GS_GLITTERING#Flip the Coin#
 4228,501,1,500,1,0,0,0,0,0,0,0,0 //GS_FLING#Fling#
@@ -6124,7 +6772,15 @@
 4229,2571,5,2569,3,0,0,0,0,0,0,0,0 //RL_HAMMER_OF_GOD#Hammer of God#
 4229,5065,1,0,0,0,0,0,0,0,0,0,0 //WE_CHEERUP#Cheer Up#
 //Baby Star Gladiator (Union)
-4238,1,9,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4238,1020,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4238,1021,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4238,1022,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4238,1023,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4238,1024,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4238,1025,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4238,1026,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4238,1027,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
+4238,1028,1,0,0,0,0,0,0,0,0,0,0 //NV_BASIC#Basic Skill#
 4238,142,1,0,0,0,0,0,0,0,0,0,0 //NV_FIRSTAID#First Aid#
 4238,411,10,0,0,0,0,0,0,0,0,0,0 //TK_RUN#Running#
 4238,412,1,413,1,0,0,0,0,0,0,0,0 //TK_READYSTORM#Prepare Whirlwind#

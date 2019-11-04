@@ -1301,8 +1301,8 @@ static bool itemdb_parse_dbrow(char** str, const char* source, int line, int scr
 	//ID,Name,Jname,Type,Price,Sell,Weight,ATK,DEF,Range,Slot,Job,Job Upper,Gender,Loc,wLV,eLV,refineable,View
 	if (!(id = itemdb_exists(nameid))) {
 		// Checks if the Itemname is already taken by another id
-		if( itemdb_searchname1(str[1], true) != NULL )
-			ShowWarning("itemdb_parse_dbrow: Duplicate item name for \"%s\"\n", str[1]);
+		//if( itemdb_searchname1(str[1], true) != NULL )
+			//ShowWarning("itemdb_parse_dbrow: Duplicate item name for \"%s\"\n", str[1]);
 
 		// Adds a new Item ID
 		id = itemdb_create_item(nameid);

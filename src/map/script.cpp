@@ -249,7 +249,7 @@ static DBMap* autobonus_db = NULL; // char* script -> char* bytecode
 struct Script_Config script_config = {
 	1, // warn_func_mismatch_argtypes
 	1, 65535, 2048, //warn_func_mismatch_paramnum/check_cmdcount/check_gotocount
-	0, INT_MAX, // input_min_value/input_max_value
+	INT_MIN, INT_MAX, // input_min_value/input_max_value
 	// NOTE: None of these event labels should be longer than <EVENT_NAME_LENGTH> characters
 	// PC related
 	"OnPCDieEvent", //die_event_name
@@ -9053,6 +9053,67 @@ BUILDIN_FUNC(getequippercentrefinery)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+// Refina todos os itens do inventário:
+// refinventory valor, {char_id}
+BUILDIN_FUNC(refinventory)
+{
+	short val = script_getnum(st, 2);
+
+	TBL_PC *sd;
+
+	if (!script_charid2sd(3, sd)) {
+		script_pushint(st, -1);
+		return SCRIPT_CMD_FAILURE;
+	}
+
+	if (val > MAX_REFINE)
+	{
+		script_pushint(st, -1);
+		return SCRIPT_CMD_FAILURE;
+	}
+
+	int refinecounter = 0;
+
+	for (int i = 0; i < MAX_INVENTORY; i++)
+	{
+		bool ignore = false;
+
+		for (int j = 0; j < EQI_MAX; j++) {
+			if (pc_checkequip(sd, equip_bitmask[j]) == i)
+			{
+				ignore = true;
+				break;
+			}
+		}
+
+		if (ignore) continue;
+
+		if (sd->inventory.u.items_inventory[i].nameid && sd->inventory.u.items_inventory[i].card[0] != CARD0_PET)
+		{
+			if (!sd->inventory_data[i]->flag.no_refine && !sd->inventory.u.items_inventory[i].expire_time)
+			{
+				sd->inventory.u.items_inventory[i].refine += val;
+				sd->inventory.u.items_inventory[i].refine = cap_value(sd->inventory.u.items_inventory[i].refine, 0, MAX_REFINE);
+				pc_unequipitem(sd, i, 2); // status calc will happen in pc_equipitem() below
+
+				clif_refine(sd->fd, 0, i, sd->inventory.u.items_inventory[i].refine);
+				clif_delitem(sd, i, 1, 3);
+
+				//Logs items, got from (N)PC scripts [Lupus]
+
+				clif_additem(sd, i, 1, 0);
+				clif_misceffect(&sd->bl, 3);
+
+				refinecounter++;
+			}
+		}
+	}
+
+	script_pushint(st, refinecounter);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
 /*==========================================
  * Refine +1 item at pos and log and display refine
  * successrefitem <equipment slot>{,<count>{,<char_id>}}
@@ -9078,7 +9139,6 @@ BUILDIN_FUNC(successrefitem) {
 		unsigned int ep = sd->inventory.u.items_inventory[i].equip;
 
 		//Logs items, got from (N)PC scripts [Lupus]
-		log_pick_pc(sd, LOG_TYPE_SCRIPT, -1, &sd->inventory.u.items_inventory[i]);
 
 		if (sd->inventory.u.items_inventory[i].refine >= MAX_REFINE) {
 			script_pushint(st, MAX_REFINE);
@@ -9093,28 +9153,11 @@ BUILDIN_FUNC(successrefitem) {
 		clif_delitem(sd,i,1,3);
 
 		//Logs items, got from (N)PC scripts [Lupus]
-		log_pick_pc(sd, LOG_TYPE_SCRIPT, 1, &sd->inventory.u.items_inventory[i]);
 
 		clif_additem(sd,i,1,0);
 		pc_equipitem(sd,i,ep);
 		clif_misceffect(&sd->bl,3);
-		achievement_update_objective(sd, AG_REFINE_SUCCESS, 2, sd->inventory_data[i]->wlv, sd->inventory.u.items_inventory[i].refine);
-		if (sd->inventory.u.items_inventory[i].refine == MAX_REFINE &&
-			sd->inventory.u.items_inventory[i].card[0] == CARD0_FORGE &&
-			sd->status.char_id == (int)MakeDWord(sd->inventory.u.items_inventory[i].card[2],sd->inventory.u.items_inventory[i].card[3]))
-		{ // Fame point system [DracoRPG]
-			switch (sd->inventory_data[i]->wlv){
-				case 1:
-					pc_addfame(sd, battle_config.fame_refine_lv1); // Success to refine to +10 a lv1 weapon you forged = +1 fame point
-					break;
-				case 2:
-					pc_addfame(sd, battle_config.fame_refine_lv2); // Success to refine to +10 a lv2 weapon you forged = +25 fame point
-					break;
-				case 3:
-					pc_addfame(sd, battle_config.fame_refine_lv3); // Success to refine to +10 a lv3 weapon you forged = +1000 fame point
-					break;
-			 }
-		}
+		
 		script_pushint(st, sd->inventory.u.items_inventory[i].refine);
 		return SCRIPT_CMD_SUCCESS;
 	}
@@ -24535,6 +24578,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(getequiprefinerycnt,"i?"),
 	BUILDIN_DEF(getequipweaponlv,"i?"),
 	BUILDIN_DEF(getequippercentrefinery,"i?"),
+	BUILDIN_DEF(refinventory,"i?"),
 	BUILDIN_DEF(successrefitem,"i??"),
 	BUILDIN_DEF(failedrefitem,"i?"),
 	BUILDIN_DEF(downrefitem,"i??"),
