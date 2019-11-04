@@ -43,6 +43,31 @@
 	
 	setarray .@jobs_id[1],1,2,3,5,6,4,4046,25,24,23;
 		
+	if( Class == 25 || Class == 24 || Class == 23 || Class == 4047 || Class == 4049 )
+	{
+		mes "Ainda não possuo uma nova classe para você. Quem sabe no futuro?";
+		close2;
+		cutin "mestra_classe",255;
+		end;
+	}
+	
+	if( REBIRTH == 1 )
+	{
+		mes "Existe uma lenda de que se você alcançar um nível alto, poderá adquirir um novo poder.";
+		close2;
+		cutin "mestra_classe",255;
+		end;
+	}
+	
+	if( REBIRTH == 2 )
+	{
+		mes "Quem diria que você se tornaria tão forte!";
+		close2;
+		npctalk "Boa Jornada, " + strcharinfo(0) + "!";
+		cutin "mestra_classe",255;
+		end;
+	}
+	
 	if( inarray( .@jobs_id, Class ) >= 1 )
 	{
 		if( JobLevel < 50 )
@@ -51,8 +76,48 @@
 			goto L_whereLeveling;
 		}
 		
+		.@myJob = inarray( .@jobs_id, Class );
 		
-		goto L_PlatSkills;
+		if( Sex == 1 )
+			setarray .@jobs_evo$[1],"Cavaleiro:Templário",
+			                        "Bruxo:Sábio",
+									"Caçador:Bardo",
+									"Ferreiro:Alquimista",
+									"Mercenário:Arruaceiro",
+									"Sacerdote:Monge",
+									"Mestre Taekwon:Espiritualista";
+		else
+			setarray .@jobs_evo$[1],"Cavaleira:Templária",
+			                        "Bruxa:Sábia",
+									"Caçadora:Odalisca",
+									"Ferreira:Alquimista",
+									"Mercenária:Arruaceira",
+									"Sacerdotiza:Monja",
+									"Mestra Taekwon:Espiritualista";		
+		
+		setarray .@jobs_id$[1],"7:14",
+		                      "9:16",
+							  "11:19",
+							  "10:18",
+							  "12:17",
+							  "8:15",
+							  "4047:4049";
+							  
+		setarray .@jobs_rebirth$[1],"4008:
+				
+		.@option = select( .@jobs_evo$[.@myJob] );
+		.@option--;
+		
+		explode( .@jobs_data$, .@jobs_id$[.@option], ":");
+
+		.@newJob = atoi( .@jobs_data$[.@option] );
+
+		if( .@newJob == 19 && Sex == 0 )
+			.@newJob = 20;
+			
+		.@REBIRTH = .@newJob >= 4047 ? 0 : 1;
+		
+		goto L_confirm;
 	}
 	
 	mes "Você mostrou que tem talento lá na ^B03060Torre da Jornada^000000. Decidiu qual será sua clase?";
@@ -60,17 +125,24 @@
 	.@option = select( implode( .@jobs$, ":" ) );
 	.@option--;
 	
+	.@newJob = .@jobs_id[.@option];
+	
 	next;
+	
+	L_confirm:
 	mes .@n$;
 	mes "Certo, então deseja se tornar " + ( !Sex ? "uma" : "um" ) + " " + .@jobs$[.@option] + "?";
-	
+
 	if( select( "Irei pensar mais sobre.", "Sim, por favor." ) == 2 )
 	{
 		close2;
-		jobchange .@jobs_id[.@option];
+		jobchange .@newJob;
 		cutin "mestra_classe",255;
 		npctalk "Boa Sorte " + strcharinfo(0) + "! Sei que você será " + ( !Sex ? "uma magnífica " : "um excelente " ) + .@jobs$[.@option] + "!";
 		
+		if( .@REBIRTH )
+			REBIRTH = 1;
+			
 		goto L_PlatSkills;
 		end;
 	}
@@ -83,6 +155,7 @@
 	end;
 	
 	L_PlatSkills:
+		atcommand "@allskills";
 		skill 142,1,0;
 		switch(BaseClass) {
 			case 0: if (Class !=23) skill 143,1,0; break;
@@ -109,6 +182,22 @@
 			case 19: skill 1010,1,0; break;
 			case 20: skill 1011,1,0; break;
 			default: break;
+		}
+		end;
+		
+	OnPCLoginEvent:
+		atcommand "@allskills";
+	OnPCBaseLvUpEvent:
+		if( BaseLevel >= 200 && REBIRTH == 1 )
+		{
+			announce "[Condecoração de Classe]: " + strcharinfo(0) + " adquiriu o poder dos Deuses.",0;
+			jobchange Class + 4001;
+			REBIRTH = 2;
+			StatusPoint += 120;
+			
+			dispbottom "Parabéns por atingir o nível " + BaseClass + "! Você recebeu 120 pontos de atributo!";
+			
+			goto L_PlatSkills;
 		}
 		end;
 }
