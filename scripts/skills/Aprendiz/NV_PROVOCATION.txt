@@ -57,6 +57,6 @@
 		case 3: showscript .@text3$; break;
 	}
 
-	bonus_script "bonus bAllStats,10",30,11;
+	bonus_script "bonus bAllStats,10;",30,11;
 	end;
 }

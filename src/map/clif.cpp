@@ -21033,7 +21033,7 @@ static int clif_parse(int fd)
 			packet_db[cmd].func(fd, sd);
 	}
 #ifdef DUMP_UNKNOWN_PACKET
-	else DumpUnknown(fd,sd,cmd,packet_len);
+	else ShowDump(fd,sd,cmd,packet_len);
 #endif
 	RFIFOSKIP(fd, packet_len);
 	}; // main loop end

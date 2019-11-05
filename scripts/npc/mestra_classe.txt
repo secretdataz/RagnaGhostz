@@ -78,6 +78,9 @@
 		
 		.@myJob = inarray( .@jobs_id, Class );
 		
+		mes "Você realmente está se destacando. Merece uma promoção.";
+		mes "Por favor, escolha o que deseja se tornar.";
+		
 		if( Sex == 1 )
 			setarray .@jobs_evo$[1],"Cavaleiro:Templário",
 			                        "Bruxo:Sábio",
@@ -103,20 +106,22 @@
 							  "8:15",
 							  "4047:4049";
 							  
-		setarray .@jobs_rebirth$[1],"4008:
-				
 		.@option = select( .@jobs_evo$[.@myJob] );
 		.@option--;
 		
-		explode( .@jobs_data$, .@jobs_id$[.@option], ":");
+		explode( .@jobs_data_name$, .@jobs_evo$[.@myJob], ":");
+		explode( .@jobs_data$, .@jobs_id$[.@myJob], ":");
 
 		.@newJob = atoi( .@jobs_data$[.@option] );
-
+		
+		.@jobs$[.@option] = .@jobs_data_name$[.@option];
+		
 		if( .@newJob == 19 && Sex == 0 )
 			.@newJob = 20;
 			
 		.@REBIRTH = .@newJob >= 4047 ? 0 : 1;
 		
+		next;
 		goto L_confirm;
 	}
 	
@@ -195,7 +200,7 @@
 			REBIRTH = 2;
 			StatusPoint += 120;
 			
-			dispbottom "Parabéns por atingir o nível " + BaseClass + "! Você recebeu 120 pontos de atributo!";
+			dispbottom "Parabéns por atingir o nível " + BaseLevel + "! Você recebeu 120 pontos de atributo!";
 			
 			goto L_PlatSkills;
 		}
