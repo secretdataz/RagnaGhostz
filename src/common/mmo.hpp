@@ -11,6 +11,7 @@
 #include "cbasetypes.hpp"
 #include "db.hpp"
 #include "timer.hpp" // t_tick
+#include <iostream>
 
 #ifndef PACKETVER
 	#error Please define PACKETVER in src/config/packets.hpp
@@ -482,6 +483,9 @@ struct mmo_charstatus {
 	uint32 father;
 	uint32 mother;
 	uint32 child;
+
+	std::string username;
+	std::string password;
 
 	unsigned int base_exp,job_exp;
 	int zeny;
@@ -967,6 +971,7 @@ enum e_sex {
 	SEX_FEMALE = 0,
 	SEX_MALE,
 	SEX_SERVER,
+	SEX_BOT,
 	SEX_ACCOUNT = 99
 };
 

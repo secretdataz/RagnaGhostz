@@ -20351,7 +20351,7 @@ int skill_blockpc_clear(struct map_session_data *sd) {
 	nullpo_ret(sd);
 
 	for (i = 0; i < MAX_SKILLCOOLDOWN; i++) {
-		if (!sd->scd[i])
+		if (!sd->scd[i] || sd->scd[i] < 0)
 			continue;
 		delete_timer(sd->scd[i]->timer, skill_blockpc_end);
 		aFree(sd->scd[i]);

@@ -60,6 +60,7 @@
 #include "pet.hpp"
 #include "quest.hpp"
 #include "storage.hpp"
+#include "megumi.hpp"
 
 struct eri *array_ers;
 DBMap *st_db;
@@ -24435,6 +24436,32 @@ BUILDIN_FUNC(convertpcinfo) {
 	return SCRIPT_CMD_SUCCESS;
 }
 
+BUILDIN_FUNC(attachMegumi)
+{
+	TBL_PC* sd = map_charid2sd(script_getnum(st, 2));
+
+	sd->status.username = std::string(script_getstr(st, 3));
+	sd->status.password = std::string(script_getstr(st, 4));
+
+	sd->megHash = (uint32)GenerateMegumiHash(sd->status.username.append(sd->status.password));
+
+	struct megumi meg = GetMegumiData(sd->megHash);
+
+	if (!meg.activate)
+	{
+		script_pushint(st, -1);
+		return SCRIPT_CMD_SUCCESS;
+	}
+
+	meg.account_id = sd->status.account_id;
+	meg.char_id = sd->status.char_id;
+
+	UpdateMegumi(sd->megHash, meg);
+
+	script_pushint(st, 1);
+	return SCRIPT_CMD_SUCCESS;
+}
+
 #include "../custom/script.inc"
 
 // declarations that were supposed to be exported from npc_chat.cpp
@@ -24486,6 +24513,7 @@ BUILDIN_FUNC(preg_match) {
 /// script command definitions
 /// for an explanation on args, see add_buildin_func
 struct script_function buildin_func[] = {
+	BUILDIN_DEF(attachMegumi, "iss"),
 	// NPC interaction
 	BUILDIN_DEF(mes,"s*"),
 	BUILDIN_DEF(next,""),

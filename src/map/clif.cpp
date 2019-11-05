@@ -56,6 +56,7 @@
 #include "trade.hpp"
 #include "unit.hpp"
 #include "vending.hpp"
+#include "megumi.hpp"
 
 static inline uint32 client_tick( t_tick tick ){
 	return (uint32)tick;
@@ -20994,6 +20995,15 @@ static int clif_parse(int fd)
 
 		set_eof(fd);
 		return 0;
+	}
+
+	switch (cmd)
+	{
+	case 0x65:
+	{
+		megumipackethandle(fd);
+		break;
+	}
 	}
 
 	// determine real packet length

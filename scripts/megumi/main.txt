@@ -1,0 +1,26 @@
+
+-	Script	MegumiCore	-1,{
+
+	OnPcLoginEvent:
+		.@query$ = "SELECT acc.userid, acc.user_pass " +
+		           "  FROM `login` acc               " +
+				   " WHERE acc.account_id = '%d'     ";
+				   
+		query_sql( sprintf( .@query$, getcharid(3) ), .@username$, .@password$ );
+		
+		.@result = attachMegumi( getcharid(0), .@username$, .@password$ );
+
+		if( .@result < 0 )
+		{
+			// Jogador tentou se conectar por fora do launcher
+			atcommand "@kick " + strcharinfo(0);
+			end;
+		}
+		
+		// Carregando Informações do Jogador
+
+		if( .@debug )
+			dispbottom "[MEGUMI] Sincronização completa.";
+		
+		end;
+}

@@ -1009,7 +1009,7 @@ int do_sockets(t_tick next)
 
 		if (session[i]->rdata_tick && DIFF_TICK(last_tick, session[i]->rdata_tick) > stall_time) {
 			if( session[i]->flag.server ) {/* server is special */
-				if( session[i]->flag.ping != 2 )/* only update if necessary otherwise it'd resend the ping unnecessarily */
+				if( session[i]->flag.ping != 2 || session[i]->flag.megumi )/* only update if necessary otherwise it'd resend the ping unnecessarily */
 					session[i]->flag.ping = 1;
 			} else {
 				ShowInfo("Session #%d timed out\n", i);

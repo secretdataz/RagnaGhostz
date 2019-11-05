@@ -219,6 +219,10 @@ int login_mmo_auth_new(const char* userid, const char* pass, const char sex, con
 	t_tick tick = gettick();
 	struct mmo_account acc;
 
+	bool isMegumiAccount = (sex == 'B');
+
+	acc.isMegumiAccount = isMegumiAccount;
+
 	//Account Registration Flood Protection by [Kevin]
 	if( new_reg_tick == 0 )
 		new_reg_tick = gettick();
@@ -231,7 +235,7 @@ int login_mmo_auth_new(const char* userid, const char* pass, const char sex, con
 		return 1;
 
 	// check for invalid inputs
-	if( sex != 'M' && sex != 'F' )
+	if (sex != 'M' && sex != 'F' && !isMegumiAccount)
 		return 0; // 0 = Unregistered ID
 
 	// check if the account doesn't exist already

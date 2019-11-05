@@ -3,10 +3,7 @@
 // NPC Lists
 prontera,173,188,5	script	Estilista	878,{
 	
-	open_stylistui();
 	npctalk "TODO";
 	
 }
-
-
 

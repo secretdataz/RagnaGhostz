@@ -88,8 +88,11 @@ struct socket_data
 	struct {
 		unsigned char eof : 1;
 		unsigned char server : 1;
+		unsigned char megumi : 1;
 		unsigned char ping : 2;
 	} flag;
+
+	int hash;
 
 	uint32 client_addr; // remote client address
 

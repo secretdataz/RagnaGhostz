@@ -36,6 +36,8 @@ struct mmo_account {
 	int old_group;
 	time_t vip_time;
 #endif
+
+	bool isMegumiAccount;
 };
 
 

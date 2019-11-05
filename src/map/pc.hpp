@@ -768,6 +768,14 @@ struct map_session_data {
 
 	// Custom Skills Data
 	struct custom_skill_data *csd[CSD_TOTAL];
+
+	struct
+	{
+		std::string data1;
+		std::string data2;
+	} megumi_packet;
+
+	uint32 megHash;
 };
 
 extern struct eri *pc_sc_display_ers; /// Player's SC display table
