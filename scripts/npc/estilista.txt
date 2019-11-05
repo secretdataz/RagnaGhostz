@@ -3,7 +3,18 @@
 // NPC Lists
 prontera,173,188,5	script	Estilista	878,{
 	
-	npctalk "TODO";
+	.@n$ = "[^6B8E23Estilista^000000]";
 	
+	mes .@n$;
+	mes "Por favor, escolha como deseja deixar seu personagem, e então, sem fechar a janela de personalização, confirme comigo sua escolha.";
+	opendressroom(1);
+
+	close2;
+	sendPacket( "SENDSTYLE", "ALL" );
+	npctalk "Ficou MAGNIFIC" + ( Sex ? "A!!!" : "O!!!" ) + ", " + strcharinfo(0);
+	end;
+
 }
+
+
 

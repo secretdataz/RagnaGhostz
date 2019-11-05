@@ -8391,7 +8391,7 @@ int pc_readparam(struct map_session_data* sd,int type)
 		case SP_KF_MOBGID: val = sd->kill_info.last_mob.gid; break;
 		case SP_KF_MOBID: val = sd->kill_info.last_mob.mobid; break;
 		case SP_KF_MOBLVL: val = sd->kill_info.last_mob.level; break;
-
+		case SP_DRESSROOMSTATE: val = sd->state.dressroom; break;
 		case SP_SKILLPOINT:      val = sd->status.skill_point; break;
 		case SP_STATUSPOINT:     val = sd->status.status_point; break;
 		case SP_ZENY:            val = sd->status.zeny; break;
@@ -8565,7 +8565,7 @@ bool pc_setparam(struct map_session_data *sd,int type,int val)
 	case SP_KF_MOBGID: sd->kill_info.last_mob.gid = val; return true;
 	case SP_KF_MOBID: sd->kill_info.last_mob.mobid = val; return true;
 	case SP_KF_MOBLVL: sd->kill_info.last_mob.level = val; return true;
-
+	case SP_DRESSROOMSTATE: sd->state.dressroom = val; return true;
 	case SP_BASELEVEL:
 		if ((unsigned int)val > pc_maxbaselv(sd)) //Capping to max
 			val = pc_maxbaselv(sd);

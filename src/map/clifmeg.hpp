@@ -17,4 +17,6 @@ enum PK_MEGCLIF
 
 void clifmeg_send(int account_id, std::string pk, std::string data);
 
+void clifmeg_dressroomopened(int aid, int state);
+
 #endif /* CLIFMEG_HPP */

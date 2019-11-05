@@ -13,14 +13,13 @@
 		if( .@result < 0 )
 		{
 			// Jogador tentou se conectar por fora do launcher
+			dispbottom "Login Inválido";
 			atcommand "@kick " + strcharinfo(0);
 			end;
 		}
 		
-		// Carregando InformaÃ§Ãµes do Jogador
+		// Carregando Informações do Jogador
 
-		if( .@debug )
-			dispbottom "[MEGUMI] SincronizaÃ§Ã£o completa.";
-		
+		dispbottom "[MEGUMI] Sincronização completa.";
 		end;
 }

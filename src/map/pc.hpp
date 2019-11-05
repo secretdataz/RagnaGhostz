@@ -314,6 +314,7 @@ struct map_session_data {
 		bool cashshop_open;
 		bool sale_open;
 		unsigned int block_action : 10;
+		unsigned int dressroom : 1;
 	} state;
 	struct {
 		unsigned char no_weapon_damage, no_magic_damage, no_misc_damage;

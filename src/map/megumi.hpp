@@ -16,7 +16,8 @@ constexpr auto MAX_MEGPACKETSIZE = 300;
 
 enum e_megumi_packet
 {
-	MP_LOGIN = 2478
+	MP_LOGIN = 2478,
+	MP_STYLE = 3000
 };
 
 struct megumi {

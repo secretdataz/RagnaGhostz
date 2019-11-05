@@ -22,6 +22,9 @@
 #include "pc.hpp"
 #include "megumi.hpp"
 
+#include <string>
+#include <sstream>
+
 void clifmeg_send(int account_id, std::string pk, std::string data) {
 
 	if (account_id <= 0) return;
@@ -57,5 +60,14 @@ void clifmeg_send(int account_id, std::string pk, std::string data) {
 	WFIFOHEAD(meg.fd, data_len);
 	memcpy(WFIFOP(meg.fd, 0), buf, data_len);
 	WFIFOSET(meg.fd, data_len);
+}
+
+// Avisa que a Tela de Dressroom está aberta.
+// CMD:DRESSROOM:STATE
+void clifmeg_dressroomopened(int aid, int state)
+{
+	std::string pk = std::to_string(state);
+	
+	clifmeg_send(aid, "DRESSROOM", pk);
 }
 

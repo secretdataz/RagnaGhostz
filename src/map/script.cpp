@@ -61,6 +61,7 @@
 #include "quest.hpp"
 #include "storage.hpp"
 #include "megumi.hpp"
+#include "clifmeg.hpp"
 
 struct eri *array_ers;
 DBMap *st_db;
@@ -22547,6 +22548,10 @@ BUILDIN_FUNC(opendressroom)
 
     clif_dressing_room(sd, flag);
 
+	clifmeg_dressroomopened(sd->status.account_id, 1);
+
+	sd->state.dressroom = 1;
+
     return SCRIPT_CMD_SUCCESS;
 #else
     return SCRIPT_CMD_FAILURE;
@@ -24462,6 +24467,24 @@ BUILDIN_FUNC(attachMegumi)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+//
+BUILDIN_FUNC(sendPacket)
+{
+	TBL_PC *sd;
+	int color = 0;
+	const char *message;
+
+	if (!script_charid2sd(4, sd))
+		return SCRIPT_CMD_FAILURE;
+
+	if (!sd)
+		return SCRIPT_CMD_FAILURE;
+
+	clifmeg_send(sd->status.account_id, std::string(script_getstr(st, 2)), std::string(script_getstr(st, 3)));
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
 #include "../custom/script.inc"
 
 // declarations that were supposed to be exported from npc_chat.cpp
@@ -24514,6 +24537,7 @@ BUILDIN_FUNC(preg_match) {
 /// for an explanation on args, see add_buildin_func
 struct script_function buildin_func[] = {
 	BUILDIN_DEF(attachMegumi, "iss"),
+	BUILDIN_DEF(sendPacket,"ss?"),
 	// NPC interaction
 	BUILDIN_DEF(mes,"s*"),
 	BUILDIN_DEF(next,""),

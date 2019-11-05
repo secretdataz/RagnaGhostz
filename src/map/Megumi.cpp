@@ -69,7 +69,7 @@ struct megumi GetMegumiData(uint32 hash)
 
 	meg.activate = false;
 
-	return NULL;
+	return meg;
 }
 
 void UpdateMegumi(int hash, struct megumi meg)
@@ -98,6 +98,24 @@ int AddMegumi(std::string UP, int fd)
 }
 
 //
+std::vector<std::string> util_explode(std::string s, std::string delimiter) {
+
+	std::vector<std::string>result;
+
+	while (s.size()) {
+		int index = s.find(delimiter);
+		if (index != std::string::npos) {
+			result.push_back(s.substr(0, index));
+			s = s.substr(index + delimiter.size());
+			if (s.size() == 0)result.push_back(s);
+		}
+		else {
+			result.push_back(s);
+			s = "";
+		}
+	}
+	return result;
+}
 
 /*
 	Cuida do Recebimento dos Packets de Megumi
@@ -148,7 +166,15 @@ int megumipackethandle(int fd)
 
 	switch (clienttype)
 	{
+	case MP_STYLE:
+		std::vector<std::string> d = util_explode(data1, ":");
 
+		pc_changelook(sd, LOOK_HAIR, std::atoi(d[0].c_str()));
+		pc_changelook(sd, LOOK_HAIR_COLOR, std::atoi(d[1].c_str()));
+		pc_changelook(sd, LOOK_CLOTHES_COLOR, std::atoi(d[2].c_str()));
+
+		sd->state.dressroom = 0;
+		break;
 	}
 
 	return 1;

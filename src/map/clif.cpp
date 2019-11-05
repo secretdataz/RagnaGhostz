@@ -20944,6 +20944,10 @@ static int clif_parse(int fd)
 		} else {
 			ShowInfo("Closed connection from '" CL_WHITE "%s" CL_RESET "'.\n", ip2str(session[fd]->client_addr, NULL));
 		}
+
+		if (session[fd]->flag.megumi)
+			DeleteMegumi(session[fd]->hash);
+
 		do_close(fd);
 		return 0;
 	}
