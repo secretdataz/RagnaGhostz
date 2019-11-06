@@ -1,0 +1,25 @@
+
+// PVP_RANKS
+// ID,NOME,SLOT
+
+// PVP_PLAYER
+
+-	Script	PvP	{
+
+	OnInit:
+		.@query$ = "SELECT  r.id, r.nome, r.slot " +
+		           "  FROM `pvp_ranks` r         ";
+					   
+		.@c = query_sql( .@query$, .@id, .@nome$, .@slot );
+		
+		for( .@i = 0; i < .@c; .@i++ )
+		{
+			.rank_name$[.@i] = .@nome$[.@i];
+			.rank_slot[.@i] = .@nome$[.@i];
+		}
+		
+		end;
+		
+	OnPCLoginEvent:
+	
+}

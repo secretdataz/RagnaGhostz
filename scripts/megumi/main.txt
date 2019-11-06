@@ -19,6 +19,9 @@
 		}
 		
 		// Carregando Informações do Jogador
+		
+		// Posição no Ranking PVP
+		.@query$
 
 		dispbottom "[MEGUMI] Sincronização completa.";
 		
