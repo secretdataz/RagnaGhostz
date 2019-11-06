@@ -84,6 +84,12 @@
 						"Torre Platina (LVL 100 | 10%)",
 						"Torre Diamante (LVL 170 | 5%)";
 	
+	setarray .@nome_rpc$[1],"Bronze",
+	                        "Prata",
+							"Ouro",
+							"Platina",
+							"Diamante";
+							
 	setarray .@color$[1],"^8B4513","^696969","^FFA500","^6495ED","^9932CC";
 	setarray .@level[1],1,10,50,100,170;
 	
@@ -132,6 +138,8 @@
 			$TORRE_ID = .@option;
 			$TORRE_ALONE = 1;
 			
+			@TORRE_NAME$ = .@nome_rpc$[.@option];
+			
 			instance_create( "Torre da Jornada", IM_CHAR );
 			instance_enter( "Torre da Jornada", 50, 355, getcharid(0), instance_id(IM_CHAR));
 			end;
@@ -177,9 +185,12 @@
 			npctalk "Boa sorte ao Grupo [" + getpartyname( getcharid(1) ) + "]!";
 			
 			.LEVEL_NEED = .@level[.@option];
+			.NOME_RPC$ = .@nome_rpc$[.@option];
 			
 			addrid( 2, 0, getcharid(1) );
 			
+			@TORRE_NAME$ = .NOME_RPC$;
+
 			getmapxy( .@m$, .@x, .@y, 0 );
 			
 			if( strcharinfo(3) != "prontera" )

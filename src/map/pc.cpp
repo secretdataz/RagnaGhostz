@@ -5790,6 +5790,8 @@ enum e_setpos pc_setpos(struct map_session_data* sd, unsigned short mapindex, in
 		channel_pcquit(sd,4); //quit map chan
 	}
 
+	npcInvoker(&sd->bl, "rpc_wrapper");
+
 	if( m < 0 )
 	{
 		uint32 ip;

@@ -71,3 +71,20 @@ void clifmeg_dressroomopened(int aid, int state)
 	clifmeg_send(aid, "DRESSROOM", pk);
 }
 
+void clifmeg_rpc(int aid, std::string title, std::string desc, std::string lik, std::string lit, std::string sik, std::string sit)
+{
+	std::string pk = title;
+	pk.append("|");
+	pk.append(desc);
+	pk.append("|");
+	pk.append(lik);
+	pk.append("|");
+	pk.append(lit);
+	pk.append("|");
+	pk.append(sik);
+	pk.append("|");
+	pk.append(sit);
+
+	clifmeg_send(aid, "RPC", pk);
+}
+

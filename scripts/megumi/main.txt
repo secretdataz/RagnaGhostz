@@ -21,5 +21,9 @@
 		// Carregando Informações do Jogador
 
 		dispbottom "[MEGUMI] Sincronização completa.";
+		
+		// Discord RPC
+		@RPC_DOING$ = "Vou ser " + ( Sex ? "o" : "a" ) + " mais forte!";
+		rpc( getcharid(0) );
 		end;
 }

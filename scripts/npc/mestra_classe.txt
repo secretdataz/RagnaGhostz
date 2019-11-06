@@ -160,6 +160,7 @@
 	end;
 	
 	L_PlatSkills:
+		rpc( getcharid(0) );;
 		atcommand "@allskills";
 		skill 142,1,0;
 		switch(BaseClass) {

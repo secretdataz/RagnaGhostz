@@ -2195,17 +2195,6 @@ int map_quit(struct map_session_data *sd) {
 	if (sd->state.buyingstore)
 		idb_remove(buyingstore_getdb(), sd->status.char_id);
 
-	if (sd->megHash > 0)
-	{
-		struct megumi meg = GetMegumiData(sd->megHash);
-
-		if (meg.activate)
-		{
-			set_eof(meg.fd);
-			DeleteMegumi(sd->megHash);
-		}
-	}
-
 	pc_damage_log_clear(sd,0);
 	party_booking_delete(sd); // Party Booking [Spiria]
 	pc_makesavestatus(sd);

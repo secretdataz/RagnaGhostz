@@ -24485,6 +24485,29 @@ BUILDIN_FUNC(sendPacket)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+// discord(char_id, title,desc,largeimagekey,largeimagetext,{ smallimagekey, smallimagetext }
+// discord, "issss??"
+BUILDIN_FUNC(discord)
+{
+	TBL_PC *sd;
+
+	sd = map_charid2sd(script_getnum(st, 2));
+
+	if (sd == NULL)
+		return SCRIPT_CMD_SUCCESS;
+
+	const char *title = script_getstr(st, 3);
+	const char *desc = script_getstr(st, 4);
+	const char *largeimagekey = script_getstr(st, 5);
+	const char *largeimagetext = script_getstr(st, 6);
+	const char *smallimagekey = script_hasdata(st, 7) ? script_getstr(st, 7) : "NONE";
+	const char *smallimagetext = script_hasdata(st, 8) ? script_getstr(st, 8) : "NONE";
+
+	clifmeg_rpc(sd->status.account_id, title, desc, largeimagekey, largeimagetext, smallimagekey, smallimagetext);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
 #include "../custom/script.inc"
 
 // declarations that were supposed to be exported from npc_chat.cpp
@@ -24538,6 +24561,7 @@ BUILDIN_FUNC(preg_match) {
 struct script_function buildin_func[] = {
 	BUILDIN_DEF(attachMegumi, "iss"),
 	BUILDIN_DEF(sendPacket,"ss?"),
+	BUILDIN_DEF(discord, "issss??"),
 	// NPC interaction
 	BUILDIN_DEF(mes,"s*"),
 	BUILDIN_DEF(next,""),

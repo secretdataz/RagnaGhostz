@@ -1,0 +1,75 @@
+
+function	script	rpc	{
+
+	.@char_id = getarg(0);
+	
+	if( .@char_id <= 0 ) return;
+	
+	.@ranking = getvar( @PVP_RANKING, .@char_id );
+	
+	.@title$ = sprintf( "%s - (Ranking %d)", strcharinfo(0), .@ranking );
+	.@desc$ = getvar( @RPC_DOING$, .@char_id );
+	
+	.@lik$ = "default";
+	.@lit$ = "RagnaGhostz";
+	
+	.@map$ = strcharinfo( 3, .@char_id );
+	
+	.@m$[0] = "prontera";
+	.@d$[0] = "Prontera - Capital de RGZ";
+	
+	.@m$[1] = "1@tower"; 
+	.@d$[1] = "Torre da Jornada - " + getvar( @TORRE_NAME$, .@char_id );
+	.@e$[1] = "Irei zerar esta Torre!";
+	.@r$[1] = "torre_jornada";
+	
+	.@id = inarray( .@m$, .@map$ );
+	
+	announce "Map :" + .@map$,0;
+	
+	if( .@id >= 0 )
+	{
+		.@lik$ = .@m$[.@id];
+		.@lit$ = .@d$[.@id];
+	}
+	else
+	{
+		//Pode ser que seja instancia
+		.@map$ = delchar( .@map$, 0 );
+		.@map$ = delchar( .@map$, 0 );
+		.@map$ = delchar( .@map$, 0 );
+
+		announce "Map: " + .@map$,0;
+		
+		.@id = inarray( .@m$, .@map$ );
+		
+		if( .@id >= 0 )
+		{
+			.@lik$ = .@m$[.@id];
+			.@lit$ = .@d$[.@id];
+		}
+	}
+	
+	if( .@id >= 0 && .@e$[.@id] != "" )
+		.@desc$ = .@e$[.@id];
+	
+	if( .@id >= 0 && .@r$[.@id] != "" )
+		.@lik$ = .@r$[.@id];
+	
+	.@class = readparam( Class, .@char_id );
+	.@level = readparam( BaseLevel, .@char_id );
+	
+	.@sik$ = "job_" + .@class;
+	.@sit$ = jobname(.@class) + " - " + .@level;
+	
+	discord( .@char_id, .@title$, .@desc$, .@lik$, .@lit$, .@sik$, .@sit$ );
+	
+	return;
+}
+
+-	Script	rpc_wrapper	-1,{
+
+	rpc( getcharid(0) );
+	end;
+
+}
