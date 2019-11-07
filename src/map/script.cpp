@@ -11762,8 +11762,7 @@ BUILDIN_FUNC(getstatus)
 BUILDIN_FUNC(debugmes)
 {
 	const char *str;
-	str=script_getstr(st,2);
-	ShowDebug("script debug : %d %d : %s\n",st->rid,st->oid,str);
+	ShowDebug("[%s]: %s \n", script_getstr(st,2), script_getstr(st,3));
 	return SCRIPT_CMD_SUCCESS;
 }
 
@@ -24742,7 +24741,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(sc_end_class,"??"),
 	BUILDIN_DEF(getstatus, "i??"),
 	BUILDIN_DEF(getscrate,"ii?"),
-	BUILDIN_DEF(debugmes,"s"),
+	BUILDIN_DEF(debugmes,"ss"),
 	BUILDIN_DEF2(catchpet,"pet","i"),
 	BUILDIN_DEF2(birthpet,"bpet",""),
 	BUILDIN_DEF(catchpet,"i"),

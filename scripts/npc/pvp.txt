@@ -4,11 +4,29 @@
 
 // PVP_PLAYER
 
+/*
+                             Formula de Pontos
+ 
+	Simples:
+		1 Abate = 10 Pontos
+		1 Morte = -3 ~~ -5 Pontos
+
+
+   Abates Modificadores:
+		Alvo em ranking inferior += - ( 2 * Diferença )
+		Alvo em Ranking maior += ( Diferença )
+		Alvo É Ranking 4 ou 5 += ( 4 )
+		5 Abates Consecutivos sem morrer ou teleportar += 2
+		7 Abates Consecutivos sem morrer ou teleportar += 4
+		10 Abates Consecutivos sem morrer ou teleportar += 7
+		5 Abates Consecutivos sem morrer ou teleportar = 
+*/
 -	Script	PvP	{
 
 	OnInit:
-		.@query$ = "SELECT  r.id, r.nome, r.slot " +
-		           "  FROM `pvp_ranks` r         ";
+		// mte = Min to Enter, ou seja; A quantidade de pontos para poder entrar no ranking
+		.@query$ = "SELECT  r.id, r.nome, r.slot, r.mte " +
+		           "  FROM `pvp_ranks` r                ";
 					   
 		.@c = query_sql( .@query$, .@id, .@nome$, .@slot );
 		
@@ -18,8 +36,22 @@
 			.rank_slot[.@i] = .@nome$[.@i];
 		}
 		
+		debugmes "Ranking PVP","Carregado (" + .@c + ") Rankings.";
 		end;
-		
-	OnPCLoginEvent:
+
+}
+
+// getarg(0) = Função
+//
+// getarg(1) = Login
+//             
+function	script	pvp	{
 	
+	.@func$ = getarg(0);
+	
+	if( .@func$ == "PLAYER_LOGIN" )
+	{
+		.@query$ = "
+		
+	}
 }
