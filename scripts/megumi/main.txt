@@ -20,8 +20,8 @@
 		
 		// Carregando Informações do Jogador
 		
-		// Posição no Ranking PVP
-		.@query$
+		// Carrega dados do PVP
+		pvp( "LoadPlayerData", .@cid );
 
 		dispbottom "[MEGUMI] Sincronização completa.";
 		

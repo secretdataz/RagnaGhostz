@@ -493,6 +493,15 @@
 	export_parameter("LastMobGID", SP_KF_MOBGID);
 	export_parameter("LastMobID", SP_KF_MOBID);
 	export_parameter("DressroomState", SP_DRESSROOMSTATE);
+	
+	export_parameter("PVP_DEATHS", SP_PVP_DEATHS);
+	export_parameter("PVP_KILLS", SP_PVP_KILLS );
+	export_parameter("PVP_POINTS", SP_PVP_POINTS);
+	export_parameter("PVP_RANKING", SP_PVP_RANKING);
+	export_parameter("PVP_STREAK", SP_PVP_STREAK);
+	export_parameter("PVP_KILLER", SP_PVP_KILLER);
+	export_parameter("PVP_KILLED", SP_PVP_KILLED);
+	export_parameter("PVP_POSITION", SP_PVP_POSITION);
 
 	export_parameter("StatusPoint",SP_STATUSPOINT);
 	export_parameter("BaseLevel",SP_BASELEVEL);

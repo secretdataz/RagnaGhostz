@@ -1,26 +1,81 @@
 
-// PVP_RANKS
-// ID,NOME,SLOT
-
-// PVP_PLAYER
-
 /*
                              Formula de Pontos
  
+   Modificadores Bonus por Ranking:
+        Novato:
+			+20% de dano contra rankings acima.
+			+15 Em todos os Atributos.
+			3% de chance de converter dano recebido em cura
+			Abater um alvo recupera toda a vida e mana
+			
+		Veterano:
+			+15% de dano contra rankings acima.
+			+10 Em todos os atributos.
+			3% de chance de converter dano recebido em cura
+			Abataer um alvo recupera toda a vida.
+			
+		"Ouro":
+			+10% de dano contra rankings acima.
+			+5 em todos os atributos.
+			1% de chance de converter dano recebido em cura
+			Abater um alvo recupera toda a mana
+			
+		Pilar:
+			+5% de dano contra rankings acima.
+			+2 em todos os atributos.
+			Abater alvos faz com que se perca 5% da vida e mana atual
+		
+		"Diamante":
+			-5% de dano contra contra rankings inferiores
+	
+   Modificadores de Batalha:
+		Bronze:
+			Pode batalhar com todos menos platina e diamante
+			
+		Prata:
+			Pode batalhar com todos menos platina e diamante
+			
+		Ouro:
+			Pode batalhar com todos.
+			
+		Platina:
+			Pode batalhar com todos menos Bronze e Prata
+			
+		Diamante:
+			Pode batalhar com todos menos Bronze e Prata
+	
 	Simples:
 		1 Abate = 10 Pontos
 		1 Morte = -3 ~~ -5 Pontos
-
-
+	
    Abates Modificadores:
 		Alvo em ranking inferior += - ( 2 * Diferença )
 		Alvo em Ranking maior += ( Diferença )
 		Alvo É Ranking 4 ou 5 += ( 4 )
-		5 Abates Consecutivos sem morrer ou teleportar += 2
+		Alvo está no top 3 += 10
+		5 Abates Consecutivos sem morrer ou teleportar += 2 e entra em modo shutdown
 		7 Abates Consecutivos sem morrer ou teleportar += 4
 		10 Abates Consecutivos sem morrer ou teleportar += 7
-		5 Abates Consecutivos sem morrer ou teleportar = 
+		15 Abates Consecutivos sem morrer ou teleportar + 10 
+		20 Abates Consecutivos sem morrer ou teleportar += 15
+		Eliminar um mesmo alvo em um intervalo de 3 minutos torna os pontos obtidos /= 2
+		Eliminar um mesmo alvo em um intervalo de 1 minuto torna os pontos obtidos -= 7
+		Shutdown alvo += Total abates / 2
+		
+	Mortes Modificadores:
+		Killer em Ranking inferior -= Diferença
+		Killer é Ranking 4 ou 5 -= + rand(3, 5)
+		Morto é Ranking 4 -= rand(1,30)
+		Morto é ranking 5 -= rand(20,50)
+		Diamantes não dão pontos para Bronze e Prata e também não
+		
 */
+
+
+// PVP_RANKS
+// ID,NOME,SLOT
+
 -	Script	PvP	{
 
 	OnInit:
@@ -37,21 +92,129 @@
 		}
 		
 		debugmes "Ranking PVP","Carregado (" + .@c + ") Rankings.";
+		
+		setarray .ranked_maps$[0],"arena";
 		end;
 
+	OnPCKillEvent:
+		.@debug = 1;
+		
+		if( inarray( .ranked_maps$, strcharinfo(0) ) < 0 || .@victim <= 0 ) end;
+		
+		.@victim          = PVP_KILLED;
+		.@victim_ranking  = readparam( PVP_RANKING, .@victim );
+		.@victim_position = readparam( PVP_POSITION, .@victim ); 
+		
+		.@killer         = getcharid(0);
+		.@killer_ranking = PVP_RANKING;
+		
+		PVP_STREAK++;
+		
+		.@killer_streak = PVP_STREAK;
+		
+		// Killer
+		// Recebe 10 pontos
+		.@points = 10;
+		
+		// Se a Vítima for de Ranking Inferior, .@points -= ( 2 * Diferença de Ranking )
+		if( .@victim_ranking < .@killer_ranking )
+			.@points -= 2 * ( .@killer_ranking - .@victim_ranking );
+		
+		// Se a Vítima for de Ranking Maior, .@points += Diferença de Ranking
+		if( .@victim_ranking > .@killer_ranking )
+			.@points += ( .@victim_ranking - .@killer_ranking );
+		
+		// Vítima é ranking 4 ou 5? Se sim, .@points += Ranking
+		if( .@victim_ranking >= 4 )
+			.@points += .@victim_ranking;
+			
+		// Alvo está no TOP 5 do seu elo? Se sim, .@points += rand( 5, 12 )
+		if( .@victim_position <= 5 && .@victim_position > 0 )
+			.@points += rand( 5, 12 );
+		
+		.@tick = ( gettimetick(2) - @TIME_KILLED[.@victim] );
+		
+		// Eliminar o mesmo alvo em período de 2 a 3 minutos faz com que os pontos seja dividido por 2.
+		// Eliminar o mesmo alvo em período de 1 minuto faz com que o KillStreak não aumente e fixa o ponto em .@points = 3
+		if( .@tick < 180 )
+		{
+			if( getgroupid() == 99 ) dispbottom "Aplicado Punição de Killed";
+			
+			.@points = .@tick <= 60 ? 3 : ( .@points / 2 );
+		}
+		else
+		{
+			// Abates Consecutivos sem morrer ou deixar a arena? .@points += x
+			// >= 5  -> x = 2
+			// >= 7  -> x = 4
+			// >= 10 -> x = 7
+			// >= 15 -> x = 10
+			// >= 20 -> x = 15
+			if( .@killer_streak >= 20 )
+				.@points += 15;
+			else if( .@killer_streak >= 15 )
+				.@points += 10;
+			else if( .@killer_streak >= 10 )
+				.@points += 7;
+			else if( .@killer_streak >= 7 )
+				.@points += 4;
+			else if( .@points >= 5 )
+				.@points += 2;
+		}
+		
+		@TIME_KILLED[.@victim] = gettimetick(2);
+		
+		// Se os pontos forem menor que 0, .@points = 0.
+		if( .@points < 0 )
+			.@points = 0;
+			
+		message strcharinfo(0),"Obtido (" + .@points + ") pontos.";
+		end;
 }
+
+// PVP_PLAYER
+// CID,RANKING,PONTOS,KILLS,DEATH,KILL_RECORD,DEATH_RECORD
 
 // getarg(0) = Função
 //
-// getarg(1) = Login
+// getarg(1) = LoadPlayerData
+// getarg(1) = GetCharRanking( char_id )
 //             
 function	script	pvp	{
 	
 	.@func$ = getarg(0);
 	
-	if( .@func$ == "PLAYER_LOGIN" )
+	.@tpvp_p$ = "`pvp_player`"
+	
+	if( .@func$ == "LoadPlayerData" )
 	{
-		.@query$ = "
+		.@cid    = getcharid(0);
 		
+		.@query$ = "SELECT p.ranking,               " +
+		           "       p.pontos,                " +
+				   "	   p.abates,    p.mortes,   " +
+				   "	   p.recabates, p.recmortes " +
+				   "  FROM %s p                     " +
+				   " WHERE p.cid = %d               ";
+				   
+		.@q query_sql( sprintf( .@query$, .@tpvp_p$, .@cid ),
+		               .@ranking,
+					   .@pontos,
+					   .@abates, .@mortes,
+					   .@recabates, .@recmortes );
+		
+		if( .@q == 0 )
+			query_sql( sprintf( "INSERT INTO %s ( `cid` ) VALUES ( %d )", .@tpvp_p$, .@cid );
+		
+		PVP_RANKING = .@ranking;
+		PVP_POINTS  = .@pontos;
+		PVP_KILLS   = .@abates;
+		PVP_DEATHS  = .@mortes;
+		
+		return;
 	}
+	
+	announce "[Function - pvp]: Erro ao chamar função " + .@func$,0;
+	return;
+
 }

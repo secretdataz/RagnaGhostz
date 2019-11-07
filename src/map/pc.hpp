@@ -776,6 +776,20 @@ struct map_session_data {
 		std::string data2;
 	} megumi_packet;
 
+
+	// PVP
+	struct {
+		int ranking;
+		int position;
+		int points;
+		int kills;
+		int deaths;
+		int streak;
+
+		int killer;
+		int killed;
+	} pvp;
+
 	uint32 megHash;
 };
 

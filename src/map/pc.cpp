@@ -8013,25 +8013,6 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 	t_tick tick = gettick();
 	struct map_data *mapdata = map_getmapdata(sd->bl.m);
 
-	// Activate Steel body if a super novice dies at 99+% exp [celest]
-	// Super Novices have no kill or die functions attached when saved by their angel
-	if (!sd->state.snovice_dead_flag && (sd->class_&MAPID_UPPERMASK) == MAPID_SUPER_NOVICE) {
-		unsigned int exp = pc_nextbaseexp(sd);
-
-		if( exp && get_percentage(sd->status.base_exp,exp) >= 99 ) {
-			sd->state.snovice_dead_flag = 1;
-			pc_setrestartvalue(sd,1);
-			status_percent_heal(&sd->bl, 100, 100);
-			clif_resurrection(&sd->bl, 1);
-			if(battle_config.pc_invincible_time)
-				pc_setinvincibletimer(sd, battle_config.pc_invincible_time);
-			sc_start(&sd->bl,&sd->bl,status_skill2sc(MO_STEELBODY),100,5,skill_get_time(MO_STEELBODY,5));
-			if(mapdata_flag_gvg2(mapdata))
-				pc_respawn_timer(INVALID_TIMER, gettick(), sd->bl.id, 0);
-			return 0;
-		}
-	}
-
 	for(k = 0; k < MAX_DEVOTION; k++) {
 		if (sd->devotion[k]){
 			struct map_session_data *devsd = map_id2sd(sd->devotion[k]);
@@ -8085,7 +8066,7 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 
 	clif_party_dead( sd );
 
-	pc_setglobalreg(sd, add_str(PCDIECOUNTER_VAR), sd->die_counter+1);
+	//pc_setglobalreg(sd, add_str(PCDIECOUNTER_VAR), sd->die_counter+1);
 	pc_setparam(sd, SP_KILLERRID, src?src->id:0);
 
 	//Reset menu skills/item skills
@@ -8133,10 +8114,23 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 			break;
 	}
 
+	//PVP
+	sd->pvp.streak = 0;
+
 	if (src && src->type == BL_PC) {
 		struct map_session_data *ssd = (struct map_session_data *)src;
-		pc_setparam(ssd, SP_KILLEDRID, sd->bl.id);
-		npc_script_event(ssd, NPCE_KILLPC);
+
+		//PVP
+		if (ssd->status.char_id != sd->status.char_id)
+		{
+			sd->pvp.deaths++;
+
+			pc_setparam(ssd, SP_PVP_KILLED, sd->status.char_id); // Registrando quem é a Vítima
+			pc_setparam(sd, SP_PVP_KILLER, ssd->status.char_id); // Registrando quem é o Assassino
+
+			pc_setparam(ssd, SP_KILLEDRID, sd->bl.id);
+			npc_script_event(ssd, NPCE_KILLPC);
+		}
 
 		if (battle_config.pk_mode&2) {
 			ssd->status.manner -= 5;
@@ -8390,6 +8384,14 @@ int pc_readparam(struct map_session_data* sd,int type)
 	nullpo_ret(sd);
 
 	switch(type) {
+		case SP_PVP_DEATHS: val = sd->pvp.deaths; break;
+		case SP_PVP_KILLS: val = sd->pvp.kills; break;
+		case SP_PVP_POINTS: val = sd->pvp.points; break;
+		case SP_PVP_RANKING: val = sd->pvp.ranking; break;
+		case SP_PVP_STREAK: val = sd->pvp.streak; break;
+		case SP_PVP_KILLED: val = sd->pvp.killed; break;
+		case SP_PVP_KILLER: val = sd->pvp.killer; break;
+		case SP_PVP_POSITION: val = sd->pvp.position; break;
 		case SP_KF_MOBGID: val = sd->kill_info.last_mob.gid; break;
 		case SP_KF_MOBID: val = sd->kill_info.last_mob.mobid; break;
 		case SP_KF_MOBLVL: val = sd->kill_info.last_mob.level; break;
@@ -8564,6 +8566,14 @@ bool pc_setparam(struct map_session_data *sd,int type,int val)
 	nullpo_retr(false,sd);
 
 	switch(type){
+	case SP_PVP_DEATHS: sd->pvp.deaths = val; return true;
+	case SP_PVP_KILLS: sd->pvp.kills = val; return true;
+	case SP_PVP_POINTS: sd->pvp.points = val; return true;
+	case SP_PVP_POSITION: sd->pvp.position = val; return true;
+	case SP_PVP_RANKING: sd->pvp.ranking = val; return true;
+	case SP_PVP_KILLED: sd->pvp.killed = val; return true;
+	case SP_PVP_KILLER: sd->pvp.killer = val; return true;
+	case SP_PVP_STREAK: sd->pvp.streak = val; return true;
 	case SP_KF_MOBGID: sd->kill_info.last_mob.gid = val; return true;
 	case SP_KF_MOBID: sd->kill_info.last_mob.mobid = val; return true;
 	case SP_KF_MOBLVL: sd->kill_info.last_mob.level = val; return true;
