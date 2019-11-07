@@ -83,15 +83,19 @@
 		.@query$ = "SELECT  r.id, r.nome, r.slot, r.mte " +
 		           "  FROM `pvp_ranks` r                ";
 					   
-		.@c = query_sql( .@query$, .@id, .@nome$, .@slot );
+		.@c = query_sql( .@query$, .@id, .@nome$, .@slot, .@mte );
 		
+		debugmes "Ranking PVP","Carregado (" + .@c + ") Rankings.";
+
 		for( .@i = 0; i < .@c; .@i++ )
 		{
 			.rank_name$[.@i] = .@nome$[.@i];
-			.rank_slot[.@i] = .@nome$[.@i];
+			.rank_slot[.@i]  = .@slot[.@i];
+			.rank_mte[.@i]   = .@mte[.@i];
+			
+			debugmes "Ranking - " + .rank_name$[.@i],sprintf( "Vagas: %d / MTE: %d ", .rank_slot[.@i], .rank_mte[.@i] );
 		}
 		
-		debugmes "Ranking PVP","Carregado (" + .@c + ") Rankings.";
 		
 		setarray .ranked_maps$[0],"arena";
 		end;
