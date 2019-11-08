@@ -38,6 +38,19 @@ int attr_fix_table[MAX_ELE_LEVEL][ELE_MAX][ELE_MAX];
 struct Battle_Config battle_config;
 static struct eri *delay_damage_ers; //For battle delay damage structures.
 
+/*
+Pega um valor aleat�rio
+*/
+int getRandomValue(int min, int max) {
+	int n = max - min + 1;
+	int remainder = RAND_MAX % n;
+	int x;
+	do {
+		x = rand();
+	} while (x >= RAND_MAX - remainder);
+	return min + x % n;
+}
+
 /**
  * Returns the current/list skill used by the bl
  * @param bl
@@ -1614,6 +1627,41 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 		else if( element == -3 ) //Use random element
 			element = rnd()%ELE_ALL;
 		pc_overheat(sd, (element == ELE_FIRE ? 3 : 1));
+	}
+
+	// Modificadores de Dano PVP
+	if (src->type == BL_PC && bl->type == BL_PC && map_getmapflag(bl->m, MF_PVP) && map_getmapflag(bl->m, MF_PVP_NOCALCRANK))
+	{
+		map_session_data *sd_attacker = BL_CAST(BL_PC, src);
+		map_session_data *sd_attacked = BL_CAST(BL_PC, bl);
+
+		bool attackingUpRanking = sd_attacked->pvp.ranking > sd_attacker->pvp.ranking;
+
+		if (sd_attacker->pvp.ranking <= RANKING_NOVATO && attackingUpRanking)
+		{
+			damage += (damage * 20) / 100;
+
+			if (getRandomValue(1, 100) <= 5)
+				status_heal(src, damage, 0, 2);
+		}
+		else if (sd_attacker->pvp.ranking == RANKING_VETERANO && attackingUpRanking)
+		{
+			damage += (damage * 15) / 100;
+
+			if (getRandomValue(1, 100) <= 3)
+				status_heal(src, damage, 0, 2);
+		}
+		else if (sd_attacker->pvp.ranking == RANKING_ELITE && attackingUpRanking)
+		{
+			damage += (damage * 10) / 100;
+
+			if (getRandomValue(1, 100) == 1)
+				status_heal(src, damage, 0, 2);
+		}
+		else if (sd_attacker->pvp.ranking == RANKING_PILAR && attackingUpRanking)
+			damage += (damage * 5) / 100;
+		else
+			damage -= (damage * 5) / 100;
 	}
 
 	return damage;
@@ -7673,6 +7721,29 @@ int battle_check_target( struct block_list *src, struct block_list *target,int f
 
 	if( (s_bl = battle_get_master(src)) == NULL )
 		s_bl = src;
+
+	// PVP
+	if (src->type == BL_PC && target->type == BL_PC && map_getmapflag(src->m, MF_PVP) && !map_getmapflag(src->m, MF_PVP_NOCALCRANK))
+	{
+		map_session_data *sd = BL_CAST(BL_PC, src);
+		map_session_data *tsd = BL_CAST(BL_PC, target);
+
+		if ((sd->pvp.ranking == RANKING_CASUAL || sd->pvp.ranking == RANKING_NOVATO || sd->pvp_rank == RANKING_VETERANO)
+			&& tsd->pvp.ranking >= RANKING_PILAR)
+		{
+			clif_displaymessage(sd->fd, "Incapacitado de deferir golpes em ranking [Pilar] e [Lenda]");
+			return 0;
+		}
+
+		if ((sd->pvp.ranking >= RANKING_PILAR) &&
+			(tsd->pvp.ranking == RANKING_CASUAL || tsd->pvp.ranking == RANKING_NOVATO || tsd->pvp_rank == RANKING_VETERANO))
+		{
+			clif_displaymessage(sd->fd, "Incapacitado de deferir golpes em rankings abaixo de [Elite]");
+			return 0;
+		}
+
+		return 1;
+	}
 
 	if ( s_bl->type == BL_PC ) {
 		switch( t_bl->type ) {

@@ -32,6 +32,7 @@
 static std::map<int, megumi> megumiList;
 static std::map<int, megumi>::iterator megumiIT;
 
+
 /*
 	Megumi Database
 */

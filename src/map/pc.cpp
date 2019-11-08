@@ -5790,8 +5790,6 @@ enum e_setpos pc_setpos(struct map_session_data* sd, unsigned short mapindex, in
 		channel_pcquit(sd,4); //quit map chan
 	}
 
-	npcInvoker(&sd->bl, "rpc_wrapper");
-
 	if( m < 0 )
 	{
 		uint32 ip;
@@ -8388,7 +8386,9 @@ int pc_readparam(struct map_session_data* sd,int type)
 		case SP_PVP_KILLS: val = sd->pvp.kills; break;
 		case SP_PVP_POINTS: val = sd->pvp.points; break;
 		case SP_PVP_RANKING: val = sd->pvp.ranking; break;
+		case SP_PVP_ANNOUNCER: val = sd->pvp.announcer; break;
 		case SP_PVP_STREAK: val = sd->pvp.streak; break;
+		case SP_PVP_MAXSTREAK: val = sd->pvp.max_streak; break;
 		case SP_PVP_KILLED: val = sd->pvp.killed; break;
 		case SP_PVP_KILLER: val = sd->pvp.killer; break;
 		case SP_PVP_POSITION: val = sd->pvp.position; break;
@@ -8571,9 +8571,11 @@ bool pc_setparam(struct map_session_data *sd,int type,int val)
 	case SP_PVP_POINTS: sd->pvp.points = val; return true;
 	case SP_PVP_POSITION: sd->pvp.position = val; return true;
 	case SP_PVP_RANKING: sd->pvp.ranking = val; return true;
+	case SP_PVP_ANNOUNCER: sd->pvp.announcer = val; return true;
 	case SP_PVP_KILLED: sd->pvp.killed = val; return true;
 	case SP_PVP_KILLER: sd->pvp.killer = val; return true;
 	case SP_PVP_STREAK: sd->pvp.streak = val; return true;
+	case SP_PVP_MAXSTREAK: sd->pvp.max_streak = val; return true;
 	case SP_KF_MOBGID: sd->kill_info.last_mob.gid = val; return true;
 	case SP_KF_MOBID: sd->kill_info.last_mob.mobid = val; return true;
 	case SP_KF_MOBLVL: sd->kill_info.last_mob.level = val; return true;

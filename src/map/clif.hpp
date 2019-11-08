@@ -1019,6 +1019,9 @@ void clif_cashshop_open( struct map_session_data* sd );
 
 void clif_display_pinfo(struct map_session_data *sd, int type);
 
+void clif_change_title_ack(struct map_session_data *sd, unsigned char result, unsigned long title_id);
+void clif_parse_change_title(int fd, struct map_session_data *sd);
+
 /// Roulette
 void clif_roulette_open(struct map_session_data* sd);
 void clif_parse_roulette_open(int fd, struct map_session_data *sd);

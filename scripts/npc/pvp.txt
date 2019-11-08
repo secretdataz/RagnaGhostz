@@ -3,46 +3,42 @@
                              Formula de Pontos
  
    Modificadores Bonus por Ranking:
+		Casual:
         Novato:
 			+20% de dano contra rankings acima.
-			+15 Em todos os Atributos.
-			3% de chance de converter dano recebido em cura
+			5% de chance de converter dano infligido em cura
 			Abater um alvo recupera toda a vida e mana
 			
 		Veterano:
 			+15% de dano contra rankings acima.
-			+10 Em todos os atributos.
-			3% de chance de converter dano recebido em cura
+			3% de chance de converter dano infligido em cura
 			Abataer um alvo recupera toda a vida.
 			
 		"Ouro":
 			+10% de dano contra rankings acima.
-			+5 em todos os atributos.
-			1% de chance de converter dano recebido em cura
+			1% de chance de converter dano infligido em cura
 			Abater um alvo recupera toda a mana
 			
 		Pilar:
 			+5% de dano contra rankings acima.
-			+2 em todos os atributos.
 			Abater alvos faz com que se perca 5% da vida e mana atual
 		
 		"Diamante":
 			-5% de dano contra contra rankings inferiores
 	
    Modificadores de Batalha:
+		Casual:
 		Bronze:
-			Pode batalhar com todos menos platina e diamante
-			
 		Prata:
 			Pode batalhar com todos menos platina e diamante
 			
 		Ouro:
 			Pode batalhar com todos.
 			
+		Diamante:
 		Platina:
 			Pode batalhar com todos menos Bronze e Prata
 			
-		Diamante:
 			Pode batalhar com todos menos Bronze e Prata
 	
 	Simples:
@@ -50,10 +46,10 @@
 		1 Morte = -3 ~~ -5 Pontos
 	
    Abates Modificadores:
-		Alvo em ranking inferior += - ( 2 * DiferenÃ§a )
-		Alvo em Ranking maior += ( DiferenÃ§a )
-		Alvo Ã‰ Ranking 4 ou 5 += ( 4 )
-		Alvo estÃ¡ no top 3 += 10
+		Alvo em ranking inferior += - ( 2 * Diferença )
+		Alvo em Ranking maior += ( Diferença )
+		Alvo É Ranking 4 ou 5 += ( 4 )
+		Alvo está no top 3 += 10
 		5 Abates Consecutivos sem morrer ou teleportar += 2 e entra em modo shutdown
 		7 Abates Consecutivos sem morrer ou teleportar += 4
 		10 Abates Consecutivos sem morrer ou teleportar += 7
@@ -64,11 +60,11 @@
 		Shutdown alvo += Total abates / 2
 		
 	Mortes Modificadores:
-		Killer em Ranking inferior -= DiferenÃ§a
-		Killer Ã© Ranking 4 ou 5 -= + rand(3, 5)
-		Morto Ã© Ranking 4 -= rand(1,30)
-		Morto Ã© ranking 5 -= rand(20,50)
-		Diamantes nÃ£o dÃ£o pontos para Bronze e Prata e tambÃ©m nÃ£o
+		Killer em Ranking inferior -= Diferença
+		Killer é Ranking 4 ou 5 -= + rand(3, 5)
+		Morto é Ranking 4 -= rand(1,30)
+		Morto é ranking 5 -= rand(20,50)
+		Diamantes não dão pontos para Bronze e Prata e também não
 		
 */
 
@@ -76,8 +72,261 @@
 // PVP_RANKS
 // ID,NOME,SLOT
 
--	Script	PvP	{
+prontera,160,192,4	Script	Arena RagnaGhostz	10084,{
 
+
+	.@n$ = "[^C71585Gerente da Arena^000000]";
+	
+	cutin "ep15_tatio01",2;
+	
+	mes .@n$;
+	mes "Seja bem-vind" + ( Sex ? "o" : "a" ) + ".";
+	mes "Estou às suas ordens.";
+	mes "___________________________________";
+	mes "^6B8E23Ranking Atual^000000 » " + .rank_name$[PVP_RANKING];
+	mes "^B8860BPontos^000000 » " + PVP_POINTS;
+	mes "^B22222Abates^000000 » " + PVP_KILLS;
+	mes "^778899Mortes^000000 » " + PVP_DEATHS;
+	mes "^8B814CMaior Streak^000000 » " + PVP_MAXSTREAK;
+	mes "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
+	
+	switch( select( "Entrar na Arena", "Ver Ranking", "Ver Estatísticas", "Modificar Anunciador", "Regras da Arena Rankeada" ) )
+	{
+		case 1:
+			if( BaseLevel < 300 )
+			{
+				mes "Desculpa, não aceitamos pessoas fracas em nossa arena.";
+				mes "Volte daqui " + ( 300 - BaseLevel ) + " níveis.";
+				close2;
+				cutin "ep15_tatio01",255;
+				end;
+			}
+			
+			for( .@i = 0; .@i < getarraysize( .ranked_aname$ ); .@i++ )
+				.@menu$ += sprintf( "%s (%d Jogadores)", .ranked_aname$[.@i], getmapusers( .ranked_maps$[.@i] ) ) + ":";
+			
+			.@option = select( .@menu$ );
+			
+			.@option--;
+						
+			.@announce$ = sprintf( "%s [%s - %s] acaba de entrar na arena [%s]",
+			              ( Sex ? "O Jogador " : "A Jogadora " ),
+						  strcharinfo(0),
+                          .rank_name$[PVP_RANKING],
+						  .ranked_aname$[.@option] );
+						  
+			announce .@announce$,bc_map,.isranked[.@option] ? 0xEEEE00 : 0x00FF7F,FW_NORMAL,18;
+			
+			npctalk "Boa sorte, " + strcharinfo(0);
+			warp .ranked_maps$[.@option],0,0;
+			end;
+			
+		case 2:
+			next;
+			mes "[^8B0000TOP's 100^000000]";
+		
+			.@total = query_sql(
+			          "SELECT c.name, c.class,       " +
+					  "       pp.ranking, pp.pontos, " +
+					  "       pp.abates,  pp.mortes, " +
+					  "       pp.recabates           " +
+			          "  FROM `pvp_player` pp        " +
+					  " INNER JOIN `char` c ON c.char_id = pp.char_id " +
+					  " ORDER BY pp.ranking DESC,    " +
+					  "          pp.pontos DESC      " +
+					  " LIMIT 100 ",
+			          .@name$,   .@class, 
+					  .@ranking, .@pontos,
+					  .@abates,  .@mortes,
+					  .@recabates );
+			
+			mes " ";
+			
+			for( .@i = 0; .@i < .@total; .@i++ )
+			{
+				mes "[Posição " + ( .@i + 1 ) + "]";
+				if( .@name$[.@i] == strcharinfo(0) )
+				{
+					mes "^FF0000Nome »" + .@name$[.@i];
+					mes "Ranking » " + .rank_name$[PVP_RANKING];
+					mes "Classe » " + jobname( .@class[.@i] );
+					mes "Pontos » " + .@pontos[.@i] + "^000000";
+				}
+				else
+				{
+					mes "^8B4513Nome^000000 »" + .@name$[.@i];
+					mes "^6B8E23Ranking^000000 » " + .rank_name$[PVP_RANKING];
+					mes "^8B658BClasse^000000 » " + jobname( .@class[.@i] );
+					mes "^B8860BPontos^000000 » " + .@pontos[.@i];
+				}
+				mes "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
+			}
+			close2;
+			cutin "ep15_tatio01",255;
+			end;
+			
+		case 3:
+			mes "EM BREVE NAS MELHORES BANCAS";
+			close2;
+			cutin "ep15_tatio01",255;
+			end;
+			
+		case 4:
+			next;
+			mes .@n$;
+			mes "Você deseja trocar o seu anunciador de abates?";
+			mes " ";
+			mes "^8B4513Anunciador Atual^000000 » " + .anunci_sound$[PVP_ANNOUNCER];
+			switch( select( "Sim", "Anunciador?" ) )
+			{
+				case 1:
+					for( .@i = 0; .@i < getarraysize( .anunciadores$ ); .@i++ )
+						.@menu$ += .anunciadores$[.@i] + ":";
+					
+					L_Anunciador:
+					next;
+					mes .@n$;
+					mes "Selecione qual anunciador deseja.";
+					
+					.@option = select( .@menu$ );
+			
+					.@option--;
+					
+					if( .@option == PVP_ANNOUNCER )
+					{
+						mes .@n$;
+						mes "Acho que você tem problema de cabeça, você já está com este anunciador configurado!";
+						close2;
+						cutin "ep15_tatio01",255;
+						end;	
+					}
+					
+					soundeffect sprintf( "%s_1.wav", .anunci_sound$[.@option] ),0;
+					
+					next;
+					mes .@n$;
+					mes "Muito bem, é este que você quer?";
+					
+					if( select( "Não", "Sim" ) == 1 ) goto L_Anunciador;
+					
+					if( countitem( 12221 ) == 0 )
+					{
+						next;
+						mes .@n$;
+						mes "Sinto muito, para que eu possa efetuar esta troca preciso que você tenha em mãos um <ITEM>Trocador de Anunciador<INFO>12221</INFO></ITEM>.";
+						close2;
+						cutin "ep15_tatio01",255;
+						end;
+					}
+					
+					next;
+					mes .@n$;
+					mes "Atenção, um <ITEM>Trocador de Anunciador<INFO>12221</INFO></ITEM> será consumido de seu inventário.";
+					
+					if( select( "Confirmar" ) == 1 )
+					{
+						delitem 12221,1;
+						next;
+						mes .@n$;
+						mes "Certo, seu novo anunciador foi configurado!";
+						PVP_ANNOUNCER = .@option;
+						
+						query_sql( "UPDATE `pvp_player`  " +
+								   "   SET `anunciador` = " + .@option +
+								   " WHERE `char_id` = " + getcharid(0) );
+					}
+					close2;
+					cutin "ep15_tatio01",255;
+					end;
+					
+				case 2:
+					next;
+					mes .@n$;
+					mes "Sempre que você abate um outro jogador nas Arenas, um anunciador irá falar uma frase de acordo com a sequência de abates do momento.";
+					next;
+					mes .@n$;
+					mes "É uma boa forma de se destacar. Avise quando quiser trocar.";
+					close2;
+					cutin "ep15_tatio01",255;
+					end;
+			}
+			
+		case 5:
+		
+			break;
+	}
+	close2;
+	
+
+	
+	end;
+	
+	OnMinute10:
+	OnMinute20:
+	OnMinute30:
+	OnMinute40:
+	OnMinute50:
+	OnMinute00:
+		query_sql( "UPDATE `pvp_player`  " +
+		           "   SET `ranking` = -1 " );
+
+		for( .@i = getarraysize( .rank_name$ ) - 1; .@i > -1; .@i-- )
+		{
+			//announce "Ranking " + .@i,0;
+			
+			.@total = query_sql(
+			          "SELECT pp.char_id,            " +
+					  "       pp.ranking, pp.pontos, " +
+					  "       pp.abates              " +
+			          "  FROM `pvp_player` pp        " +
+					  " WHERE pp.ranking = -1        " +
+					  " ORDER BY pp.pontos DESC      ",
+			          .@cid,       
+					  .@ranking, .@pontos,
+					  .@abates );
+			
+			.@total_players += .@total;
+			
+			.@add = 0;
+			
+			while( .@total > 0 )
+			{
+				.@total--;
+				
+				if( .@i > RANKING_NOVATO && .@add == .rank_slot[.@i] ) continue;
+				if( .@abates[.@add] < .rank_mte[.@i] ) continue;
+								
+				.@query$ = "UPDATE `pvp_player` " +
+				           "   SET `ranking`  = " + .@i +
+						   " WHERE `char_id`  = " + .@cid[.@add];
+						   
+				query_sql( .@query$ );
+				
+				if( ischaronline( .@cid[.@add] ) )
+				{
+					if( readparam( PVP_RANKING, .@cid[.@add] ) != .@i )
+					{
+						dispbottom "--------------------------------------------------",0x6495ED,.@cid[.@add];
+						dispbottom "Parabéns, você agora está no Ranking " + .rank_name$[.@i] + "!",0x20B2AA,.@cid[.@add];
+						dispbottom "--------------------------------------------------",0x6495ED,.@cid[.@add];
+						
+						specialeffect2 68,AREA,strcharinfo(0,.@cid[.@add]);
+						
+						changetitle( .@i, .@cid[.@add] );
+						
+						set( PVP_RANKING, .@i, .@cid[.@add] );
+						
+						singlesoundeffect( "RANKING_UP.wav", .@cid[.@add] );
+					}
+				}
+				
+				.@add++;
+			}
+		}
+		
+		debugmes "Ranking PVP","O Ranking foi atualizado para (" + .@total_players + ") jogadores.";
+	end;
+	
 	OnInit:
 		// mte = Min to Enter, ou seja; A quantidade de pontos para poder entrar no ranking
 		.@query$ = "SELECT  r.id, r.nome, r.slot, r.mte " +
@@ -87,7 +336,7 @@
 		
 		debugmes "Ranking PVP","Carregado (" + .@c + ") Rankings.";
 
-		for( .@i = 0; i < .@c; .@i++ )
+		for( .@i = 0; .@i < .@c; .@i++ )
 		{
 			.rank_name$[.@i] = .@nome$[.@i];
 			.rank_slot[.@i]  = .@slot[.@i];
@@ -96,14 +345,57 @@
 			debugmes "Ranking - " + .rank_name$[.@i],sprintf( "Vagas: %d / MTE: %d ", .rank_slot[.@i], .rank_mte[.@i] );
 		}
 		
+		.ranked_aname$[0] = "Arena Rankeada";
+		.ranked_maps$[0]  = "guild_vs5";
+		.isranked[0]      = 1;
 		
-		setarray .ranked_maps$[0],"arena";
+		.ranked_aname$[1] = "Arena de Treino";
+		.ranked_maps$[1]  = "guild_vs3";
+		.isranked[1]      = 0;
+		
+		for( .@i = 0; .@i < getarraysize( .ranked_maps$ ); .@i++ )
+		{
+			setmapflag .ranked_maps$[.@i],MF_PVP;
+			
+			if( .isranked[.@i] )
+			{
+				setmapflag .ranked_maps$[.@i],MF_PVP_NOPARTY;
+				setmapflag .ranked_maps$[.@i],MF_PVP_NOPARTY;
+				setmapflag .ranked_maps$[.@i],MF_PVP_NOGUILD;
+				setmapflag .ranked_maps$[.@i],MF_NOWARP;
+			}
+			else
+			{
+				setmapflag .ranked_maps$[.@i],MF_PVP_NOCALCRANK;
+			}
+		}
+		
+		.anunciadores$[0] = "Padrão";
+		.anunci_sound$[0] = "DEFAULT";
+		
+		.anunciadores$[1] = "Stanley";
+		.anunci_sound$[1] = "STANLEY";
+		
+		.anunciadores$[2] = "Unreal";
+		.anunci_sound$[2] = "UNREAL";
+		
+		.anunciadores$[3] = "Lina";
+		.anunci_sound$[3] = "LINA";
+		
+		.anunciadores$[4] = "Tóxicman";
+		.anunci_sound$[4] = "TOXIC";
+		
+		.anunciadores$[5] = "Diva";
+		.anunci_sound$[5] = "DIVA";
+		
+		.anunciadores$[6] = "Halo";
+		.anunci_sound$[6] = "HALO";
 		end;
 
 	OnPCKillEvent:
 		.@debug = 1;
 		
-		if( inarray( .ranked_maps$, strcharinfo(0) ) < 0 || .@victim <= 0 ) end;
+		if( inarray( .ranked_maps$, strcharinfo(3) ) < 0 || PVP_KILLED <= 0 ) end;
 		
 		.@victim          = PVP_KILLED;
 		.@victim_ranking  = readparam( PVP_RANKING, .@victim );
@@ -113,6 +405,7 @@
 		.@killer_ranking = PVP_RANKING;
 		
 		PVP_STREAK++;
+		PVP_KILLS++;
 		
 		.@killer_streak = PVP_STREAK;
 		
@@ -120,29 +413,35 @@
 		// Recebe 10 pontos
 		.@points = 10;
 		
-		// Se a VÃ­tima for de Ranking Inferior, .@points -= ( 2 * DiferenÃ§a de Ranking )
+		if( getgroupid() == 99 )
+		{
+			dispbottom ".@victim_ranking = " + .@victim_ranking;
+			dispbottom ".@killer_ranking = " + .@killer_ranking;
+		}
+		
+		// Se a Vítima for de Ranking Inferior, .@points -= ( 2 * Diferença de Ranking )
 		if( .@victim_ranking < .@killer_ranking )
 			.@points -= 2 * ( .@killer_ranking - .@victim_ranking );
 		
-		// Se a VÃ­tima for de Ranking Maior, .@points += DiferenÃ§a de Ranking
+		// Se a Vítima for de Ranking Maior, .@points += Diferença de Ranking
 		if( .@victim_ranking > .@killer_ranking )
 			.@points += ( .@victim_ranking - .@killer_ranking );
 		
-		// VÃ­tima Ã© ranking 4 ou 5? Se sim, .@points += Ranking
+		// Vítima é ranking 4 ou 5? Se sim, .@points += Ranking
 		if( .@victim_ranking >= 4 )
 			.@points += .@victim_ranking;
 			
-		// Alvo estÃ¡ no TOP 5 do seu elo? Se sim, .@points += rand( 5, 12 )
+		// Vítima está no TOP 5 do seu elo? Se sim, .@points += rand( 5, 12 )
 		if( .@victim_position <= 5 && .@victim_position > 0 )
 			.@points += rand( 5, 12 );
 		
 		.@tick = ( gettimetick(2) - @TIME_KILLED[.@victim] );
 		
-		// Eliminar o mesmo alvo em perÃ­odo de 2 a 3 minutos faz com que os pontos seja dividido por 2.
-		// Eliminar o mesmo alvo em perÃ­odo de 1 minuto faz com que o KillStreak nÃ£o aumente e fixa o ponto em .@points = 3
+		// Eliminar o mesmo alvo em período de 2 a 3 minutos faz com que os pontos seja dividido por 2.
+		// Eliminar o mesmo alvo em período de 1 minuto faz com que o KillStreak não aumente e fixa o ponto em .@points = 3
 		if( .@tick < 180 )
 		{
-			if( getgroupid() == 99 ) dispbottom "Aplicado PuniÃ§Ã£o de Killed";
+			if( getgroupid() == 99 ) dispbottom "Aplicado Punição de Killed";
 			
 			.@points = .@tick <= 60 ? 3 : ( .@points / 2 );
 		}
@@ -171,15 +470,54 @@
 		// Se os pontos forem menor que 0, .@points = 0.
 		if( .@points < 0 )
 			.@points = 0;
-			
-		message strcharinfo(0),"Obtido (" + .@points + ") pontos.";
+
+		message strcharinfo(0),"Obtido (" + .@points + ") pontos";
+		
+		.@query$ = "UPDATE `pvp_player`          " +
+				   "   SET `pontos` = `pontos` + " + .@points + ", " +
+				   "       `abates` = " + PVP_KILLS + " " +
+		           ( PVP_MAXSTREAK < MAX_STREAK ?
+				   "       ,`recabates` = " + PVP_STREAK : " " ) +
+				   " WHERE `char_id`= " + .@cid[.@z];
+						   
+		query_sql( .@query$ );
+		
+		if( PVP_RANKING <= RANKING_NOVATO )
+			percentheal 100,100;
+		else if( PVP_RANKING == RANKING_VETERANO )
+			percentheal 100,0;
+		else if( PVP_RANKING == RANKING_ELITE )
+			percentheal 0,100;
+		else
+			percentheal -5,0;
+		
+		.@a = PVP_STREAK >= 14 ? 14 : PVP_STREAK;
+		
+		soundeffect sprintf( "%s_%d.wav", .anunci_sound$[PVP_ANNOUNCER], .@a ),0;
+		
+		.@announce$ = sprintf( "[%s][%s][%s] acaba de abater [%s][%s][%s] e está com %d %s!!",
+			            strcharinfo(0),
+                        .rank_name$[PVP_RANKING],
+						jobname( Class ),
+						strcharinfo( 0, .@victim ),
+						readparam( PVP_RANKING, .@victim ),
+						jobname( readparam( Class ) ),
+						.@a,
+						.@a == 1 ? "abate" : "abates consecutivos" );
+						  
+		mapannounce strcharinfo(3),.@announce$,bc_map,"0xFFCE00";
+
+		end;
+		
+	OnPCDieEvent:
+		MAX_STREAK = 0;
 		end;
 }
 
 // PVP_PLAYER
 // CID,RANKING,PONTOS,KILLS,DEATH,KILL_RECORD,DEATH_RECORD
 
-// getarg(0) = FunÃ§Ã£o
+// getarg(0) = Função
 //
 // getarg(1) = LoadPlayerData
 // getarg(1) = GetCharRanking( char_id )
@@ -188,37 +526,43 @@ function	script	pvp	{
 	
 	.@func$ = getarg(0);
 	
-	.@tpvp_p$ = "`pvp_player`"
+	.@tpvp_p$ = "`pvp_player`";
 	
 	if( .@func$ == "LoadPlayerData" )
 	{
-		.@cid    = getcharid(0);
+		.@cid    = getarg(1);
 		
-		.@query$ = "SELECT p.ranking,               " +
+		.@query$ = "SELECT p.anunciador,            " +
+		           "       p.ranking,               " +
 		           "       p.pontos,                " +
 				   "	   p.abates,    p.mortes,   " +
 				   "	   p.recabates, p.recmortes " +
 				   "  FROM %s p                     " +
-				   " WHERE p.cid = %d               ";
+				   " WHERE p.char_id = %d           ";
 				   
-		.@q query_sql( sprintf( .@query$, .@tpvp_p$, .@cid ),
-		               .@ranking,
-					   .@pontos,
-					   .@abates, .@mortes,
-					   .@recabates, .@recmortes );
+		.@q = query_sql( sprintf( .@query$, .@tpvp_p$, .@cid ),
+		                 .@announcer,
+						 .@ranking,
+					     .@pontos,
+					     .@abates, .@mortes,
+					     .@recabates, .@recmortes );
 		
 		if( .@q == 0 )
-			query_sql( sprintf( "INSERT INTO %s ( `cid` ) VALUES ( %d )", .@tpvp_p$, .@cid );
+			query_sql( sprintf( "INSERT INTO %s ( `char_id` ) VALUES ( %d )", .@tpvp_p$, .@cid ) );
 		
-		PVP_RANKING = .@ranking;
-		PVP_POINTS  = .@pontos;
-		PVP_KILLS   = .@abates;
-		PVP_DEATHS  = .@mortes;
+		PVP_ANNOUNCER = .@announcer;
+		PVP_RANKING   = .@ranking;
+		PVP_POINTS    = .@pontos;
+		PVP_KILLS     = .@abates;
+		PVP_DEATHS    = .@mortes;
+		PVP_MAXSTREAK = .@recabates;
+		
+		changetitle( PVP_RANKING, .@cid );
 		
 		return;
 	}
 	
-	announce "[Function - pvp]: Erro ao chamar funÃ§Ã£o " + .@func$,0;
+	announce "[Function - pvp]: Erro ao chamar função " + .@func$,0;
 	return;
 
 }

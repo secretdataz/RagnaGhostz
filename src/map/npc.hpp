@@ -108,6 +108,8 @@ struct npc_data {
 		std::string variable;
 		int value;
 	} viewrequire;
+
+	int invokerid;
 };
 
 struct eri;

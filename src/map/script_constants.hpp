@@ -488,17 +488,25 @@
 	export_constant(CELL_CHKMAELSTROM);
 	export_constant(CELL_CHKICEWALL);
 
+	export_constant(RANKING_CASUAL);
+	export_constant(RANKING_NOVATO);
+	export_constant(RANKING_VETERANO);
+	export_constant(RANKING_ELITE);
+	export_constant(RANKING_PILAR);
+	export_constant(RANKING_LENDA);
 	/* parameters */
 	export_parameter("LastMobLevel", SP_KF_MOBLVL);
 	export_parameter("LastMobGID", SP_KF_MOBGID);
 	export_parameter("LastMobID", SP_KF_MOBID);
 	export_parameter("DressroomState", SP_DRESSROOMSTATE);
-	
+
+	export_parameter("PVP_ANNOUNCER", SP_PVP_ANNOUNCER);
 	export_parameter("PVP_DEATHS", SP_PVP_DEATHS);
 	export_parameter("PVP_KILLS", SP_PVP_KILLS );
 	export_parameter("PVP_POINTS", SP_PVP_POINTS);
 	export_parameter("PVP_RANKING", SP_PVP_RANKING);
 	export_parameter("PVP_STREAK", SP_PVP_STREAK);
+	export_parameter("PVP_MAXSTREAK", SP_PVP_MAXSTREAK);
 	export_parameter("PVP_KILLER", SP_PVP_KILLER);
 	export_parameter("PVP_KILLED", SP_PVP_KILLED);
 	export_parameter("PVP_POSITION", SP_PVP_POSITION);

@@ -5,9 +5,9 @@ function	script	rpc	{
 	
 	if( .@char_id <= 0 ) return;
 	
-	.@ranking = getvar( @PVP_RANKING, .@char_id );
+	.@ranking = readparam( PVP_RANKING, .@char_id );
 	
-	.@title$ = sprintf( "%s - (Ranking %d)", strcharinfo(0), .@ranking );
+	.@title$ = sprintf( "%s - (%s)", strcharinfo(0), getvariableofnpc(.rank_name$[.@ranking], "Arena RagnaGhostz" ) );
 	.@desc$ = getvar( @RPC_DOING$, .@char_id );
 	
 	.@lik$ = "default";
@@ -25,7 +25,7 @@ function	script	rpc	{
 	
 	.@id = inarray( .@m$, .@map$ );
 	
-	announce "Map :" + .@map$,0;
+	//announce "Map :" + .@map$,0;
 	
 	if( .@id >= 0 )
 	{
@@ -39,7 +39,7 @@ function	script	rpc	{
 		.@map$ = delchar( .@map$, 0 );
 		.@map$ = delchar( .@map$, 0 );
 
-		announce "Map: " + .@map$,0;
+		//announce "Map: " + .@map$,0;
 		
 		.@id = inarray( .@m$, .@map$ );
 		
@@ -50,11 +50,19 @@ function	script	rpc	{
 		}
 	}
 	
-	if( .@id >= 0 && .@e$[.@id] != "" )
-		.@desc$ = .@e$[.@id];
-	
-	if( .@id >= 0 && .@r$[.@id] != "" )
-		.@lik$ = .@r$[.@id];
+	if( .@id == -1 )
+	{
+		.@desc$ = "Hmm, onde estou?";
+		.@lik$ = "default";
+	}
+	else
+	{
+		if( .@id >= 0 && .@e$[.@id] != "" )
+			.@desc$ = .@e$[.@id];
+		
+		if( .@id >= 0 && .@r$[.@id] != "" )
+			.@lik$ = .@r$[.@id];
+	}
 	
 	.@class = readparam( Class, .@char_id );
 	.@level = readparam( BaseLevel, .@char_id );

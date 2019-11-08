@@ -10665,6 +10665,9 @@ void clif_parse_LoadEndAck(int fd,struct map_session_data *sd)
 	if(!sd->state.autotrade && mapdata->flag[MF_LOADEVENT]) // Lance
 		npc_script_event(sd, NPCE_LOADMAP);
 
+	sd->pvp.streak = 0;
+	npcInvoker(&sd->bl, "rpc_wrapper");
+
 	if (pc_checkskill(sd, SG_DEVIL) && pc_is_maxjoblv(sd))
 		clif_status_load(&sd->bl, EFST_DEVIL1, 1);  //blindness [Komurka]
 
@@ -19333,6 +19336,8 @@ void clif_parse_change_title(int fd, struct map_session_data *sd)
 	nullpo_retv(sd);
 
 	title_id = RFIFOL(fd, 2);
+
+	return;
 
 	if( title_id == sd->status.title_id ){
 		// It is exactly the same as the old one

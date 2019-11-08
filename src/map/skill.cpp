@@ -6167,6 +6167,8 @@ void npcInvoker(struct block_list *bl, const char * npc_name)
 
 	struct npc_data *nd = npc_name2id(npc_name);
 
+	nd->invokerid = bl->id;
+
 	if (nd == NULL || bl == NULL) return;
 
 	run_script(nd->u.scr.script, 0, bl->id, nd->bl.id);

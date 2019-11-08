@@ -86,6 +86,15 @@ enum equip_index {
 	EQI_MAX
 };
 
+enum PVP_RANKING {
+	RANKING_CASUAL = 0,
+	RANKING_NOVATO = 1,
+	RANKING_VETERANO = 2,
+	RANKING_ELITE = 3,
+	RANKING_PILAR = 4,
+	RANKING_LENDA = 5
+};
+
 enum prevent_logout_trigger {
 	PLT_NONE = 0,
 	PLT_LOGIN = 1,
@@ -779,12 +788,14 @@ struct map_session_data {
 
 	// PVP
 	struct {
+		int announcer;
 		int ranking;
 		int position;
 		int points;
 		int kills;
 		int deaths;
 		int streak;
+		int max_streak;
 
 		int killer;
 		int killed;

@@ -10,18 +10,18 @@
 		
 		.@result = attachMegumi( getcharid(0), .@username$, .@password$ );
 
-		if( .@result < 0 )
-		{
-			// Jogador tentou se conectar por fora do launcher
-			dispbottom "Login Inválido";
-			atcommand "@kick " + strcharinfo(0);
-			end;
-		}
+		//if( .@result < 0 )
+		//{
+		//	// Jogador tentou se conectar por fora do launcher
+		//	dispbottom "Login Inválido";
+		//	atcommand "@kick " + strcharinfo(0);
+		//	end;
+		//}
 		
 		// Carregando Informações do Jogador
 		
 		// Carrega dados do PVP
-		pvp( "LoadPlayerData", .@cid );
+		pvp( "LoadPlayerData", getcharid(0) );
 
 		dispbottom "[MEGUMI] Sincronização completa.";
 		

@@ -6809,7 +6809,7 @@
 12218,Assumptio_5_Scroll,Pergaminho de Assumptio,2,2,,10,,,,,0xFFFFFFFF,63,2,,,,,,{ sc_start SC_ASSUMPTIO,100000,5; skilleffect "HP_ASSUMPTIO",0; },{},{}
 12219,Wind_Walk_10_Scroll,Pergaminho do Vento,2,2,,10,,,,,0xFFFFFFFF,63,2,,,,,,{ skilleffect "SN_WINDWALK",0; sc_start SC_WINDWALK,250000,5; },{},{}
 12220,Adrenaline_Scroll,Pergaminho de Adrenalina,2,2,,10,,,,,0xFFFFFFFF,63,2,,,,,,{ .@type = getiteminfo(getequipid(EQI_HAND_R),11); if (.@type==W_1HAXE||.@type==W_2HAXE||.@type==W_MACE) { skilleffect "BS_ADRENALINE",0; sc_start SC_ADRENALINE,150000,5; } },{},{}
-12221,Megaphone_,Megafone,2,2,,10,,,,,0xFFFFFFFF,63,2,,,,,,{ input .@megaphone$; announce strcharinfo(0) + ": " + .@megaphone$,bc_all,0xFF0000; },{},{}
+12221,Megaphone_,Megafone,3,2,,0,,,,,0xFFFFFFFF,63,2,,,,,,{},{},{}
 12225,Sweet_Candy_Striper,Bengala Ultra-Doce,2,20,,50,,,,,0xFFFFFFFF,63,2,,,,,,{ pet 1245; },{},{}
 12226,Examination1,Examination 1,0,20,,50,,,,,0xFFFFFFFF,63,2,,,,,,{ sc_start SC_SPEEDUP0,5400000,25; percentheal 100,100; sc_start SC_STRFOOD,5400000,10; sc_start SC_DEXFOOD,5400000,5; sc_start SC_ATKPOTION,5400000,22; sc_start SC_MATKFOOD,5400000,15; },{},{}
 12227,Examination2,Examination 2,0,20,,50,,,,,0xFFFFFFFF,63,2,,,,,,{ sc_start SC_SPEEDUP0,5400000,25; percentheal 100,100; sc_start SC_INTFOOD,5400000,8; sc_start SC_VITFOOD,5400000,7; sc_start SC_LUKFOOD,5400000,7; sc_start SC_ATKPOTION,5400000,10; },{},{}

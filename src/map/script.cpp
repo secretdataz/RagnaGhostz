@@ -11762,7 +11762,7 @@ BUILDIN_FUNC(getstatus)
 BUILDIN_FUNC(debugmes)
 {
 	const char *str;
-	ShowDebug("[%s]: %s \n", script_getstr(st,2), script_getstr(st,3));
+	ShowNotice("[%s]: %s \n", script_getstr(st,2), script_getstr(st,3));
 	return SCRIPT_CMD_SUCCESS;
 }
 
@@ -12138,6 +12138,30 @@ BUILDIN_FUNC(globalmes)
 	}
 
 	npc_globalmessage(name,mes);	// broadcast  to all players connected
+	return SCRIPT_CMD_SUCCESS;
+}
+
+BUILDIN_FUNC(changetitle)
+{
+	int title_id = script_getnum(st, 2);
+	TBL_PC *sd = map_charid2sd(script_getnum(st, 3));
+
+	if (sd == NULL)
+		return SCRIPT_CMD_SUCCESS;
+
+	if (title_id == sd->status.title_id) {
+		// It is exactly the same as the old one
+		return SCRIPT_CMD_SUCCESS;
+	}
+	else if (title_id < 0) {
+		sd->status.title_id = 0;
+	}
+
+	sd->status.title_id = title_id;
+
+	clif_name_area(&sd->bl);
+	clif_change_title_ack(sd, 0, title_id);
+
 	return SCRIPT_CMD_SUCCESS;
 }
 
@@ -12527,6 +12551,32 @@ BUILDIN_FUNC(addrid)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+BUILDIN_FUNC(attachinvoker)
+{
+	struct npc_data* nd = NULL;
+
+	nd = map_id2nd(st->oid);
+
+	if (nd == NULL) return SCRIPT_CMD_FAILURE;
+
+	int rid = nd->invokerid;
+
+	struct map_session_data* sd = map_id2sd(rid);
+
+	if (sd != NULL) {
+		script_detach_rid(st);
+
+		st->rid = rid;
+		script_attach_state(st);
+		script_pushint(st, true);
+	}
+	else {
+		script_pushint(st, false);
+	}
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
 /*==========================================
  * Attach sd char id to script and detach current one if any
  *------------------------------------------*/
@@ -12573,6 +12623,13 @@ BUILDIN_FUNC(isloggedin)
 		sd->status.char_id != script_getnum(st,3))
 		sd = NULL;
 	push_val(st->stack,C_INT,sd!=NULL);
+	return SCRIPT_CMD_SUCCESS;
+}
+
+BUILDIN_FUNC(ischaronline)
+{
+	TBL_PC* sd = map_charid2sd(script_getnum(st, 2));
+	push_val(st->stack, C_INT, sd != NULL);
 	return SCRIPT_CMD_SUCCESS;
 }
 
@@ -14234,6 +14291,16 @@ BUILDIN_FUNC(soundeffect)
 
 		clif_soundeffect(sd,&sd->bl,name,type);
 	}
+	return SCRIPT_CMD_SUCCESS;
+}
+
+BUILDIN_FUNC(singlesoundeffect)
+{
+	TBL_PC *sd = map_charid2sd(script_getnum(st, 3));
+
+	if (sd != NULL)
+		clif_soundeffect(sd, &sd->bl, script_getstr(st, 2), 0);
+
 	return SCRIPT_CMD_SUCCESS;
 }
 
@@ -24561,6 +24628,10 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(attachMegumi, "iss"),
 	BUILDIN_DEF(sendPacket,"ss?"),
 	BUILDIN_DEF(discord, "issss??"),
+	BUILDIN_DEF(ischaronline, "i"),
+	BUILDIN_DEF(changetitle, "ii"),
+	BUILDIN_DEF(attachinvoker, ""),
+	BUILDIN_DEF(singlesoundeffect, "si"),
 	// NPC interaction
 	BUILDIN_DEF(mes,"s*"),
 	BUILDIN_DEF(next,""),

@@ -3656,6 +3656,7 @@ a floating script or function and will return 0.
 ---------------------------------------
 
 *isloggedin(<account id>{,<char id>})
+*ischaronline(<char id>)
 
 This function returns 1 if the specified account is logged in and 0 if they
 aren't. You can also pass the char id to check for both account and char id.
