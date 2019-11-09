@@ -1740,26 +1740,6 @@ static bool mob_ai_sub_hard(struct mob_data *md, t_tick tick)
 	// Check for target change.
 	if( md->attacked_id && mode&MD_CANATTACK )
 	{
-		if( md->attacked_id == md->target_id )
-		{	//Rude attacked check.
-			if( !battle_check_range(&md->bl, tbl, md->status.rhw.range)
-			&&  ( //Can't attack back and can't reach back.
-					(!can_move && DIFF_TICK(tick, md->ud.canmove_tick) > 0 && (battle_config.mob_ai&0x2 || md->sc.data[SC_SPIDERWEB]
-						|| md->sc.data[SC_BITE] || md->sc.data[SC_VACUUM_EXTREME] || md->sc.data[SC_THORNSTRAP]
-						|| md->sc.data[SC__MANHOLE] // Not yet confirmed if boss will teleport once it can't reach target.
-						|| md->walktoxy_fail_count > 0)
-					)
-					|| !mob_can_reach(md, tbl, md->min_chase, MSS_RUSH)
-				)
-			&&  md->state.attacked_count++ >= RUDE_ATTACKED_COUNT
-			&&  !mobskill_use(md, tick, MSC_RUDEATTACKED) // If can't rude Attack
-			&&  can_move && unit_escape(&md->bl, tbl, rnd()%10 +1)) // Attempt escape
-			{	//Escaped
-				md->attacked_id = md->norm_attacked_id = 0;
-				return true;
-			}
-		}
-		else
 		if( (abl = map_id2bl(md->attacked_id)) && (!tbl || mob_can_changetarget(md, abl, mode)) )
 		{
 			int dist;
@@ -1778,15 +1758,7 @@ static bool mob_ai_sub_hard(struct mob_data *md, t_tick tick)
 				   )
 				) )
 			{ // Rude attacked
-				if (abl->id != md->bl.id //Self damage does not cause rude attack
-				&& md->state.attacked_count++ >= RUDE_ATTACKED_COUNT				
-				&& !mobskill_use(md, tick, MSC_RUDEATTACKED) && can_move
-				&& !tbl && unit_escape(&md->bl, abl, rnd()%10 +1))
-				{	//Escaped.
-					//TODO: Maybe it shouldn't attempt to run if it has another, valid target?
-					md->attacked_id = md->norm_attacked_id = 0;
-					return true;
-				}
+				
 			}
 			else
 			if (!(battle_config.mob_ai&0x2) && !status_check_skilluse(&md->bl, abl, 0, 0))
@@ -3020,7 +2992,7 @@ int mob_dead(struct mob_data *md, struct block_list *src, int type)
 				mercenary_kills(sd->md);
 		}
 
-		if (src->type == BL_PC)
+		if (src && src->type == BL_PC)
 		{
 			pc_setparam(sd, SP_KF_MOBGID, md->bl.id);
 			pc_setparam(sd, SP_KF_MOBID, md->mob_id);
@@ -3674,10 +3646,6 @@ int mobskill_use(struct mob_data *md, t_tick tick, int event)
 					flag = (unit_counttargeted(&md->bl) >= c2); break;
 				case MSC_AFTERSKILL:
 					flag = (md->ud.skill_id == c2); break;
-				case MSC_RUDEATTACKED:
-					flag = (md->state.attacked_count >= RUDE_ATTACKED_COUNT);
-					if (flag) md->state.attacked_count = 0;	//Rude attacked count should be reset after the skill condition is met. Thanks to Komurka [Skotlex]
-					break;
 				case MSC_MASTERHPLTMAXRATE:
 					flag = ((fbl = mob_getmasterhpltmaxrate(md, ms[i].cond2)) != NULL); break;
 				case MSC_MASTERATTACKED:
