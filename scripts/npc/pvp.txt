@@ -273,8 +273,7 @@ prontera,160,192,4	Script	Arena RagnaGhostz	10084,{
 				case 1:
 					next;
 					mes .@n$;
-					mes "Existem " + getarraysize( .rank_name$ ) " rankings em RagnaGhostz.";
-					mes 
+					mes "Existem " + getarraysize( .rank_name$ ) + " rankings em RagnaGhostz.";
 					next;
 					mes .@n$;
 					mes "[ ^FF3030Ranking^000000 | ^FFC125Abates Mínimos^000000 | ^B8860BCapacidade Máxima^000000 ]";
@@ -340,7 +339,6 @@ prontera,160,192,4	Script	Arena RagnaGhostz	10084,{
 					mes "       » 500 Pontos de Cash.";
 					mes "       » 1% de Chance de Obter VIP por 1 semana.";
 					mes "       » 10 Pontos de Maestrias de Evento.";
-					mes "
 					mes "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
 					mes "[Veterano]";
 					mes "       » 750 Pontos de Cash.";
