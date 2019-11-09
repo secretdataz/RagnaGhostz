@@ -1,0 +1,93 @@
+using NetLua;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace ItemDBSync
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> InvalidItens = new List<int>();
+            Dictionary<int, string> ItemServer = new Dictionary<int, string>();
+
+            var itemdb = File.ReadAllLines(@"C:\Users\desenv065\Desktop\Nova pasta\Mak\db\re\item_db.txt", Encoding.GetEncoding(1252));
+
+            foreach(string line in itemdb)
+            {
+                if (line.Contains(@"//") || string.IsNullOrEmpty(line)) continue;
+
+                string[] data = line.Split(',');
+
+                ItemServer.Add(Int32.Parse(data[0]), line);
+            }
+
+            var iteminfo = File.ReadAllLines(@"C:\Users\desenv065\Downloads\itemInfo_Sak.lub", Encoding.GetEncoding(1252));
+
+            int id = 0;
+            string item_name = "";
+
+            int valids = 0;
+
+            foreach(string line in iteminfo)
+            {
+                if (line.Contains("]  {"))
+                    id = int.Parse(line.Split(new string[] { "[" }, StringSplitOptions.None)[1].Split(']')[0].Trim());
+
+                if (line.Contains("identifiedDisplayName") && !line.Contains("unidentifiedDisplayName"))
+                {
+                    item_name = line.Replace("identifiedDisplayName", "").Trim().Replace(",", "");
+
+                    if (!hasSpecialChar(item_name) && !string.IsNullOrEmpty(item_name))
+                    {
+                        valids++;
+                        //System.Console.WriteLine("Item: " + id + " | " + item_name);
+                    }
+                    else
+                        InvalidItens.Add(id);
+                }
+            }
+
+            System.Console.WriteLine("Existem " + InvalidItens.Count + " itens inválidos");
+            System.Console.WriteLine("Existem " + valids + " itens válidos");
+            System.Console.WriteLine("-----------------------------");
+            System.Console.WriteLine("Existem " + ItemServer.Count + " itens no banco de dados");
+
+            string write = "";
+            int total = 0;
+
+            foreach (KeyValuePair<int, string> entry in ItemServer)
+            {
+                bool isInList = InvalidItens.IndexOf(entry.Key) != -1;
+
+                if (!isInList)
+                {
+                    total++;
+                    write += entry.Value + "\n\r";
+                }
+            }
+
+            File.WriteAllText(@"C:\Users\desenv065\Desktop\Nova pasta\Mak", write);
+
+            Console.WriteLine("Gerado Arquivo item.db novo com " + total + " itens.");
+
+            System.Console.ReadKey();
+        }
+
+        public static bool hasSpecialChar(string input)
+        {
+            string specialChar = @"\|!#$%&/()=?»«@£§€{}.-;'<>_°,»¡°£Æ÷¼Ç÷¼³ë¶Ï¾ÆÄµ¥¸¿¢½×Èú¹";
+            foreach (var item in specialChar)
+            {
+                if (input.Contains(item)) return true;
+            }
+
+            return false;
+        }
+    }
+}
