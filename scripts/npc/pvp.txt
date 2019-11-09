@@ -74,7 +74,6 @@
 
 prontera,160,192,4	Script	Arena RagnaGhostz	10084,{
 
-
 	.@n$ = "[^C71585Gerente da Arena^000000]";
 	
 	cutin "ep15_tatio01",2;
@@ -90,9 +89,12 @@ prontera,160,192,4	Script	Arena RagnaGhostz	10084,{
 	mes "^8B814CMaior Streak^000000 » " + PVP_MAXSTREAK;
 	mes "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
 	
-	switch( select( "Entrar na Arena", "Ver Ranking", "Ver Estatísticas", "Modificar Anunciador", "Regras da Arena Rankeada" ) )
+	switch( select( "^FFB90F»^000000 Entrar na Arena", "^2E8B57»^000000 Ver Ranking", "^483D8B»^000000 Ver Estatísticas", "^228B22»^000000 Modificar Anunciador", "^B03060»^000000 Regras da Arena Rankeada" ) )
 	{
 		case 1:
+			next;
+			mes .@n$;
+			
 			if( BaseLevel < 300 )
 			{
 				mes "Desculpa, não aceitamos pessoas fracas em nossa arena.";
@@ -100,6 +102,13 @@ prontera,160,192,4	Script	Arena RagnaGhostz	10084,{
 				close2;
 				cutin "ep15_tatio01",255;
 				end;
+			}
+			
+			if( !#PVPRULES )
+			{
+				mes "Antes de entrar, que tal dar uma lida no funcionamento da arena e do rankeamento?";
+				next;
+				goto L_Rules;
 			}
 			
 			for( .@i = 0; .@i < getarraysize( .ranked_aname$ ); .@i++ )
@@ -252,15 +261,125 @@ prontera,160,192,4	Script	Arena RagnaGhostz	10084,{
 			}
 			
 		case 5:
-		
+			L_Rules:
+			#PVPRULES = 1;
+			next;
+			mes .@n$;
+			mes "Certo, que tópico deseja saber.";
+			next;
+			
+			switch( select( "Rankings", "Ajustes de Batalha", "Recompensas", "Compreendi Tudo" ) )
+			{
+				case 1:
+					next;
+					mes .@n$;
+					mes "Existem " + getarraysize( .rank_name$ ) " rankings em RagnaGhostz.";
+					mes 
+					next;
+					mes .@n$;
+					mes "[ ^FF3030Ranking^000000 | ^FFC125Abates Mínimos^000000 | ^B8860BCapacidade Máxima^000000 ]";
+					
+					for( .@i = 0; .@i < getarray size( .rank_name$ )
+						mes sprintf( "[ %s | %s | %s ]", .rank_name$[.@i], .rank_mte[.@i], .rank_slot[.@i] );
+
+					mes " ";
+					mes "^FF3030Ranking^000000: Nome do Ranking";
+					mes "^FFC125Abates Mínimos^000000: Quantidade necessária para poder começar a tentar entrar no Ranking.";
+					mes "^FF3030Quantidade Máxima^000000: Máximo de Jogadores que podem entrar no Ranking.";
+					
+					next;
+					mes .@n$;
+					mes "Os Rankings são atualizados a cada 10 minutos, então não se assuste se conseguir os pontos e abates necessários e não ser promovido.";
+					goto L_Rules;
+					
+				case 2:
+					next;
+					mes .@n$;
+					mes "A Arena possui alguns ajustes de acordo com o Ranking para uma melhor experiência.";
+					next;
+					mes .@n$;
+					mes "^FF3030»^000000 Modificadores de Batalha"
+					mes " ";
+					mes "[Casual]";
+					mes "[Novato]";
+					mes "       » ^CD0000+20%^000000 de dano contra Rankings superiores.";
+					mes "       » ^66CD00+5%^000000 de chance de converter dano infligido em cura.";
+					mes "       » Abater alvos faz com que toda a vida e mana sejam recuperadas.";
+					mes "       » Não podem entrar em combate contra [Pilar] e [Lenda].";
+					mes "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
+					mes "[Veterano]";
+					mes "       » ^CD0000+15%^000000 de dano contra Rankings superiores.";
+					mes "       » ^66CD00+3%^000000 de chance de converter dano infligido em cura.";
+					mes "       » Abater alvos faz com que toda a vida seja recuperada.";
+					mes "       » Não podem entrar em combate contra [Lenda].";
+					mes "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
+					mes "[Elite]";
+					mes "       » ^CD0000+10%^000000 de dano contra Rankings superiores.";
+					mes "       » ^66CD00+1%^000000 de chance de converter dano infligido em cura.";
+					mes "       » Abater alvos faz com que toda a mana seja recuperada.";
+					mes "       » Podem entrar em combate com todos os Rankings.";
+					mes "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
+					mes "[Pilar]";
+					mes "       » ^CD0000+5%^000000 de dano contra Rankings superiores.";
+					mes "       » Abater alvos faz com que se perca 5% da vida e mana atual.";
+					mes "       » Não podem entrar em combate contra [Casual] e [Novato].";
+					mes "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
+					mes "[Lenda]";
+					mes "       » ^CD0000-5%^000000 de dano contra Rankings inferiores.";
+					mes "       » Abater alvos faz com que se perca 5% da vida e mana atual.";
+					mes "       » Não podem entrar em combate contra [Casual], [Novato] e [Veterano].";
+					goto L_Rules;
+					
+				case 3:
+					next;
+					mes .@n$;
+					mes "As recompensas são dadas de acordo com a colocação no Ranking às 22:00 de todo Domingo.";
+					mes "O Ranking é resetado a cada 3 semanas.";
+					mes " ";
+					mes "[Novato]";
+					mes "       » 500 Pontos de Cash.";
+					mes "       » 1% de Chance de Obter VIP por 1 semana.";
+					mes "       » 10 Pontos de Maestrias de Evento.";
+					mes "
+					mes "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
+					mes "[Veterano]";
+					mes "       » 750 Pontos de Cash.";
+					mes "       » 3% de Chance de Obter VIP por 1 semana.";
+					mes "       » 20 Pontos de Maestrias de Evento.";
+					mes "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
+					mes "[Elite]";
+					mes "       » 1200 Pontos de Cash.";
+					mes "       » 5% de Chance de Obter VIP por 1 semana.";
+					mes "       » 30 Pontos de Maestrias de Evento.";
+					mes "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
+					mes "[Pilar]";
+					mes "       » 5000 Pontos de Cash.";
+					mes "       » 10% de Chance de Obter VIP por 1 semana.";
+					mes "       » 50 Pontos de Maestrias de Evento.";
+					mes "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯";
+					mes "[Lenda]";
+					mes "       » 15000 Pontos de Cash.";
+					mes "       » VIP por 1 semana.";
+					mes "       » 100 Pontos de Maestrias de Evento.";
+					next;
+					mes .@n$;
+					mes "Mas lembre-se, se você não se conectar antes do próximo sorteio, perderá sua recompensa!";
+					mes "Então tente durante a semana se conectar para garantir receber a recompensa entregue no Domingo!";
+					goto L_Rules;
+					
+				case 4:
+					next;
+					mes .@n$;
+					mes "Boa sorte na Arena!";
+					break;
+			}
 			break;
 	}
 	close2;
-	
-
-	
+	cutin "ep15_tatio01",255;
 	end;
-	
+		
+	end;	
 	OnMinute10:
 	OnMinute20:
 	OnMinute30:
@@ -507,6 +626,27 @@ prontera,160,192,4	Script	Arena RagnaGhostz	10084,{
 						  
 		mapannounce strcharinfo(3),.@announce$,bc_map,"0xFFCE00";
 
+		// Agora vamos tirar os pontos de quem morre.
+		.@points -= rand( 3, 5 );
+		
+		// Se o Ranking do Assassino for menor do que o morto .@points -= Diferença
+		if( PVP_RANKING < .@victim_ranking )
+			.@points -= ( .@victim_ranking - PVP_RANKING );
+		
+		// Se o Morto é Ranking Pilar .@points -= rand( 1, 15 )
+		if( .@victim_ranking == RANKING_PILAR )
+			.@points -= rand( 1, 15 );
+		else if( .@victim_ranking == RANKING_LENDA )
+			.@points -= rand( 15, 30 );
+		
+		// Se o Assassino for Ranking >= RANKING_PILAR, .@points += rand( 1, 5 )
+		if( PVP_RANKING >= RANKING_PILAR )
+			.@points += rand( 1, 5 );
+		
+		if( .@points > 0 )
+			.@points = 5;
+		
+		message strcharinfo(0, .@victim),"Perdeu (" + .@points + ") pontos";
 		end;
 		
 	OnPCDieEvent:

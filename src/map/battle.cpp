@@ -7728,15 +7728,27 @@ int battle_check_target( struct block_list *src, struct block_list *target,int f
 		map_session_data *sd = BL_CAST(BL_PC, src);
 		map_session_data *tsd = BL_CAST(BL_PC, target);
 
-		if ((sd->pvp.ranking == RANKING_CASUAL || sd->pvp.ranking == RANKING_NOVATO || sd->pvp_rank == RANKING_VETERANO)
+		if ((sd->pvp.ranking == RANKING_CASUAL || sd->pvp.ranking == RANKING_NOVATO)
 			&& tsd->pvp.ranking >= RANKING_PILAR)
 		{
 			clif_displaymessage(sd->fd, "Incapacitado de deferir golpes em ranking [Pilar] e [Lenda]");
 			return 0;
 		}
 
-		if ((sd->pvp.ranking >= RANKING_PILAR) &&
-			(tsd->pvp.ranking == RANKING_CASUAL || tsd->pvp.ranking == RANKING_NOVATO || tsd->pvp_rank == RANKING_VETERANO))
+		if (sd->pvp.ranking == RANKING_VETERANO && tsd->pvp.ranking == RANKING_LENDA)
+		{
+			clif_displaymessage(sd->fd, "Incapacitado de deferir golpes em ranking [Lenda]");
+			return 0;
+		}
+
+		if (sd->pvp.ranking == RANKING_LENDA && tsd->pvp.ranking == RANKING_VETERANO)
+		{
+			clif_displaymessage(sd->fd, "Incapacitado de deferir golpes em ranking [Lenda]");
+			return 0;
+		}
+
+		if ((sd->pvp.ranking == RANKING_PILAR) &&
+			(tsd->pvp.ranking == RANKING_CASUAL || tsd->pvp.ranking == RANKING_NOVATO))
 		{
 			clif_displaymessage(sd->fd, "Incapacitado de deferir golpes em rankings abaixo de [Elite]");
 			return 0;

@@ -2190,7 +2190,7 @@ static void mob_item_drop(struct mob_data *md, struct item_drop_list *dlist, str
 		&& check_distance_blxy(&sd->bl, dlist->x, dlist->y, AUTOLOOT_DISTANCE);
 #endif
 
-	if( sd->csd[CSD_AUTOLOOT]->active )
+	if ( sd && sd->csd[CSD_AUTOLOOT]->active )
 	{
 		sd->csd[CSD_AUTOLOOT]->count--;
 
@@ -3018,6 +3018,13 @@ int mob_dead(struct mob_data *md, struct block_list *src, int type)
 
 			if (sd->md && src && src->type == BL_MER && mob_db(md->mob_id)->lv > sd->status.base_level / 2)
 				mercenary_kills(sd->md);
+		}
+
+		if (src->type == BL_PC)
+		{
+			pc_setparam(sd, SP_KF_MOBGID, md->bl.id);
+			pc_setparam(sd, SP_KF_MOBID, md->mob_id);
+			pc_setparam(sd, SP_KF_MOBLVL, md->level);
 		}
 
 		if( md->npc_event[0] && !md->state.npc_killmonster ) {
@@ -4570,7 +4577,6 @@ static bool mob_parse_row_mobskilldb(char** str, int columns, int current)
 		{ "skillused",         MSC_SKILLUSED         },
 		{ "afterskill",        MSC_AFTERSKILL        },
 		{ "casttargeted",      MSC_CASTTARGETED      },
-		{ "rudeattacked",      MSC_RUDEATTACKED      },
 		{ "masterhpltmaxrate", MSC_MASTERHPLTMAXRATE },
 		{ "masterattacked",    MSC_MASTERATTACKED    },
 		{ "alchemist",         MSC_ALCHEMIST         },
