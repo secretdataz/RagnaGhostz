@@ -528,7 +528,7 @@ int mob_get_random_id(int type, enum e_random_monster_flags flag, int lv)
 		(flag&RMF_CHECK_MOB_LV && lv < mob->lv) ||
 		(flag&RMF_MOB_NOT_BOSS && status_has_mode(&mob->status,MD_STATUS_IMMUNE) ) ||
 		(flag&RMF_MOB_NOT_SPAWN && !mob_has_spawn(mob_id)) ||
-		(flag&RMF_MOB_NOT_PLANT && status_has_mode(&mob->status,MD_IGNOREMELEE|MD_IGNOREMAGIC|MD_IGNORERANGED|MD_IGNOREMISC) )
+		(flag&RMF_MOB_NOT_PLANT )
 	) && (i++) < MAX_MOB_DB && msummon->count > 1);
 
 	if (i >= MAX_MOB_DB && &msummon->list[0]) {
