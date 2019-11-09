@@ -77,12 +77,12 @@
 		warp "prontera",151,190;
 		end;
 	}
-	
-	setarray .@nome$[1],"Torre Bronze (LVL 1 | 30%)",
-	                    "Torre Prata (LVL 10 | 20%)",
-						"Torre Ouro (LVL 50 | 15% )",
-						"Torre Platina (LVL 100 | 10%)",
-						"Torre Diamante (LVL 170 | 5%)";
+
+	setarray .@nome$[1],"Torre Bronze (LVL 1 | 40%)",
+	                    "Torre Prata (LVL 10 | 30%)",
+						"Torre Ouro (LVL 50 | 25% )",
+						"Torre Platina (LVL 100 | 15%)",
+						"Torre Diamante (LVL 170 | 10%)";
 	
 	setarray .@nome_rpc$[1],"Bronze",
 	                        "Prata",
@@ -1132,7 +1132,7 @@ function	script	F_Torre_Warp	{
 							   45; // Diamante
 		
 		// Chance de Conseguir Evoluir 1 Nível caso a diferença de nível entre o monstro morto e você seja de 15 níveis
-		setarray 'chance[1],30,20,15,10,5;
+		setarray 'chance[1],40,30,25,15,10;
 		
 		'ISALONE = $TORRE_ALONE;
 		'TORREID = $TORRE_ID;
@@ -1156,7 +1156,7 @@ function	script	F_Torre_Warp	{
 		if( getgroupid() == 99 )
 			dispbottom "Diferença de Nível: " + .@dif;
 		
-		if( .@dif >= -15 && .@dif <= 15 )
+		if( ( .@dif >= -15 && .@dif <= 15 ) || 'TORREID == 5  )
 			if( rand( 1, 100 ) <= 'chance['TORREID] )
 			{
 				JobLevel++;
