@@ -510,7 +510,7 @@ function	script	F_Torre_Monstros	{
 			// 99 ~~ 101
 			case 1:
 				setarray .@ms$[0],"Quve|1508|5",
-				                  "Anopheles|2126|10",
+				                  "Anopheles|1627|10",
 								  "Tartaruga|1315|4",
 								  "Kobold|1547|5",
 								  "Capiroto|2803|6",
