@@ -29,7 +29,7 @@
 		mes "Irei lhe mostrar no mapa a localização dele. Boa sorte!";
 		close2;
 		cutin "mestra_classe",255;
-		viewpoint 1,155,233,1,0xFF0000;
+		viewpoint 1,63,194,1,0xFF0000;
 		end;
 	}
 	
@@ -208,4 +208,4 @@
 		end;
 }
 
-prontera,151,192,5	duplicate(Condecoração de Classes)	Condecoração de Classes#PRT	10184
+phtownall,196,186,5	duplicate(Condecoração de Classes)	Condecoração de Classes#PRT	10184

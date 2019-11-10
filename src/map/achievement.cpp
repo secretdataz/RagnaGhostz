@@ -248,7 +248,7 @@ uint64 AchievementDatabase::parseBodyNode(const YAML::Node &node){
 			}
 
 			if( !itemdb_exists( itemId ) ){
-				this->invalidWarning( rewardNode["ItemID"], "Unknown item with ID %hu.\n", itemId );
+				//this->invalidWarning( rewardNode["ItemID"], "Unknown item with ID %hu.\n", itemId );
 				return 0;
 			}
 

@@ -1042,6 +1042,15 @@ bool sv_readdb(const char* directory, const char* filename, char delim, int minc
 		// parse this row
 		if( !parseproc(fields+1, columns, entries) )
 		{
+			if (strcmp(path, "db/re/item_buyingstore.txt") == 0 ||
+				strcmp(path, "db/re/item_delay.txt") == 0 ||
+				strcmp(path, "db/re/item_noequip.txt") == 0 ||
+				strcmp(path, "db/re/item_package.txt") == 0 ||
+				strcmp(path, "db/item_nouse.txt") == 0 ||
+				strcmp(path, "db/skill_changematerial_db.txt") == 0 ||
+				strcmp(path, "db/re/skill_require_db.txt") == 0 ||
+				strcmp(path, "db/re/item_misc.txt") == 0) continue;
+
 			ShowError("sv_readdb: Could not process contents of line %d of \"%s\".\n", lines, path);
                         //perhaps call a provided function to clean entries if we have fail
                         //clearproc(fields+1, columns, entries)

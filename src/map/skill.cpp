@@ -6297,7 +6297,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 			return 1;
 
 		case NV_RETURN:
-			unit_warp(src, map_mapname2mapid("prontera"), 155, 185, CLR_TELEPORT);
+			unit_warp(src, sd->status.save_point.map, sd->status.save_point.x, sd->status.save_point.y, CLR_TELEPORT);
 			return 1;
 
 		case NV_REPAIRALL:
@@ -21336,7 +21336,7 @@ static bool skill_parse_row_requiredb(char* split[], int columns, int current)
 		uint16 itemid = atoi(split[13 + 2 * i]);
 
 		if (itemid > 0 && !itemdb_exists(itemid) ) {
-			ShowError("skill_parse_row_requiredb: Invalid item (in ITEM_REQUIRE list) %d for skill %d.\n", itemid, atoi(split[0]));
+			//ShowError("skill_parse_row_requiredb: Invalid item (in ITEM_REQUIRE list) %d for skill %d.\n", itemid, atoi(split[0]));
 			return false;
 		}
 		skill_db[idx]->require.itemid[i] = itemid;
@@ -21467,7 +21467,7 @@ static bool skill_parse_row_producedb(char* split[], int columns, int current)
 	bool found = false;
 
 	if (id >= ARRAYLENGTH(skill_produce_db)) {
-		ShowError("skill_parse_row_producedb: Maximum db entries reached.\n");
+		//ShowError("skill_parse_row_producedb: Maximum db entries reached.\n");
 		return false;
 	}
 
@@ -21480,7 +21480,7 @@ static bool skill_parse_row_producedb(char* split[], int columns, int current)
 	}
 
 	if (!itemdb_exists(nameid)) {
-		ShowError("skill_parse_row_producedb: Invalid item %d.\n", nameid);
+		//ShowError("skill_parse_row_producedb: Invalid item %d.\n", nameid);
 		return false;
 	}
 
@@ -21750,7 +21750,7 @@ static bool skill_parse_row_changematerialdb(char* split[], int columns, int cur
 	int x, y;
 
 	if (id >= MAX_SKILL_CHANGEMATERIAL_DB) {
-		ShowError("skill_parse_row_changematerialdb: Maximum amount of entries reached (%d), increase MAX_SKILL_CHANGEMATERIAL_DB\n",MAX_SKILL_CHANGEMATERIAL_DB);
+		//ShowError("skill_parse_row_changematerialdb: Maximum amount of entries reached (%d), increase MAX_SKILL_CHANGEMATERIAL_DB\n",MAX_SKILL_CHANGEMATERIAL_DB);
 		return false;
 	}
 
@@ -21776,7 +21776,7 @@ static bool skill_parse_row_changematerialdb(char* split[], int columns, int cur
 	}
 
 	if (x >= MAX_SKILL_PRODUCE_DB) {
-		ShowError("skill_parse_row_changematerialdb: Not supported item ID (%d) for Change Material. \n", nameid);
+		//ShowError("skill_parse_row_changematerialdb: Not supported item ID (%d) for Change Material. \n", nameid);
 		return false;
 	}
 

@@ -1,5 +1,5 @@
 
-prontera,192,172,5	Script	Refinador	63,{
+phtownall,208,50,5	Script	Refinador	63,{
 
 	atcommand "@repairall";
 	

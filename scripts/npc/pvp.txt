@@ -72,7 +72,7 @@
 // PVP_RANKS
 // ID,NOME,SLOT
 
-prontera,160,192,4	Script	Arena RagnaGhostz	10084,{
+phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 
 	.@n$ = "[^C71585Gerente da Arena^000000]";
 	
@@ -276,15 +276,14 @@ prontera,160,192,4	Script	Arena RagnaGhostz	10084,{
 					mes "Existem " + getarraysize( .rank_name$ ) + " rankings em RagnaGhostz.";
 					next;
 					mes .@n$;
-					mes "[ ^FF3030Ranking^000000 | ^FFC125Abates Mínimos^000000 | ^B8860BCapacidade Máxima^000000 ]";
-					
-					for( .@i = 0; .@i < getarray size( .rank_name$ )
-						mes sprintf( "[ %s | %s | %s ]", .rank_name$[.@i], .rank_mte[.@i], .rank_slot[.@i] );
+					mes "[ ^FF3030Ranking^000000 | ^FFC125Abates^000000 | ^B8860BCapacidade^000000 ]";
+					for( .@i = 0; .@i < getarraysize( .rank_name$ ); .@i++ )
+						mes sprintf( "[ %s | %d | %d ]", .rank_name$[.@i], .rank_mte[.@i], .rank_slot[.@i] );
 
 					mes " ";
 					mes "^FF3030Ranking^000000: Nome do Ranking";
-					mes "^FFC125Abates Mínimos^000000: Quantidade necessária para poder começar a tentar entrar no Ranking.";
-					mes "^FF3030Quantidade Máxima^000000: Máximo de Jogadores que podem entrar no Ranking.";
+					mes "^FFC125Abates^000000: Quantidade necessária para poder começar a tentar entrar no Ranking.";
+					mes "^FF3030Capacidade^000000: Máximo de Jogadores que podem entrar no Ranking.";
 					
 					next;
 					mes .@n$;
@@ -297,7 +296,7 @@ prontera,160,192,4	Script	Arena RagnaGhostz	10084,{
 					mes "A Arena possui alguns ajustes de acordo com o Ranking para uma melhor experiência.";
 					next;
 					mes .@n$;
-					mes "^FF3030»^000000 Modificadores de Batalha"
+					mes "^FF3030»^000000 Modificadores de Batalha";
 					mes " ";
 					mes "[Casual]";
 					mes "[Novato]";

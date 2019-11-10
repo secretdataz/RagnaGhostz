@@ -472,7 +472,7 @@ struct item_data* itemdb_search(unsigned short nameid) {
 	if (nameid == dummy_item->nameid)
 		id = dummy_item;
 	else if (!(id = (struct item_data*)uidb_get(itemdb, nameid))) {
-		ShowWarning("itemdb_search: Item ID %hu does not exists in the item_db. Using dummy data.\n", nameid);
+		//ShowWarning("itemdb_search: Item ID %hu does not exists in the item_db. Using dummy data.\n", nameid);
 		id = dummy_item;
 	}
 	return id;
@@ -685,7 +685,7 @@ static bool itemdb_read_group(char* str[], int columns, int current) {
 			// Found the item with a name lookup
 			entry.nameid = id->nameid;
 		}else{
-			ShowWarning( "itemdb_read_group: Non-existant item '%s'\n", str[1] );
+			//ShowWarning( "itemdb_read_group: Non-existant item '%s'\n", str[1] );
 			return false;
 		}
 	}
@@ -742,7 +742,7 @@ static bool itemdb_read_noequip(char* str[], int columns, int current) {
 
 	if( ( id = itemdb_exists(nameid) ) == NULL )
 	{
-		ShowWarning("itemdb_read_noequip: Invalid item id %hu.\n", nameid);
+		//ShowWarning("itemdb_read_noequip: Invalid item id %hu.\n", nameid);
 		return false;
 	}
 
@@ -802,7 +802,7 @@ static bool itemdb_read_itemdelay(char* str[], int columns, int current) {
 
 	if( ( id = itemdb_exists(nameid) ) == NULL )
 	{
-		ShowWarning("itemdb_read_itemdelay: Invalid item id %hu.\n", nameid);
+		//ShowWarning("itemdb_read_itemdelay: Invalid item id %hu.\n", nameid);
 		return false;
 	}
 
@@ -884,7 +884,7 @@ static bool itemdb_read_buyingstore(char* fields[], int columns, int current) {
 
 	if( ( id = itemdb_exists(nameid) ) == NULL )
 	{
-		ShowWarning("itemdb_read_buyingstore: Invalid item id %hu.\n", nameid);
+		//ShowWarning("itemdb_read_buyingstore: Invalid item id %hu.\n", nameid);
 		return false;
 	}
 
@@ -909,7 +909,7 @@ static bool itemdb_read_nouse(char* fields[], int columns, int current) {
 	nameid = atoi(fields[0]);
 
 	if( ( id = itemdb_exists(nameid) ) == NULL ) {
-		ShowWarning("itemdb_read_nouse: Invalid item id %hu.\n", nameid);
+		//ShowWarning("itemdb_read_nouse: Invalid item id %hu.\n", nameid);
 		return false;
 	}
 
@@ -935,7 +935,7 @@ static bool itemdb_read_flag(char* fields[], int columns, int current) {
 	struct item_data *id;
 
 	if (!(id = itemdb_exists(nameid))) {
-		ShowError("itemdb_read_flag: Invalid item id %hu\n", nameid);
+		//ShowError("itemdb_read_flag: Invalid item id %hu\n", nameid);
 		return true;
 	}
 	
@@ -1054,13 +1054,13 @@ static void itemdb_read_combos(const char* basedir, bool silent) {
 			struct item_data * id = NULL;
 			int idx = 0;
 			if((retcount = itemdb_combo_split_atoi(str[0], items)) < 2) {
-				ShowError("itemdb_read_combos: line %d of \"%s\" doesn't have enough items to make for a combo (min:2), skipping.\n", lines, path);
+				//ShowError("itemdb_read_combos: line %d of \"%s\" doesn't have enough items to make for a combo (min:2), skipping.\n", lines, path);
 				continue;
 			}
 			/* validate */
 			for(v = 0; v < retcount; v++) {
 				if( !itemdb_exists(items[v]) ) {
-					ShowError("itemdb_read_combos: line %d of \"%s\" contains unknown item ID %d, skipping.\n", lines, path,items[v]);
+					//ShowError("itemdb_read_combos: line %d of \"%s\" contains unknown item ID %d, skipping.\n", lines, path,items[v]);
 					break;
 				}
 			}

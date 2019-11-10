@@ -15,8 +15,8 @@ function	script	rpc	{
 	
 	.@map$ = strcharinfo( 3, .@char_id );
 	
-	.@m$[0] = "prontera";
-	.@d$[0] = "Prontera - Capital de RGZ";
+	.@m$[0] = "phtownall";
+	.@d$[0] = "Cidade União RagnaGhostz";
 	
 	.@m$[1] = "1@tower"; 
 	.@d$[1] = "Torre da Jornada - " + getvar( @TORRE_NAME$, .@char_id );

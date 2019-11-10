@@ -531,7 +531,7 @@ void quest_read_txtdb(void)
 				if (!nameid)
 					continue;
 				if (!itemdb_exists(nameid) || (mob_id && mob_db(mob_id) == NULL)) {
-					ShowWarning("quest_read_txtdb: Invalid item reward '%d' (mob %d, optional) in line %d.\n", nameid, mob_id, ln);
+					//ShowWarning("quest_read_txtdb: Invalid item reward '%d' (mob %d, optional) in line %d.\n", nameid, mob_id, ln);
 					continue;
 				}
 				RECREATE(quest->dropitem, struct quest_dropitem, quest->dropitem_count+1);
