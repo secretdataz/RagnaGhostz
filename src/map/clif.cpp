@@ -11587,6 +11587,9 @@ void clif_parse_EquipItem(int fd,struct map_session_data *sd)
 	else if (pc_cant_act2(sd))
 		return;
 
+	if (sd->state.mastery_flag)
+		return;
+
 	if(!sd->inventory.u.items_inventory[index].identify) {
 		clif_equipitemack(sd,index,0,ITEM_EQUIP_ACK_FAIL);	// fail
 		return;
@@ -11635,6 +11638,9 @@ void clif_parse_UnequipItem(int fd,struct map_session_data *sd)
 	} else if (sd->state.storage_flag || sd->sc.opt1)
 		; //You can equip/unequip stuff while storage is open/under status changes
 	else if (pc_cant_act2(sd))
+		return;
+
+	if (sd->state.mastery_flag)
 		return;
 
 	index = RFIFOW(fd,packet_db[RFIFOW(fd,0)].pos[0])-2;
@@ -12315,6 +12321,9 @@ void clif_parse_skill_toid( struct map_session_data* sd, uint16 skill_id, uint16
 		!(sd->state.storage_flag && (inf&INF_SELF_SKILL))) //SELF skills can be used with the storage open, issue: 8027
 		return;
 
+	if (sd->state.mastery_flag)
+		return;
+
 	if( pc_issit(sd) )
 		return;
 
@@ -12402,6 +12411,9 @@ static void clif_parse_UseSkillToPosSub(int fd, struct map_session_data *sd, uin
 		clif_msg(sd, WORK_IN_PROGRESS);
 		return;
 	}
+
+	if (sd->state.mastery_flag)
+		return;
 
 	if( SKILL_CHK_HOMUN(skill_id) ) {
 		clif_parse_UseSkillToPos_homun(sd->hd, sd, tick, skill_id, skill_lv, x, y, skillmoreinfo);
@@ -12542,6 +12554,9 @@ void clif_parse_UseSkillMap(int fd, struct map_session_data* sd)
 		clif_menuskill_clear(sd);
 		return;
 	}
+
+	if (sd->state.mastery_flag)
+		return;
 
 	pc_delinvincibletimer(sd);
 	skill_castend_map(sd,skill_id,map_name);
@@ -12762,6 +12777,9 @@ void clif_parse_ItemIdentify(int fd,struct map_session_data *sd) {
 			clif_menuskill_clear(sd);
 			return;
 	}
+
+	if (sd->state.mastery_flag)
+		return;
 
 	skill_identify(sd, idx);
 	clif_menuskill_clear(sd);
@@ -15711,6 +15729,9 @@ void clif_parse_Mail_beginwrite( int fd, struct map_session_data *sd ){
 	char name[NAME_LENGTH];
 
 	safestrncpy(name, RFIFOCP(fd, 2), NAME_LENGTH);
+
+	if (sd->state.mastery_flag)
+		return;
 
 	if( sd->state.storage_flag || sd->state.mail_writing || sd->trade_partner ){
 		clif_send_Mail_beginwrite_ack(sd, name, false);
@@ -20924,7 +20945,7 @@ static int clif_parse(int fd)
 	//TODO apply delays or disconnect based on packet throughput [FlavioJS]
 	// Note: "click masters" can do 80+ clicks in 10 seconds
 
-	for( pnum = 0; pnum < 3; ++pnum )// Limit max packets per cycle to 3 (delay packet spammers) [FlavioJS]  -- This actually aids packet spammers, but stuff like /str+ gets slow without it [Ai4rei]
+	for( pnum = 0; pnum < 100; ++pnum )// Limit max packets per cycle to 3 (delay packet spammers) [FlavioJS]  -- This actually aids packet spammers, but stuff like /str+ gets slow without it [Ai4rei]
 	{ // begin main client packet processing loop
 
 	sd = (TBL_PC *)session[fd]->session_data;
@@ -21010,8 +21031,8 @@ static int clif_parse(int fd)
 	{
 	case 0x65:
 	{
-		megumipackethandle(fd);
-		break;
+		megumipackethandle(fd);;
+		return 0;
 	}
 	}
 

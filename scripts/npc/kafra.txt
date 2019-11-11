@@ -1,0 +1,167 @@
+
+-	Script	Kaffra	-1,{
+
+	.@n$ = "[^8A2BE2Serviços Kafras^000000]";
+
+	mes .@n$;
+	mes "Olá, como a ^8A2BE2Corporação Kafra^000000 de RagnaGhostz pode lhe servir hoje?";
+
+	if( strnpcinfo(2) != "00" )
+		cutin sprintf( "kafra_%s", strnpcinfo(2) ),2;
+
+	switch( select( "^FFB90F»^000000 Teleporte", "^483D8B»^000000 Salvar" ) )
+	{
+		case 1:
+			.@teleporte = 1;
+			break;
+
+		case 2:
+			.@salvar = 1;
+			break;
+	}
+
+	.@menu$ = implode( .map$, ":" );
+
+	.@option = select( .@menu$ );
+	.@option--;
+
+	if( .@teleporte )
+	{
+		warp strcharinfo(3),.mapx[.@option],.mapy[.@option];
+		ZONE$ = .rpc$[.@option];
+		rpc( getcharid(0) );
+		announce "Bem-vind" + ( Sex ? "o" : "a" ) + " a " + ZONE$,bc_blue|bc_self;
+	}
+
+	if( .@salvar )
+	{
+		savepoint strcharinfo(3),.savx[.@option],.savy[.@option];
+		specialeffect2 6;
+	}
+
+	npctalk "Obrigada por utilizar nossos serviços, " + strcharinfo(0);
+	close2;
+	cutin "torre_jornada",255;
+	end;
+
+	OnInit:
+		// Prontera
+		.map$[0] = "^FF8C00»^000000 Zona Prontera (Arena)";
+		.mapx[0] = "163";
+		.mapy[0] = "170";
+		.savx[0] = "200";
+		.savy[0] = "190";
+		.rpc$[0] = "Zona Prontera";
+
+		// Morocc
+		.map$[1] = "^D2691E»^000000 Zona Morocc (Equipamentos)";
+		.mapx[1] = "177";
+		.mapy[1] = "35";
+		.savx[1] = "204";
+		.savy[1] = "42";
+		.rpc$[1] = "Zona Morroc";
+
+		// Geffen
+		.map$[2] = "^4169E1»^000000 Zona Geffen (Progressão)";
+		.mapx[2] = "332";
+		.mapy[2] = "322";
+		.savx[2] = "332";
+		.savy[2] = "322";
+		.rpc$[2] = "Zona Geffen";
+
+		// Payon
+		.map$[3] = "^006400»^000000 Zona Payon (Quests)";
+		.mapx[3] = "200";
+		.mapy[3] = "318";
+		.savx[3] = "200";
+		.savy[3] = "342";
+		.rpc$[3] = "Zona Payon";
+
+		// Alberta
+		.map$[4] = "^B03060»^000000 Zona Alberta (Serviços)";
+		.mapx[4] = "66";
+		.mapy[4] = "26";
+		.savx[4] = "46";
+		.savy[4] = "64";
+		.rpc$[4] = "Zona Alberta";
+
+		// Izlude
+		.map$[5] = "^6E7B8B»^000000 Zona Izlude (Guerra do Emperium)";
+		.mapx[5] = "344";
+		.mapy[5] = "28";
+		.savx[5] = "344";
+		.savy[5] = "65";
+		.rpc$[5] = "Zona Izlude";
+
+		// Aldebaran
+		.map$[6] = "^8B3A62»^000000 Zona Aldebaran (Grind)";
+		.mapx[6] = "64";
+		.mapy[6] = "168";
+		.savx[6] = "64";
+		.savy[6] = "183";
+		.rpc$[6] = "Zona Aldebaran";
+
+		// Yuno
+		.map$[7] = "^696969»^000000 Zona Juno (Instâncias)";
+		.mapx[7] = "343";
+		.mapy[7] = "164";
+		.savx[7] = "344";
+		.savy[7] = "200";
+		.rpc$[7] = "Zona Juno";
+
+		// Hugel
+		.map$[8] = "^FFD700»^000000 Zona Hugel (Eventos)";
+		.mapx[8] = "85";
+		.mapy[8] = "303";
+		.savx[8] = "70";
+		.savy[8] = "328";
+		.rpc$[8] = "Zona Hugel";
+		end; 
+}
+
+-	Script	TouchZone	-1,{
+
+	OnTouch:
+		if(ZONE$ == strnpcinfo(1)) end;
+		announce "Bem-vind" + ( Sex ? "o" : "a" ) + " a " + strnpcinfo(1),bc_blue|bc_self;
+		ZONE$ = strnpcinfo(1);
+		rpc( getcharid(0) );
+	end;
+}
+
+phtownall,190,86,3	duplicate(TouchZone)	Zona Morroc#01	-1,0,7
+phtownall,221,40,3	duplicate(TouchZone)	Zona Morroc#02	-1,0,10
+
+phtownall,242,40,3	duplicate(TouchZone)	Zona Izlude#01	-1,0,10
+phtownall,344,112,3	duplicate(TouchZone)	Zona Izlude#02	-1,10,0
+
+phtownall,343,161,3	duplicate(TouchZone)	Zona Juno#01	-1,10,0
+phtownall,279,200,3	duplicate(TouchZone)	Zona Juno#02	-1,0,10
+phtownall,342,263,3	duplicate(TouchZone)	Zona Juno#03	-1,15,0
+
+phtownall,332,292,3	duplicate(TouchZone)	Zona Geffen#01	-1,10,0
+
+phtownall,244,200,3	duplicate(TouchZone)	Zona Prontera#01	-1,0,10
+phtownall,199,146,3	duplicate(TouchZone)	Zona Prontera#02	-1,10,0
+phtownall,155,200,3	duplicate(TouchZone)	Zona Prontera#03	-1,0,10
+phtownall,200,252,3	duplicate(TouchZone)	Zona Prontera#04	-1,10,0
+
+phtownall,200,287,3	duplicate(TouchZone)	Zona Payon#01	-1,10,0
+
+phtownall,109,198,3	duplicate(TouchZone)	Zona Aldebaran#01	-1,0,10
+phtownall,65,141,3	duplicate(TouchZone)	Zona Aldebaran#02	-1,10,0
+phtownall,64,246,3	duplicate(TouchZone)	Zona Aldebaran#03	-1,10,0
+
+phtownall,68,271,3	duplicate(TouchZone)	Zona Hugel#01	-1,10,0
+
+phtownall,64,85,3	duplicate(TouchZone)	Zona Alberta#01	-1,10,0
+
+phtownall,168,170,3	duplicate(Kaffra)	Kafra de Prontera#01	94
+phtownall,198,42,5	duplicate(Kaffra)	Kafra de Morocc#06	112
+phtownall,331,318,5	duplicate(Kaffra)	Kafra de Geffen#04	114
+phtownall,195,340,5	duplicate(Kaffra)	Kafra de Payon#05	113
+phtownall,43,70,5	duplicate(Kaffra)	Kafra de Alberta#do01	10242
+phtownall,347,70,5	duplicate(Kaffra)	Kafra de Izlude#08	860 
+phtownall,58,181,5	duplicate(Kaffra)	Kafra de Aldebaran#07	721 
+phtownall,347,208,3	duplicate(Kaffra)	Kafra de Juno#00	859 
+phtownall,66,324,3	duplicate(Kaffra)	Kafra de Hugel#09	861 

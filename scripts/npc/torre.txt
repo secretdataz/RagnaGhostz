@@ -219,7 +219,7 @@
 	end;
 }
 
-phtownall,63,194,3	duplicate(Torre da Jornada)	Torre da Jornada#PRT	10183
+phtownall,332,345,3	duplicate(Torre da Jornada)	Torre da Jornada#PRT	10183
 
 
 function	script	F_Torre_Monstros	{
@@ -1179,7 +1179,7 @@ function	script	F_Torre_Warp	{
 				
 				mapannounce .@map$,"Parabéns, a Torre foi zerada!",bc_map,"0x00ff99";
 				sleep 5000;
-				mapwarp instance_mapname("1@tower"),"phtownall",64,181;
+				mapwarp instance_mapname("1@tower"),"phtownall",332,343;
 				instance_destroy();
 				end;
 			}

@@ -1,0 +1,126 @@
+
+function	script	mastery	{
+
+	.@func$ = getarg(0);
+	.@cid = getarg(1);
+
+	if( .@func$ == "LoadPlayerData" || .@func$ == "SendPlayerData" )
+	{
+		.@c = query_sql( "SELECT `mastery_id`, `level` " +
+		                 "  FROM `mastery_player`      " +
+		                 " WHERE `char_id` = " + getcharid(0), .@mastery_id, .@level );
+
+		if( .@c == 0)
+		{
+			query_sql( 
+					sprintf( "INSERT INTO `mastery_player` ( `char_id`, `mastery_id`, `level` ) " +
+				             "SELECT %d AS `cid`, `id`, 1 AS `lvl`                              " +
+				             " FROM `mastery`                                                   " +
+				             " WHERE `job` IN ( %d, %d, %d )                                    ",
+				             .@cid, BaseClass, BaseJob, Class ) );
+
+			.@c = query_sql( "SELECT `mastery_id`, `level` " +
+		                     "  FROM `mastery_player`      " +
+		                     " WHERE `char_id` = " + getcharid(0), .@mastery_id, .@level );
+			if( .@c == 0 )
+			{
+				debugmes "Mastery", "Erro ao carregar maestrias do CID " + .@cid;
+				end;
+			}
+		}
+
+		.@send_data = ( .@func$ == "SendPlayerData" );
+
+		for( .@i = 0; .@i < .@c; .@i++ )
+			apply_mastery( .@mastery_id[.@i], .@level[.@i], .@cid, .@send_data );
+
+		sendpoints( .@cid );
+
+		return;
+	}
+	else if( .@func$ == "UpMastery" )
+	{
+		.@mastery_id = getarg(2);
+		.@mastery_newlevel = getarg(3);
+
+		.@c = query_sql( "SELECT m.nome, mp.level, m.max_level, m.type       " +
+		                 "  FROM `mastery_player` mp                          " +
+		                 " INNER JOIN `mastery` m ON m.id = mp.mastery_id     " +
+		                 " WHERE mp.char_id = " + getcharid(0) +
+		                 "   AND mp.mastery_id = " + .@mastery_id + "", .@nome$, .@level, .@max_level, .@type );
+
+		if( .@c != 1 || .@mastery_newlevel < .@level )
+		{
+			debugmes "Mastery","Erro ao comprar maestrias do CID " + .@cid + "(.@mastery_id = " + .@mastery_id + " / .@mastery_newlevel = " + .@mastery_newlevel + ")";
+			end;
+		}
+
+		.@increasing = ( .@mastery_newlevel - .@level );
+
+		// 3 - 300.000
+
+		// 4 - 400.000
+		// 5 - 500.000
+		// 6 - 600.000
+
+		// Gastou 1500 no total
+
+		if( ( .@level + .@increasing ) > .@max_level )
+		{
+			debugmes "Mastery","Tentativa de compra de maestria em nível superior com CID " + .@cid;
+			end;
+		}
+
+		// Vamos descobrir se o jogador pode arcar com os custos ou se tá chitado
+		switch(.@type)
+		{
+			case 0: // Zeny
+				while( .@level != .@mastery_newlevel )
+				{
+					.@level++;
+					.@cost += ( .@level * 100000 );
+				}
+				
+				if( Zeny < .@cost )
+				{
+					debugmes "Mastery","Tentativa de compra de maestria sem zeny suficientes com CID " + .@cid;
+					end;
+				}
+
+				Zeny -= .@cost;
+
+				break;
+
+			case 1: // Pontos de Evento
+				while( .@level != .@mastery_newlevel )
+				{
+					.@level++;
+					.@cost += .@level;
+				}
+
+				if( MEVENT < .@cost )
+				{
+					debugmes "Mastery","Tentativa de compra de maestria sem pontos de evento suficientes com CID " + .@cid;
+					end;					
+				}
+
+				MEVENT -= .@cost;
+
+				break;
+
+			case 2:
+				if( @MASTERY_INSTANCE == 0 ) return;
+				break;
+		}
+
+		query_sql( "UPDATE `mastery_player` " +
+			       "   SET `level` = " + .@mastery_newlevel +
+			       " WHERE `char_id` = " + .@cid +
+			       "   AND `mastery_id` = " + .@mastery_id );
+
+		dispbottom "A maestria [" + .@nome$ + "] agora está no nível (" + .@mastery_newlevel + ").";
+
+		apply_mastery( .@mastery_id, .@level, .@cid, 1 );
+		return;
+	}
+}

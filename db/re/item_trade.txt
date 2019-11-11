@@ -1418,7 +1418,7 @@
 12218,475,100	// Assumptio_5_Scroll
 12219,475,100	// Wind_Walk_10_Scroll
 12220,475,100	// Adrenaline_Scroll
-12221,473,100	// Megaphone_
+12221,475,100	// Megaphone_
 12238,467,100	// New_Year_Rice_Cake_1
 12239,467,100	// New_Year_Rice_Cake_2
 12258,499,100	// Bombring_Box

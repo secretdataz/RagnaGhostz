@@ -29,7 +29,7 @@
 		mes "Irei lhe mostrar no mapa a localização dele. Boa sorte!";
 		close2;
 		cutin "mestra_classe",255;
-		viewpoint 1,63,194,1,0xFF0000;
+		viewpoint 1,332,343,1,0xFF0000;
 		end;
 	}
 	

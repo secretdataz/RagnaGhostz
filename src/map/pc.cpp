@@ -1463,6 +1463,9 @@ bool pc_authok(struct map_session_data *sd, uint32 login_id2, time_t expiration_
 	for (int i = 0; i < CSD_TOTAL; i++)
 		sd->csd[i] = newCSD(false);
 
+	for (int i = 0; i < MASTERY_TOTAL; i++)
+		sd->mast[i] = newCSD(false);
+
 	sd->qi_display = nullptr;
 	sd->qi_count = 0;
 
@@ -5117,6 +5120,9 @@ bool pc_isUseitem(struct map_session_data *sd,int n)
 		clif_messagecolor(&sd->bl, color_table[COLOR_RED], msg_txt(sd,388), false, SELF);
 		return false; // You cannot use this item while storage is open.
 	}
+
+	if (sd->state.mastery_flag)
+		return false;
 
 	if (item->flag.dead_branch && (mapdata->flag[MF_NOBRANCH] || mapdata_flag_gvg2(mapdata)))
 		return false;

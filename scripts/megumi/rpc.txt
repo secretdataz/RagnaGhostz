@@ -16,7 +16,7 @@ function	script	rpc	{
 	.@map$ = strcharinfo( 3, .@char_id );
 	
 	.@m$[0] = "phtownall";
-	.@d$[0] = "Cidade Uni�o RagnaGhostz";
+	.@d$[0] = getvar( ZONE$, .@char_id );
 	
 	.@m$[1] = "1@tower"; 
 	.@d$[1] = "Torre da Jornada - " + getvar( @TORRE_NAME$, .@char_id );
@@ -69,6 +69,56 @@ function	script	rpc	{
 	
 	.@sik$ = "job_" + .@class;
 	.@sit$ = jobname(.@class) + " - " + .@level;
+	
+	// Gambiarra das Zonas
+	if( .@lik$ == "phtownall" )
+	{
+		if( .@lit$ == "Zona Morroc" )
+		{
+			.@desc$ = "Zona Morroc (Comércio)";
+			.@lik$ = "morroc";
+		}
+		else if( .@lit$ == "Zona Izlude" )
+		{
+			.@desc$ = "Zona Izlude (GdE)";
+			.@lik$ = "izlude";
+		}
+		else if( .@lit$ == "Zona Juno" )
+		{
+			.@desc$ = "Zona Juno (Instâncias)";
+			.@lik$ = "juno";
+		}
+		else if( .@lit$ == "Zona Geffen" )
+		{
+			.@desc$ = "Zona Geffen (Progressão)";
+			.@lik$ = "geffen";
+		}
+		else if( .@lit$ == "Zona Prontera" )
+		{
+			.@desc$ = "Zona Prontera (Arena)";
+			.@lik$ = "prontera";
+		}
+		else if( .@lit$ == "Zona Payon" )
+		{
+			.@desc$ = "Zona Payon (Quests)";
+			.@lik$ = "payon";
+		}
+		else if( .@lit$ == "Zona Aldebaran" )
+		{
+			.@desc$ = "Zona Aldebaran (Grind)";
+			.@lik$ = "aldebaran";
+		}
+		else if( .@lit$ == "Zona Hugel" )
+		{
+			.@desc$ = "Zona Hugel (Eventos)";
+			.@lik$ = "hugel";
+		}
+		else if( .@lit$ == "Zona Alberta" )
+		{
+			.@desc$ = "Zona Alberta (Serviços)";
+			.@lik$ = "alberta";
+		}
+	}
 	
 	discord( .@char_id, .@title$, .@desc$, .@lik$, .@lit$, .@sik$, .@sit$ );
 	

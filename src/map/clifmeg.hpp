@@ -19,5 +19,9 @@ void clifmeg_send(int account_id, std::string pk, std::string data);
 
 void clifmeg_dressroomopened(int aid, int state);
 void clifmeg_rpc(int aid, std::string title, std::string desc, std::string lik, std::string lit, std::string sik = "NONE", std::string sit = "NONE");
+void clifmeg_openmastery(int aid, int zeny, int events, int instance);
+void clifmeg_mastery(int aid, int mastery_id, int mastery_level);
+void clifmeg_points(int aid, int zeny, int events, int instance);
+void clifmeg_clearplayerdata(int aid);
 
 #endif /* CLIFMEG_HPP */

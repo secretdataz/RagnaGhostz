@@ -88,3 +88,38 @@ void clifmeg_rpc(int aid, std::string title, std::string desc, std::string lik, 
 	clifmeg_send(aid, "RPC", pk);
 }
 
+void clifmeg_openmastery(int aid, int zeny, int events, int instance)
+{
+	std::string pk = std::to_string(zeny);
+	pk.append("|");
+	pk.append(std::to_string(events));
+	pk.append("|");
+	pk.append(std::to_string(instance));
+
+	clifmeg_send(aid, "OPENMASTERY", pk);
+}
+
+void clifmeg_mastery(int aid, int mastery_id, int mastery_level)
+{
+	std::string pk = std::to_string(mastery_id);
+	pk.append("|");
+	pk.append(std::to_string(mastery_level));
+
+	clifmeg_send(aid, "MASTERY", pk);
+}
+
+void clifmeg_points(int aid, int zeny, int events, int instance)
+{
+	std::string pk = std::to_string(zeny);
+	pk.append(std::to_string(events));
+	pk.append(std::to_string(instance));
+
+	clifmeg_send(aid, "POINTS", pk);
+}
+
+void clifmeg_clearplayerdata(int aid)
+{
+	std::string pk = std::to_string(aid);
+
+	clifmeg_send(aid, "CLEARPLAYERDATA", pk);
+}

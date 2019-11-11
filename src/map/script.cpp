@@ -24574,6 +24574,74 @@ BUILDIN_FUNC(discord)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+// apply_mastery( .@mastery_id[.@i], .@level[.@i], .@cid, send data? );
+BUILDIN_FUNC(apply_mastery)
+{
+	int mastery_id = script_getnum(st, 2);
+	int level = script_getnum(st, 3);
+
+	TBL_PC *sd = map_charid2sd(script_getnum(st, 4));
+
+	bool sendData = script_getnum(st, 5) >= 1;
+
+	if (level <= 0 || !sd || mastery_id <= 0 || mastery_id >= MASTERY_TOTAL)
+		return SCRIPT_CMD_FAILURE;
+
+	sd->mast[mastery_id]->active = true;
+	sd->mast[mastery_id]->level = level;
+
+	if (sendData)
+		clifmeg_mastery(sd->status.account_id, mastery_id, level);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
+// sendpoints( char_id )
+BUILDIN_FUNC(sendpoints)
+{
+	TBL_PC *sd = map_charid2sd(script_getnum(st, 2));
+
+	if (sd == NULL)
+		return SCRIPT_CMD_FAILURE;
+
+	int zeny = sd->status.zeny;
+	int events = pc_readregistry(sd, add_str("MEVENT"));
+	int instance = pc_readregistry(sd, add_str("MINSTANCE"));
+
+	clifmeg_points(sd->status.account_id, zeny, events, instance);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
+BUILDIN_FUNC(clearplayerdata)
+{
+	TBL_PC *sd = map_charid2sd(script_getnum(st, 2));
+
+	if (sd == NULL)
+		return SCRIPT_CMD_FAILURE;
+
+	clifmeg_clearplayerdata(sd->status.account_id);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
+BUILDIN_FUNC(openmastery)
+{
+	TBL_PC *sd = map_charid2sd(script_getnum(st, 2));
+
+	if (sd == NULL)
+		return SCRIPT_CMD_FAILURE;
+
+	if (sd->state.mastery_flag)
+		return SCRIPT_CMD_FAILURE;
+
+	sd->state.mastery_flag = 1;
+
+	clifmeg_openmastery(sd->status.account_id, sd->status.zeny, pc_readregistry(sd, add_str("MEVENT")), pc_readregistry(sd, add_str("MINSTANCE")));
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
 #include "../custom/script.inc"
 
 // declarations that were supposed to be exported from npc_chat.cpp
@@ -24632,6 +24700,10 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(changetitle, "ii"),
 	BUILDIN_DEF(attachinvoker, ""),
 	BUILDIN_DEF(singlesoundeffect, "si"),
+	BUILDIN_DEF(apply_mastery,"iiii"),
+	BUILDIN_DEF(sendpoints, "i"),
+	BUILDIN_DEF(clearplayerdata, ""),
+	BUILDIN_DEF(openmastery, "i"),
 	// NPC interaction
 	BUILDIN_DEF(mes,"s*"),
 	BUILDIN_DEF(next,""),

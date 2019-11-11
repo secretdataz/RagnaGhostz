@@ -127,13 +127,15 @@ int megumipackethandle(int fd)
 	char UP[50];
 	uint32 clienttype;
 
-	safestrncpy(data1, RFIFOCP(fd, 6), MAX_MEGPACKETSIZE);
-	safestrncpy(UP, RFIFOCP(fd, 306), 50);
-	clienttype = RFIFOL(fd, 356);
-
-	RFIFOSKIP(fd, RFIFOREST(fd));
+	safestrncpy(data1, RFIFOCP(fd, 2), 300);
+	safestrncpy(UP, RFIFOCP(fd, 302), 50);
+	clienttype = RFIFOL(fd, 352);
 
 	std::string npc = "";
+
+	ShowError(data1);
+
+	RFIFOSKIP(fd, 356);
 
 	struct megumi meg(fd);
 
@@ -163,20 +165,37 @@ int megumipackethandle(int fd)
 
 	sd->megumi_packet.data1 = data1;
 
-	npcInvoker(&sd->bl, npc.c_str());
-
 	switch (clienttype)
 	{
 	case MP_STYLE:
+		{
+			std::vector<std::string> d = util_explode(data1, ":");
+
+			pc_changelook(sd, LOOK_HAIR, std::atoi(d[0].c_str()));
+			pc_changelook(sd, LOOK_HAIR_COLOR, std::atoi(d[1].c_str()));
+			pc_changelook(sd, LOOK_CLOTHES_COLOR, std::atoi(d[2].c_str()));
+
+			sd->state.dressroom = 0;
+		}
+		return 1;
+
+	case MP_CLOSEDMASTERY:
+		sd->state.mastery_flag = 0;
+		return 1;
+
+	case MP_BUYMASTERY:
+		if (!sd->state.mastery_flag) return 1;
+
 		std::vector<std::string> d = util_explode(data1, ":");
 
-		pc_changelook(sd, LOOK_HAIR, std::atoi(d[0].c_str()));
-		pc_changelook(sd, LOOK_HAIR_COLOR, std::atoi(d[1].c_str()));
-		pc_changelook(sd, LOOK_CLOTHES_COLOR, std::atoi(d[2].c_str()));
+		pc_setreg(sd, add_str("@MASTERY_UP"), std::atoi(d[0].c_str()));
+		pc_setreg(sd, add_str("@MASTERY_LEVEL"), std::atoi(d[1].c_str()));
 
-		sd->state.dressroom = 0;
+		npc = "BUY_MASTERY";
 		break;
 	}
+
+	npcInvoker(&sd->bl, npc.c_str());
 
 	return 1;
 }

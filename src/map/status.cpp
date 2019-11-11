@@ -1471,7 +1471,6 @@ void initChangeTables(void)
 	StatusChangeStateTable[SC_KINGS_GRACE]			|= SCS_NOCAST;
 
 	/* StatusChangeState (SCS_) NOCHAT (skills) */
-	StatusChangeStateTable[SC_BERSERK]				|= SCS_NOCHAT;
 	StatusChangeStateTable[SC_SATURDAYNIGHTFEVER]	|= SCS_NOCHAT;
 	StatusChangeStateTable[SC_DEEPSLEEP]			|= SCS_NOCHAT;
 	StatusChangeStateTable[SC_NOCHAT]				|= SCS_NOCHAT|SCS_NOCHATCOND;

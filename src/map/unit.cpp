@@ -3284,6 +3284,13 @@ int unit_free(struct block_list *bl, clr_type clrtype)
 				sd->csd[i] = NULL;
 			}
 
+			for (int i = 0; i < MASTERY_TOTAL; i++)
+			{
+				aFree(sd->mast[i]);
+
+				sd->mast[i] = NULL;
+			}
+
 			if (sd->achievement_data.achievements)
 				achievement_free(sd);
 

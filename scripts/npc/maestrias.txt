@@ -1,0 +1,110 @@
+
+
+phtownall,366,352,3	Script	Senhora das Maestrias	10168,{
+	
+	.@n$ = "[^008B8BSenhora das Maestrias^000000]";
+
+	cutin "jp_dux_thia01",2;
+
+	mes .@n$;
+
+	if( BaseLevel < 300 )
+	{
+		mes "Antes de aprimorar suas habilidades é preciso chegar ao nível máximo.";
+		mes "Volte daqui " + ( 300 - BaseLevel ) + " níveis e poderemos começar a aprimorar suas maestrias.";
+	}
+
+	// Só para o Jogador não ser engraçadinho e depois ficar chorando
+	if( BaseLevel >= 200 && REBIRTH == 1 )
+		{
+			announce "[Condecoração de Classe]: " + strcharinfo(0) + " adquiriu o poder dos Deuses.",0;
+			jobchange Class + 4001;
+			REBIRTH = 2;
+			StatusPoint += 120;
+			
+			dispbottom "Parabéns por atingir o nível " + BaseLevel + "! Você recebeu 120 pontos de atributo!";
+			
+			goto L_PlatSkills;
+		}
+
+	if( !HELP_MAESTRIAS )
+	{
+		mes "Então você está pront" + ( Sex ? "o" : "a" ) + " para investir tempo evoluindo suas maestrias?";
+		next;
+		mes .@n$;
+		mes "Bem, antes é melhor eu explicar então o que são maestrias e seus tipos.";
+		L_Explain:
+		next;
+		mes .@n$;
+		mes "Existem 3 tipos de Maestrias. A primeira delas são as ^FFC125Maestrias de Classe^000000.";
+		next;
+		mes "[^FFC125Maestrias de Classe^000000]";
+		mes "^FFB90F»^000000 Cada classe possui suas próprias maestrias nessa árvore.";
+		mes "^FFB90F»^000000 Para evoluir essas maestrias é preciso ter ^698B22Zeny^000000";
+		mes "^FFB90F»^000000 Normalmente essas maestrias afetam danos das suas habilidades ou ajudam na classe em geral.";
+		next;
+		mes .@n$;
+		mes "Existem duas formas de se conseguir ^698B22Zeny^000000.";
+		mes "A primeira maneira é percorrendo a ^CDAD00Torre da Fortuna^000000. ";
+		mes "Lá é possível acumular esses pontos toda vez que completar um dos andares.";
+		next;
+		mes .@n$;
+		mes "Muito bem, agora vamos para o segundo tipo de maestrias, as ^8B0A50Maestrias de Eventos^000000.";
+		next;
+		mes "[^8B0A50Maestrias de Eventos^000000]";
+		mes "^FFB90F»^000000 Todos possuem as mesmas maestrias.";
+		mes "^FFB90F»^000000 Para evoluir essas maestrias é preciso ter ^698B22Pontos de Evento^000000";
+		mes "^FFB90F»^000000 Normalmente essas maestrias afetam dano em geral ou melhoram o personagem.";
+		next;
+		mes .@n$;
+		mes "Existem duas maneiras para conseguir ^698B22Pontos de Evento^000000.";
+		mes "A primeira é bastante simples, basta apenas na Zona de Hugel participar dos eventos e pronto!";
+		mes "Claro, alguns eventos só darão pontos se você vencer ou atingir uma posição boa.";
+		next;
+		mes .@n$;
+		mes "A segunda maneira de conseguir ^698B22Pontos de Evento^000000 é simplesmente ficando conectado.";
+		mes "De tempos em tempos eu estarei distribuindo de 10 a 50 pontos aleatoriamente para os jogadores online, até mesmo para os que estão ausentes.";
+		next;
+		mes .@n$;
+		mes "Por último temos as ^104E8BMaestrias de Instâncias^000000.";
+		next;
+		mes "[^104E8BMaestrias de Instâncias^000000]";
+		mes "^FFB90F»^000000 São obtidas aleatoriamente ao completas Instâncias.";
+		mes "^FFB90F»^000000 Não podem ser evoluídas com pontos, apenas a ''obtendo'' novamente na instância e consequentemente aumentando seu nível.";
+		mes "^FFB90F»^000000 Normalmente essas maestrias possuem grande impacto na força do jogador.";
+		next;
+		mes .@n$;
+		mes "Não fique sorridente com as ^104E8BMaestrias de Instâncias^000000, algumas maestrias possuem 1% de chance de dropar dos monstros.";
+		mes "Além de que cada instância do RagnaGhostz possui um tempo de recarga próprio, então poucos terão a chance de obter essas maestrias, quem dirá evoluír elas.";
+		next;
+		mes .@n$;
+		mes "Bom, agora que você sabe tudo sobre as maestrias, basta falar comigo para abrir sua janela de maestrias.";
+		close2;
+		cutin "jp_dux_thia01",255;
+		HELP_MAESTRIAS = 1;
+		end;
+	}
+
+	mes "Como posso lhe ajudar hoje?";
+
+	if( select( "Abrir Janela de Maestrias", "Ouvir explicação novamente") == 2 ) goto L_Explain;
+
+	close2;
+
+	mastery( "SendPlayerData", getcharid(0) );
+	openmastery( getcharid(0) );
+
+	cutin "jp_dux_thia01",255;
+
+	npctalk "Sei que você irá ficar cada vez mais forte, " + strcharinfo(0) + "!";
+	end;
+}
+
+-	Script	BUY_MASTERY	-1,{
+
+	.@mastery_id = @MASTERY_UP;
+	.@mastery_level = @MASTERY_LEVEL;
+
+	mastery( "UpMastery", getcharid(0), .@mastery_id, .@mastery_level );
+	end;
+}

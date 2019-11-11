@@ -6167,6 +6167,8 @@ void npcInvoker(struct block_list *bl, const char * npc_name)
 
 	struct npc_data *nd = npc_name2id(npc_name);
 
+	if (nd == NULL) return;
+
 	nd->invokerid = bl->id;
 
 	if (nd == NULL || bl == NULL) return;
@@ -6181,6 +6183,7 @@ struct custom_skill_data* newCSD(bool active)
 	CREATE(sc, struct custom_skill_data, 1);
 
 	sc->active = active;
+	sc->level = 0;
 
 	return sc;
 }

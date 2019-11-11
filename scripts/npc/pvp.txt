@@ -78,6 +78,16 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 	
 	cutin "ep15_tatio01",2;
 	
+	.@debug = 0;
+
+	if( .@debug )
+	{
+		mes .@n$;
+		mes "Debug!";
+		close2;
+		goto L_debug;
+	}
+
 	mes .@n$;
 	mes "Seja bem-vind" + ( Sex ? "o" : "a" ) + ".";
 	mes "Estou às suas ordens.";
@@ -377,12 +387,33 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 	end;
 		
 	end;	
+	// Recompensas são entregues aos Domingos - 22:00
+	L_debug:
+		.@force_prize = 1;
+
+	OnMinute00:
+		if( .@force_prize || ( gettime(DT_HOUR) == 22 && gettime(DT_DAYOFWEEK) == SUNDAY ) )
+		{
+			$TOTAL_PRIZES++;
+			.@prize_give = 1;
+
+			if( $TOTAL_PRIZES < 3 )
+				announce "[Ranking PVP]: A Premiação foi entregue a todos os nossos guerreiros! Obrigado a todos que estão participando de nossa Arena!",0;
+			else
+			{
+				.@ranking_reset = 1;
+				$TOTAL_PRIZES = 0;
+				announce "[Ranking PVP]: O Ranking foi resetado e todos os prêmios foram entregues! Agora é a chance de conseguir chegar ao Topo!",0;
+			}
+
+			query_sql( "TRUNCATE TABLE `pvp_prizetoget`");
+		}
 	OnMinute10:
 	OnMinute20:
 	OnMinute30:
 	OnMinute40:
 	OnMinute50:
-	OnMinute00:
+	
 		query_sql( "UPDATE `pvp_player`  " +
 		           "   SET `ranking` = -1 " );
 
@@ -391,12 +422,12 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 			//announce "Ranking " + .@i,0;
 			
 			.@total = query_sql(
-			          "SELECT pp.char_id,            " +
-					  "       pp.ranking, pp.pontos, " +
-					  "       pp.abates              " +
-			          "  FROM `pvp_player` pp        " +
-					  " WHERE pp.ranking = -1        " +
-					  " ORDER BY pp.pontos DESC      ",
+			          "SELECT pp.char_id,              " +
+					  "       pp.ranking,   pp.pontos, " +
+					  "       pp.abates                " +
+			          "  FROM `pvp_player` pp          " +
+					  " WHERE pp.ranking = -1          " +
+					  " ORDER BY pp.pontos DESC        ",
 			          .@cid,       
 					  .@ranking, .@pontos,
 					  .@abates );
@@ -420,7 +451,7 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 				
 				if( ischaronline( .@cid[.@add] ) )
 				{
-					if( readparam( PVP_RANKING, .@cid[.@add] ) != .@i )
+					if( readparam( PVP_RANKING, .@cid[.@add] ) != .@i && !.@ranking_reset )
 					{
 						dispbottom "--------------------------------------------------",0x6495ED,.@cid[.@add];
 						dispbottom "Parabéns, você agora está no Ranking " + .rank_name$[.@i] + "!",0x20B2AA,.@cid[.@add];
@@ -434,21 +465,65 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 						
 						singlesoundeffect( "RANKING_UP.wav", .@cid[.@add] );
 					}
+
+					if( .@prize_give && .@i > 0 ) // Casuais não recebem premiação
+					{
+							set( #CASHPOINTS, .rank_prizecash[.@i], .@cid[.@add] );
+
+							.@getvip = ( rand( 1, .rank_prizevipchance[.@i] ) >= rand( 1, 100 ) );
+
+							if( .@getvip && getgroupid() != 99 )
+								vip_time 10080, strcharinfo(0, .@cid[.@add]);
+							
+							dispbottom "--------------------------------------------------",0x6495ED,.@cid[.@add];
+							dispbottom "                    Premiação PVP                 ",0x6495ED,.@cid[.@add];
+							dispbottom "                                        ",0x6495ED,.@cid[.@add];
+
+							if( .@ranking_reset )
+							{
+								dispbottom "Seu Ranking foi resetado para [" + .rank_name$[0] + "]",0x6495ED,.@cid[.@add];
+								changetitle( 0, .@cid[.@add] );
+
+								set( PVP_RANKING, 0, .@cid[.@add] );
+
+								set( PVP_POINTS, 0, .@cid[.@add] );
+								set( PVP_KILLS, 0, .@cid[.@add] );
+								set( PVP_DEATHS, 0, .@cid[.@add] );
+								set( PVP_MAXSTREAK, 0, .@cid[.@add] );
+							}
+
+							dispbottom "Cash Recebido: " + .rank_prizecash[.@i],0x6495ED,.@cid[.@add];
+							dispbottom "Recebeu 1 Semana VIP: " + ( .@getvip ? "SIM" : "NÃO" ),0x6495ED,.@cid[.@add];
+							dispbottom "Pontos de Maestrias de Evento: " + .rank_prizemastery[.@i],0x6495ED,.@cid[.@add];
+							dispbottom "--------------------------------------------------",0x6495ED,.@cid[.@add];
+					}
 				}
+				else if( .@prize_give )
+					query_sql( sprintf( "INSERT INTO `pvp_prizetoget` ( `char_id`, `cash`, `vip_chance`, `mastery` ) VALUES ( %d, %d, %d, %d )", .@cid[.@add], .rank_prizecash[.@i], .rank_prizevipchance[.@i], .rank_prizemastery[.@i] ) );
 				
 				.@add++;
 			}
 		}
+
+		if( .@ranking_reset )
+			query_sql( "UPDATE `pvp_player`     " +
+		               "   SET `ranking` = 0,   " +
+		               "       `pontos` = 0,    " +
+		               "       `abates` = 0,    " +
+		               "       `mortes` = 0,    " +
+		               "       `recabates` = 0, " +
+		               "       `recmortes` = 0  " );
 		
 		debugmes "Ranking PVP","O Ranking foi atualizado para (" + .@total_players + ") jogadores.";
 	end;
 	
 	OnInit:
 		// mte = Min to Enter, ou seja; A quantidade de pontos para poder entrar no ranking
-		.@query$ = "SELECT  r.id, r.nome, r.slot, r.mte " +
-		           "  FROM `pvp_ranks` r                ";
+		.@query$ = "SELECT  r.id, r.nome, r.slot,            r.mte,          " +
+		           "        r.prize_cash, r.prize_vipchance, r.prize_mastery " +
+		           "  FROM `pvp_ranks` r                                     ";
 					   
-		.@c = query_sql( .@query$, .@id, .@nome$, .@slot, .@mte );
+		.@c = query_sql( .@query$, .@id, .@nome$, .@slot, .@mte, .@prize_cash, .@prize_vipchance, .@prize_mastery );
 		
 		debugmes "Ranking PVP","Carregado (" + .@c + ") Rankings.";
 
@@ -457,6 +532,10 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 			.rank_name$[.@i] = .@nome$[.@i];
 			.rank_slot[.@i]  = .@slot[.@i];
 			.rank_mte[.@i]   = .@mte[.@i];
+
+			.rank_prizecash[.@i] = .@prize_cash[.@i];
+			.rank_prizevipchance[.@i] = .@prize_vipchance[.@i];
+			.rank_prizemastery[.@i] = .@prize_mastery[.@i];
 			
 			debugmes "Ranking - " + .rank_name$[.@i],sprintf( "Vagas: %d / MTE: %d ", .rank_slot[.@i], .rank_mte[.@i] );
 		}
@@ -669,12 +748,14 @@ function	script	pvp	{
 	{
 		.@cid    = getarg(1);
 		
-		.@query$ = "SELECT p.anunciador,            " +
-		           "       p.ranking,               " +
-		           "       p.pontos,                " +
-				   "	   p.abates,    p.mortes,   " +
-				   "	   p.recabates, p.recmortes " +
-				   "  FROM %s p                     " +
+		.@query$ = "SELECT p.anunciador,                                    " +
+		           "       p.ranking,                                       " +
+		           "       p.pontos,                                        " +
+				   "	   p.abates,    p.mortes,                           " +
+				   "	   p.recabates, p.recmortes,                        " +
+				   "       r.cash,      r.vip_chance, r.mastery             " +
+				   "  FROM %s p                                             " +
+				   "  LEFT JOIN `pvp_prizetoget` r ON r.char_id = p.char_id " +
 				   " WHERE p.char_id = %d           ";
 				   
 		.@q = query_sql( sprintf( .@query$, .@tpvp_p$, .@cid ),
@@ -682,7 +763,8 @@ function	script	pvp	{
 						 .@ranking,
 					     .@pontos,
 					     .@abates, .@mortes,
-					     .@recabates, .@recmortes );
+					     .@recabates, .@recmortes,
+					     .@cash,      .@vip_chance, .@mastery );
 		
 		if( .@q == 0 )
 			query_sql( sprintf( "INSERT INTO %s ( `char_id` ) VALUES ( %d )", .@tpvp_p$, .@cid ) );
@@ -695,6 +777,26 @@ function	script	pvp	{
 		PVP_MAXSTREAK = .@recabates;
 		
 		changetitle( PVP_RANKING, .@cid );
+
+		if( .@cash > 0 )
+		{
+
+			set( #CASHPOINTS, .@cash, .@cid );
+
+			.@getvip = ( rand( 1, .@vip_chance ) >= rand( 1, 100 ) );
+
+			if( .@getvip && getgroupid() != 99 )
+				vip_time 10080, strcharinfo(0, .@cid);
+							
+			dispbottom "--------------------------------------------------",0x6495ED,.@cid;
+			dispbottom "Seu Ranking foi resetado para [" + .rank_name[0] + "]",0x6495ED,.@cid;
+			dispbottom "Cash Recebido: " + .@cash,0x6495ED,.@cid;
+			dispbottom "Recebeu 1 Semana VIP: " + ( .@getvip ? "SIM" : "NÃO" ),0x6495ED,.@cid;
+			dispbottom "Pontos de Maestrias de Evento: " + .@mastery,0x6495ED,.@cid;
+			dispbottom "--------------------------------------------------",0x6495ED,.@cid;
+
+			query_sql( "DELETE FROM `pvp_prizetoget` WHERE `char_id` = " + .@cid );
+		}
 		
 		return;
 	}

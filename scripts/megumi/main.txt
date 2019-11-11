@@ -1,4 +1,5 @@
 
+
 -	Script	MegumiCore	-1,{
 
 	OnPcLoginEvent:
@@ -18,10 +19,14 @@
 		//	end;
 		//}
 		
-		// Carregando Informações do Jogador
-		
+		// Vamos pedir para a Megumi limpar qualquer data de jogador que possuía antes
+		clearplayerdata();
+
 		// Carrega dados do PVP
 		pvp( "LoadPlayerData", getcharid(0) );
+
+		// Carrega as Maestrias
+		mastery( "LoadPlayerData", getcharid(0) );
 
 		dispbottom "[MEGUMI] Sincronização completa.";
 		
