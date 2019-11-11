@@ -4863,6 +4863,9 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 
 	case KN_CHARGEATK:
 		{
+		if (sd && sd->mast[MASTERY_AVANCO_OFENSIVO_EX]->active && sd->mast[MASTERY_AVANCO_OFENSIVO_EX]->level == 100)
+			status_change_end(src, SC_FREEZE, INVALID_TIMER);
+
 		bool path = path_search_long(NULL, src->m, src->x, src->y, bl->x, bl->y,CELL_CHKWALL);
 		unsigned int dist = distance_bl(src, bl);
 		uint8 dir = map_calc_dir(bl, src->x, src->y);
@@ -6801,7 +6804,10 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 			src,skill_id,skill_lv,tick, flag|BCT_ENEMY|1, skill_castend_damage_id);
 		clif_skill_nodamage (src,src,skill_id,skill_lv,1);
 		// Initiate 20% of your damage becomes fire element.
-		sc_start4(src,src,SC_WATK_ELEMENT,100,3,20,0,0,skill_get_time2(skill_id, skill_lv));
+		if(sd && sd->mast[MASTERY_IMPACTO_EXPLOSIVO]->active)
+			sc_start4(src, src, SC_WATK_ELEMENT, 100, 3, 20 + sd->mast[MASTERY_IMPACTO_EXPLOSIVO]->level, 0, 0, skill_get_time2(skill_id, skill_lv));
+		else
+			sc_start4(src,src,SC_WATK_ELEMENT,100,3,20,0,0,skill_get_time2(skill_id, skill_lv));
 		break;
 
 	case TK_JUMPKICK:
@@ -6988,6 +6994,9 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 	case SM_ENDURE:
 		clif_skill_nodamage(src,bl,skill_id,skill_lv,
 			sc_start(src,bl,type,100,skill_lv,skill_get_time(skill_id,skill_lv)));
+
+		if(sd && sd->mast[MASTERY_VIGOR_EX]->active && sd->mast[MASTERY_VIGOR_EX]->level == 75)
+			guild_foreachsamemap(skill_area_sub, sd, skill_get_splash(skill_id, skill_lv), src, skill_id, skill_lv, tick, flag | BCT_GUILD | 1, skill_castend_nodamage_id);
 		break;
 
 	case AS_ENCHANTPOISON: // Prevent spamming [Valaris]

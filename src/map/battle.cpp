@@ -1630,7 +1630,7 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 	}
 
 	// Modificadores de Dano PVP
-	if (src->type == BL_PC && bl->type == BL_PC && map_getmapflag(bl->m, MF_PVP) && map_getmapflag(bl->m, MF_PVP_NOCALCRANK))
+	if (src->type == BL_PC && bl->type == BL_PC && map_getmapflag(bl->m, MF_PVP) && !map_getmapflag(bl->m, MF_PVP_NOCALCRANK))
 	{
 		map_session_data *sd_attacker = BL_CAST(BL_PC, src);
 		map_session_data *sd_attacked = BL_CAST(BL_PC, bl);
@@ -1664,6 +1664,16 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 			damage -= (damage * 5) / 100;
 	}
 
+	// Modificadores de Dano Final Maestrias
+	if (sd)
+	{
+		if (sd->mast[MASTERY_MONTARIA_EX]->active && sd->mast[MASTERY_MONTARIA_EX]->level == 70)
+			damage += (damage * 7) / 100;
+
+		if (sd->mast[MASTERY_CACADOR_DE_VILOES]->active && bl->type == BL_PC && (BL_CAST(BL_PC, bl)->status.class_ == JOB_ASSASSIN_CROSS || BL_CAST(BL_PC, bl)->status.class_ == JOB_BABY_ASSASSIN))
+			damage += (damage * sd->mast[MASTERY_CACADOR_DE_VILOES]->level) / 100;
+	}
+	
 	return damage;
 }
 
@@ -1855,14 +1865,22 @@ int64 battle_addmastery(struct map_session_data *sd,struct block_list *target,in
 				damage += (skill * 3);
 #endif
 		case W_DAGGER:
-			if((skill = pc_checkskill(sd,SM_SWORD)) > 0)
+			if ((skill = pc_checkskill(sd, SM_SWORD)) > 0)
+			{
 				damage += (skill * 4);
+
+				if (sd->mast[MASTERY_ESPADAS_DE_UMA_MAO_EX]->active)
+					damage += sd->mast[MASTERY_ESPADAS_DE_UMA_MAO_EX]->level;
+			}
 			if((skill = pc_checkskill(sd,GN_TRAINING_SWORD)) > 0)
 				damage += skill * 10;
 			break;
 		case W_2HSWORD:
 			if((skill = pc_checkskill(sd,SM_TWOHAND)) > 0)
 				damage += (skill * 4);
+
+			if (sd->mast[MASTERY_ESPADAS_DE_DUAS_MAOS_EX]->active)
+				damage += sd->mast[MASTERY_ESPADAS_DE_DUAS_MAOS_EX]->level;
 			break;
 		case W_1HSPEAR:
 		case W_2HSPEAR:
@@ -1874,6 +1892,9 @@ int64 battle_addmastery(struct map_session_data *sd,struct block_list *target,in
 				// Increase damage by level of KN_SPEARMASTERY * 10
 				if(pc_checkskill(sd,RK_DRAGONTRAINING) > 0)
 					damage += (skill * 10);
+
+				if (sd->mast[MASTERY_PERICIA_COM_LANCA_EX]->active)
+					damage += sd->mast[MASTERY_PERICIA_COM_LANCA_EX]->level;
 			}
 			break;
 		case W_1HAXE:
@@ -3485,6 +3506,8 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 		case SM_BASH:
 		case MS_BASH:
 			skillratio += 30 * skill_lv;
+			if (sd && sd->mast[MASTERY_GOLPE_FUMINANTE_EX]->active)
+				skillratio += sd->mast[MASTERY_GOLPE_FUMINANTE_EX]->level;
 			break;
 		case SM_MAGNUM:
 		case MS_MAGNUM:
@@ -3535,6 +3558,8 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			skillratio += 50 * skill_lv;
 			break;
 		case KN_BRANDISHSPEAR:
+			if (sd && sd->mast[MASTERY_BRANDIR_LANCA_EX]->active)
+				skillratio += sd->mast[MASTERY_BRANDIR_LANCA_EX]->level;
 		case ML_BRANDISH: {
 				int ratio = 100 + 20 * skill_lv;
 
@@ -3554,6 +3579,9 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 				break;
 			}
 		case KN_BOWLINGBASH:
+			if (sd && sd->mast[MASTERY_IMPACTO_DE_TYR_EX]->active)
+				skillratio += sd->mast[MASTERY_IMPACTO_DE_TYR_EX]->level;
+
 		case MS_BOWLINGBASH:
 			skillratio += 40 * skill_lv;
 			break;
@@ -4902,7 +4930,10 @@ static void battle_calc_attack_post_defense(struct Damage* wd, struct block_list
 #ifdef RENEWAL
 			lv *= ((skill_id == LK_SPIRALPIERCE || skill_id == ML_SPIRALPIERCE)?wd->div_:1); // +100 per hit in lv 5
 #endif
-			ATK_ADD(wd->damage, wd->damage2, 20*lv);
+			if(sd && sd->mast[MASTERY_LAMINA_DE_AURA_EX]->active)
+				ATK_ADD(wd->damage, wd->damage2, (20 * lv) + sd->mast[MASTERY_LAMINA_DE_AURA_EX]->level);
+			else
+				ATK_ADD(wd->damage, wd->damage2, 20*lv);
 		}
 	}
 

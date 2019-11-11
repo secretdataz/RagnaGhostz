@@ -9952,6 +9952,9 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 			break;
 		case SC_PARRYING:
 		    val2 = 20 + val1*3; // Block Chance
+
+			if (sd && sd->mast[MASTERY_APARAR_GOLPE_EX]->active)
+				val2 += sd->mast[MASTERY_APARAR_GOLPE_EX]->level;
 			break;
 
 		case SC_WINDWALK:
@@ -11779,7 +11782,11 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 				status_heal(bl, status->max_hp, 0, 1); // Do not use percent_heal as this healing must override BERSERK's block.
 				status_set_sp(bl, 0, 0); // Damage all SP
 			}
-			sce->val2 = 5 * status->max_hp / 100;
+
+			if (sd && sd->mast[MASTERY_FRENESI_GEAR_THIRD]->active && sd->mast[MASTERY_FRENESI_GEAR_THIRD]->level == 90)
+				sce->val2 = 0;
+			else
+				sce->val2 = 5 * status->max_hp / 100;
 			break;
 		case SC_RUN:
 			{

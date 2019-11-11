@@ -2135,6 +2135,57 @@ void guild_castle_reconnect_sub(void *key, void *data, va_list ap) {
 	aFree(data);
 }
 
+/// Executes 'func' for each guild member on the same map and in range (0:whole map)
+int guild_foreachsamemap(int(*func)(struct block_list*, va_list), struct map_session_data *sd, int range, ...)
+{
+	struct guild *g;
+	int i;
+	int x0, y0, x1, y1;
+	struct block_list *list[MAX_PARTY];
+	int blockcount = 0;
+	int total = 0; //Return value.
+
+	nullpo_ret(sd);
+
+	if((g = g = guild_search(sd->guild->guild_id)) == NULL)
+		return 0;
+
+	x0 = sd->bl.x - range;
+	y0 = sd->bl.y - range;
+	x1 = sd->bl.x + range;
+	y1 = sd->bl.y + range;
+
+	for (i = 0; i < MAX_GUILD; i++) {
+		struct map_session_data *psd = g->member[i].sd;
+
+		if (!psd)
+			continue;
+
+		if (psd->bl.m != sd->bl.m || !psd->bl.prev)
+			continue;
+
+		if (range &&
+			(psd->bl.x<x0 || psd->bl.y<y0 ||
+				psd->bl.x>x1 || psd->bl.y>y1))
+			continue;
+
+		list[blockcount++] = &psd->bl;
+	}
+
+	map_freeblock_lock();
+
+	for (i = 0; i < blockcount; i++) {
+		va_list ap;
+		va_start(ap, range);
+		total += func(list[i], ap);
+		va_end(ap);
+	}
+
+	map_freeblock_unlock();
+
+	return total;
+}
+
 /**
  * Saves pending guild castle data changes when char-server is
  * disconnected.

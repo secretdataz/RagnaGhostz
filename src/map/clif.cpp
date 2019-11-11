@@ -12315,10 +12315,20 @@ void clif_parse_skill_toid( struct map_session_data* sd, uint16 skill_id, uint16
 		}
 	}
 
+	if (skill_id = LK_BERSERK && sd->mast[MASTERY_FRENESI_GEAR_SECOND]->active && status_get_sc(&sd->bl)->data[SC_BERSERK] && sd->mast[MASTERY_FRENESI_GEAR_SECOND]->level == 150)
+	{
+		status_change_end(&sd->bl, SC_BERSERK, INVALID_TIMER);
+		return;
+	}
+
 	if ((pc_cant_act2(sd) || sd->chatID) && 
-		skill_id != RK_REFRESH && 
+		skill_id != RK_REFRESH &&
+		skill_id != KN_CHARGEATK &&
 		!( ( skill_id == SR_GENTLETOUCH_CURE || skill_id == SU_GROOMING ) && (sd->sc.opt1 == OPT1_STONE || sd->sc.opt1 == OPT1_FREEZE || sd->sc.opt1 == OPT1_STUN)) &&
 		!(sd->state.storage_flag && (inf&INF_SELF_SKILL))) //SELF skills can be used with the storage open, issue: 8027
+		return;
+
+	if (skill_id == KN_CHARGEATK && sd->mast[MASTERY_AVANCO_OFENSIVO_EX]->active && sd->mast[MASTERY_AVANCO_OFENSIVO_EX]->level != 100)
 		return;
 
 	if (sd->state.mastery_flag)
