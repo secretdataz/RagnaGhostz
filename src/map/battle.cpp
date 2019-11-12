@@ -1142,7 +1142,7 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 
 		if( sc->data[SC_WEAPONBLOCKING] && flag&(BF_SHORT|BF_WEAPON) && rnd()%100 < sc->data[SC_WEAPONBLOCKING]->val2 ) {
 			clif_skill_nodamage(bl,src,GC_WEAPONBLOCKING,sc->data[SC_WEAPONBLOCKING]->val1,1);
-			sc_start2(src,bl,SC_COMBO,100,GC_WEAPONBLOCKING,src->id,skill_get_time2(GC_WEAPONBLOCKING,sc->data[SC_WEAPONBLOCKING]->val1));
+			sc_start2(src,bl,SC_COMBO,100,GC_WEAPONBLOCKING,src->id,skill_get_time2(GC_WEAPONBLOCKING,sc->data[SC_WEAPONBLOCKING]->val1, src));
 			d->dmg_lv = ATK_BLOCK;
 			return 0;
 		}
@@ -1423,7 +1423,7 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 
 		if( damage > 0 && (sce = sc->data[SC_STONEHARDSKIN]) ) {
 			if( src->type == BL_MOB ) //using explicit call instead break_equip for duration
-				sc_start(src,src, SC_STRIPWEAPON, 30, 0, skill_get_time2(RK_STONEHARDSKIN, sce->val1));
+				sc_start(src,src, SC_STRIPWEAPON, 30, 0, skill_get_time2(RK_STONEHARDSKIN, sce->val1, src));
 			else if (flag&(BF_WEAPON|BF_SHORT))
 				skill_break_equip(src,src, EQP_WEAPON, 3000, BCT_SELF);
 		}
@@ -1511,7 +1511,7 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 			if( sc->data[SC_RAISINGDRAGON] )
 				spheres += sc->data[SC_RAISINGDRAGON]->val1;
 
-			pc_addspiritball(sd, skill_get_time2(SR_GENTLETOUCH_ENERGYGAIN, sce->val1), spheres);
+			pc_addspiritball(sd, skill_get_time2(SR_GENTLETOUCH_ENERGYGAIN, sce->val1, src), spheres);
 		}
 
 		if (sc->data[SC_STYLE_CHANGE] && sc->data[SC_STYLE_CHANGE]->val1 == MH_MD_GRAPPLING) {
@@ -1568,7 +1568,7 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 		if( sc->data[SC_POISONINGWEAPON]
 			&& ((flag&BF_WEAPON) && (!skill_id || skill_id == GC_VENOMPRESSURE)) //check skill type poison_smoke is a unit
 			&& (damage > 0 && rnd()%100 < sc->data[SC_POISONINGWEAPON]->val3 )) //did some damage and chance ok (why no additional effect ??)
-			sc_start2(src,bl,(enum sc_type)sc->data[SC_POISONINGWEAPON]->val2,100,sc->data[SC_POISONINGWEAPON]->val1,sc->data[SC_POISONINGWEAPON]->val4,skill_get_time2(GC_POISONINGWEAPON, 1));
+			sc_start2(src,bl,(enum sc_type)sc->data[SC_POISONINGWEAPON]->val2,100,sc->data[SC_POISONINGWEAPON]->val1,sc->data[SC_POISONINGWEAPON]->val4,skill_get_time2(GC_POISONINGWEAPON, 1, src));
 
 		if( sc->data[SC__DEADLYINFECT] && (flag&(BF_SHORT|BF_MAGIC)) == BF_SHORT && damage > 0 && rnd()%100 < 30 + 10 * sc->data[SC__DEADLYINFECT]->val1 )
 			status_change_spread(src, bl, 0);
@@ -1672,6 +1672,9 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 
 		if (sd->mast[MASTERY_CACADOR_DE_VILOES]->active && bl->type == BL_PC && (BL_CAST(BL_PC, bl)->status.class_ == JOB_ASSASSIN_CROSS || BL_CAST(BL_PC, bl)->status.class_ == JOB_BABY_ASSASSIN))
 			damage += (damage * sd->mast[MASTERY_CACADOR_DE_VILOES]->level) / 100;
+
+		if (sd->mast[MASTERY_LICAO_DE_CASA]->active && bl->type == BL_PC && (BL_CAST(BL_PC, bl)->status.class_ == JOB_STALKER || BL_CAST(BL_PC, bl)->status.class_ == JOB_BABY_ROGUE))
+			damage += (damage * sd->mast[MASTERY_LICAO_DE_CASA]->level) / 100;
 	}
 	
 	return damage;
@@ -3397,7 +3400,7 @@ static void battle_calc_multi_attack(struct Damage* wd, struct block_list *src,s
 				max_rate = max(5 * skill_lv, sd->bonus.double_rate);
 
 			if( rnd()%100 < max_rate ) {
-				wd->div_ = skill_get_num(TF_DOUBLE,skill_lv?skill_lv:1);
+				wd->div_ = skill_get_num(TF_DOUBLE,skill_lv?skill_lv:1, src);
 				wd->type = DMG_MULTI_HIT;
 			}
 		}
@@ -3405,7 +3408,7 @@ static void battle_calc_multi_attack(struct Damage* wd, struct block_list *src,s
 			|| (sc && sc->count && sc->data[SC_E_CHAIN] && (skill_lv = sc->data[SC_E_CHAIN]->val1) > 0)) //Chain Action of ETERNAL_CHAIN
 			&& rnd()%100 < 5*skill_lv ) //Success rate
 		{
-			wd->div_ = skill_get_num(GS_CHAINACTION,skill_lv);
+			wd->div_ = skill_get_num(GS_CHAINACTION,skill_lv,src);
 			wd->type = DMG_MULTI_HIT;
 			sc_start(src,src,SC_QD_SHOT_READY,100,target->id,skill_get_time(RL_QD_SHOT,1));
 		}
@@ -3503,6 +3506,14 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 	}
 
 	switch(skill_id) {
+		case WZ_SIGHTBLASTER:
+			if (sd && sd->mast[MASTERY_EXPLOSAO_PROTETORA_EX]->active)
+				skillratio += sd->mast[MASTERY_EXPLOSAO_PROTETORA_EX]->level;
+			break;
+		case WZ_JUPITEL:
+			if (sd && sd->mast[MASTERY_TROVAO_DE_JUPITER_EX]->active)
+				skillratio += sd->mast[MASTERY_TROVAO_DE_JUPITER_EX]->level;
+			break;
 		case SM_BASH:
 		case MS_BASH:
 			skillratio += 30 * skill_lv;
@@ -3666,6 +3677,10 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			else
 #endif
 				skillratio += 35 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_CRUX_DIVINUM_EX]->active)
+				skillratio += sd->mast[MASTERY_CRUX_DIVINUM_EX]->level;
+
 			break;
 		case AM_DEMONSTRATION:
 			skillratio += 20 * skill_lv;
@@ -3753,6 +3768,10 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 #endif
 		case PA_SACRIFICE:
 			skillratio += -10 + 10 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_SACRIFICIO_DO_MARTIR_EX]->active)
+				skillratio += sd->mast[MASTERY_SACRIFICIO_DO_MARTIR_EX]->level;
+
 			break;
 		case PA_SHIELDCHAIN:
 			skillratio += 30 * skill_lv;
@@ -4932,7 +4951,8 @@ static void battle_calc_attack_post_defense(struct Damage* wd, struct block_list
 #endif
 			if(sd && sd->mast[MASTERY_LAMINA_DE_AURA_EX]->active)
 				ATK_ADD(wd->damage, wd->damage2, (20 * lv) + sd->mast[MASTERY_LAMINA_DE_AURA_EX]->level);
-			else
+
+			if (!sd && sd->mast[MASTERY_LAMINA_DE_AURA_EX]->active)
 				ATK_ADD(wd->damage, wd->damage2, 20*lv);
 		}
 	}
@@ -5285,7 +5305,7 @@ static struct Damage initialize_weapon_data(struct block_list *src, struct block
 	struct Damage wd;
 
 	wd.type = DMG_NORMAL; //Normal attack
-	wd.div_ = skill_id?skill_get_num(skill_id,skill_lv):1;
+	wd.div_ = skill_id?skill_get_num(skill_id,skill_lv,src):1;
 	wd.amotion = (skill_id && skill_get_inf(skill_id)&INF_GROUND_SKILL)?0:sstatus->amotion; //Amotion should be 0 for ground skills.
 	// counter attack DOES obey ASPD delay on official, uncomment if you want the old (bad) behavior [helvetica]
 	/*if(skill_id == KN_AUTOCOUNTER)
@@ -5787,7 +5807,7 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 	}
 	//Initial Values
 	ad.damage = 1;
-	ad.div_ = skill_get_num(skill_id,skill_lv);
+	ad.div_ = skill_get_num(skill_id,skill_lv,src);
 	ad.amotion = (skill_get_inf(skill_id)&INF_GROUND_SKILL ? 0 : sstatus->amotion); //Amotion should be 0 for ground skills.
 	ad.dmotion = tstatus->dmotion;
 	ad.blewcount = skill_get_blewcount(skill_id, skill_lv);
@@ -5958,7 +5978,11 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 						skillratio -= 50;
 						break;
 					case MG_FIREBOLT:
+						if (sd && sd->mast[MASTERY_LANCA_DE_FOGO_EX]->active)
+							skillratio += sd->mast[MASTERY_LANCA_DE_FOGO_EX]->level;
 					case MG_COLDBOLT:
+						if (sd && skill_id == MG_COLDBOLT && sd->mast[MASTERY_LANCA_DE_GELO_EX]->active)
+							skillratio += sd->mast[MASTERY_LANCA_DE_FOGO_EX]->level;
 					case MG_LIGHTNINGBOLT:
 						if (sc && sc->data[SC_SPELLFIST] && mflag&BF_SHORT)  {
 							skillratio += (sc->data[SC_SPELLFIST]->val4 * 100) + (sc->data[SC_SPELLFIST]->val1 * 50) - 100;// val4 = used bolt level, val2 = used spellfist level. [Rytech]
@@ -6539,7 +6563,7 @@ struct Damage battle_calc_misc_attack(struct block_list *src,struct block_list *
 	//Some initial values
 	md.amotion = (skill_get_inf(skill_id)&INF_GROUND_SKILL ? 0 : sstatus->amotion);
 	md.dmotion = tstatus->dmotion;
-	md.div_ = skill_get_num(skill_id,skill_lv);
+	md.div_ = skill_get_num(skill_id,skill_lv,src);
 	md.blewcount = skill_get_blewcount(skill_id,skill_lv);
 	md.dmg_lv = ATK_DEF;
 	md.flag = BF_MISC|BF_SKILL;
@@ -6602,7 +6626,7 @@ struct Damage battle_calc_misc_attack(struct block_list *src,struct block_list *
 					nk |= NK_SPLASHSPLIT;
 				if (skill_id == SN_FALCONASSAULT) {
 					//Div fix of Blitzbeat
-					DAMAGE_DIV_FIX2(md.damage, skill_get_num(HT_BLITZBEAT, 5));
+					DAMAGE_DIV_FIX2(md.damage, skill_get_num(HT_BLITZBEAT, 5, src));
 					//Falcon Assault Modifier
 					md.damage = md.damage * (150 + 70 * skill_lv) / 100;
 				}
@@ -6659,6 +6683,9 @@ struct Damage battle_calc_misc_attack(struct block_list *src,struct block_list *
 			md.damage = 200 + 200 * skill_lv;
 #endif
 			md.dmotion = 0; //No flinch animation
+
+			if (sd && sd->mast[MASTERY_CAMPO_GRAVITACIONAL_EX]->active)
+				md.damage += 50 * sd->mast[MASTERY_CAMPO_GRAVITACIONAL_EX]->level;
 			break;
 		case PA_PRESSURE:
 			md.damage = 500 + 300 * skill_lv;
@@ -7328,7 +7355,7 @@ enum damage_lv battle_weapon_attack(struct block_list* src, struct block_list* t
 	if( tsc && tsc->data[SC_BLADESTOP_WAIT] && status_get_class_(src) != CLASS_BOSS && (src->type == BL_PC || tsd == NULL || distance_bl(src, target) <= (tsd->status.weapon == W_FIST ? 1 : 2)) )
 	{
 		uint16 skill_lv = tsc->data[SC_BLADESTOP_WAIT]->val1;
-		int duration = skill_get_time2(MO_BLADESTOP,skill_lv);
+		int duration = skill_get_time2(MO_BLADESTOP,skill_lv, src);
 		status_change_end(target, SC_BLADESTOP_WAIT, INVALID_TIMER);
 		if(sc_start4(src,src, SC_BLADESTOP, 100, sd?pc_checkskill(sd, MO_BLADESTOP):5, 0, 0, target->id, duration))
 		{	//Target locked.
@@ -7385,7 +7412,7 @@ enum damage_lv battle_weapon_attack(struct block_list* src, struct block_list* t
 				spheres += sc->data[SC_RAISINGDRAGON]->val1;
 
 			if( sd && rnd()%100 < sc->data[SC_GT_ENERGYGAIN]->val2 )
-				pc_addspiritball(sd, skill_get_time2(SR_GENTLETOUCH_ENERGYGAIN, sc->data[SC_GT_ENERGYGAIN]->val1), spheres);
+				pc_addspiritball(sd, skill_get_time2(SR_GENTLETOUCH_ENERGYGAIN, sc->data[SC_GT_ENERGYGAIN]->val1, src), spheres);
 		}
 	}
 
@@ -7396,7 +7423,7 @@ enum damage_lv battle_weapon_attack(struct block_list* src, struct block_list* t
 			spheres += tsc->data[SC_RAISINGDRAGON]->val1;
 
 		if( tsd && rnd()%100 < tsc->data[SC_GT_ENERGYGAIN]->val2 )
-			pc_addspiritball(tsd, skill_get_time2(SR_GENTLETOUCH_ENERGYGAIN, tsc->data[SC_GT_ENERGYGAIN]->val1), spheres);
+			pc_addspiritball(tsd, skill_get_time2(SR_GENTLETOUCH_ENERGYGAIN, tsc->data[SC_GT_ENERGYGAIN]->val1, src), spheres);
 	}
 
 	if (tsc && tsc->data[SC_MTF_MLEATKED] && rnd()%100 < tsc->data[SC_MTF_MLEATKED]->val2)

@@ -61,7 +61,7 @@ function	script	mastery	{
 
 		// 4 - 400.000
 		// 5 - 500.000
-		// 6 - 600.000
+		// 6 - 
 
 		// Gastou 1500 no total
 
@@ -75,11 +75,7 @@ function	script	mastery	{
 		switch(.@type)
 		{
 			case 0: // Zeny
-				while( .@level != .@mastery_newlevel )
-				{
-					.@level++;
-					.@cost += ( .@level * 100000 );
-				}
+				.@cost = 100000 * ( ( .@level + .@mastery_newlevel - 1) * .@increasing ) / 2;
 				
 				if( Zeny < .@cost )
 				{

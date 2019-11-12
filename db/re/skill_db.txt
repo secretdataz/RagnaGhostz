@@ -198,7 +198,7 @@
 90,9,8,1,2,0,0,5,1:2:3:4:5,yes,0,0x2000,0,magic,0,0x0,	WZ_EARTHSPIKE,Earth Spike
 91,9,8,2,2,0,0,5,1:2:3:4:5,yes,0,0x2000,0,magic,0,0x10000,	WZ_HEAVENDRIVE,Heaven's Drive
 92,9,6,2,2,0x1,0,5,1,yes,0,0,3,magic,0,0x11000,		WZ_QUAGMIRE,Quagmire
-93,9,6,1,0,0x1,0,1,1,yes,0,0,0,magic,0,0x0,		WZ_ESTIMATION,Sense
+93,9,6,16,0,0x1,0,1,1,yes,0,0,0,misc,0,0x0,		WZ_ESTIMATION,Sense
 
 //****
 // Blacksmith

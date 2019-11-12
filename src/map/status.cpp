@@ -1822,7 +1822,7 @@ int status_damage(struct block_list *src,struct block_list *target,int64 dhp, in
 	}
 
 	if( sc && sc->data[SC_KAIZEL] && !map_flag_gvg2(target->m) ) { // flag&8 = disable Kaizel
-		int time = skill_get_time2(SL_KAIZEL,sc->data[SC_KAIZEL]->val1);
+		int time = skill_get_time2(SL_KAIZEL,sc->data[SC_KAIZEL]->val1, src);
 		// Look for Osiris Card's bonus effect on the character and revive 100% or revive normally
 		if ( target->type == BL_PC && BL_CAST(BL_PC,target)->special_state.restart_full_recover )
 			status_revive(target, 100, 100);
@@ -2150,7 +2150,7 @@ bool status_check_skilluse(struct block_list *src, struct block_list *target, ui
 			return false;
 		}
 
-		if (skill_id != RK_REFRESH && skill_id != SU_GROOMING && sc->opt1 && sc->opt1 != OPT1_BURNING && skill_id != SR_GENTLETOUCH_CURE) { // Stuned/Frozen/etc
+		if (skill_id != RK_REFRESH && skill_id != SU_GROOMING && skill_id != KN_CHARGEATK && sc->opt1 && sc->opt1 != OPT1_BURNING && skill_id != SR_GENTLETOUCH_CURE) { // Stuned/Frozen/etc
 			if (flag != 1) // Can't cast, casted stuff can't damage.
 				return false;
 			if (skill_get_casttype(skill_id) == CAST_DAMAGE)
@@ -3053,8 +3053,13 @@ static int status_get_hpbonus(struct block_list *bl, enum e_status_bonus type) {
 			uint8 i;
 
 			bonus += sd->bonus.hp;
-			if ((i = pc_checkskill(sd,CR_TRUST)) > 0)
+			if ((i = pc_checkskill(sd, CR_TRUST)) > 0)
+			{
 				bonus += i * 200;
+
+				if (sd && sd->mast[MASTERY_FE_EX]->active)
+					bonus += 15 * sd->mast[MASTERY_FE_EX]->level;
+			}
 			if (pc_checkskill(sd,SU_SPRITEMABLE) > 0)
 				bonus += 1000;
 			if (pc_checkskill(sd, SU_POWEROFSEA) > 0) {
@@ -6242,7 +6247,12 @@ static unsigned short status_calc_matk(struct block_list *bl, struct status_chan
 	if (sc->data[SC_QUEST_BUFF3])
 		matk += sc->data[SC_QUEST_BUFF3]->val1;
 	if (sc->data[SC_MAGICPOWER] && sc->data[SC_MAGICPOWER]->val4)
-		matk += matk * sc->data[SC_MAGICPOWER]->val3/100;
+	{
+		matk += matk * sc->data[SC_MAGICPOWER]->val3 / 100;
+
+		if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_AMPLIFICACAO_MISTICA_EX]->active)
+			matk += BL_CAST(BL_PC, bl)->mast[MASTERY_AMPLIFICACAO_MISTICA_EX]->level;
+	}
 	if (sc->data[SC_MINDBREAKER])
 		matk += matk * sc->data[SC_MINDBREAKER]->val2/100;
 	if (sc->data[SC_INCMATKRATE])
@@ -6288,6 +6298,10 @@ static signed short status_calc_critical(struct block_list *bl, struct status_ch
 #ifdef RENEWAL
 	if (sc->data[SC_SPEARQUICKEN])
 		critical += 3*sc->data[SC_SPEARQUICKEN]->val1*10;
+
+	if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_RAPIDEZ_COM_LANCA]->active)
+		critical += BL_CAST(BL_PC, bl)->mast[MASTERY_RAPIDEZ_COM_LANCA]->level;
+
 #endif
 	if (sc->data[SC__INVISIBILITY])
 		critical += sc->data[SC__INVISIBILITY]->val3 * 10;
@@ -6778,7 +6792,12 @@ static unsigned short status_calc_speed(struct block_list *bl, struct status_cha
 		if( sd->ud.skill_id == LG_EXEEDBREAK )
 			speed_rate = 160 - 10 * sd->ud.skill_lv;
 		else
-			speed_rate = 175 - 5 * pc_checkskill(sd,SA_FREECAST);
+		{
+			speed_rate = 175 - 5 * pc_checkskill(sd, SA_FREECAST);
+
+			if (sd->mast[MASTERY_CONJURACAO_LIVRE_EX]->active)
+				speed_rate -= sd->mast[MASTERY_CONJURACAO_LIVRE_EX]->level;
+		}
 	} else {
 		int val = 0;
 
@@ -6930,8 +6949,13 @@ static unsigned short status_calc_speed(struct block_list *bl, struct status_cha
 		speed = speed * speed_rate / 100;
 	if( sc->data[SC_STEELBODY] )
 		speed = 200;
-	if( sc->data[SC_DEFENDER] )
-		speed = max(speed, 200);
+	if (sc->data[SC_DEFENDER])
+	{
+		if (sd && sd->mast[MASTERY_AURASAGRADA_EX]->active && sd->mast[MASTERY_AURASAGRADA_EX]->level == 150)
+			;
+		else
+			speed = max(speed, 200);
+	}
 	if( sc->data[SC_WALKSPEED] && sc->data[SC_WALKSPEED]->val1 > 0 ) // ChangeSpeed
 		speed = speed * 100 / sc->data[SC_WALKSPEED]->val1;
 
@@ -7007,7 +7031,14 @@ static short status_calc_aspd(struct block_list *bl, struct status_change *sc, b
 		if (sc->data[SC_SKA])
 			bonus -= 25;
 		if (sc->data[SC_DEFENDER])
-			bonus -= sc->data[SC_DEFENDER]->val4 / 10;
+		{
+			map_session_data *sd = BL_CAST(BL_PC, bl);
+
+			if (sd && sd->mast[MASTERY_AURASAGRADA_EX]->active && sd->mast[MASTERY_AURASAGRADA_EX]->level == 150)
+				;
+			else
+				bonus -= sc->data[SC_DEFENDER]->val4 / 10;
+		}
 		if (sc->data[SC_GOSPEL] && sc->data[SC_GOSPEL]->val4 == BCT_ENEMY)
 			bonus -= 75;
 		if (sc->data[SC_GRAVITATION])
@@ -9657,6 +9688,10 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 			break;
 		case SC_REFLECTSHIELD:
 			val2 = 10+val1*3; // %Dmg reflected
+
+			if (sd && sd->mast[MASTERY_ESCUDO_REFLETOR_EX]->active)
+				val2 += sd->mast[MASTERY_ESCUDO_REFLETOR_EX]->level / 10;
+
 			// val4 used to mark if reflect shield is an inheritance bonus from Devotion
 			if( !(flag&SCSTART_NOAVOID) && (bl->type&(BL_PC|BL_MER)) ) {
 				struct map_session_data *tsd;
@@ -9726,6 +9761,9 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 				uint8 i = max((val1-1)%5, 0);
 
 				val2 = deluge_eff[i]; // HP increase
+
+				if (sd && sd->mast[MASTERY_DILUVIO_EX]->active)
+					val2 += sd->mast[MASTERY_DILUVIO_EX]->level;
 #ifndef RENEWAL
 				if (status->def_ele != ELE_WATER)
 					val2 = 0;
@@ -9963,7 +10001,7 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 
 		case SC_JOINTBEAT:
 			if( val2&BREAK_NECK )
-				sc_start2(src,bl,SC_BLEEDING,100,val1,val3,skill_get_time2(status_sc2skill(type),val1));
+				sc_start2(src,bl,SC_BLEEDING,100,val1,val3,skill_get_time2(status_sc2skill(type),val1, src));
 			break;
 
 		case SC_BERSERK:
@@ -9973,7 +10011,7 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 				sc_start4(src,bl, SC_ENDURE, 100,10,0,0,1, tick);
 			// HP healing is performing after the calc_status call.
 			// Val2 holds HP penalty
-			if (!val4) val4 = skill_get_time2(status_sc2skill(type),val1);
+			if (!val4) val4 = skill_get_time2(status_sc2skill(type),val1, src);
 			if (!val4) val4 = 10000; // Val4 holds damage interval
 			val3 = tick/val4; // val3 holds skill duration
 			t_tickime = val4; // [GodLesZ] tick time
@@ -10373,6 +10411,9 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 			break;
 		case SC_DOUBLECAST:
 			val2 = 30+10*val1; // Trigger rate
+
+			if (sd && sd->mast[MASTERY_LANCAS_DUPLAS_EX]->active)
+				val2 += sd->mast[MASTERY_LANCAS_DUPLAS_EX]->level;
 			break;
 		case SC_KAIZEL:
 			val2 = 10*val1; // % of life to be revived with
@@ -10668,7 +10709,7 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 			t_tickime = 5000; // [GodLesZ] tick time
 			break;
 		case SC_SATURDAYNIGHTFEVER:
-			if (!val4) val4 = skill_get_time2(status_sc2skill(type),val1);
+			if (!val4) val4 = skill_get_time2(status_sc2skill(type),val1, src);
 			if (!val4) val4 = 3000;
 			val3 = tick/val4;
 			t_tickime = val4; // [GodLesZ] tick time
@@ -11233,14 +11274,14 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 			break;
 		case SC_HISS:
 			val2 = 50; // Perfect Dodge
-			sc_start(src, bl, SC_DORAM_WALKSPEED, 100, 50, skill_get_time2(SU_HISS, val1));
+			sc_start(src, bl, SC_DORAM_WALKSPEED, 100, 50, skill_get_time2(SU_HISS, val1, src));
 			break;
 		case SC_GROOMING:
 			val2 = 100; // Flee
 			break;
 		case SC_CHATTERING:
 			val2 = 100; // eATK, eMATK
-			sc_start(src, bl, SC_DORAM_WALKSPEED, 100, 50, skill_get_time2(SU_CHATTERING, val1));
+			sc_start(src, bl, SC_DORAM_WALKSPEED, 100, 50, skill_get_time2(SU_CHATTERING, val1, src));
 			break;
 		case SC_SWORDCLAN:
 		case SC_ARCWANDCLAN:
@@ -12215,7 +12256,7 @@ int status_change_end_(struct block_list* bl, enum sc_type type, int tid, const 
 				DIFF_TICK(gettick(), starttick) <= 1000 &&
 				(!sd || (sd->weapontype1 == 0 && sd->weapontype2 == 0))
 			)
-				sc_start(bl,bl,SC_SPURT,100,sce->val1,skill_get_time2(status_sc2skill(type), sce->val1));
+				sc_start(bl,bl,SC_SPURT,100,sce->val1,skill_get_time2(status_sc2skill(type), sce->val1, bl));
 		}
 		break;
 		case SC_AUTOBERSERK:
@@ -12457,7 +12498,7 @@ int status_change_end_(struct block_list* bl, enum sc_type type, int tid, const 
 			clif_millenniumshield(bl, 0);
 			break;
 		case SC_HALLUCINATIONWALK:
-			sc_start(bl,bl,SC_HALLUCINATIONWALK_POSTDELAY,100,sce->val1,skill_get_time2(GC_HALLUCINATIONWALK,sce->val1));
+			sc_start(bl,bl,SC_HALLUCINATIONWALK_POSTDELAY,100,sce->val1,skill_get_time2(GC_HALLUCINATIONWALK,sce->val1, bl));
 			break;
 		case SC_WHITEIMPRISON:
 			{
@@ -12485,7 +12526,7 @@ int status_change_end_(struct block_list* bl, enum sc_type type, int tid, const 
 			}
 			break;
 		case SC_SATURDAYNIGHTFEVER: // Sit down force of Saturday Night Fever has the duration of only 3 seconds.
-			sc_start(bl, bl,SC_SITDOWN_FORCE,100,sce->val1,skill_get_time2(WM_SATURDAY_NIGHT_FEVER,sce->val1));
+			sc_start(bl, bl,SC_SITDOWN_FORCE,100,sce->val1,skill_get_time2(WM_SATURDAY_NIGHT_FEVER,sce->val1, bl));
 			break;
 		case SC_NEUTRALBARRIER_MASTER:
 		case SC_STEALTHFIELD_MASTER:
@@ -12569,7 +12610,7 @@ int status_change_end_(struct block_list* bl, enum sc_type type, int tid, const 
 			}
 			break;
 		case SC_FULL_THROTTLE: {
-				int sec = skill_get_time2(status_sc2skill(type), sce->val1);
+				int sec = skill_get_time2(status_sc2skill(type), sce->val1, bl);
 
 				clif_status_change(bl, EFST_DEC_AGI, 1, sec, 0, 0, 0);
 				sc_start(bl, bl, SC_REBOUND, 100, sce->val1, sec);
@@ -12616,7 +12657,7 @@ int status_change_end_(struct block_list* bl, enum sc_type type, int tid, const 
 			break;
 		case SC_VACUUM_EXTREME:
 			///< !CHECKME: Seems on official, there's delay before same target can be vacuumed in same area again [Cydh]
-			sc_start2(bl, bl, SC_VACUUM_EXTREME_POSTDELAY, 100, sce->val1, sce->val2, skill_get_time2(SO_VACUUM_EXTREME,sce->val1));
+			sc_start2(bl, bl, SC_VACUUM_EXTREME_POSTDELAY, 100, sce->val1, sce->val2, skill_get_time2(SO_VACUUM_EXTREME,sce->val1, bl));
 			break;
 		case SC_SWORDCLAN:
 		case SC_ARCWANDCLAN:
@@ -12917,7 +12958,7 @@ TIMER_FUNC(status_change_timer){
 		if (!sc->data[SC_CHASEWALK2]) {
 			sc_start(bl,bl, SC_CHASEWALK2,100,1<<(sce->val1-1),
 				(t_tick)(sc->data[SC_SPIRIT] && sc->data[SC_SPIRIT]->val2 == SL_ROGUE?10:1) // SL bonus -> x10 duration
-				*skill_get_time2(status_sc2skill(type),sce->val1));
+				*skill_get_time2(status_sc2skill(type),sce->val1, NULL));
 		}
 		sc_timer_next(sce->val2+tick);
 		return 0;
@@ -13838,6 +13879,18 @@ int status_change_timer_sub(struct block_list* bl, va_list ap)
 		status_change_end(bl, SC_CLOAKING, INVALID_TIMER);
 		status_change_end(bl, SC_CLOAKINGEXCEED, INVALID_TIMER);
 		status_change_end(bl, SC_CAMOUFLAGE, INVALID_TIMER);
+
+		if (src->type == BL_PC)
+		{
+			map_session_data *sd = BL_CAST(BL_PC, src);
+
+			if (sd->mast[MASTERY_CHAMA_REVELADORA_EX]->active && sd->mast[MASTERY_CHAMA_REVELADORA_EX]->level == 75)
+			{
+				status_change_end(bl, SC_CHASEWALK, INVALID_TIMER);
+				status_change_end(bl, SC_CHASEWALK2, INVALID_TIMER);
+			}
+		}
+
 		if (tsc && tsc->data[SC__SHADOWFORM] && (sce && sce->val4 > 0 && sce->val4%2000 == 0) && // For every 2 seconds do the checking
 			rnd()%100 < 100 - tsc->data[SC__SHADOWFORM]->val1 * 10) // [100 - (Skill Level x 10)] %
 				status_change_end(bl, SC__SHADOWFORM, INVALID_TIMER);

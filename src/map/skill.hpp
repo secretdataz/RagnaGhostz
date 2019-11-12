@@ -400,12 +400,12 @@ int skill_get_max( uint16 skill_id );
 int skill_get_range( uint16 skill_id , uint16 skill_lv );
 int skill_get_range2(struct block_list *bl, uint16 skill_id, uint16 skill_lv, bool isServer);
 int skill_get_splash( uint16 skill_id , uint16 skill_lv );
-int skill_get_num( uint16 skill_id ,uint16 skill_lv );
+int skill_get_num(uint16 skill_id, uint16 skill_lv, struct block_list *bl);
 int skill_get_cast( uint16 skill_id ,uint16 skill_lv );
-int skill_get_delay( uint16 skill_id ,uint16 skill_lv );
-int skill_get_walkdelay( uint16 skill_id ,uint16 skill_lv );
-int skill_get_time( uint16 skill_id ,uint16 skill_lv );
-int skill_get_time2( uint16 skill_id ,uint16 skill_lv );
+int skill_get_delay(uint16 skill_id, uint16 skill_lv, struct block_list *bl);
+int skill_get_walkdelay(uint16 skill_id, uint16 skill_lv, struct block_list *bl);
+int skill_get_time(uint16 skill_id, uint16 skill_lv);
+int skill_get_time2(uint16 skill_id, uint16 skill_lv, struct block_list *bl);
 int skill_get_castnodex( uint16 skill_id );
 int skill_get_castdef( uint16 skill_id );
 int skill_get_nocast( uint16 skill_id );
@@ -559,16 +559,61 @@ enum e_mastery_data {
 	MASTERY_IMPACTO_EXPLOSIVO,
 	MASTERY_ESPADAS_DE_DUAS_MAOS_EX,
 	MASTERY_ESPADAS_DE_UMA_MAO_EX,
+
 	MASTERY_IMPACTO_DE_TYR_EX,
 	MASTERY_BRANDIR_LANCA_EX,
 	MASTERY_AVANCO_OFENSIVO_EX,
 	MASTERY_MONTARIA_EX,
 	MASTERY_PERICIA_COM_LANCA_EX,
+
 	MASTERY_FRENESI_GEAR_SECOND,
 	MASTERY_FRENESI_GEAR_THIRD,
 	MASTERY_LAMINA_DE_AURA_EX,
 	MASTERY_APARAR_GOLPE_EX,
 	MASTERY_CACADOR_DE_VILOES,
+
+	MASTERY_CRUX_MAGNUM_EX,
+	MASTERY_CRUX_DIVINUM_EX,
+	MASTERY_ESCUDO_REFLETOR_EX,
+	MASTERY_MEDICAR_EX,
+	MASTERY_FE_EX,
+
+	MASTERY_SACRIFICIO_DO_MARTIR_EX,
+	MASTERY_GLORIA_DOMINI_EX,
+	MASTERY_RAPIDEZ_COM_LANCA,
+	MASTERY_REDENCAO_EX,
+	MASTERY_AURASAGRADA_EX,
+
+	MASTERY_PROTECAO_ARCANA_EX,
+	MASTERY_PETRIFICAR_EX,
+	MASTERY_CHAMA_REVELADORA_EX,
+	MASTERY_LANCA_DE_FOGO_EX,
+	MASTERY_LANCA_DE_GELO_EX,
+
+	MASTERY_CHUVA_DE_METEROROS_EX,
+	MASTERY_NEVASCA_EX,
+	MASTERY_IRA_DE_THOR_EX,
+	MASTERY_TROVAO_DE_JUPITER_EX,
+	MASTERY_ESFERA_DAGUA_EX,
+
+	MASTERY_CAMPO_GRAVITACIONAL_EX,
+	MASTERY_AMPLIFICACAO_MISTICA_EX,
+	MASTERY_EXPLOSAO_PROTETORA_EX,
+	MASTERY_GANBANTEIN_EX,
+	MASTERY_SENTIDO_SOBRENATURAL,
+
+	MASTERY_DESENCANTAR_EX,
+	MASTERY_ESPELHO_MAGICO_EX,
+	MASTERY_DILUVIO_EX,
+	MASTERY_DESEJO_ARCANO_EX,
+	MASTERY_CONJURACAO_LIVRE_EX,
+
+	MASTERY_LANCAS_DUPLAS_EX,
+	MASTERY_ENLOUQUECEDOR_EX,
+	MASTERY_PRISAO_DE_TEIA_EX,
+	MASTERY_PRESCIENCIA_EX,
+	MASTERY_LICAO_DE_CASA,
+
 	MASTERY_TOTAL,
 };
 

@@ -17,7 +17,7 @@ function	script	rpc	{
 	
 	.@m$[0] = "phtownall";
 	.@d$[0] = getvar( ZONE$, .@char_id );
-	
+
 	.@m$[1] = "1@tower"; 
 	.@d$[1] = "Torre da Jornada - " + getvar( @TORRE_NAME$, .@char_id );
 	.@e$[1] = "Irei zerar esta Torre!";
@@ -119,6 +119,8 @@ function	script	rpc	{
 			.@lik$ = "alberta";
 		}
 	}
+
+	announce "" + .@desc$,0;
 	
 	discord( .@char_id, .@title$, .@desc$, .@lik$, .@lit$, .@sik$, .@sit$ );
 	
