@@ -91,6 +91,7 @@ phtownall,366,352,3	Script	Senhora das Maestrias	10168,{
 
 	close2;
 
+	clearplayerdata( CLEARDATA_MASTERY, getcharid(0) );
 	mastery( "SendPlayerData", getcharid(0) );
 	openmastery( getcharid(0) );
 

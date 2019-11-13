@@ -22,7 +22,7 @@ function	script	mastery	{
 				             "SELECT %d AS `cid`, `id`, 1 AS `lvl`                              " +
 				             " FROM `mastery`                                                   " +
 				             " WHERE `job` IN ( %d, %d, %d )                                    ",
-				             .@cid, BaseClass, BaseJob, .@class );
+				             .@cid, BaseClass, BaseJob, .@class ) );
 
 			.@c = query_sql( "SELECT `mastery_id`, `level` " +
 		                     "  FROM `mastery_player`      " +
@@ -121,7 +121,7 @@ function	script	mastery	{
 
 		dispbottom "A maestria [" + .@nome$ + "] agora está no nível (" + .@mastery_newlevel + ").";
 
-		apply_mastery( .@mastery_id, .@level, .@cid, 1 );
+		apply_mastery( .@mastery_id, .@mastery_newlevel, .@cid, 1 );
 		return;
 	}
 }

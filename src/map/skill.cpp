@@ -282,6 +282,10 @@ int skill_get_num( uint16 skill_id ,uint16 skill_lv, struct block_list *bl )
 				if(BL_CAST(BL_PC, bl)->mast[MASTERY_CHUVA_DE_METEROROS_EX]->active)
 					extra += BL_CAST(BL_PC, bl)->mast[MASTERY_IRA_DE_THOR_EX]->level;
 				break;
+
+			case CR_ACIDDEMONSTRATION:
+				if (BL_CAST(BL_PC, bl)->mast[MASTERY_BOMBA_ACIDA_EX]->active)
+					extra += BL_CAST(BL_PC, bl)->mast[MASTERY_BOMBA_ACIDA_EX]->level / 10;
 		}
 	}
 
@@ -383,6 +387,11 @@ int skill_get_blewcount( uint16 skill_id ,uint16 skill_lv, struct block_list *bl
 			if(BL_CAST(BL_PC, bl)->mast[MASTERY_DISPARO_VIOLENTO_EX]->active)
 				extra += BL_CAST(BL_PC, bl)->mast[MASTERY_DISPARO_VIOLENTO_EX]->level / 10;
 
+			break;
+
+		case TF_BACKSLIDING:
+			if (BL_CAST(BL_PC, bl)->mast[MASTERY_RECUAR_EX]->active)
+				extra += BL_CAST(BL_PC, bl)->mast[MASTERY_RECUAR_EX]->level / 10;
 			break;
 		}
 	}
@@ -865,22 +874,25 @@ static int8 skill_isCopyable(struct map_session_data *sd, uint16 skill_idx) {
 	if (sd->status.skill[skill_idx].id != 0 && sd->status.skill[skill_idx].flag != SKILL_FLAG_PLAGIARIZED)
 		return 0;
 
-	// Check if the skill is copyable by class
-	if (!pc_has_permission(sd,PC_PERM_ALL_SKILL)) {
-		uint16 job_allowed = skill_db[skill_idx]->copyable.joballowed;
-		while (1) {
-			if (job_allowed&0x01 && sd->status.class_ == JOB_ROGUE) break;
-			if (job_allowed&0x02 && sd->status.class_ == JOB_STALKER) break;
-			if (job_allowed&0x04 && sd->status.class_ == JOB_SHADOW_CHASER) break;
-			if (job_allowed&0x08 && sd->status.class_ == JOB_SHADOW_CHASER_T) break;
-			if (job_allowed&0x10 && sd->status.class_ == JOB_BABY_ROGUE) break;
-			if (job_allowed&0x20 && sd->status.class_ == JOB_BABY_CHASER) break;
-			return 0;
-		}
-	}
+	//// Check if the skill is copyable by class
+	//if (!pc_has_permission(sd,PC_PERM_ALL_SKILL)) {
+	//	uint16 job_allowed = skill_db[skill_idx]->copyable.joballowed;
+	//	while (1) {
+	//		if (job_allowed&0x01 && sd->status.class_ == JOB_ROGUE) break;
+	//		if (job_allowed&0x02 && sd->status.class_ == JOB_STALKER) break;
+	//		if (job_allowed&0x04 && sd->status.class_ == JOB_SHADOW_CHASER) break;
+	//		if (job_allowed&0x08 && sd->status.class_ == JOB_SHADOW_CHASER_T) break;
+	//		if (job_allowed&0x10 && sd->status.class_ == JOB_BABY_ROGUE) break;
+	//		if (job_allowed&0x20 && sd->status.class_ == JOB_BABY_CHASER) break;
+	//		return 0;
+	//	}
+	//}
 
 	//Plagiarism only able to copy skill while SC_PRESERVE is not active and skill is copyable by Plagiarism
 	if (skill_db[skill_idx]->copyable.option&1 && pc_checkskill(sd,RG_PLAGIARISM) && !sd->sc.data[SC_PRESERVE])
+		return 1;
+
+	if (sd->mast[MASTERY_PLAGIO_EX]->active && sd->mast[MASTERY_PLAGIO_EX]->level == 125 && pc_checkskill(sd, RG_PLAGIARISM) && !sd->sc.data[SC_PRESERVE])
 		return 1;
 
 	//Reproduce can copy skill if SC__REPRODUCE is active and the skill is copyable by Reproduce
@@ -1408,7 +1420,13 @@ int skill_additional_effect(struct block_list* src, struct block_list *bl, uint1
 			//"While the damage can be blocked by Pneuma, the chance to break armor remains", irowiki. [Cydh]
 			if (dmg_lv == ATK_BLOCK && skill_id == AM_ACIDTERROR) {
 				sc_start2(src,bl,SC_BLEEDING,(skill_lv*3),skill_lv,src->id,skill_get_time2(skill_id,skill_lv,src));
-				if (skill_break_equip(src,bl, EQP_ARMOR, 100*skill_get_time(skill_id,skill_lv,src), BCT_ENEMY))
+
+				int chance_acidterror = 100 * skill_get_time(skill_id, skill_lv, src);
+
+				if (sd && sd->mast[MASTERY_TERROR_ACIDO_EX]->active)
+					chance_acidterror += 100 * (sd->mast[MASTERY_TERROR_ACIDO_EX]->level / 10);
+
+				if (skill_break_equip(src,bl, EQP_ARMOR, chance_acidterror, BCT_ENEMY))
 					clif_emotion(bl,ET_HUK);
 			}
 		}
@@ -1576,9 +1594,17 @@ int skill_additional_effect(struct block_list* src, struct block_list *bl, uint1
 		break;
 
 	case AM_ACIDTERROR:
-		sc_start2(src,bl,SC_BLEEDING,(skill_lv*3),skill_lv,src->id,skill_get_time2(skill_id,skill_lv, src));
-		if (skill_break_equip(src,bl, EQP_ARMOR, 100*skill_get_time(skill_id,skill_lv,src), BCT_ENEMY))
-			clif_emotion(bl,ET_HUK);
+	{
+		sc_start2(src, bl, SC_BLEEDING, (skill_lv * 3), skill_lv, src->id, skill_get_time2(skill_id, skill_lv, src));
+
+		int chance_acidterror = 100 * skill_get_time(skill_id, skill_lv, src);
+
+		if (sd && sd->mast[MASTERY_TERROR_ACIDO_EX]->active)
+			chance_acidterror += 100 * (sd->mast[MASTERY_TERROR_ACIDO_EX]->level / 10);
+
+		if (skill_break_equip(src, bl, EQP_ARMOR, chance_acidterror, BCT_ENEMY))
+			clif_emotion(bl, ET_HUK);
+	}
 		break;
 
 	case AM_DEMONSTRATION:
@@ -1696,7 +1722,7 @@ int skill_additional_effect(struct block_list* src, struct block_list *bl, uint1
 		break;
 
 	case ST_REJECTSWORD:
-		sc_start(src,bl,SC_AUTOCOUNTER,(skill_lv*15),skill_lv,skill_get_time(skill_id,skill_lv,src));
+		sc_start(src,bl,SC_AUTOCOUNTER,(skill_lv*15) + ((sd && sd->mast[MASTERY_INSTINTO_DE_DEFESA_EX]->active) ? sd->mast[MASTERY_INSTINTO_DE_DEFESA_EX]->level / 10 : 0),skill_lv,skill_get_time(skill_id,skill_lv,src));
 		break;
 
 	case PF_FOGWALL:
@@ -2238,16 +2264,22 @@ int skill_additional_effect(struct block_list* src, struct block_list *bl, uint1
 
 	if( attack_type&BF_WEAPON )
 	{ // Breaking Equipment
-		if( sd && battle_config.equip_self_break_rate )
+		if( sd )
 		{	// Self weapon breaking
-			rate = battle_config.equip_natural_break_rate;
+			rate = 0;
 			if( sc )
 			{
 				if(sc->data[SC_OVERTHRUST])
 					rate += 10;
-				if(sc->data[SC_MAXOVERTHRUST])
+				if (sc->data[SC_MAXOVERTHRUST])
+				{
 					rate += 10;
+
+					if (sd->mast[MASTERY_FORCA_VIOLENTISSIMA_EX]->active && sd->mast[MASTERY_FORCA_VIOLENTISSIMA_EX]->level == 75)
+						rate -= 10;
+				}
 			}
+
 			if( rate )
 				skill_break_equip(src,src, EQP_WEAPON, rate, BCT_SELF);
 		}
@@ -2813,6 +2845,9 @@ bool skill_strip_equip(struct block_list *src, struct block_list *target, uint16
 	if (!tsc || tsc->option&OPTION_MADOGEAR) // Mado Gear cannot be divested [Ind]
 		return false;
 
+	if (target->type == BL_PC && BL_CAST(BL_PC, target)->mast[MASTERY_REVESTIMENTO_DE_PROFISSIONAL]->active && BL_CAST(BL_PC, target)->mast[MASTERY_REVESTIMENTO_DE_PROFISSIONAL]->level == 175)
+		return false;
+
 	const int pos[5]             = {EQP_WEAPON, EQP_SHIELD, EQP_ARMOR, EQP_HELM, EQP_ACC};
 	const enum sc_type sc_atk[5] = {SC_STRIPWEAPON, SC_STRIPSHIELD, SC_STRIPARMOR, SC_STRIPHELM, SC__STRIPACCESSORY};
 	const enum sc_type sc_def[5] = {SC_CP_WEAPON, SC_CP_SHIELD, SC_CP_ARMOR, SC_CP_HELM, SC_NONE};
@@ -2832,6 +2867,10 @@ bool skill_strip_equip(struct block_list *src, struct block_list *target, uint16
 			int min_rate = 50 + 20 * skill_lv;
 
 			rate = min_rate + 2 * (sstatus->dex - tstatus->dex);
+
+			if (src->type == BL_PC && BL_CAST(BL_PC, src)->mast[MASTERY_REMOCAO_TOTAL_EX]->active)
+				min_rate += BL_CAST(BL_PC, src)->mast[MASTERY_REMOCAO_TOTAL_EX]->level / 10;
+
 			rate = max(min_rate, rate);
 			mod = 1000;
 			break;
@@ -6563,7 +6602,11 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 			clif_skill_nodamage (src, bl, skill_id, heal, 1);
 			if( tsc && tsc->data[SC_AKAITSUKI] && heal && skill_id != HLIF_HEAL )
 				heal = ~heal + 1;
-			heal_get_jobexp = status_heal(bl,heal,0,0);
+
+			if (sd && dstsd && sd->mast[MASTERY_CURAR_EX]->active && sd->mast[MASTERY_CURAR_EX]->level == 75)
+				status_heal(bl, 100, 0, 0);
+			else
+				heal_get_jobexp = status_heal(bl,heal,0,0);
 
 			if(sd && dstsd && heal > 0 && sd != dstsd && battle_config.heal_exp > 0){
 				heal_get_jobexp = heal_get_jobexp * battle_config.heal_exp / 100;
@@ -8038,6 +8081,25 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 				return 1;
 			}
 			if( sd ) {
+
+				if (sd->mast[MASTERY_ARREMESSAR_POCAO_EX]->active && sd->mast[MASTERY_ARREMESSAR_POCAO_EX]->level == 175)
+				{
+					int YGG = 607;
+
+					j = pc_search_inventory(sd, YGG);
+
+					if (j < 0) {
+						clif_skill_fail(sd, skill_id, USESKILL_FAIL_LEVEL, 0);
+						map_freeblock_unlock();
+						return 1;
+					}
+
+					clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+					status_heal(bl, 100, 100, 0);
+					pc_delitem(sd, YGG, 1, 5, 0, LOG_TYPE_NONE);
+					break;
+				}
+
 				int x,bonus=100;
 				struct skill_condition require = skill_get_requirement(sd, skill_id, skill_lv);
 				x = skill_lv%11 - 1;
@@ -8318,11 +8380,13 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 					case SC_DONTFORGETME:
 					case SC_FORTUNE:
 					case SC_SERVICE4U:
+					case SC_PRESERVE:
 						if (i == SC_EDP && sd && sd->mast[MASTERY_DESENCANTAR_EX]->active && sd->mast[MASTERY_DESENCANTAR_EX]->level == 75)
 							break;
-
 						if (!battle_config.dispel_song || tsc->data[i]->val4 == 0)
 							continue; //If in song area don't end it, even if config enabled
+						if (i == SC_PRESERVE && dstsd && dstsd->mast[MASTERY_PRESERVAR_EX]->level == 75)
+							continue;
 						break;
 					case SC_ASSUMPTIO:
 						if( bl->type == BL_MOB )
@@ -8977,6 +9041,25 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 		// Updated to block Slim Pitcher from working on barricades and guardian stones.
 		if (dstmd && (dstmd->mob_id == MOBID_EMPERIUM || status_get_class_(bl) == CLASS_BATTLEFIELD))
 			break;
+
+		if (sd && sd->mast[MASTERY_ARREMESSAR_POCAO_COMPACTA_EX]->active && sd->mast[MASTERY_ARREMESSAR_POCAO_COMPACTA_EX]->level == 200)
+		{
+			int YGG = 608;
+
+			int j = pc_search_inventory(sd, YGG);
+
+			if (j < 0) {
+				clif_skill_fail(sd, skill_id, USESKILL_FAIL_LEVEL, 0);
+				map_freeblock_unlock();
+				return 1;
+			}
+
+			clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+			status_heal(bl, 100, 100, 0);
+			pc_delitem(sd, YGG, 1, 5, 0, LOG_TYPE_NONE);
+			break;
+		}
+
 		if (potion_hp || potion_sp) {
 			int hp = potion_hp, sp = potion_sp;
 			hp = hp * (100 + (tstatus->vit<<1))/100;
@@ -12350,6 +12433,28 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 	case CR_SLIMPITCHER:
 		if (sd) {
 		int i_lv = 0, j = 0;
+
+		if (sd->mast[MASTERY_ARREMESSAR_POCAO_COMPACTA_EX]->active && sd->mast[MASTERY_ARREMESSAR_POCAO_COMPACTA_EX]->level == 200)
+		{
+			int YGG = 608;
+
+			j = pc_search_inventory(sd, YGG);
+
+			if (j < 0) {
+				clif_skill_fail(sd, skill_id, USESKILL_FAIL_LEVEL, 0);
+				map_freeblock_unlock();
+				return 1;
+			}
+
+			i_lv = skill_get_splash(skill_id, skill_lv);
+			map_foreachinallarea(skill_area_sub,
+				src->m, x - i_lv, y - i_lv, x + i_lv, y + i_lv, BL_CHAR,
+				src, skill_id, skill_lv, tick, flag | BCT_PARTY | BCT_GUILD | 1,
+				skill_castend_nodamage_id);
+
+			break;
+		}
+
 		struct skill_condition require = skill_get_requirement(sd, skill_id, skill_lv);
 		i_lv = skill_lv%11 - 1;
 		j = pc_search_inventory(sd, require.itemid[i_lv]);
@@ -13501,7 +13606,17 @@ struct skill_unit_group *skill_unitsetting(struct block_list *src, uint16 skill_
 	if (skill_id == HT_TALKIEBOX || skill_id == RG_GRAFFITI) {
 		group->valstr=(char *) aMalloc(MESSAGE_SIZE*sizeof(char));
 		if (sd)
+		{
 			safestrncpy(group->valstr, sd->message, MESSAGE_SIZE);
+
+			if (skill_id == RG_GRAFFITI && sd->mast[MASTERY_GRAFFITI_EX]->active && sd->mast[MASTERY_GRAFFITI_EX]->level == 150)
+			{
+				map_session_data *sdt = map_nick2sd(sd->message, false);
+
+				if (sdt->bl.id != sd->bl.id && sdt->bl.m == sd->bl.m)
+					sd->mast[MASTERY_GRAFFITI_EX]->val1 = sdt->status.char_id;
+			}
+		}
 		else //Eh... we have to write something here... even though mobs shouldn't use this. [Skotlex]
 			safestrncpy(group->valstr, "Boo!", MESSAGE_SIZE);
 	}
@@ -17400,6 +17515,9 @@ static int skill_sit_in(struct block_list *bl, va_list ap)
 
 	if (flag&1 && pc_checkskill(sd, RG_GANGSTER) > 0)
 		sd->state.gangsterparadise = 1;
+
+	if (flag & 1 && sd->mast[MASTERY_MALANDRAGEM_EX]->active && sd->mast[MASTERY_MALANDRAGEM_EX]->level == 100)
+		status_percent_heal(bl, 10, 10);
 
 	if (flag&2 && (pc_checkskill(sd, TK_HPTIME) > 0 || pc_checkskill(sd, TK_SPTIME) > 0 )) {
 		sd->state.rest = 1;

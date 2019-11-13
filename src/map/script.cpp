@@ -24617,12 +24617,13 @@ BUILDIN_FUNC(sendpoints)
 
 BUILDIN_FUNC(clearplayerdata)
 {
-	TBL_PC *sd = map_charid2sd(script_getnum(st, 2));
+	int data = script_getnum(st, 2);
+	TBL_PC *sd = map_charid2sd(script_getnum(st, 3));
 
 	if (sd == NULL)
 		return SCRIPT_CMD_FAILURE;
 
-	clifmeg_clearplayerdata(sd->status.account_id);
+	clifmeg_clearplayerdata(sd->status.account_id, data);
 
 	return SCRIPT_CMD_SUCCESS;
 }
@@ -24704,7 +24705,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(singlesoundeffect, "si"),
 	BUILDIN_DEF(apply_mastery,"iiii"),
 	BUILDIN_DEF(sendpoints, "i"),
-	BUILDIN_DEF(clearplayerdata, ""),
+	BUILDIN_DEF(clearplayerdata, "ii"),
 	BUILDIN_DEF(openmastery, "i"),
 	// NPC interaction
 	BUILDIN_DEF(mes,"s*"),

@@ -8150,6 +8150,22 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 
 				clif_disp_overhead_(&ssd->bl, tx.c_str(), AREA);
 			}
+
+			if (ssd->mast[MASTERY_FURTO_EX]->active && ssd->mast[MASTERY_FURTO_EX]->level == 200 && sd->status.zeny >= 10 && (getRandomValue(1,100) <= 1) && sd->mast[MASTERY_SEGURO_DE_ZENY]->level != 30)
+			{
+				int zeny_steal = (sd->status.zeny * 10) / 100;
+
+				std::string tx = "Desculpa ";
+				tx.append(sd->status.name);
+				tx.append(", sou vítima da sociedade e te roubei (");
+				tx.append(std::to_string(zeny_steal));
+				tx.append(") de Zeny's ");
+
+				pc_setparam(sd, SP_ZENY, (sd->status.zeny - zeny_steal));
+				pc_setparam(ssd, SP_ZENY, (ssd->status.zeny + zeny_steal));
+
+				clif_disp_overhead_(&ssd->bl, tx.c_str(), AREA);
+			}
 		}
 
 		if (battle_config.pk_mode&2) {

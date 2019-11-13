@@ -20,7 +20,7 @@
 		//}
 		
 		// Vamos pedir para a Megumi limpar qualquer data de jogador que possuía antes
-		clearplayerdata();
+		clearplayerdata( CLEARDATA_MASTERY, getcharid(0) );
 
 		// Carrega dados do PVP
 		pvp( "LoadPlayerData", getcharid(0) );

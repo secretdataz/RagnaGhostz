@@ -133,7 +133,7 @@ int megumipackethandle(int fd)
 
 	std::string npc = "";
 
-	ShowError(data1);
+	//ShowError(data1);
 
 	RFIFOSKIP(fd, 356);
 

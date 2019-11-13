@@ -470,8 +470,8 @@ int hom_levelup(struct homun_data *hd)
 		min = &homunculus_db[i].gmin;
 	}
 
-	if (((m_class&HOM_REG) && hd->homunculus.level >= battle_config.hom_max_level)
-		|| ((m_class&HOM_S) && hd->homunculus.level >= battle_config.hom_S_max_level)
+	if (((m_class&HOM_REG) && hd->homunculus.level >= (MAX_LEVEL + (hd->master->mast[MASTERY_FORTALECER_NIVEL_HOMUNCULO]->active ? hd->master->mast[MASTERY_FORTALECER_NIVEL_HOMUNCULO]->level : 0)))
+		|| ((m_class&HOM_S) && hd->homunculus.level >= (MAX_LEVEL + (hd->master->mast[MASTERY_FORTALECER_NIVEL_HOMUNCULO]->active ? hd->master->mast[MASTERY_FORTALECER_NIVEL_HOMUNCULO]->level : 0)))
 		|| !hd->exp_next || hd->homunculus.exp < hd->exp_next)
 		return 0;
 
@@ -682,8 +682,8 @@ void hom_gainexp(struct homun_data *hd,int exp)
 	}
 
 	if( hd->exp_next == 0 ||
-		((m_class&HOM_REG) && hd->homunculus.level >= battle_config.hom_max_level) ||
-		((m_class&HOM_S)   && hd->homunculus.level >= battle_config.hom_S_max_level) )
+		((m_class&HOM_REG) && (MAX_LEVEL + (hd->master->mast[MASTERY_FORTALECER_NIVEL_HOMUNCULO]->active ? hd->master->mast[MASTERY_FORTALECER_NIVEL_HOMUNCULO]->level : 0))) ||
+		((m_class&HOM_S)   && (MAX_LEVEL + (hd->master->mast[MASTERY_FORTALECER_NIVEL_HOMUNCULO]->active ? hd->master->mast[MASTERY_FORTALECER_NIVEL_HOMUNCULO]->level : 0))))
 	{
 		hd->homunculus.exp = 0;
 		return;

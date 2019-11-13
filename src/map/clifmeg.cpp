@@ -117,9 +117,9 @@ void clifmeg_points(int aid, int zeny, int events, int instance)
 	clifmeg_send(aid, "POINTS", pk);
 }
 
-void clifmeg_clearplayerdata(int aid)
+void clifmeg_clearplayerdata(int aid, int data)
 {
-	std::string pk = std::to_string(aid);
+	std::string pk = std::to_string(data);
 
 	clifmeg_send(aid, "CLEARPLAYERDATA", pk);
 }

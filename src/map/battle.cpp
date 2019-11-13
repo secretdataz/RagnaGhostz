@@ -1675,16 +1675,35 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 			damage += (damage * 7) / 100;
 
 		if (sd->mast[MASTERY_CACADOR_DE_VILOES]->active && bl->type == BL_PC && (BL_CAST(BL_PC, bl)->status.class_ == JOB_ASSASSIN_CROSS || BL_CAST(BL_PC, bl)->status.class_ == JOB_BABY_ASSASSIN))
-			damage += (damage * sd->mast[MASTERY_CACADOR_DE_VILOES]->level) / 100;
+			damage += (damage * (sd->mast[MASTERY_CACADOR_DE_VILOES]->level / 10)) / 100;
 
 		if (sd->mast[MASTERY_LICAO_DE_CASA]->active && bl->type == BL_PC && (BL_CAST(BL_PC, bl)->status.class_ == JOB_STALKER || BL_CAST(BL_PC, bl)->status.class_ == JOB_BABY_ROGUE))
-			damage += (damage * sd->mast[MASTERY_LICAO_DE_CASA]->level) / 100;
+			damage += (damage * (sd->mast[MASTERY_LICAO_DE_CASA]->level / 10)) / 100;
 
 		if (sd->mast[MASTERY_FLAGELO_DAS_FERAS]->active && bl->type == BL_MOB && status_get_class_(bl) == CLASS_BOSS)
-			damage += (damage * sd->mast[MASTERY_FLAGELO_DAS_FERAS]->level) / 10;
+			damage += (damage * (sd->mast[MASTERY_FLAGELO_DAS_FERAS]->level / 10)) / 100;
 
 		if (sd->mast[MASTERY_BELEZA_ATORDOANTE]->active)
-			damage -= (damage * sd->mast[MASTERY_BELEZA_ATORDOANTE]->level) / 100;
+			damage -= (damage * (sd->mast[MASTERY_BELEZA_ATORDOANTE]->level / 100)) / 100;
+
+		if (sd->mast[MASTERY_PERICIA_DE_ASSASSINO_EX]->active && bl->type == BL_PC)
+			damage += (damage * (sd->mast[MASTERY_PERICIA_DE_ASSASSINO_EX]->level / 10)) / 100;
+
+		if (sd->mast[MASTERY_GRAFFITI_EX]->active && sd->mast[MASTERY_GRAFFITI_EX]->level == 150 && bl->type == BL_PC && sd->mast[MASTERY_GRAFFITI_EX]->val1 == BL_CAST(BL_PC, bl)->status.char_id)
+			damage += (damage * 5) / 100;
+
+		// Calculos Finais
+		if (sd->mast[MASTERY_BANHO_DE_SANGUE_EX]->active && sd->mast[MASTERY_BANHO_DE_SANGUE_EX]->level == 300)
+			status_heal(src, damage, 0, 1);
+	}
+
+	if (src->type == BL_HOM && BL_CAST(BL_HOM,bl)->master)
+	{
+		if (BL_CAST(BL_HOM, bl)->master->mast[MASTERY_FORTALECER_DANO_HOMUNCULO]->active)
+			damage += (damage * (BL_CAST(BL_HOM, bl)->master->mast[MASTERY_FORTALECER_DANO_HOMUNCULO]->level / 10)) / 100;
+
+		if (BL_CAST(BL_HOM, bl)->master->mast[MASTERY_FORTALECER_DANO_HOMUNCULO_EM_MONGES]->active)
+			damage += (damage * (BL_CAST(BL_HOM, bl)->master->mast[MASTERY_FORTALECER_DANO_HOMUNCULO_EM_MONGES]->level / 10)) / 100;
 	}
 	
 	return damage;
@@ -1879,8 +1898,13 @@ int64 battle_addmastery(struct map_session_data *sd,struct block_list *target,in
 	switch(weapon) {
 		case W_1HSWORD:
 #ifdef RENEWAL
-			if((skill = pc_checkskill(sd,AM_AXEMASTERY)) > 0)
+			if ((skill = pc_checkskill(sd, AM_AXEMASTERY)) > 0)
+			{
 				damage += (skill * 3);
+
+				if (sd->mast[MASTERY_PERICIA_COM_MACHADO_E_ESPADA_EX]->active)
+					damage += sd->mast[MASTERY_PERICIA_COM_MACHADO_E_ESPADA_EX]->level;
+			}
 #endif
 		case W_DAGGER:
 			if ((skill = pc_checkskill(sd, SM_SWORD)) > 0)
@@ -1917,8 +1941,13 @@ int64 battle_addmastery(struct map_session_data *sd,struct block_list *target,in
 			break;
 		case W_1HAXE:
 		case W_2HAXE:
-			if((skill = pc_checkskill(sd,AM_AXEMASTERY)) > 0)
+			if ((skill = pc_checkskill(sd, AM_AXEMASTERY)) > 0)
+			{
 				damage += (skill * 3);
+
+				if (sd->mast[MASTERY_PERICIA_COM_MACHADO_E_ESPADA_EX]->active)
+					damage += sd->mast[MASTERY_PERICIA_COM_MACHADO_E_ESPADA_EX]->level;
+			}
 			if((skill = pc_checkskill(sd,NC_TRAININGAXE)) > 0)
 				damage += (skill * 5);
 			break;
@@ -1960,8 +1989,13 @@ int64 battle_addmastery(struct map_session_data *sd,struct block_list *target,in
 				damage += (skill * 3);
 			break;
 		case W_KATAR:
-			if((skill = pc_checkskill(sd,AS_KATAR)) > 0)
+			if ((skill = pc_checkskill(sd, AS_KATAR)) > 0)
+			{
 				damage += (skill * 3);
+
+				if (sd->mast[MASTERY_PERICIA_COM_KATAR_EX]->active)
+					damage += sd->mast[MASTERY_PERICIA_COM_KATAR_EX]->level / 10;
+			}
 			break;
 	}
 
@@ -3427,6 +3461,9 @@ static void battle_calc_multi_attack(struct Damage* wd, struct block_list *src,s
 			else
 				max_rate = max(5 * skill_lv, sd->bonus.double_rate);
 
+			if (sd->mast[MASTERY_ATAQUE_DUPLO_EX]->active)
+				max_rate += sd->mast[MASTERY_ATAQUE_DUPLO_EX]->level / 10;
+
 			if( rnd()%100 < max_rate ) {
 				wd->div_ = skill_get_num(TF_DOUBLE,skill_lv?skill_lv:1, src);
 				wd->type = DMG_MULTI_HIT;
@@ -3631,12 +3668,21 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			break;
 		case AS_GRIMTOOTH:
 			skillratio += 20 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_TOCAIA_EX]->active)
+				skillratio += sd->mast[MASTERY_TOCAIA_EX]->level;
 			break;
 		case AS_POISONREACT:
 			skillratio += 30 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_REFLETIR_VENENO_EX]->active)
+				skillratio += sd->mast[MASTERY_REFLETIR_VENENO_EX]->level;
 			break;
 		case AS_SONICBLOW:
 			skillratio += 300 + 40 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_LAMINAS_DESTRUIDORAS_EX]->active)
+				skillratio += sd->mast[MASTERY_LAMINAS_DESTRUIDORAS_EX]->level;
 			break;
 		case TF_SPRINKLESAND:
 			skillratio += 30;
@@ -3687,6 +3733,9 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 				skillratio += (200 + 40 * skill_lv) / 2;
 			else
 				skillratio += 200 + 40 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_APUNHALAR_EX]->active)
+				skillratio += sd->mast[MASTERY_APUNHALAR_EX]->level;
 			break;
 		case RG_RAID:
 #ifdef RENEWAL
@@ -3694,6 +3743,9 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 				skillratio += 10 * skill_lv;
 			else
 				skillratio += 20 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_ATAQUE_SURPRESA_EX]->active)
+				skillratio += sd->mast[MASTERY_ATAQUE_SURPRESA_EX]->level;
 #else
 			skillratio += 40 * skill_lv;
 #endif
@@ -3722,6 +3774,9 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			break;
 		case AM_DEMONSTRATION:
 			skillratio += 20 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_FOGO_GREGO_EX]->active)
+				skillratio += sd->mast[MASTERY_FOGO_GREGO_EX]->level;
 			break;
 		case AM_ACIDTERROR:
 #ifdef RENEWAL
@@ -3785,6 +3840,9 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 #endif
 		case ASC_METEORASSAULT:
 			skillratio += -60 + 40 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_IMPACTO_METEORO_EX]->active)
+				skillratio += sd->mast[MASTERY_IMPACTO_METEORO_EX]->level;
 			break;
 		case SN_SHARPSHOOTING:
 		case MA_SHARPSHOOTING:
@@ -3804,12 +3862,13 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			if(sd)
 				skillratio += 20 * pc_checkskill(sd,AS_POISONREACT);
 			break;
-#ifndef RENEWAL
+
 		// Pre-Renewal: skill ratio for weapon part of damage [helvetica]
 		case ASC_BREAKER:
-			skillratio += -100 + 100 * skill_lv;
+			if (sd && sd->mast[MASTERY_DESTRUIDOR_DE_ALMAS_EX]->active)
+				skillratio += sd->mast[MASTERY_DESTRUIDOR_DE_ALMAS_EX]->level;
 			break;
-#endif
+
 		case PA_SACRIFICE:
 			skillratio += -10 + 10 * skill_lv;
 
@@ -4690,8 +4749,15 @@ static void battle_attack_sc_bonus(struct Damage* wd, struct block_list *src, st
 					// Renewal EDP formula [helvetica]
 					// weapon atk * (1 + (edp level * .8))
 					// equip atk * (1 + (edp level * .6))
-					ATK_RATE(wd->weaponAtk, wd->weaponAtk2, 100 + (sc->data[SC_EDP]->val1 * 80));
-					ATK_RATE(wd->equipAtk, wd->equipAtk2, 100 + (sc->data[SC_EDP]->val1 * 60));
+					{
+						int multiply = 1;
+
+						if (sd && sd->mast[MASTERY_ENCANTAR_COM_VENENO_MORTAL_EX]->active && sd->mast[MASTERY_ENCANTAR_COM_VENENO_MORTAL_EX]->level == 250)
+							multiply = 2;
+
+						ATK_RATE(wd->weaponAtk, wd->weaponAtk2, 100 + ((sc->data[SC_EDP]->val1 * multiply) * 80));
+						ATK_RATE(wd->equipAtk, wd->equipAtk2, 100 + ((sc->data[SC_EDP]->val1 * multiply) * 60));
+					}
 					break;
 #else
 				default:
@@ -6051,6 +6117,9 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 						break;
 					case AL_RUWACH:
 						skillratio += 45;
+
+						if (sd && sd->mast[MASTERY_REVELACAO_EX]->active)
+							skillratio += sd->mast[MASTERY_REVELACAO_EX]->level;
 						break;
 					case WZ_FROSTNOVA:
 						skillratio += -100 + (100 + skill_lv * 10) * 2 / 3;
@@ -8622,8 +8691,8 @@ static const struct _battle_data {
 	{ "feature.atcommand_suggestions",      &battle_config.atcommand_suggestions_enabled,   0,      0,      1               },
 	{ "min_npc_vendchat_distance",          &battle_config.min_npc_vendchat_distance,       3,      0,      100             },
 	{ "atcommand_mobinfo_type",             &battle_config.atcommand_mobinfo_type,          0,      0,      1               },
-	{ "homunculus_max_level",               &battle_config.hom_max_level,                   99,     0,      MAX_LEVEL,      },
-	{ "homunculus_S_max_level",             &battle_config.hom_S_max_level,                 150,    0,      MAX_LEVEL,      },
+	{ "homunculus_max_level",               &battle_config.hom_max_level,                   99,     0,      999,            },
+	{ "homunculus_S_max_level",             &battle_config.hom_S_max_level,                 150,    0,      999,            },
 	{ "mob_size_influence",                 &battle_config.mob_size_influence,              0,      0,      1,              },
 	{ "skill_trap_type",                    &battle_config.skill_trap_type,                 0,      0,      3,              },
 	{ "allow_consume_restricted_item",      &battle_config.allow_consume_restricted_item,   1,      0,      1,              },

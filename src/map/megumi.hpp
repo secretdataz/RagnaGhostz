@@ -24,6 +24,11 @@ enum e_megumi_packet
 	MP_REFRESHMASTERY
 };
 
+enum e_const_cleardata
+{
+	CLEARDATA_MASTERY = 1
+};
+
 struct megumi {
 	megumi(int fd_) : fd(fd_) {}
 	megumi() : activate(false) {}

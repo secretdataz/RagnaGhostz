@@ -1589,11 +1589,11 @@ void clif_hominfo(struct map_session_data *sd, struct homun_data *hd, int flag)
 	switch( htype ) {
 		case HT_REG:
 		case HT_EVO:
-			if( hd->homunculus.level >= battle_config.hom_max_level )
+			if( hd->homunculus.level >= (MAX_LEVEL + (sd->mast[MASTERY_FORTALECER_NIVEL_HOMUNCULO]->active ? sd->mast[MASTERY_FORTALECER_NIVEL_HOMUNCULO]->level : 0 )))
 				WBUFL(buf,63+offset) = 0;
 			break;
 		case HT_S:
-			if( hd->homunculus.level >= battle_config.hom_S_max_level )
+			if( hd->homunculus.level >= (MAX_LEVEL + (sd->mast[MASTERY_FORTALECER_NIVEL_HOMUNCULO]->active ? sd->mast[MASTERY_FORTALECER_NIVEL_HOMUNCULO]->level : 0)))
 				WBUFL(buf,63+offset) = 0;
 			break;
 	}

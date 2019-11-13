@@ -494,6 +494,8 @@
 	export_constant(RANKING_ELITE);
 	export_constant(RANKING_PILAR);
 	export_constant(RANKING_LENDA);
+
+	export_constant(CLEARDATA_MASTERY);
 	/* parameters */
 	export_parameter("LastMobLevel", SP_KF_MOBLVL);
 	export_parameter("LastMobGID", SP_KF_MOBGID);

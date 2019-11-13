@@ -22,6 +22,6 @@ void clifmeg_rpc(int aid, std::string title, std::string desc, std::string lik, 
 void clifmeg_openmastery(int aid, int zeny, int events, int instance);
 void clifmeg_mastery(int aid, int mastery_id, int mastery_level);
 void clifmeg_points(int aid, int zeny, int events, int instance);
-void clifmeg_clearplayerdata(int aid);
+void clifmeg_clearplayerdata(int aid, int data);
 
 #endif /* CLIFMEG_HPP */

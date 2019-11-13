@@ -5579,8 +5579,13 @@ static unsigned short status_calc_str(struct block_list *bl, struct status_chang
 	}
 	if(sc->data[SC_INCALLSTATUS])
 		str += sc->data[SC_INCALLSTATUS]->val1;
-	if(sc->data[SC_CHASEWALK2])
+	if (sc->data[SC_CHASEWALK2])
+	{
 		str += sc->data[SC_CHASEWALK2]->val1;
+
+		if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_ESPREITAR_EX]->active)
+			str += BL_CAST(BL_PC, bl)->mast[MASTERY_ESPREITAR_EX]->level / 10;
+	}
 	if(sc->data[SC_INCSTR])
 		str += sc->data[SC_INCSTR]->val1;
 	if(sc->data[SC_STRFOOD])
@@ -5664,7 +5669,7 @@ static unsigned short status_calc_agi(struct block_list *bl, struct status_chang
 		agi += (agi-sc->data[SC_CONCENTRATE]->val3)*sc->data[SC_CONCENTRATE]->val2/100;
 	if(sc->data[SC_INCALLSTATUS])
 		agi += sc->data[SC_INCALLSTATUS]->val1;
-	if(sc->data[SC_INCAGI])
+	if (sc->data[SC_INCAGI])
 		agi += sc->data[SC_INCAGI]->val1;
 	if(sc->data[SC_AGIFOOD])
 		agi += sc->data[SC_AGIFOOD]->val1;
@@ -6443,8 +6448,13 @@ static signed short status_calc_flee(struct block_list *bl, struct status_change
 		flee += sc->data[SC_VIOLENTGALE]->val2;
 	if(sc->data[SC_MOON_COMFORT]) // SG skill [Komurka]
 		flee += sc->data[SC_MOON_COMFORT]->val2;
-	if(sc->data[SC_CLOSECONFINE])
+	if (sc->data[SC_CLOSECONFINE])
+	{
 		flee += 10;
+
+		if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_CONFINAMENTO_EX]->active)
+			flee += BL_CAST(BL_PC, bl)->mast[MASTERY_CONFINAMENTO_EX]->level / 10;
+	}
 	if (sc->data[SC_ANGRIFFS_MODUS])
 		flee -= sc->data[SC_ANGRIFFS_MODUS]->val3;
 	if(sc->data[SC_ADJUSTMENT])
@@ -6940,8 +6950,13 @@ static unsigned short status_calc_speed(struct block_list *bl, struct status_cha
 			if (sd && sd->mast[MASTERY_CAMINHO_DO_VENTO_EX]->active)
 				val += max(val, sd->mast[MASTERY_CAMINHO_DO_VENTO_EX]->level / 10);
 		}
-		if( sc->data[SC_CARTBOOST] )
-			val = max( val, 20 );
+		if (sc->data[SC_CARTBOOST])
+		{
+			val = max(val, 20);
+
+			if (sd && sd->mast[MASTERY_IMPULSO_NO_CARRINHO_EX]->active)
+				val += sd->mast[MASTERY_IMPULSO_NO_CARRINHO_EX]->level / 10;
+		}
 		if( sd && (sd->class_&MAPID_UPPERMASK) == MAPID_ASSASSIN && pc_checkskill(sd,TF_MISS) > 0 )
 			val = max( val, 1 * pc_checkskill(sd,TF_MISS) );
 		if( sc->data[SC_CLOAKING] && (sc->data[SC_CLOAKING]->val4&1) == 1 )
@@ -9636,6 +9651,12 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 					return 0; //Adoramus can't refresh itself, but it can cause blind again
 			}
 			val2 = 2 + val1; // Agi change
+
+			if (type == SC_INCREASEAGI && sd && sd->mast[MASTERY_AUMENTAR_AGILIDADE_EX]->active)
+				val2 += sd->mast[MASTERY_AUMENTAR_AGILIDADE_EX]->level / 10;
+
+			if (type == SC_DECREASEAGI)
+				val2 += sd->mast[MASTERY_DIMINUIR_AGILIDADE_EX]->level / 10;
 			break;
 		case SC_ENDURE:
 			val2 = 7; // Hit-count [Celest]
@@ -9705,6 +9726,9 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 			break;
 		case SC_ENCPOISON:
 			val2= 250+50*val1; // Poisoning Chance (2.5+0.5%) in 1/10000 rate
+
+			if (sd && sd->mast[MASTERY_ENVENENAR_ARMA_EX]->level == 150)
+				val2 = 10000;
 		case SC_ASPERSIO:
 		case SC_FIREWEAPON:
 		case SC_WATERWEAPON:
@@ -10250,6 +10274,9 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 				val2 = val1;
 			else
 				val2 = 0; // 0 -> Half stat.
+
+			if (bl->type == BL_PC && src->type == BL_PC && BL_CAST(BL_PC, src)->mast[MASTERY_BENCAO_EX]->active)
+				val2 += BL_CAST(BL_PC, src)->mast[MASTERY_BENCAO_EX]->level / 10;
 			break;
 		case SC_TRICKDEAD:
 			if (vd) vd->dead_sit = 1;
@@ -10305,6 +10332,11 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 		case SC_MELTDOWN:
 			val2 = 100*val1; // Chance to break weapon
 			val3 = 70*val1; // Change to break armor
+
+			if (sd && sd->mast[MASTERY_GOLPE_ESTILHACANTE_ARMA_EX]->active)
+				val2 += 100 * sd->mast[MASTERY_GOLPE_ESTILHACANTE_ARMA_EX]->level;
+			if (sd && sd->mast[MASTERY_GOLPE_ESTILHACANTE_ARMADURA_EX]->active)
+				val3 += 100 * sd->mast[MASTERY_GOLPE_ESTILHACANTE_ARMADURA_EX]->level;
 			break;
 		case SC_TRUESIGHT:
 			val2 = 10*val1; // Critical increase
