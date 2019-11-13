@@ -11550,7 +11550,7 @@ BUILDIN_FUNC(sc_start)
 
 	if(tick == 0 && val1 > 0 && type > SC_NONE && type < SC_MAX && status_sc2skill(type) != 0)
 	{// When there isn't a duration specified, try to get it from the skill_db
-		tick = skill_get_time(status_sc2skill(type), val1);
+		tick = skill_get_time(status_sc2skill(type), val1, bl);
 	}
 
 	if(potion_flag == 1 && potion_target) { //skill.cpp set the flags before running the script, this is a potion-pitched effect.
@@ -24592,6 +24592,8 @@ BUILDIN_FUNC(apply_mastery)
 
 	if (sendData)
 		clifmeg_mastery(sd->status.account_id, mastery_id, level);
+
+	status_calc_pc(sd, SCO_FORCE);
 
 	return SCRIPT_CMD_SUCCESS;
 }

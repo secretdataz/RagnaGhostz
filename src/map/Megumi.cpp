@@ -146,7 +146,7 @@ int megumipackethandle(int fd)
 			session[fd]->hash = AddMegumi(std::string(UP), fd);
 			session[fd]->flag.megumi = true;
 
-			ShowInfo("[Megumi] Megumi for [%s] is now connected to emulator.\n", UP);
+			//ShowInfo("[Megumi] Megumi for [%s] is now connected to emulator.\n", UP);
 
 			//TODO: Remover Megumi depois de alguns segundos caso o jogador n�o se conecte.
 			return 1;

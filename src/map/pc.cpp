@@ -5769,7 +5769,7 @@ enum e_setpos pc_setpos(struct map_session_data* sd, unsigned short mapindex, in
 				struct status_change_entry *sce = sd->sc.data[SC_KNOWLEDGE];
 				if (sce->timer != INVALID_TIMER)
 					delete_timer(sce->timer, status_change_timer);
-				sce->timer = add_timer(gettick() + skill_get_time(SG_KNOWLEDGE, sce->val1), status_change_timer, sd->bl.id, SC_KNOWLEDGE);
+				sce->timer = add_timer(gettick() + skill_get_time(SG_KNOWLEDGE, sce->val1, &sd->bl), status_change_timer, sd->bl.id, SC_KNOWLEDGE);
 			}
 			status_change_end(&sd->bl, SC_PROPERTYWALK, INVALID_TIMER);
 			status_change_end(&sd->bl, SC_CLOAKING, INVALID_TIMER);
@@ -6035,7 +6035,7 @@ int pc_get_skillcooldown(struct map_session_data *sd, uint16 skill_id, uint16 sk
 	if (skill_db[idx]->cooldown[skill_lv - 1])
 		cooldown = skill_db[idx]->cooldown[skill_lv - 1];
 	if (skill_id == SU_TUNABELLY && pc_checkskill(sd, SU_SPIRITOFSEA))
-		cooldown -= skill_get_time(SU_TUNABELLY, skill_lv);
+		cooldown -= skill_get_time(SU_TUNABELLY, skill_lv, &sd->bl);
 
 	for (auto &it : sd->skillcooldown) {
 		if (it.id == skill_id) {
@@ -6850,11 +6850,11 @@ int pc_checkbaselevelup(struct map_session_data *sd) {
 	status_percent_heal(&sd->bl,100,100);
 
 	if ((sd->class_&MAPID_UPPERMASK) == MAPID_SUPER_NOVICE) {
-		sc_start(&sd->bl,&sd->bl,status_skill2sc(PR_KYRIE),100,1,skill_get_time(PR_KYRIE,1));
-		sc_start(&sd->bl,&sd->bl,status_skill2sc(PR_IMPOSITIO),100,1,skill_get_time(PR_IMPOSITIO,1));
-		sc_start(&sd->bl,&sd->bl,status_skill2sc(PR_MAGNIFICAT),100,1,skill_get_time(PR_MAGNIFICAT,1));
-		sc_start(&sd->bl,&sd->bl,status_skill2sc(PR_GLORIA),100,1,skill_get_time(PR_GLORIA,1));
-		sc_start(&sd->bl,&sd->bl,status_skill2sc(PR_SUFFRAGIUM),100,1,skill_get_time(PR_SUFFRAGIUM,1));
+		sc_start(&sd->bl,&sd->bl,status_skill2sc(PR_KYRIE),100,1,skill_get_time(PR_KYRIE,1,&sd->bl));
+		sc_start(&sd->bl,&sd->bl,status_skill2sc(PR_IMPOSITIO),100,1,skill_get_time(PR_IMPOSITIO,1, &sd->bl));
+		sc_start(&sd->bl,&sd->bl,status_skill2sc(PR_MAGNIFICAT),100,1,skill_get_time(PR_MAGNIFICAT,1, &sd->bl));
+		sc_start(&sd->bl,&sd->bl,status_skill2sc(PR_GLORIA),100,1,skill_get_time(PR_GLORIA,1, &sd->bl));
+		sc_start(&sd->bl,&sd->bl,status_skill2sc(PR_SUFFRAGIUM),100,1,skill_get_time(PR_SUFFRAGIUM,1, &sd->bl));
 		if (sd->state.snovice_dead_flag)
 			sd->state.snovice_dead_flag = 0; //Reenable steelbody resurrection on dead.
 	} else if( (sd->class_&MAPID_BASEMASK) == MAPID_TAEKWON ) {
@@ -8134,6 +8134,22 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 
 			pc_setparam(ssd, SP_KILLEDRID, sd->bl.id);
 			npc_script_event(ssd, NPCE_KILLPC);
+
+			if (ssd->mast[MASTERY_COVER_ARTISTICO]->active && ssd->mast[MASTERY_COVER_ARTISTICO]->level == 100 && sd->status.zeny >= 10 && sd->mast[MASTERY_SEGURO_DE_ZENY]->level != 30)
+			{
+				int zeny_steal = (sd->status.zeny * 1) / 100;
+
+				std::string tx = "Obrigado pelos (";
+				tx.append(std::to_string(zeny_steal));
+				tx.append(") de Cover Artistico, ");
+				tx.append(sd->status.name);
+				tx.append(" ;)");
+
+				pc_setparam(sd, SP_ZENY, (sd->status.zeny - zeny_steal));
+				pc_setparam(ssd, SP_ZENY, (ssd->status.zeny + zeny_steal));
+
+				clif_disp_overhead_(&ssd->bl, tx.c_str(), AREA);
+			}
 		}
 
 		if (battle_config.pk_mode&2) {

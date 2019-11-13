@@ -1872,6 +1872,14 @@ int status_damage(struct block_list *src,struct block_list *target,int64 dhp, in
 		}
 
 		npc_script_event(sd,NPCE_DIE);
+
+		if (src->type == BL_PC)
+		{
+			TBL_PC *killer = BL_CAST(BL_PC, src);
+
+			if (killer->mast[MASTERY_TRIS]->active && getRandomValue(1, 100) <= killer->mast[MASTERY_TRIS]->level)
+				status_revive(target, 1, 1);
+		}
 	}
 
 	return (int)(hp+sp);
@@ -3338,7 +3346,12 @@ bool status_calc_weight(struct map_session_data *sd, enum e_status_calc_weight_o
 		// Skill/Status bonus weight increases
 		sd->max_weight += sd->add_max_weight; // From bAddMaxWeight
 		if ((skill = pc_checkskill(sd, MC_INCCARRY)) > 0)
+		{
 			sd->max_weight += 2000 * skill;
+
+			if (sd->mast[MASTERY_AUMENTAR_CAPACIDADE_DE_CARGA_EX]->active)
+				sd->max_weight += sd->mast[MASTERY_AUMENTAR_CAPACIDADE_DE_CARGA_EX]->level * 100;
+		}
 		if (pc_isriding(sd) && pc_checkskill(sd, KN_RIDING) > 0)
 			sd->max_weight += 10000;
 		else if (pc_isridingdragon(sd))
@@ -3904,8 +3917,13 @@ int status_calc_pc_sub(struct map_session_data* sd, enum e_status_calc_opt opt)
 		base_status->str++;
 	if((skill=pc_checkskill(sd,SA_DRAGONOLOGY))>0)
 		base_status->int_ += (skill+1)/2; // +1 INT / 2 lv
-	if((skill=pc_checkskill(sd,AC_OWL))>0)
+	if ((skill = pc_checkskill(sd, AC_OWL)) > 0)
+	{
 		base_status->dex += skill;
+
+		if (sd->mast[MASTERY_PRECISAO_EX]->active)
+			base_status->dex += sd->mast[MASTERY_PRECISAO_EX]->level;
+	}
 	if((skill = pc_checkskill(sd,RA_RESEARCHTRAP))>0)
 		base_status->int_ += skill;
 	if (pc_checkskill(sd, SU_POWEROFLAND) > 0)
@@ -4048,8 +4066,13 @@ int status_calc_pc_sub(struct map_session_data* sd, enum e_status_calc_opt opt)
 #ifndef RENEWAL
 		base_status->hit += skill;
 #endif
-		if(sd->status.weapon == W_BOW)
+		if (sd->status.weapon == W_BOW)
+		{
 			base_status->rhw.range += skill;
+
+			if (sd->mast[MASTERY_OLHOS_DE_AGUIA_EX]->active)
+				base_status->rhw.range += sd->mast[MASTERY_OLHOS_DE_AGUIA_EX]->level / 100;
+		}
 	}
 	if(sd->status.weapon >= W_REVOLVER && sd->status.weapon <= W_GRENADE) {
 		if((skill=pc_checkskill(sd,GS_SINGLEACTION))>0)
@@ -4188,6 +4211,12 @@ int status_calc_pc_sub(struct map_session_data* sd, enum e_status_calc_opt opt)
 	if((skill=pc_checkskill(sd,BS_SKINTEMPER))>0) {
 		sd->subele[ELE_NEUTRAL] += skill;
 		sd->subele[ELE_FIRE] += skill*5;
+
+		if (sd->mast[MASTERY_RESISTENCIA_AO_FOGO_EX]->active)
+			sd->subele[ELE_FIRE] += sd->mast[MASTERY_RESISTENCIA_AO_FOGO_EX]->level / 10;
+
+		if (sd->mast[MASTERY_RESISTENCIA_AO_NEUTRO_EX]->active)
+			sd->subele[ELE_NEUTRAL] += sd->mast[MASTERY_RESISTENCIA_AO_NEUTRO_EX]->level / 10;
 	}
 	if((skill=pc_checkskill(sd,SA_DRAGONOLOGY))>0) {
 #ifdef RENEWAL
@@ -5562,8 +5591,13 @@ static unsigned short status_calc_str(struct block_list *bl, struct status_chang
 		str += 5;
 	if(sc->data[SC_LEADERSHIP])
 		str += sc->data[SC_LEADERSHIP]->val1;
-	if(sc->data[SC_LOUD])
+	if (sc->data[SC_LOUD])
+	{
 		str += 4;
+
+		if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_GRITO_DE_GUERRA_EX]->active)
+			str += BL_CAST(BL_PC, bl)->mast[MASTERY_GRITO_DE_GUERRA_EX]->level / 10;
+	}
 	if(sc->data[SC_TRUESIGHT])
 		str += 5;
 	if(sc->data[SC_SPURT])
@@ -6290,7 +6324,11 @@ static signed short status_calc_critical(struct block_list *bl, struct status_ch
 	if (sc->data[SC_FORTUNE])
 		critical += sc->data[SC_FORTUNE]->val2;
 	if (sc->data[SC_TRUESIGHT])
+	{
 		critical += sc->data[SC_TRUESIGHT]->val2;
+
+		critical += (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_VISAO_REAL_EX]->active ? BL_CAST(BL_PC, bl)->mast[MASTERY_VISAO_REAL_EX]->level / 10 : 0);
+	}
 	if (sc->data[SC_CLOAKING])
 		critical += critical;
 	if (sc->data[SC_STRIKING])
@@ -6895,8 +6933,13 @@ static unsigned short status_calc_speed(struct block_list *bl, struct status_cha
 			val = max( val, sc->data[SC_SPEEDUP1]->val1 );
 		if( sc->data[SC_INCREASEAGI] )
 			val = max( val, 25 );
-		if( sc->data[SC_WINDWALK] )
-			val = max( val, 2 * sc->data[SC_WINDWALK]->val1 );
+		if (sc->data[SC_WINDWALK])
+		{
+			val = max(val, 2 * sc->data[SC_WINDWALK]->val1);
+
+			if (sd && sd->mast[MASTERY_CAMINHO_DO_VENTO_EX]->active)
+				val += max(val, sd->mast[MASTERY_CAMINHO_DO_VENTO_EX]->level / 10);
+		}
 		if( sc->data[SC_CARTBOOST] )
 			val = max( val, 20 );
 		if( sd && (sd->class_&MAPID_UPPERMASK) == MAPID_ASSASSIN && pc_checkskill(sd,TF_MISS) > 0 )
@@ -9588,7 +9631,7 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 		case SC_ADORAMUS:
 			if (type == SC_ADORAMUS) {
 				// 1000% base chance to blind, but still can be resisted
-				sc_start(src, bl, SC_BLIND, 1000, val1, skill_get_time(status_sc2skill(type), val1));
+				sc_start(src, bl, SC_BLIND, 1000, val1, skill_get_time(status_sc2skill(type), val1, src));
 				if (sc->data[SC_ADORAMUS])
 					return 0; //Adoramus can't refresh itself, but it can cause blind again
 			}
@@ -10116,7 +10159,7 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 				while( i >= 0 ) {
 					enum sc_type type2 = types[i];
 					if( d_sc->data[type2] )
-						status_change_start(d_bl, bl, type2, 10000, d_sc->data[type2]->val1, 0, 0, (type2 == SC_REFLECTSHIELD ? 1 : 0), skill_get_time(status_sc2skill(type2),d_sc->data[type2]->val1), (type2 == SC_DEFENDER) ? SCSTART_NOAVOID : SCSTART_NOAVOID|SCSTART_NOICON);
+						status_change_start(d_bl, bl, type2, 10000, d_sc->data[type2]->val1, 0, 0, (type2 == SC_REFLECTSHIELD ? 1 : 0), skill_get_time(status_sc2skill(type2),d_sc->data[type2]->val1,src), (type2 == SC_DEFENDER) ? SCSTART_NOAVOID : SCSTART_NOAVOID|SCSTART_NOICON);
 					i--;
 				}
 			}
@@ -10235,6 +10278,9 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 				}
 				else if (type == SC_ADRENALINE2 || type == SC_ADRENALINE) {
 					val3 = (val2) ? 300 : 200; // Aspd increase
+
+					if (src->type == BL_PC && BL_CAST(BL_PC, src)->mast[MASTERY_ADRENALINA_PURA_EX]->active)
+						val3 += BL_CAST(BL_PC, src)->mast[MASTERY_ADRENALINA_PURA_EX]->level;
 				}
 				if (s_sd && pc_checkskill(s_sd, BS_HILTBINDING) > 0)
 					tick += tick / 10; //If caster has Hilt Binding, duration increases by 10%
@@ -10242,6 +10288,10 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 			break;
 		case SC_CONCENTRATION:
 			val2 = 5*val1; // Batk/Watk Increase
+
+			if (sd && sd->mast[MASTERY_CONCENTRACAO_EX]->active)
+				val2 += sd->mast[MASTERY_CONCENTRACAO_EX]->level;
+
 			val3 = 10*val1; // Hit Increase
 			val4 = 5*val1; // Def reduction
 			sc_start(src, bl, SC_ENDURE, 100, 1, tick); // Level 1 Endure effect
@@ -10338,7 +10388,7 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 			break;
 		case SC_UTSUSEMI:
 			val2=(val1+1)/2; // Number of hits blocked
-			val3=skill_get_blewcount(NJ_UTSUSEMI, val1); // knockback value.
+			val3=skill_get_blewcount(NJ_UTSUSEMI, val1, src); // knockback value.
 			break;
 		case SC_BUNSINJYUTSU:
 			val2=(val1+1)/2; // Number of hits blocked
@@ -12417,7 +12467,7 @@ int status_change_end_(struct block_list* bl, enum sc_type type, int tid, const 
 				sc->data[SC_ENDURE]->val4 = 0;
 				status_change_end(bl, SC_ENDURE, INVALID_TIMER);
 			}
-			sc_start4(bl, bl, SC_REGENERATION, 100, 10,0,0,(RGN_HP|RGN_SP), skill_get_time(LK_BERSERK, sce->val1));
+			sc_start4(bl, bl, SC_REGENERATION, 100, 10,0,0,(RGN_HP|RGN_SP), skill_get_time(LK_BERSERK, sce->val1,bl));
 			break;
 		case SC_GOSPEL:
 			if (sce->val3) { // Clear the group.
@@ -12555,7 +12605,7 @@ int status_change_end_(struct block_list* bl, enum sc_type type, int tid, const 
 				pc_delspiritball(sd, sd->spiritball, 0);
 				status_change_end(bl, SC_EXPLOSIONSPIRITS, INVALID_TIMER);
 				while( i > 0 ) {
-					pc_addspiritball(sd, skill_get_time(MO_CALLSPIRITS, pc_checkskill(sd,MO_CALLSPIRITS)), 5);
+					pc_addspiritball(sd, skill_get_time(MO_CALLSPIRITS, pc_checkskill(sd,MO_CALLSPIRITS), bl), 5);
 					--i;
 				}
 			}
@@ -14461,7 +14511,7 @@ static int status_natural_heal(struct block_list* bl, va_list args)
 				sd->state.doridori = 0;
 				if ((rate = pc_checkskill(sd,TK_SPTIME)))
 					sc_start(bl,bl,status_skill2sc(TK_SPTIME),
-						100,rate,skill_get_time(TK_SPTIME, rate));
+						100,rate,skill_get_time(TK_SPTIME, rate,bl));
 				if (
 					(sd->class_&MAPID_UPPERMASK) == MAPID_STAR_GLADIATOR &&
 					rnd()%10000 < battle_config.sg_angel_skill_ratio

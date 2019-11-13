@@ -1445,7 +1445,7 @@ int guild_skillupack(int guild_id,uint16 skill_id,uint32 account_id) {
 		return 0;
 	if (sd != NULL) {
 		int lv = g->skill[idx].lv;
-		int range = skill_get_range(skill_id, lv);
+		int range = skill_get_range(skill_id, lv, NULL);
 		clif_skillup(sd,skill_id,lv,range,1);
 
 		/* Guild Aura handling */

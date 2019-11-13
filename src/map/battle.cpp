@@ -1174,7 +1174,7 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 				clif_skill_nodamage(bl,bl,CR_AUTOGUARD,sce->val1,1);
 				unit_set_walkdelay(bl,gettick(),delay,1);
 				if( sc->data[SC_SHRINK] && rnd()%100 < 5 * sce->val1 )
-					skill_blown(bl,src,skill_get_blewcount(CR_SHRINK,1),-1,BLOWN_NONE);
+					skill_blown(bl,src,skill_get_blewcount(CR_SHRINK,1,src),-1,BLOWN_NONE);
 				d->dmg_lv = ATK_MISS;
 				return 0;
 			}
@@ -1239,7 +1239,11 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 			return 0;
 		}
 
-		if (((sce = sc->data[SC_UTSUSEMI]) || sc->data[SC_BUNSINJYUTSU]) && flag&BF_WEAPON && !(skill_get_inf3(skill_id)&INF3_NO_EFF_CICADA)) {
+
+		if (sc->data[SC_UTSUSEMI] && sd && sd->mast[MASTERY_SEM_FALHAS]->active && sd->mast[MASTERY_SEM_FALHAS]->level == 475)
+			;
+		else if (((sce = sc->data[SC_UTSUSEMI]) || sc->data[SC_BUNSINJYUTSU]) && flag&BF_WEAPON && !(skill_get_inf3(skill_id)&INF3_NO_EFF_CICADA)) {
+
 			skill_additional_effect (src, bl, skill_id, skill_lv, flag, ATK_BLOCK, gettick() );
 			if (!status_isdead(src))
 				skill_counter_additional_effect( src, bl, skill_id, skill_lv, flag, gettick() );
@@ -1503,7 +1507,7 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 		}
 
 		if( sd && (sce = sc->data[SC_FORCEOFVANGUARD]) && flag&BF_WEAPON && rnd()%100 < sce->val2 )
-			pc_addspiritball(sd,skill_get_time(LG_FORCEOFVANGUARD,sce->val1),sce->val3);
+			pc_addspiritball(sd,skill_get_time(LG_FORCEOFVANGUARD,sce->val1, src),sce->val3);
 
 		if( sd && (sce = sc->data[SC_GT_ENERGYGAIN]) && flag&BF_WEAPON && rnd()%100 < sce->val2 ) {
 			int spheres = 5;
@@ -1675,6 +1679,12 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 
 		if (sd->mast[MASTERY_LICAO_DE_CASA]->active && bl->type == BL_PC && (BL_CAST(BL_PC, bl)->status.class_ == JOB_STALKER || BL_CAST(BL_PC, bl)->status.class_ == JOB_BABY_ROGUE))
 			damage += (damage * sd->mast[MASTERY_LICAO_DE_CASA]->level) / 100;
+
+		if (sd->mast[MASTERY_FLAGELO_DAS_FERAS]->active && bl->type == BL_MOB && status_get_class_(bl) == CLASS_BOSS)
+			damage += (damage * sd->mast[MASTERY_FLAGELO_DAS_FERAS]->level) / 10;
+
+		if (sd->mast[MASTERY_BELEZA_ATORDOANTE]->active)
+			damage -= (damage * sd->mast[MASTERY_BELEZA_ATORDOANTE]->level) / 100;
 	}
 	
 	return damage;
@@ -1852,8 +1862,13 @@ int64 battle_addmastery(struct map_session_data *sd,struct block_list *target,in
 
 #ifdef RENEWAL
 	//Weapon Research bonus applies to all weapons
-	if((skill = pc_checkskill(sd,BS_WEAPONRESEARCH)) > 0)
+	if ((skill = pc_checkskill(sd, BS_WEAPONRESEARCH)) > 0)
+	{
 		damage += (skill * 2);
+
+		if (sd->mast[MASTERY_PERICIA_EN_ARMAMENTO_EX]->active)
+			damage += sd->mast[MASTERY_PERICIA_EN_ARMAMENTO_EX]->level / 100;
+	}
 #endif
 
 	if(type == 0)
@@ -1923,12 +1938,22 @@ int64 battle_addmastery(struct map_session_data *sd,struct block_list *target,in
 				damage += (skill * 3);
 			break;
 		case W_MUSICAL:
-			if((skill = pc_checkskill(sd,BA_MUSICALLESSON)) > 0)
+			if ((skill = pc_checkskill(sd, BA_MUSICALLESSON)) > 0)
+			{
 				damage += (skill * 3);
+
+				if (sd && sd->mast[MASTERY_LICOES_DE_MUSICA_EX]->active)
+					damage += sd->mast[MASTERY_LICOES_DE_MUSICA_EX]->level;
+			}
 			break;
 		case W_WHIP:
-			if((skill = pc_checkskill(sd,DC_DANCINGLESSON)) > 0)
+			if ((skill = pc_checkskill(sd, DC_DANCINGLESSON)) > 0)
+			{
 				damage += (skill * 3);
+
+				if (sd && sd->mast[MASTERY_LICOES_DE_DANCA_EX]->active)
+					damage += sd->mast[MASTERY_LICOES_DE_DANCA_EX]->level;
+			}
 			break;
 		case W_BOOK:
 			if((skill = pc_checkskill(sd,SA_ADVANCEDBOOK)) > 0)
@@ -2167,6 +2192,9 @@ void battle_consume_ammo(struct map_session_data*sd, int skill, int lv)
 	int qty = 1;
 
 	if (!battle_config.arrow_decrement)
+		return;
+
+	if (sd->mast[MASTERY_FLECHA_FANTASMA_EX]->active && sd->mast[MASTERY_FLECHA_FANTASMA_EX]->level == 75)
 		return;
 
 	if (skill) {
@@ -3410,7 +3438,7 @@ static void battle_calc_multi_attack(struct Damage* wd, struct block_list *src,s
 		{
 			wd->div_ = skill_get_num(GS_CHAINACTION,skill_lv,src);
 			wd->type = DMG_MULTI_HIT;
-			sc_start(src,src,SC_QD_SHOT_READY,100,target->id,skill_get_time(RL_QD_SHOT,1));
+			sc_start(src,src,SC_QD_SHOT_READY,100,target->id,skill_get_time(RL_QD_SHOT,1,src));
 		}
 		else if(sc && sc->data[SC_FEARBREEZE] && sd->weapontype1==W_BOW
 			&& (i = sd->equip_index[EQI_AMMO]) >= 0 && sd->inventory_data[i] && sd->inventory.u.items_inventory[i].amount > 1)
@@ -3529,11 +3557,16 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			break;
 		case MC_MAMMONITE:
 			skillratio += 50 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_MAMMONITA_EX]->active)
+				skillratio += sd->mast[MASTERY_MAMMONITA_EX]->level;
 			break;
 		case HT_POWER:
 			skillratio += -50 + 8 * sstatus->str;
 			break;
 		case AC_DOUBLE:
+			if (sd && sd->mast[MASTERY_RAJADAS_DE_FLECHAS_EX]->active)
+				skillratio += sd->mast[MASTERY_RAJADAS_DE_FLECHAS_EX]->level;
 		case MA_DOUBLE:
 			skillratio += 10 * (skill_lv - 1);
 			break;
@@ -3610,8 +3643,13 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			break;
 		case MC_CARTREVOLUTION:
 			skillratio += 50;
-			if(sd && sd->cart_weight)
+			if (sd && sd->cart_weight)
+			{
 				skillratio += 100 * sd->cart_weight / sd->cart_weight_max; // +1% every 1% weight
+
+				if (sd->mast[MASTERY_CAVALO_DE_PAU_EX]->active)
+					skillratio += sd->mast[MASTERY_CAVALO_DE_PAU_EX]->level;
+			}
 			else if (!sd)
 				skillratio += 100; //Max damage for non players.
 			break;
@@ -3751,9 +3789,15 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 		case SN_SHARPSHOOTING:
 		case MA_SHARPSHOOTING:
 			skillratio += 100 + 50 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_TIRO_PRECISO_EX]->active)
+				skillratio += sd->mast[MASTERY_TIRO_PRECISO_EX]->level;
 			break;
 		case CG_ARROWVULCAN:
 			skillratio += 100 + 100 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_VULCAO_DE_FLECHAS_EX]->active)
+				skillratio += sd->mast[MASTERY_VULCAO_DE_FLECHAS_EX]->level;
 			break;
 		case AS_SPLASHER:
 			skillratio += 400 + 50 * skill_lv;
@@ -5227,7 +5271,7 @@ static void battle_calc_weapon_final_atk_modifiers(struct Damage* wd, struct blo
 		if (ratio > 5000) ratio = 5000; // Maximum of 5000% ATK
 		rdamage = battle_calc_base_damage(target,tstatus,&tstatus->rhw,tsc,sstatus->size,0);
 		rdamage = (int64)rdamage * ratio / 100 + wd->damage * (10 + tsc->data[SC_CRESCENTELBOW]->val1 * 20 / 10) / 10;
-		skill_blown(target, src, skill_get_blewcount(SR_CRESCENTELBOW_AUTOSPELL, tsc->data[SC_CRESCENTELBOW]->val1), unit_getdir(src), BLOWN_NONE);
+		skill_blown(target, src, skill_get_blewcount(SR_CRESCENTELBOW_AUTOSPELL, tsc->data[SC_CRESCENTELBOW]->val1, src), unit_getdir(src), BLOWN_NONE);
 		clif_skill_damage(target, src, gettick(), status_get_amotion(src), 0, rdamage,
 			1, SR_CRESCENTELBOW_AUTOSPELL, tsc->data[SC_CRESCENTELBOW]->val1, DMG_SKILL); // This is how official does
 		clif_damage(src, target, gettick(), status_get_amotion(src)+1000, 0, rdamage/10, 1, DMG_NORMAL, 0, false);
@@ -5311,7 +5355,7 @@ static struct Damage initialize_weapon_data(struct block_list *src, struct block
 	/*if(skill_id == KN_AUTOCOUNTER)
 		wd.amotion >>= 1; */
 	wd.dmotion = tstatus->dmotion;
-	wd.blewcount =skill_get_blewcount(skill_id,skill_lv);
+	wd.blewcount =skill_get_blewcount(skill_id,skill_lv,src);
 	wd.miscflag = wflag;
 	wd.flag = BF_WEAPON; //Initial Flag
 	wd.flag |= (skill_id||wd.miscflag)?BF_SKILL:BF_NORMAL; // Baphomet card's splash damage is counted as a skill. [Inkfish]
@@ -5810,7 +5854,7 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 	ad.div_ = skill_get_num(skill_id,skill_lv,src);
 	ad.amotion = (skill_get_inf(skill_id)&INF_GROUND_SKILL ? 0 : sstatus->amotion); //Amotion should be 0 for ground skills.
 	ad.dmotion = tstatus->dmotion;
-	ad.blewcount = skill_get_blewcount(skill_id, skill_lv);
+	ad.blewcount = skill_get_blewcount(skill_id, skill_lv,src);
 	ad.flag = BF_MAGIC|BF_SKILL;
 	ad.dmg_lv = ATK_DEF;
 	nk = skill_get_nk(skill_id);
@@ -6564,7 +6608,7 @@ struct Damage battle_calc_misc_attack(struct block_list *src,struct block_list *
 	md.amotion = (skill_get_inf(skill_id)&INF_GROUND_SKILL ? 0 : sstatus->amotion);
 	md.dmotion = tstatus->dmotion;
 	md.div_ = skill_get_num(skill_id,skill_lv,src);
-	md.blewcount = skill_get_blewcount(skill_id,skill_lv);
+	md.blewcount = skill_get_blewcount(skill_id,skill_lv,src);
 	md.dmg_lv = ATK_DEF;
 	md.flag = BF_MISC|BF_SKILL;
 
@@ -6622,6 +6666,10 @@ struct Damage battle_calc_misc_attack(struct block_list *src,struct block_list *
 				if(!sd || !(skill = pc_checkskill(sd,HT_STEELCROW)))
 					skill = 0;
 				md.damage = (sstatus->dex / 10 + sstatus->int_ / 2 + skill * 3 + 40) * 2;
+
+				if (sd && sd->mast[MASTERY_ASSALTO_DO_FALCAO_EX]->active)
+					md.damage += (md.damage * sd->mast[MASTERY_ASSALTO_DO_FALCAO_EX]->level) / 100;
+
 				if(mflag > 1) //Autocasted Blitz
 					nk |= NK_SPLASHSPLIT;
 				if (skill_id == SN_FALCONASSAULT) {
@@ -7077,7 +7125,7 @@ int64 battle_calc_return_damage(struct block_list* bl, struct block_list *src, i
 						rd1 = min(damage,status_get_max_hp(bl)) * sc->data[SC_DEATHBOUND]->val2 / 100; // Amplify damage.
 						*dmg = rd1 * 30 / 100; // Received damage = 30% of amplified damage.
 						clif_skill_damage(src, bl, gettick(), status_get_amotion(src), 0, -30000, 1, RK_DEATHBOUND, sc->data[SC_DEATHBOUND]->val1, DMG_SKILL);
-						skill_blown(bl, src, skill_get_blewcount(RK_DEATHBOUND, 1), unit_getdir(src), BLOWN_NONE);
+						skill_blown(bl, src, skill_get_blewcount(RK_DEATHBOUND, 1,src), unit_getdir(src), BLOWN_NONE);
 						status_change_end(bl, SC_DEATHBOUND, INVALID_TIMER);
 						rdamage += rd1 * 70 / 100; // Target receives 70% of the amplified damage. [Rytech]
 					}
@@ -7427,7 +7475,7 @@ enum damage_lv battle_weapon_attack(struct block_list* src, struct block_list* t
 	}
 
 	if (tsc && tsc->data[SC_MTF_MLEATKED] && rnd()%100 < tsc->data[SC_MTF_MLEATKED]->val2)
-		clif_skill_nodamage(target, target, SM_ENDURE, tsc->data[SC_MTF_MLEATKED]->val1, sc_start(src, target, SC_ENDURE, 100, tsc->data[SC_MTF_MLEATKED]->val1, skill_get_time(SM_ENDURE, tsc->data[SC_MTF_MLEATKED]->val1)));
+		clif_skill_nodamage(target, target, SM_ENDURE, tsc->data[SC_MTF_MLEATKED]->val1, sc_start(src, target, SC_ENDURE, 100, tsc->data[SC_MTF_MLEATKED]->val1, skill_get_time(SM_ENDURE, tsc->data[SC_MTF_MLEATKED]->val1, src)));
 
 	if(tsc && tsc->data[SC_KAAHI] && tstatus->hp < tstatus->max_hp && status_charge(target, 0, tsc->data[SC_KAAHI]->val3)) {
 		int hp_heal = tstatus->max_hp - tstatus->hp;

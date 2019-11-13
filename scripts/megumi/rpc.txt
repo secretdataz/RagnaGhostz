@@ -120,7 +120,7 @@ function	script	rpc	{
 		}
 	}
 
-	announce "" + .@desc$,0;
+	//announce "" + .@desc$,0;
 	
 	discord( .@char_id, .@title$, .@desc$, .@lik$, .@lit$, .@sik$, .@sit$ );
 	

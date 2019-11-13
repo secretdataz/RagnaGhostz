@@ -397,14 +397,14 @@ int skill_get_inf( uint16 skill_id );
 int skill_get_ele( uint16 skill_id , uint16 skill_lv );
 int skill_get_nk( uint16 skill_id );
 int skill_get_max( uint16 skill_id );
-int skill_get_range( uint16 skill_id , uint16 skill_lv );
+int skill_get_range(uint16 skill_id, uint16 skill_lv, struct block_list *bl);
 int skill_get_range2(struct block_list *bl, uint16 skill_id, uint16 skill_lv, bool isServer);
 int skill_get_splash( uint16 skill_id , uint16 skill_lv );
 int skill_get_num(uint16 skill_id, uint16 skill_lv, struct block_list *bl);
 int skill_get_cast( uint16 skill_id ,uint16 skill_lv );
 int skill_get_delay(uint16 skill_id, uint16 skill_lv, struct block_list *bl);
 int skill_get_walkdelay(uint16 skill_id, uint16 skill_lv, struct block_list *bl);
-int skill_get_time(uint16 skill_id, uint16 skill_lv);
+int skill_get_time(uint16 skill_id, uint16 skill_lv, struct block_list *bl);
 int skill_get_time2(uint16 skill_id, uint16 skill_lv, struct block_list *bl);
 int skill_get_castnodex( uint16 skill_id );
 int skill_get_castdef( uint16 skill_id );
@@ -413,7 +413,7 @@ int skill_get_unit_id(uint16 skill_id,int flag);
 int skill_get_inf2( uint16 skill_id );
 int skill_get_castcancel( uint16 skill_id );
 int skill_get_maxcount( uint16 skill_id ,uint16 skill_lv );
-int skill_get_blewcount( uint16 skill_id ,uint16 skill_lv );
+int skill_get_blewcount(uint16 skill_id, uint16 skill_lv, struct block_list *bl);
 int skill_get_unit_flag( uint16 skill_id );
 int skill_get_cooldown( uint16 skill_id, uint16 skill_lv );
 int skill_get_unit_target( uint16 skill_id );
@@ -613,6 +613,54 @@ enum e_mastery_data {
 	MASTERY_PRISAO_DE_TEIA_EX,
 	MASTERY_PRESCIENCIA_EX,
 	MASTERY_LICAO_DE_CASA,
+
+	MASTERY_RAJADAS_DE_FLECHAS_EX,
+	MASTERY_CONCENTRACAO_EX,
+	MASTERY_OLHOS_DE_AGUIA_EX,
+	MASTERY_DISPARO_VIOLENTO_EX,
+	MASTERY_PRECISAO_EX,
+
+	MASTERY_ALERTA_EX,
+	MASTERY_ATAQUE_DE_FERA_EX,
+	MASTERY_ATAQUE_AEREO_EX,
+	MASTERY_FLECHA_FANTASMA_EX,
+	MASTERY_FLAGELO_DAS_FERAS,
+
+	MASTERY_VISAO_REAL_EX,
+	MASTERY_CAMINHO_DO_VENTO_EX,
+	MASTERY_TIRO_PRECISO_EX,
+	MASTERY_ASSALTO_DO_FALCAO_EX,
+	MASTERY_SEM_FALHAS,
+
+	MASTERY_PIADA_INFAME_EX,
+	MASTERY_LICOES_DE_MUSICA_EX,
+	MASTERY_ENCERRAMENTO_EX,
+	MASTERY_ODE_A_SIEGFRIED_EX,
+	MASTERY_CREPUSCULO_SANGRENTO_EX,
+
+	MASTERY_VULCAO_DE_FLECHAS_EX,
+	MASTERY_BASTAO_DE_HERMOD_EX,
+	MASTERY_DESTINO_NAS_CARTAS_EX,
+	MASTERY_COVER_ARTISTICO,
+	MASTERY_TRIS,
+
+	MASTERY_PISCADELA_EX,
+	MASTERY_LICOES_DE_DANCA_EX,
+	MASTERY_ESCANDALO_EX,
+	MASTERY_BELEZA_ATORDOANTE,
+	MASTERY_DANCA_DO_VENTRE_EX,
+
+	MASTERY_MAMMONITA_EX,
+	MASTERY_CAVALO_DE_PAU_EX,
+	MASTERY_GRITO_DE_GUERRA_EX,
+	MASTERY_AUMENTAR_CAPACIDADE_DE_CARGA_EX,
+	MASTERY_SEGURO_DE_ZENY,
+
+	MASTERY_MANEJO_PERFEITO_EX,
+	MASTERY_ADRENALINA_PURA_EX,
+	MASTERY_PERICIA_EN_ARMAMENTO_EX,
+	MASTERY_RESISTENCIA_AO_FOGO_EX,
+	MASTERY_RESISTENCIA_AO_NEUTRO_EX,
 
 	MASTERY_TOTAL,
 };

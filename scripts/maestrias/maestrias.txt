@@ -12,12 +12,17 @@ function	script	mastery	{
 
 		if( .@c == 0)
 		{
+			.@class = Class;
+
+			if( .@class == 4021 )
+				.@class = 4020;
+			
 			query_sql( 
 					sprintf( "INSERT INTO `mastery_player` ( `char_id`, `mastery_id`, `level` ) " +
 				             "SELECT %d AS `cid`, `id`, 1 AS `lvl`                              " +
 				             " FROM `mastery`                                                   " +
 				             " WHERE `job` IN ( %d, %d, %d )                                    ",
-				             .@cid, BaseClass, BaseJob, Class ) );
+				             .@cid, BaseClass, BaseJob, .@class );
 
 			.@c = query_sql( "SELECT `mastery_id`, `level` " +
 		                     "  FROM `mastery_player`      " +

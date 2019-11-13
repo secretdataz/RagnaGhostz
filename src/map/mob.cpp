@@ -3934,7 +3934,7 @@ int mob_clone_spawn(struct map_session_data *sd, int16 m, int16 x, int16 y, cons
 		if (inf&INF_ATTACK_SKILL) {
 			ms[i].target = MST_TARGET;
 			ms[i].cond1 = MSC_ALWAYS;
-			if (skill_get_range(skill_id, ms[i].skill_lv)  > 3)
+			if (skill_get_range(skill_id, ms[i].skill_lv, &sd->bl)  > 3)
 				ms[i].state = MSS_ANYTARGET;
 			else
 				ms[i].state = MSS_BERSERK;
@@ -3956,7 +3956,7 @@ int mob_clone_spawn(struct map_session_data *sd, int16 m, int16 x, int16 y, cons
 			if (skill_get_inf2(skill_id)&INF2_NO_TARGET_SELF) { //auto-select target skill.
 				ms[i].target = MST_TARGET;
 				ms[i].cond1 = MSC_ALWAYS;
-				if (skill_get_range(skill_id, ms[i].skill_lv)  > 3) {
+				if (skill_get_range(skill_id, ms[i].skill_lv, &sd->bl)  > 3) {
 					ms[i].state = MSS_ANYTARGET;
 				} else {
 					ms[i].state = MSS_BERSERK;
@@ -3967,7 +3967,7 @@ int mob_clone_spawn(struct map_session_data *sd, int16 m, int16 x, int16 y, cons
 				ms[i].cond2 = 90;
 				ms[i].permillage = 2000;
 				//Delay: Remove the stock 5 secs and add half of the support time.
-				ms[i].delay += -5000 +(skill_get_time(skill_id, ms[i].skill_lv) + skill_get_time2(skill_id, ms[i].skill_lv, &sd->bl))/2;
+				ms[i].delay += -5000 +(skill_get_time(skill_id, ms[i].skill_lv, &sd->bl) + skill_get_time2(skill_id, ms[i].skill_lv, &sd->bl))/2;
 				if (ms[i].delay < 5000)
 					ms[i].delay = 5000; //With a minimum of 5 secs.
 			}
@@ -3980,7 +3980,7 @@ int mob_clone_spawn(struct map_session_data *sd, int16 m, int16 x, int16 y, cons
 			else if (skill_id == ALL_RESURRECTION)
 				ms[i].cond2 = 1;
 			//Delay: Remove the stock 5 secs and add half of the support time.
-			ms[i].delay += -5000 +(skill_get_time(skill_id, ms[i].skill_lv) + skill_get_time2(skill_id, ms[i].skill_lv, &sd->bl))/2;
+			ms[i].delay += -5000 +(skill_get_time(skill_id, ms[i].skill_lv, &sd->bl) + skill_get_time2(skill_id, ms[i].skill_lv, &sd->bl))/2;
 			if (ms[i].delay < 2000)
 				ms[i].delay = 2000; //With a minimum of 2 secs.
 

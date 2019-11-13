@@ -827,7 +827,7 @@ void unit_run_hit(struct block_list *bl, struct status_change *sc, struct map_se
 	status_change_end(bl, type, INVALID_TIMER);
 
 	if (type == SC_RUN) {
-		skill_blown(bl, bl, skill_get_blewcount(TK_RUN, lv), unit_getdir(bl), BLOWN_NONE);
+		skill_blown(bl, bl, skill_get_blewcount(TK_RUN, lv, bl), unit_getdir(bl), BLOWN_NONE);
 		clif_status_change(bl, EFST_TING, 0, 0, 0, 0, 0);
 	} else if (sd) {
 		clif_fixpos(bl);
