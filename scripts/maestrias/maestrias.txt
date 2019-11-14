@@ -16,6 +16,9 @@ function	script	mastery	{
 
 			if( .@class == 4021 )
 				.@class = 4020;
+
+			if( .@class == 4048 )
+				.@class = 4047;
 			
 			query_sql( 
 					sprintf( "INSERT INTO `mastery_player` ( `char_id`, `mastery_id`, `level` ) " +
@@ -32,6 +35,8 @@ function	script	mastery	{
 				debugmes "Mastery", "Erro ao carregar maestrias do CID " + .@cid;
 				end;
 			}
+
+			FIRST_MASTERY_RECEIVED = 1;
 		}
 
 		.@send_data = ( .@func$ == "SendPlayerData" );

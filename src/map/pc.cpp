@@ -8166,6 +8166,15 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 
 				clif_disp_overhead_(&ssd->bl, tx.c_str(), AREA);
 			}
+
+			if (ssd->mast[MASTERY_PUNHO_SUPREMO_DE_ASURA_EX]->active && ssd->mast[MASTERY_PUNHO_SUPREMO_DE_ASURA_EX]->level == 200)
+			{
+				status_percent_heal(src, 0, 100);
+				unit_skilluse_id(src, src->id, CH_SOULCOLLECT, pc_checkskill(ssd, CH_SOULCOLLECT));
+				unit_skilluse_id(src, src->id, MO_EXPLOSIONSPIRITS, pc_checkskill(ssd, MO_EXPLOSIONSPIRITS));
+				unit_skilluse_id(src, src->id, CH_SOULCOLLECT, pc_checkskill(ssd, CH_SOULCOLLECT));
+				status_percent_heal(src, 0, 100);
+			}
 		}
 
 		if (battle_config.pk_mode&2) {

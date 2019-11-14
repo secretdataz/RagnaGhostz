@@ -34,7 +34,7 @@
 /// - FCT is NOT reduced by stats, reduced by equips or buffs.
 /// Example:
 ///  On a skill whos cast time is 10s, only 8s may be reduced. the other 2s are part of a FCT
-#define RENEWAL_CAST
+//#define RENEWAL_CAST
 
 /// Renewal drop rate algorithms
 /// (disable by commenting the line)

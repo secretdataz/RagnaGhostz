@@ -12,6 +12,17 @@ phtownall,366,352,3	Script	Senhora das Maestrias	10168,{
 	{
 		mes "Antes de aprimorar suas habilidades é preciso chegar ao nível máximo.";
 		mes "Volte daqui " + ( 300 - BaseLevel ) + " níveis e poderemos começar a aprimorar suas maestrias.";
+		close2;
+		cutin "jp_dux_thia01",255;
+		end;
+	}
+
+	if( ismounting() )
+	{
+		mes "Se importa de descer da sua montaria para falar comigo?";
+		close2;
+		cutin "jp_dux_thia01",255;
+		end;
 	}
 
 	// Só para o Jogador não ser engraçadinho e depois ficar chorando

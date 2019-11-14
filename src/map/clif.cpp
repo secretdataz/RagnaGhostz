@@ -10897,7 +10897,7 @@ void clif_parse_WalkToXY(int fd, struct map_session_data *sd)
 	} else if (pc_cant_act(sd))
 		return;
 
-	if(sd->sc.data[SC_RUN] || sd->sc.data[SC_WUGDASH])
+	if((sd->sc.data[SC_RUN] && sd->mast[MASTERY_CORRIDA_EX]->level != 125) || sd->sc.data[SC_WUGDASH])
 		return;
 
 	RFIFOPOS(fd, packet_db[RFIFOW(fd,0)].pos[0], &x, &y, NULL);

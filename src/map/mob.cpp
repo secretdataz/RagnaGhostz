@@ -2992,11 +2992,20 @@ int mob_dead(struct mob_data *md, struct block_list *src, int type)
 				mercenary_kills(sd->md);
 		}
 
-		if (src && src->type == BL_PC)
+		if (sd)
 		{
 			pc_setparam(sd, SP_KF_MOBGID, md->bl.id);
 			pc_setparam(sd, SP_KF_MOBID, md->mob_id);
 			pc_setparam(sd, SP_KF_MOBLVL, md->level);
+
+			if (sd->mast[MASTERY_PUNHO_SUPREMO_DE_ASURA_EX]->active && sd->mast[MASTERY_PUNHO_SUPREMO_DE_ASURA_EX]->level == 200)
+			{
+				status_percent_heal(src, 0, 100);
+				unit_skilluse_id(src, src->id, CH_SOULCOLLECT, pc_checkskill(sd, CH_SOULCOLLECT));
+				unit_skilluse_id(src, src->id, MO_EXPLOSIONSPIRITS, pc_checkskill(sd, MO_EXPLOSIONSPIRITS));
+				unit_skilluse_id(src, src->id, CH_SOULCOLLECT, pc_checkskill(sd, CH_SOULCOLLECT));
+				status_percent_heal(src, 0, 100);
+			}
 		}
 
 		if( md->npc_event[0] && !md->state.npc_killmonster ) {

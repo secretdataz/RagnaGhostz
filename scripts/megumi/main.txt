@@ -26,7 +26,7 @@
 		pvp( "LoadPlayerData", getcharid(0) );
 
 		// Carrega as Maestrias
-		if( BaseLevel == 300)
+		if( FIRST_MASTERY_RECEIVED )
 			mastery( "LoadPlayerData", getcharid(0) );
 
 		dispbottom "[MEGUMI] Sincronização completa.";

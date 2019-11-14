@@ -363,6 +363,11 @@ int skill_get_time2( uint16 skill_id ,uint16 skill_lv, struct block_list *bl )
 			if (BL_CAST(BL_PC, bl)->mast[MASTERY_ENCERRAMENTO_EX]->active && BL_CAST(BL_PC, bl)->mast[MASTERY_ENCERRAMENTO_EX]->level == 75)
 				return 0;
 			break;
+
+		case HP_BASILICA:
+			if (BL_CAST(BL_PC, bl)->mast[MASTERY_BASILICA_EX]->active)
+				extra += BL_CAST(BL_PC, bl)->mast[MASTERY_BASILICA_EX]->level * 1000;
+			break;
 		}
 	}
 
@@ -657,6 +662,9 @@ int skill_calc_heal(struct block_list *src, struct block_list *target, uint16 sk
 			break;
 		case PR_SANCTUARY:
 			hp = (skill_lv > 6) ? 777 : skill_lv * 100;
+
+			if (sd && sd->mast[MASTERY_SANTUARIO_EX]->active)
+				hp += sd->mast[MASTERY_SANTUARIO_EX]->level * 111;
 			break;
 		case NPC_EVILLAND:
 			hp = (skill_lv > 6) ? 666 : skill_lv * 100;
@@ -6367,6 +6375,17 @@ struct custom_skill_data* newCSD(bool active)
 
 	sc->active = active;
 	sc->level = 0;
+	sc->count = 0;
+	sc->action = 0;
+	sc->duration = 0;
+	sc->effect1 = 0;
+	sc->effect2 = 0;
+	sc->effect3 = 0;
+	sc->quantity = 0;
+	sc->val1 = 0;
+	sc->val2 = 0;
+	sc->val3 = 0;
+	sc->val4 = 0;
 
 	return sc;
 }
@@ -7393,6 +7412,11 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 		i = 0;
 		if (dstsd && (battle_check_target(src, bl, BCT_SELF) > 0 || (battle_check_target(src, bl, BCT_ENEMY) > 0 && (map_flag_vs(src->m) || (sd && sd->duel_group && sd->duel_group == dstsd->duel_group)))) && // Only works on self and enemies
 			((dstsd->class_&MAPID_BASEMASK) != MAPID_GUNSLINGER || (dstsd->class_&MAPID_UPPERMASK) != MAPID_REBELLION)) { // split the if for readability, and included gunslingers in the check so that their coins cannot be removed [Reddozen]
+			if (dstsd->spiritball > 0 && sd->mast[MASTERY_ABSORVER_ESFERAS_ESPIRITUAIS_EX]->level == 150)
+			{
+				for (i = 0; i < dstsd->spiritball; i++)
+					pc_addspiritball(sd, skill_get_time(skill_id, skill_lv, src), 1);
+			}
 			if (dstsd->spiritball > 0) {
 				i = dstsd->spiritball * 7;
 				pc_delspiritball(dstsd,dstsd->spiritball,0);
@@ -8416,6 +8440,11 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 			int x,y, dir = unit_getdir(src);
 			struct map_data *mapdata = &map[src->m];
 
+			int increment = 0;
+
+			if (sd && sd->mast[MASTERY_SALTO_EX]->active)
+				increment += sd->mast[MASTERY_SALTO_EX]->level / 10;
+
 			//Fails on noteleport maps, except for GvG and BG maps [Skotlex]
 			if( mapdata->flag[MF_NOTELEPORT] &&
 				!(mapdata->flag[MF_BATTLEGROUND] || mapdata_flag_gvg2(mapdata) )
@@ -8424,11 +8453,11 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 				break;
 			} else if(dir%2) {
 				//Diagonal
-				x = src->x + dirx[dir]*(skill_lv*4)/3;
-				y = src->y + diry[dir]*(skill_lv*4)/3;
+				x = src->x + dirx[dir]*(((skill_lv*4)/3) + increment);
+				y = src->y + diry[dir]* (((skill_lv * 4) / 3) + increment);
 			} else {
-				x = src->x + dirx[dir]*skill_lv*2;
-				y = src->y + diry[dir]*skill_lv*2;
+				x = src->x + dirx[dir]*((skill_lv*2) + increment);
+				y = src->y + diry[dir]*((skill_lv*2) + increment);
 			}
 
 			int x1 = x + dirx[dir];
@@ -9197,7 +9226,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 
 	case SL_SWOO:
 		if (tsce) {
-			if(sd)
+			if(sd && sd->mast[MASTERY_ESWOO_EX]->level != 125)
 				clif_skill_fail(sd,skill_id,USESKILL_FAIL_LEVEL,0);
 			status_change_start(src,src,SC_STUN,10000,skill_lv,0,0,0,10000,8);
 			status_change_end(bl, SC_SWOO, INVALID_TIMER);
@@ -13241,6 +13270,9 @@ struct skill_unit_group *skill_unitsetting(struct block_list *src, uint16 skill_
 	case MG_SAFETYWALL:
 #ifdef RENEWAL
 		val2 = status_get_max_hp(src) * 3;
+
+		if (sd && sd->mast[MASTERY_ESCUDO_MAGICO_EX]->active)
+			val2 += sd->mast[MASTERY_ESCUDO_MAGICO_EX]->level * 111;
 #else
 		val2 = skill_lv+1;
 #endif
@@ -15684,12 +15716,18 @@ bool skill_check_condition_castbegin(struct map_session_data* sd, uint16 skill_i
 			}
 			break;
 		case PR_BENEDICTIO:
+			if (sd && sd->mast[MASTERY_BENEDICTIO_SANCTISSIMI_SACRAMENTI_EX]->level == 75)
+				break;
+
 			if (skill_check_pc_partner(sd, skill_id, &skill_lv, 1, 0) < 2) {
 				clif_skill_fail(sd,skill_id,USESKILL_FAIL_LEVEL,0);
 				return false;
 			}
 			break;
 		case SL_SMA:
+			if (sd && sd->mast[MASTERY_ESMA_EX]->level == 250)
+				break;
+
 			if(!(sc && sc->data[SC_SMA]))
 				return false;
 			break;
@@ -15786,7 +15824,7 @@ bool skill_check_condition_castbegin(struct map_session_data* sd, uint16 skill_i
 			clif_skill_fail(sd,skill_id,USESKILL_FAIL_LEVEL,0);
 			return false;
 		case SG_FUSION:
-			if (sc && sc->data[SC_SPIRIT] && sc->data[SC_SPIRIT]->val2 == SL_STAR)
+			if ((sc && sc->data[SC_SPIRIT] && sc->data[SC_SPIRIT]->val2 == SL_STAR) || (sd->mast[MASTERY_SELENE]->level == 175))
 				break;
 			//Auron insists we should implement SP consumption when you are not Soul Linked. [Skotlex]
 			//Only invoke on skill begin cast (instant cast skill). [Kevin]

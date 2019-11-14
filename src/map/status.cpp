@@ -1636,6 +1636,56 @@ int64 status_charge(struct block_list* bl, int64 hp, int64 sp)
 	return status_damage(NULL, bl, hp, sp, 0, 3);
 }
 
+/*
+Comando:
+	calcDirection
+
+Descri��o:
+	Modifica o x e y calculado para a dire��o informada.
+*/
+void calcDirection(int dir, int16 *x, int16 *y, int count)
+{
+	switch (dir)
+	{
+	case DIR_NORTH:
+		(*y) += count;
+		break;
+
+	case DIR_WEST:
+		(*x) -= count;
+		break;
+
+	case DIR_SOUTHWEST:
+		(*x) -= count;
+		(*y) -= count;
+		break;
+
+	case DIR_NORTHWEST:
+		(*x) -= count;
+		(*y) += count;
+		break;
+
+	case DIR_SOUTH:
+		(*y) -= count;
+		break;
+
+	case DIR_SOUTHEAST:
+		(*x) += count;
+		(*y) -= count;
+		break;
+
+	case DIR_EAST:
+		(*x) += count;
+		break;
+
+	case DIR_NORTHEAST:
+		(*x) += count;
+		(*y) += count;
+		break;
+	}
+}
+
+
 /**
  * Inflicts damage on the target with the according walkdelay.
  * @param src: Source object giving damage [PC|MOB|PET|HOM|MER|ELEM]
@@ -1784,6 +1834,56 @@ int status_damage(struct block_list *src,struct block_list *target,int64 dhp, in
 	}
 
 	status->hp = 0;
+
+	if (target->type == BL_PC && ((TBL_PC*)target)->mast[MASTERY_JUTSU_DE_SUBSTITUICAO]->level == 175 && ((TBL_PC*)target)->mast[MASTERY_JUTSU_DE_SUBSTITUICAO]->count == 0)
+	{
+		((TBL_PC*)target)->mast[MASTERY_JUTSU_DE_SUBSTITUICAO]->count++;
+
+		uint8 t_dir = unit_getdir(src);
+
+		int16 x = src->x;
+		int16 y = src->y;
+
+		switch (t_dir)
+		{
+			default:
+			case DIR_NORTH:
+			case DIR_NORTHWEST:
+			case DIR_WEST:
+			case DIR_SOUTHWEST:
+				t_dir += 4;
+				break;
+
+			case DIR_SOUTH:
+			case DIR_SOUTHEAST:
+			case DIR_EAST:
+			case DIR_NORTHEAST:
+				t_dir -= 4;
+				break;
+		}
+
+		calcDirection(t_dir, &x, &y, 1);
+
+		if(unit_movepos(target, x, y, 2, 1)) {
+			unit_warp(target, target->m, x, y, CLR_OUTSIGHT);
+
+			clif_blown(src);
+			
+		}
+		else if (unit_movepos(target, src->x, src->y, 2, 1)) {
+			unit_warp(target, target->m, x, y, CLR_OUTSIGHT);
+			clif_blown(src);
+		}
+
+		status_revive(target, 50, 0);
+		clif_showscript(target, "Jutsu de Troca", AREA);
+
+		return (int)(hp + sp);
+	}
+
+	if (target->type == BL_PC && ((TBL_PC*)target)->mast[MASTERY_JUTSU_DE_SUBSTITUICAO]->active)
+		((TBL_PC*)target)->mast[MASTERY_JUTSU_DE_SUBSTITUICAO]->count = 0;
+
 	/** [Skotlex]
 	* NOTE: These dead functions should return:
 	* 0: Death cancelled, auto-revived.
@@ -1826,8 +1926,16 @@ int status_damage(struct block_list *src,struct block_list *target,int64 dhp, in
 		// Look for Osiris Card's bonus effect on the character and revive 100% or revive normally
 		if ( target->type == BL_PC && BL_CAST(BL_PC,target)->special_state.restart_full_recover )
 			status_revive(target, 100, 100);
+		else if (target->type == BL_PC && BL_CAST(BL_PC, target)->mast[MASTERY_KAIZEL_EX]->active)
+		{
+			int increase = BL_CAST(BL_PC, target)->mast[MASTERY_KAIZEL_EX]->level / 100;
+
+			status_revive(target, 70 + increase, 0);
+			status_percent_heal(target, 0, increase, 0);
+		}
 		else
 			status_revive(target, sc->data[SC_KAIZEL]->val2, 0);
+
 		status_change_clear(target,0);
 		clif_skill_nodamage(target,target,ALL_RESURRECTION,1,1);
 		sc_start(src,target,status_skill2sc(PR_KYRIE),100,10,time);
@@ -1873,7 +1981,7 @@ int status_damage(struct block_list *src,struct block_list *target,int64 dhp, in
 
 		npc_script_event(sd,NPCE_DIE);
 
-		if (src->type == BL_PC)
+		if (src && src->type == BL_PC)
 		{
 			TBL_PC *killer = BL_CAST(BL_PC, src);
 
@@ -3163,6 +3271,9 @@ static int status_get_hpbonus(struct block_list *bl, enum e_status_bonus type) {
 			if(sc->data[SC_LAUDAAGNUS])
 				bonus += 2 + (sc->data[SC_LAUDAAGNUS]->val1 * 2);
 
+			if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_PREPARO_FISICO]->active)
+				bonus += BL_CAST(BL_PC, bl)->mast[MASTERY_PREPARO_FISICO]->level;
+
 			//Decreasing
 			if(sc->data[SC_VENOMBLEED])
 				bonus -= 15;
@@ -4184,8 +4295,13 @@ int status_calc_pc_sub(struct map_session_data* sd, enum e_status_calc_opt opt)
 		sd->regen.state.walk = 0;
 
 	// Skill SP cost
-	if((skill=pc_checkskill(sd,HP_MANARECHARGE))>0 )
-		sd->dsprate -= 4*skill;
+	if ((skill = pc_checkskill(sd, HP_MANARECHARGE)) > 0)
+	{
+		if (sd->mast[MASTERY_RIQUEZA_DE_ESPIRITO_EX]->level == 175)
+			sd->dsprate += 90;
+		else
+			sd->dsprate -= 4 * skill;
+	}
 
 	if(sc->data[SC_SERVICE4U])
 		sd->dsprate -= sc->data[SC_SERVICE4U]->val3;
@@ -6325,7 +6441,11 @@ static signed short status_calc_critical(struct block_list *bl, struct status_ch
 	if (sc->data[SC_CRIFOOD])
 		critical += sc->data[SC_CRIFOOD]->val1;
 	if (sc->data[SC_EXPLOSIONSPIRITS])
+	{
 		critical += sc->data[SC_EXPLOSIONSPIRITS]->val2;
+
+		critical += (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_FURIA_INTERIOR_EX]->active ? BL_CAST(BL_PC, bl)->mast[MASTERY_FURIA_INTERIOR_EX]->level / 10 : 0);
+	}
 	if (sc->data[SC_FORTUNE])
 		critical += sc->data[SC_FORTUNE]->val2;
 	if (sc->data[SC_TRUESIGHT])
@@ -9712,6 +9832,9 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 			} else { // Formulas for Kyrie Eleison
 				val2 = status->max_hp * (val1 * 2 + 10) / 100;
 				val3 = (val1 / 2 + 5);
+
+				if (sd && sd->mast[MASTERY_KYRIE_ELEISON_EX]->active)
+					val3 += sd->mast[MASTERY_KYRIE_ELEISON_EX]->level / 10;
 			}
 			break;
 		case SC_MAGICPOWER:

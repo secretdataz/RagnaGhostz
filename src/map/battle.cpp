@@ -1203,7 +1203,7 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 			return 0;
 		}
 
-		if (sc->data[SC_DODGE] && (flag&BF_LONG || sc->data[SC_SPURT]) && rnd() % 100 < 20) {
+		if (sc->data[SC_DODGE] && (flag&BF_LONG || sc->data[SC_SPURT]) && rnd() % 100 < ( 20 + ((sd && sd->mast[MASTERY_CAMBALHOTA_EX]->active) ? sd->mast[MASTERY_CAMBALHOTA_EX]->level / 10 : 0))) {
 			if (sd && pc_issit(sd))
 				pc_setstand(sd, true); //Stand it to dodge.
 			clif_skill_nodamage(bl, bl, TK_DODGE, 1, 1);
@@ -1230,8 +1230,13 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 		}
 
 #ifdef RENEWAL // Flat +400% damage from melee
-		if (sc->data[SC_KAITE] && (flag&(BF_SHORT|BF_MAGIC)) == BF_SHORT)
-			damage <<= 2;
+		if (sc->data[SC_KAITE] && (flag&(BF_SHORT | BF_MAGIC)) == BF_SHORT)
+		{
+			if (sd && sd->mast[MASTERY_KAITE_EX]->active)
+				damage += (damage * (400 - sd->mast[MASTERY_KAITE_EX]->level)) / 100;
+			else
+				damage <<= 2;
+		}
 #endif
 
 		if( flag&BF_MAGIC && (sce=sc->data[SC_PRESTIGE]) && rnd()%100 < sce->val2) {
@@ -1441,8 +1446,11 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 
 #ifdef RENEWAL
 		// Renewal: steel body reduces all incoming damage to 1/10 [helvetica]
-		if( sc->data[SC_STEELBODY] )
-			damage = damage > 10 ? damage / 10 : 1;
+		if (sc->data[SC_STEELBODY])
+			if (sd && sd->mast[MASTERY_CORPO_FECHADO_EX]->active)
+				damage -= damage * (90 + (sd->mast[MASTERY_CORPO_FECHADO_EX]->level / 100)) / 100;
+			else
+				damage = damage > 10 ? damage / 10 : 1;
 #endif
 
 		//Finally added to remove the status of immobile when Aimed Bolt is used. [Jobbie]
@@ -1683,18 +1691,31 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 		if (sd->mast[MASTERY_FLAGELO_DAS_FERAS]->active && bl->type == BL_MOB && status_get_class_(bl) == CLASS_BOSS)
 			damage += (damage * (sd->mast[MASTERY_FLAGELO_DAS_FERAS]->level / 10)) / 100;
 
-		if (sd->mast[MASTERY_BELEZA_ATORDOANTE]->active)
-			damage -= (damage * (sd->mast[MASTERY_BELEZA_ATORDOANTE]->level / 100)) / 100;
-
 		if (sd->mast[MASTERY_PERICIA_DE_ASSASSINO_EX]->active && bl->type == BL_PC)
 			damage += (damage * (sd->mast[MASTERY_PERICIA_DE_ASSASSINO_EX]->level / 10)) / 100;
 
 		if (sd->mast[MASTERY_GRAFFITI_EX]->active && sd->mast[MASTERY_GRAFFITI_EX]->level == 150 && bl->type == BL_PC && sd->mast[MASTERY_GRAFFITI_EX]->val1 == BL_CAST(BL_PC, bl)->status.char_id)
 			damage += (damage * 5) / 100;
 
+		if (sd->mast[MASTERY_MESTRE_DAS_ARTES]->active)
+			damage += (damage * (sd->mast[MASTERY_MESTRE_DAS_ARTES]->level / 10)) / 100;
+
 		// Calculos Finais
 		if (sd->mast[MASTERY_BANHO_DE_SANGUE_EX]->active && sd->mast[MASTERY_BANHO_DE_SANGUE_EX]->level == 300)
 			status_heal(src, damage, 0, 1);
+
+		// Reduções Finais
+		if (sd->mast[MASTERY_BELEZA_ATORDOANTE]->active)
+			damage -= (damage * (sd->mast[MASTERY_BELEZA_ATORDOANTE]->level / 100)) / 100;
+
+		if (bl->type == BL_MOB && status_get_class_(bl) == CLASS_BOSS && sd->mast[MASTERY_RESISTIREI]->active)
+			damage -= (damage * (sd->mast[MASTERY_RESISTIREI]->level / 10)) / 100;
+
+		if (sd->mast[MASTERY_BENCAO_DOS_DEUSES]->active && getRandomValue(1, 100) <= (sd->mast[MASTERY_BENCAO_DOS_DEUSES]->level / 100))
+			damage = 0;
+
+		if (sd->mast[MASTERY_PUNICAO_DIVINA]->active && sd->mast[MASTERY_PUNICAO_DIVINA]->level == 100 && getRandomValue(1, 1000) == 1)
+			damage = status_get_hp(bl) * 10;
 	}
 
 	if (src->type == BL_HOM && BL_CAST(BL_HOM,bl)->master)
@@ -2814,6 +2835,10 @@ static bool attack_ignores_def(struct Damage* wd, struct block_list *src, struct
 		return true;
 	else
 #endif
+
+	if (target->type == BL_PC && BL_CAST(BL_PC, target)->mast[MASTERY_ESPIRITO_IMPENETRAVEL]->level == 275)
+		return false;
+
 	if (sc && sc->data[SC_FUSION])
 		return true;
 #ifdef RENEWAL
@@ -3787,9 +3812,15 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			break;
 		case MO_FINGEROFFENSIVE:
 			skillratio += 50 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_DISPARO_DE_ESFERAS_EX]->active)
+				skillratio += sd->mast[MASTERY_DISPARO_DE_ESFERAS_EX]->level;
 			break;
 		case MO_INVESTIGATE:
 			skillratio += 75 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_IMPACTO_PSIQUICO_EX]->active)
+				skillratio += sd->mast[MASTERY_IMPACTO_PSIQUICO_EX]->level;
 			break;
 		case MO_EXTREMITYFIST:
 			skillratio += 100 * (7 + sstatus->sp / 10);
@@ -3800,11 +3831,17 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			break;
 		case MO_CHAINCOMBO:
 			skillratio += 50 + 50 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_COMBO_QUADRUPLO_EX]->active)
+				skillratio += sd->mast[MASTERY_COMBO_QUADRUPLO_EX]->level;
 			break;
 		case MO_COMBOFINISH:
 			skillratio += 140 + 60 * skill_lv;
 			if (sc->data[SC_GT_ENERGYGAIN])
 				skillratio += skillratio * 50 / 100;
+
+			if (sd && sd->mast[MASTERY_O_ULTIMO_DRAGAO_EX]->active)
+				skillratio += sd->mast[MASTERY_O_ULTIMO_DRAGAO_EX]->level;
 			break;
 		case BA_MUSICALSTRIKE:
 		case DC_THROWARROW:
@@ -3907,6 +3944,9 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			}
 			else
 				skillratio += -70 + 10 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_CHUTE_AEREO_EX]->active)
+				skillratio += sd->mast[MASTERY_CHUTE_AEREO_EX]->level / 10;
 			break;
 		case GS_TRIPLEACTION:
 			skillratio += 50 * skill_lv;
@@ -5355,9 +5395,20 @@ static void battle_calc_weapon_final_atk_modifiers(struct Damage* wd, struct blo
 				hp = hp / 13;
 				if (((int64)sstatus->hp * 100) <= ((int64)sstatus->max_hp * 20))
 					hp = sstatus->hp;
-			} else
-				hp = 2*hp/100; //2% hp loss per hit
-			status_zap(src, hp, 0);
+
+				if (sd->mast[MASTERY_ZEUS]->level == 200)
+					hp = 0;
+			}
+			else
+			{
+				hp = 2 * hp / 100; //2% hp loss per hit
+
+				if (sd->mast[MASTERY_HELIOS]->level == 75)
+					hp = 0;
+			}
+
+			if(hp > 0)
+				status_zap(src, hp, 0);
 		}
 		// Only affecting non-skills
 		if (!skill_id && wd->dmg_lv > ATK_BLOCK) {
@@ -7479,12 +7530,20 @@ enum damage_lv battle_weapon_attack(struct block_list* src, struct block_list* t
 			clif_damage(src, target, tick, sstatus->amotion, 1, 0, 1, DMG_NORMAL, 0, false); //Display MISS.
 			clif_bladestop(target, src->id, 1);
 			sc_start4(src,target, SC_BLADESTOP, 100, skill_lv, 0, 0, src->id, duration);
+
+			if (tsd && tsd->mast[MASTERY_DILEMA_EX]->active && tsd->mast[MASTERY_DILEMA_EX]->level == 175)
+				status_heal(target, 0, 100, 0);
+
 			return ATK_BLOCK;
 		}
 	}
 
 	if(sd && (skillv = pc_checkskill(sd,MO_TRIPLEATTACK)) > 0) {
 		int triple_rate= 30 - skillv; //Base Rate
+
+		if (sd->mast[MASTERY_COMBO_TRIPLO_EX]->active)
+			triple_rate += sd->mast[MASTERY_COMBO_TRIPLO_EX]->level / 10;
+
 		if (sc && sc->data[SC_SKILLRATE_UP] && sc->data[SC_SKILLRATE_UP]->val1 == MO_TRIPLEATTACK) {
 			triple_rate+= triple_rate*(sc->data[SC_SKILLRATE_UP]->val2)/100;
 			status_change_end(src, SC_SKILLRATE_UP, INVALID_TIMER);
