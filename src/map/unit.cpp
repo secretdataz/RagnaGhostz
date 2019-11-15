@@ -3,6 +3,7 @@
 
 #include "unit.hpp"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -36,6 +37,8 @@
 #include "pet.hpp"
 #include "storage.hpp"
 #include "trade.hpp"
+
+#include <stdio.h>
 
 // Directions values
 // 1 0 7
@@ -1002,6 +1005,25 @@ bool unit_movepos(struct block_list *bl, short dst_x, short dst_y, int easy, boo
 	return true;
 }
 
+void unit_attacheffect(struct block_list *bl, int effect, bool enable, bool ignoreIncrement)
+{
+	if (!ignoreIncrement)
+		effect += 500;
+
+	struct unit_data *ud = unit_bl2ud(bl);
+
+	if (!ud)
+		return;
+
+	if (enable)
+		ud->hateffects.insert(ud->hateffects.end(), 1, effect);
+
+	if (!enable)
+		ud->hateffects.erase(std::remove(ud->hateffects.begin(), ud->hateffects.end(), effect), ud->hateffects.end());
+
+	clif_hat_effect_single(bl, effect, enable);
+}
+
 /**
  * Sets direction of a unit
  * @param bl: Object to set direction
@@ -1330,6 +1352,30 @@ int unit_stop_walking(struct block_list *bl,int type)
  */
 int unit_skilluse_id(struct block_list *src, int target_id, uint16 skill_id, uint16 skill_lv)
 {
+	if (src->type == BL_PC)
+	{
+		struct map_session_data *sd = BL_CAST(BL_PC, src);
+
+		if (sd->copycatme.size() > 0)
+		{
+			for (auto copiando : sd->copycatme)
+			{
+				struct map_session_data *copiador = map_charid2sd(copiando);
+
+				if (copiador == NULL || copiador->csd[CSD_SHARINGAN]->val1 != sd->status.char_id)
+				{
+					sd->copycatme.erase(std::remove(sd->copycatme.begin(), sd->copycatme.end(), sd->status.char_id), sd->copycatme.end());
+					continue;
+				}
+
+				unit_skilluse_id2(
+					&copiador->bl, ((target_id == src->id) ? copiador->bl.id : src->id), skill_id, skill_lv,
+					skill_castfix(src, skill_id, skill_lv),
+					skill_get_castcancel(skill_id)
+				);
+			}
+		}
+	}
 	return unit_skilluse_id2(
 		src, target_id, skill_id, skill_lv,
 		skill_castfix(src, skill_id, skill_lv),
@@ -3268,14 +3314,6 @@ int unit_free(struct block_list *bl, clr_type clrtype)
 				sd->qi_display = NULL;
 			}
 			sd->qi_count = 0;
-
-#if PACKETVER >= 20150513
-			if( sd->hatEffectCount > 0 ){
-				aFree(sd->hatEffectIDs);
-				sd->hatEffectIDs = NULL;
-				sd->hatEffectCount = 0;
-			}
-#endif
 
 			for (int i = 0; i < CSD_TOTAL; i++)
 			{

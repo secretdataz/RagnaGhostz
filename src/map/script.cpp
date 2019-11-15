@@ -22882,51 +22882,7 @@ BUILDIN_FUNC(recalculatestat) {
 
 BUILDIN_FUNC(hateffect){
 #if PACKETVER >= 20150513
-	struct map_session_data* sd;
-	bool enable;
-	int i, effectID;
 
-	if( !script_rid2sd(sd) )
-		return SCRIPT_CMD_FAILURE;
-
-	effectID = script_getnum(st,2);
-	enable = script_getnum(st,3) ? true : false;
-
-	if( effectID <= HAT_EF_MIN || effectID >= HAT_EF_MAX ){
-		ShowError( "buildin_hateffect: unsupported hat effect id %d\n", effectID );
-		return SCRIPT_CMD_FAILURE;
-	}
-
-	ARR_FIND( 0, sd->hatEffectCount, i, sd->hatEffectIDs[i] == effectID );
-
-	if( enable ){
-		if( i < sd->hatEffectCount ){
-			return SCRIPT_CMD_SUCCESS;
-		}
-
-		RECREATE(sd->hatEffectIDs,uint32,sd->hatEffectCount+1);
-		sd->hatEffectIDs[sd->hatEffectCount] = effectID;
-		sd->hatEffectCount++;
-	}else{
-		if( i == sd->hatEffectCount ){
-			return SCRIPT_CMD_SUCCESS;
-		}
-
-		for( ; i < sd->hatEffectCount - 1; i++ ){
-			sd->hatEffectIDs[i] = sd->hatEffectIDs[i+1];
-		}
-
-		sd->hatEffectCount--;
-
-		if( !sd->hatEffectCount ){
-			aFree(sd->hatEffectIDs);
-			sd->hatEffectIDs = NULL;
-		}
-	}
-
-	if( !sd->state.connect_new ){
-		clif_hat_effect_single( sd, effectID, enable );
-	}
 
 #endif
 	return SCRIPT_CMD_SUCCESS;
@@ -24592,6 +24548,19 @@ BUILDIN_FUNC(apply_mastery)
 
 	if (sendData)
 		clifmeg_mastery(sd->status.account_id, mastery_id, level);
+
+	switch (mastery_id)
+	{
+		case MASTERY_DESPERTAR_DO_BYAKUGAN:
+			if (level == 250 && pc_checkskill(sd, NJ_BYAKUGAN) <= 0)
+				pc_skill(sd, NJ_BYAKUGAN, 1, e_addskill_type::ADDSKILL_PERMANENT_GRANTED);
+			break;
+
+		case MASTERY_DESPERTAR_DO_SHARINGAN:
+			if (level == 400 && pc_checkskill(sd, NJ_SHARINGAN) <= 0)
+				pc_skill(sd, NJ_SHARINGAN, 1, e_addskill_type::ADDSKILL_PERMANENT_GRANTED);
+			break;
+	}
 
 	status_calc_pc(sd, SCO_FORCE);
 

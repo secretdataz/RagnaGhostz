@@ -1258,7 +1258,12 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 			}
 			//Both need to be consumed if they are active.
 			if (sce && --(sce->val2) <= 0)
+			{
 				status_change_end(bl, SC_UTSUSEMI, INVALID_TIMER);
+
+				if(bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_JUTSU_CLONE_DAS_SOMBRAS]->level == 150)
+					unit_skilluse_id(bl, bl->id, KO_ZANZOU, 5);
+			}
 			if ((sce = sc->data[SC_BUNSINJYUTSU]) && --(sce->val2) <= 0)
 				status_change_end(bl, SC_BUNSINJYUTSU, INVALID_TIMER);
 
@@ -1677,8 +1682,10 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 	}
 
 	// Modificadores de Dano Final Maestrias
-	if (sd)
+	if (src->type == BL_PC)
 	{
+		sd = (struct map_session_data *)src;
+
 		if (sd->mast[MASTERY_MONTARIA_EX]->active && sd->mast[MASTERY_MONTARIA_EX]->level == 70)
 			damage += (damage * 7) / 100;
 
@@ -1703,6 +1710,62 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 		// Calculos Finais
 		if (sd->mast[MASTERY_BANHO_DE_SANGUE_EX]->active && sd->mast[MASTERY_BANHO_DE_SANGUE_EX]->level == 300)
 			status_heal(src, damage, 0, 1);
+
+		if (sd->csd[CSD_BYAKUGAN]->active)
+		{
+			if (sd->csd[CSD_BYAKUGAN]->count >= 64)
+			{
+				sd->csd[CSD_BYAKUGAN]->count = 0;
+
+				clif_showscript(src, "Oito Trigramas Sessenta e Quatro Palmas", AREA);
+				clif_specialeffect(src, 330, AREA);
+
+				damage *= (1 + pc_checkskill(sd, NJ_BYAKUGAN));
+
+				if (pc_checkskill(sd, NJ_BYAKUGAN) >= 2)
+				{
+					int percent = (status_get_sp(bl) * (pc_checkskill(sd, NJ_BYAKUGAN) + 1)) / 100;
+					damage += percent;
+					clif_specialeffect(src, 376, AREA);
+				}
+
+				unit_attacheffect(src, 650, false);
+			}
+			else
+			{
+				sd->csd[CSD_BYAKUGAN]->count++;
+
+				int count = sd->csd[CSD_BYAKUGAN]->count;
+
+				if (count == 2)
+				{
+					clif_showscript(src, "Primeiro Trigrama, dois ataques", AREA);
+					clif_specialeffect(src, 329, AREA);
+				}
+				else if (count == 4)
+				{
+					clif_showscript(src, "Segundo Trigrama, quatro ataques", AREA);
+					clif_specialeffect(src, 329, AREA);
+				}
+				else if (count == 8)
+				{
+					clif_showscript(src, "Segundo Trigrama, oito ataques", AREA);
+					clif_specialeffect(src, 329, AREA);
+				}
+				else if (count == 16)
+				{
+					clif_showscript(src, "Quarto Trigrama, dezesseis ataques", AREA);
+					clif_specialeffect(src, 329, AREA);
+				}
+				else if (count == 32)
+				{
+					clif_showscript(src, "Quinto Trigrama, trinta e dois  ataques", AREA);
+					clif_specialeffect(src, 329, AREA);
+
+					unit_attacheffect(src, 650, true);
+				}
+			}
+		}
 
 		// Reduções Finais
 		if (sd->mast[MASTERY_BELEZA_ATORDOANTE]->active)
@@ -4025,6 +4088,9 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 #ifdef RENEWAL
 		case NJ_KUNAI:
 			skillratio += -100 + 100 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_ARREMESSAR_KUNAI_EX]->active)
+				skillratio += sd->mast[MASTERY_ARREMESSAR_KUNAI_EX]->level;
 			break;
 #endif
 		case KN_CHARGEATK: { // +100% every 3 cells of distance but hard-limited to 500%
@@ -6224,6 +6290,9 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 #endif
 						if(sd && sd->spiritcharm_type == CHARM_TYPE_WATER && sd->spiritcharm > 0)
 							skillratio += 5 * sd->spiritcharm;
+
+						if (sd && sd->mast[MASTERY_LANCA_CONGELANTE_EX]->active)
+							skillratio += sd->mast[MASTERY_LANCA_CONGELANTE_EX]->level / 10;
 						break;
 					case NJ_HYOUSYOURAKU:
 						skillratio += 50 * skill_lv;

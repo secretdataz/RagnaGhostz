@@ -2505,6 +2505,8 @@ int status_calc_mercenary_(struct mercenary_data *md, enum e_status_calc_opt opt
 int status_calc_elemental_(struct elemental_data *ed, enum e_status_calc_opt opt);
 int status_calc_npc_(struct npc_data *nd, enum e_status_calc_opt opt);
 
+void addbonus_script(struct map_session_data * sd, const char* script, uint32 duration, uint16 flag = 0, uint8 type = 0, int16 icon = EFST_BLANK);
+
 void status_calc_misc(struct block_list *bl, struct status_data *status, int level);
 void status_calc_regen(struct block_list *bl, struct status_data *status, struct regen_data *regen);
 void status_calc_regen_rate(struct block_list *bl, struct regen_data *regen, struct status_change *sc);

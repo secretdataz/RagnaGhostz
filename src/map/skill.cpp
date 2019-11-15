@@ -286,6 +286,12 @@ int skill_get_num( uint16 skill_id ,uint16 skill_lv, struct block_list *bl )
 			case CR_ACIDDEMONSTRATION:
 				if (BL_CAST(BL_PC, bl)->mast[MASTERY_BOMBA_ACIDA_EX]->active)
 					extra += BL_CAST(BL_PC, bl)->mast[MASTERY_BOMBA_ACIDA_EX]->level / 10;
+				break;
+
+			case NJ_KOUENKA:
+				if (BL_CAST(BL_PC, bl)->mast[MASTERY_PETALAS_FLAMEJANTES_EX]->active)
+					extra += BL_CAST(BL_PC, bl)->mast[MASTERY_PETALAS_FLAMEJANTES_EX]->level / 10;
+				break;
 		}
 	}
 
@@ -340,6 +346,11 @@ int skill_get_time( uint16 skill_id ,uint16 skill_lv, struct block_list *bl )
 			if (BL_CAST(BL_PC, bl)->mast[MASTERY_MANEJO_PERFEITO_EX]->active)
 				extra += BL_CAST(BL_PC, bl)->mast[MASTERY_MANEJO_PERFEITO_EX]->level * 1000;
 			break;
+
+		case NJ_TATAMIGAESHI:
+			if (BL_CAST(BL_PC, bl)->mast[MASTERY_VIRAR_TATAME_EX]->active)
+				extra += BL_CAST(BL_PC, bl)->mast[MASTERY_VIRAR_TATAME_EX]->level / 10;
+			break;
 		}
 	}
 
@@ -367,6 +378,11 @@ int skill_get_time2( uint16 skill_id ,uint16 skill_lv, struct block_list *bl )
 		case HP_BASILICA:
 			if (BL_CAST(BL_PC, bl)->mast[MASTERY_BASILICA_EX]->active)
 				extra += BL_CAST(BL_PC, bl)->mast[MASTERY_BASILICA_EX]->level * 1000;
+			break;
+
+		case NJ_TATAMIGAESHI:
+			if (BL_CAST(BL_PC, bl)->mast[MASTERY_VIRAR_TATAME_EX]->active)
+				extra += BL_CAST(BL_PC, bl)->mast[MASTERY_VIRAR_TATAME_EX]->level / 10;
 			break;
 		}
 	}
@@ -5679,8 +5695,13 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 		break;
 
 	case NJ_KASUMIKIRI:
-		if (skill_attack(BF_WEAPON,src,src,bl,skill_id,skill_lv,tick,flag) > 0)
-			sc_start(src,src,SC_HIDING,100,skill_lv,skill_get_time(skill_id,skill_lv,src));
+		if (skill_attack(BF_WEAPON, src, src, bl, skill_id, skill_lv, tick, flag) > 0)
+		{
+			if(sd && sd->mast[MASTERY_CORTE_DA_NEVOA_EX]->level == 75)
+				sc_start(src, src, SC_CLOAKING, 100, skill_lv, skill_get_time(AS_CLOAKING, 10, src));
+			else
+				sc_start(src, src, SC_HIDING, 100, skill_lv, skill_get_time(skill_id, skill_lv, src));
+		}
 		break;
 	case NJ_KIRIKAGE:
 		if( !map_flag_gvg2(src->m) && !map_getmapflag(src->m, MF_BATTLEGROUND) )
@@ -6390,6 +6411,59 @@ struct custom_skill_data* newCSD(bool active)
 	return sc;
 }
 
+/*
+	Finaliza uma skill custom
+
+	Exemplo de Uso:
+		add_timer(gettick() + cmd->skd[mdSrc->level]->duration, timer_endcsd, BL ID, (intptr_t)SKILL_ID);
+*/
+static TIMER_FUNC(timer_endcsd)
+{
+	block_list *bl = map_id2bl(id);
+
+	if (bl == NULL)
+		return 0;
+
+	struct map_session_data *sd;
+
+	if (bl->type == BL_PC)
+		sd = BL_CAST(BL_PC, bl);
+
+	int skill_id = (int)data;
+
+	switch (skill_id)
+	{
+	case NJ_BYAKUGAN:
+		sd->csd[CSD_BYAKUGAN]->active = false;
+		sd->csd[CSD_BYAKUGAN]->count = 0;
+		clif_changelook(&sd->bl, LOOK_HEAD_BOTTOM, sd->status.head_bottom);
+		unit_attacheffect(bl, 650, false);
+		break;
+
+	case NJ_SHARINGAN:
+		skill_copycat(map_charid2sd(sd->csd[CSD_SHARINGAN]->val1), sd, false);
+
+		sd->csd[CSD_SHARINGAN]->active = false;
+		sd->csd[CSD_SHARINGAN]->val1 = 0;
+		clif_changelook(&sd->bl, LOOK_HEAD_BOTTOM, sd->status.head_bottom);
+		break;
+	}
+
+	return 0;
+}
+
+void skill_copycat(struct map_session_data *copiado, struct map_session_data *copiando, bool enable)
+{
+	if (!copiado || !copiando)
+		return;
+
+	if (enable)
+		copiado->copycatme.insert(copiado->copycatme.end(), 1, copiando->status.char_id);
+
+	if (!enable)
+		copiado->copycatme.erase(std::remove(copiado->copycatme.begin(), copiado->copycatme.end(), copiando->status.char_id), copiado->copycatme.end());
+}
+
 /**
  * Use no-damage skill from 'src' to 'bl
  * @param src Caster
@@ -6451,13 +6525,73 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 
 	// Ragnaghostz Skills
 
-	switch (skill_id)
+	if (sd)
 	{
+		switch (skill_id)
+		{
 		case NV_RECOVERYSP:
 		case NV_RECOVERYHP:
 		case NV_PROVOCATION:
 		case NV_BUFFS:
 			npcInvoker(bl, std::to_string(skill_id).c_str());
+			return 1;
+
+		case NJ_BYAKUGAN:
+			if (sd->csd[CSD_BYAKUGAN]->active || sd->csd[CSD_SHARINGAN]->active) return 1;
+
+			sd->csd[CSD_BYAKUGAN]->active = true;
+			sd->csd[CSD_BYAKUGAN]->count = 0;
+			
+			switch (skill_lv)
+			{
+			case 1:
+				addbonus_script(sd, "bonus bAllStats,5; bonus bIntravision;", skill_get_time(skill_id, skill_lv, src));
+				break;
+
+			case 2:
+				addbonus_script(sd, "bonus bAllStats,7; bonus bIntravision;", skill_get_time(skill_id, skill_lv, src));
+				break;
+
+			case 3:
+				addbonus_script(sd, "bonus bAllStats,10; bonus bIntravision;", skill_get_time(skill_id, skill_lv, src));
+				break;
+			}
+
+			clif_specialeffect(src, 549, AREA);
+			add_timer(gettick() + skill_get_time(skill_id, skill_lv, src), timer_endcsd, src->id, (intptr_t)skill_id);
+			clif_soundeffectall(src, "BYAKUGAN.wav", 0, AREA);
+
+			clif_changelook(&sd->bl, LOOK_HEAD_BOTTOM, 2000);
+			return 1;
+
+		case NJ_SHARINGAN:
+			if (sd->csd[CSD_SHARINGAN]->active || sd->csd[CSD_BYAKUGAN]->active || bl->type != BL_PC || dstsd->class_ == JOB_NINJA || dstsd->class_ == JOB_STALKER || dstsd->class_ == JOB_ROGUE) return 1;
+
+			sd->csd[CSD_SHARINGAN]->active = true;
+			sd->csd[CSD_SHARINGAN]->val1 = dstsd->status.char_id;
+
+			switch (skill_lv)
+			{
+			case 1:
+				addbonus_script(sd, "bonus bAllStats,5;", skill_get_time(skill_id, skill_lv, src));
+				break;
+
+			case 2:
+				addbonus_script(sd, "bonus bAllStats,7; bonus bSpeedRate,25;", skill_get_time(skill_id, skill_lv, src));
+				break;
+
+			case 3:
+				addbonus_script(sd, "bonus bAllStats,10; bonus bSpeedRate,50;", skill_get_time(skill_id, skill_lv, src));
+				break;
+			}
+
+			clif_soundeffectall(src, "SHARINGAN.wav", 0, AREA);
+			clif_specialeffect(src, 548, AREA);
+
+			clif_changelook(&sd->bl, LOOK_HEAD_BOTTOM, 2001);
+			add_timer(gettick() + skill_get_time(skill_id, skill_lv, src), timer_endcsd, src->id, (intptr_t)skill_id);
+
+			skill_copycat(dstsd, sd, true);
 			return 1;
 
 		case NV_AUTOLOOT:
@@ -6472,7 +6606,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 					s.append(std::to_string(remainDropCount));
 					s.append(" itens)");
 
-					if(sd->group_id == 0 || sd->group_id == 99)
+					if (sd->group_id == 0 || sd->group_id == 99)
 						clif_displaymessage(sd->fd, s.c_str());
 					else
 						clif_displaymessage(sd->fd, "Coleta Desativada");
@@ -6482,14 +6616,14 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 				else
 				{
 					sd->csd[CSD_AUTOLOOT]->active = true;
-					sd->csd[CSD_AUTOLOOT]->count = remainDropCount <= 0 ? 50 : remainDropCount; 
+					sd->csd[CSD_AUTOLOOT]->count = remainDropCount <= 0 ? 50 : remainDropCount;
 
 					std::string s = "Coleta Ativada (";
 
 					s.append(std::to_string(sd->csd[CSD_AUTOLOOT]->count));
 					s.append(" itens)");
 
-					if(sd->group_id == 0 || sd->group_id == 99)
+					if (sd->group_id == 0 || sd->group_id == 99)
 						clif_displaymessage(sd->fd, s.c_str());
 					else
 						clif_displaymessage(sd->fd, "Coleta Ativada");
@@ -6536,6 +6670,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 				clif_displaymessage(sd->fd, "Foco Ativado");
 			}
 			return 1;
+		}
 	}
 	
 	//Check for undead skills that convert a no-damage skill into a damage one. [Skotlex]
@@ -12433,9 +12568,20 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 		}
 		break;
 	case NJ_SHADOWJUMP:
-		if( map_getcell(src->m,x,y,CELL_CHKREACH) && skill_check_unit_movepos(5, src, x, y, 1, 0) ) //You don't move on GVG grounds.
+		if (sd && !sc->data[SC_HIDING] && sd->mast[MASTERY_SALTO_DAS_SOMBRAS_EX]->level != 75)
+		{
+			clif_skill_fail(sd, skill_id, USESKILL_FAIL_LEVEL, 0);
+			return 1;
+		}
+		if (map_getcell(src->m, x, y, CELL_CHKREACH) && skill_check_unit_movepos(5, src, x, y, 1, 0)) //You don't move on GVG grounds.
+		{
 			clif_blown(src);
-		status_change_end(src, SC_HIDING, INVALID_TIMER);
+
+			if(sd && sd->mast[MASTERY_SALTO_DAS_SOMBRAS_EX]->level == 75)
+				sc_start(src, src, SC_HIDING, 100, 5, 5000);
+			else
+				status_change_end(src, SC_HIDING, INVALID_TIMER);
+		}
 		break;
 	case AM_SPHEREMINE:
 	case AM_CANNIBALIZE:
@@ -22342,6 +22488,8 @@ void do_init_skill(void)
 	add_timer_func_list(skill_castend_pos,"skill_castend_pos");
 	add_timer_func_list(skill_timerskill,"skill_timerskill");
 	add_timer_func_list(skill_blockpc_end, "skill_blockpc_end");
+
+	add_timer_func_list(timer_endcsd, "timer_endcsd");
 
 	add_timer_interval(gettick()+SKILLUNITTIMER_INTERVAL,skill_unit_timer,0,0,SKILLUNITTIMER_INTERVAL);
 }

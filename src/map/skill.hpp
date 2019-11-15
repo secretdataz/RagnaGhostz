@@ -522,6 +522,8 @@ bool skill_arrow_create( struct map_session_data *sd, unsigned short nameid);
 void npcInvoker(struct block_list *bl, const char * npc_name);
 struct custom_skill_data* newCSD(bool active);
 
+void skill_copycat(struct map_session_data *copiador, struct map_session_data *copiando, bool enable);
+
 // skills for the mob
 int skill_castend_nodamage_id( struct block_list *src, struct block_list *bl,uint16 skill_id,uint16 skill_lv,t_tick tick,int flag );
 int skill_castend_damage_id( struct block_list* src, struct block_list *bl,uint16 skill_id,uint16 skill_lv,t_tick tick,int flag );
@@ -550,6 +552,8 @@ void skill_reload(void);
 enum e_custom_skill_data {
 	CSD_AUTOLOOT,
 	CSD_BLOCKALL,
+	CSD_BYAKUGAN,
+	CSD_SHARINGAN,
 	CSD_TOTAL
 };
 
@@ -821,6 +825,9 @@ enum e_skill {
 	NV_PROVOCATION,
 	NV_BUFFS,
 	NV_BLOCKALL,
+
+	NJ_BYAKUGAN,
+	NJ_SHARINGAN,
 
 	NV_BASIC = 1,
 

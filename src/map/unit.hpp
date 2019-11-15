@@ -59,6 +59,8 @@ struct unit_data {
 		unsigned blockedskill : 1;
 	} state;
 	char walk_done_event[EVENT_NAME_LENGTH];
+
+	std::vector<int> hateffects;
 };
 
 struct view_data {
@@ -120,6 +122,8 @@ int unit_is_walking(struct block_list *bl);
 int unit_set_walkdelay(struct block_list *bl, t_tick tick, t_tick delay, int type);
 
 int unit_escape(struct block_list *bl, struct block_list *target, short dist);
+
+void unit_attacheffect(struct block_list *bl, int effect, bool enable, bool ignoreIncrement = false);
 
 // Instant unit changes
 bool unit_movepos(struct block_list *bl, short dst_x, short dst_y, int easy, bool checkpath);

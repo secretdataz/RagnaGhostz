@@ -5329,6 +5329,32 @@ ACMD_FUNC(effect)
 	return 0;
 }
 
+ACMD_FUNC(haton)
+{
+	int type = EF_NONE;
+	nullpo_retr(-1, sd);
+
+	if (!message || !*message || sscanf(message, "%11d", &type) < 1) {
+		clif_displaymessage(fd, msg_txt(sd, 1152)); // Please enter an effect number (usage: @effect <effect number>).
+		return -1;
+	}
+
+	unit_attacheffect(&sd->bl, type, true);
+}
+
+ACMD_FUNC(hatoff)
+{
+	int type = EF_NONE;
+	nullpo_retr(-1, sd);
+
+	if (!message || !*message) {
+		clif_displaymessage(fd, msg_txt(sd, 1152)); // Please enter an effect number (usage: @effect <effect number>).
+		return -1;
+	}
+
+	unit_attacheffect(&sd->bl, type, false);
+}
+
 /*==========================================
  * @killer by MouseJstr
  * enable killing players even when not in pvp
@@ -10211,6 +10237,8 @@ void atcommand_basecommands(void) {
 		ACMD_DEF(undisguise),
 		ACMD_DEF(email),
 		ACMD_DEF(effect),
+		ACMD_DEF(haton),
+		ACMD_DEF(hatoff),
 		ACMD_DEF(follow),
 		ACMD_DEF(addwarp),
 		ACMD_DEF(skillon),

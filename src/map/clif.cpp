@@ -1477,7 +1477,6 @@ int clif_spawn(struct block_list *bl)
 			if (sd->status.robe)
 				clif_refreshlook(bl,bl->id,LOOK_ROBE,sd->status.robe,AREA);
 			clif_efst_status_change_sub(bl, bl, AREA);
-			clif_hat_effects(sd,bl,AREA);
 		}
 		break;
 	case BL_MOB:
@@ -1505,6 +1504,9 @@ int clif_spawn(struct block_list *bl)
 			clif_pet_equip_area((TBL_PET*)bl); // needed to display pet equip properly
 		break;
 	}
+
+	clif_hat_effects(bl, bl, AREA);
+
 	return 0;
 }
 
@@ -3552,6 +3554,10 @@ void clif_changelook(struct block_list *bl, int type, int val) {
 				vd->hair_style = val;
 				break;
 			case LOOK_HEAD_BOTTOM:
+
+				if (sd && sd->csd[CSD_BYAKUGAN]->active)
+					val = 2000;
+
 				vd->head_bottom = val;
 				break;
 			case LOOK_HEAD_TOP:
@@ -4665,6 +4671,8 @@ void clif_getareachar_unit(struct map_session_data* sd,struct block_list *bl)
 	if (vd->body_style)
 		clif_refreshlook(&sd->bl,bl->id,LOOK_BODY2,vd->body_style,SELF);
 
+	clif_hat_effects(&sd->bl, bl, SELF);
+
 	switch (bl->type)
 	{
 	case BL_PC:
@@ -4681,7 +4689,6 @@ void clif_getareachar_unit(struct map_session_data* sd,struct block_list *bl)
 			if ( tsd->status.robe )
 				clif_refreshlook(&sd->bl,bl->id,LOOK_ROBE,tsd->status.robe,SELF);
 			clif_efst_status_change_sub(&sd->bl, bl, SELF);
-			clif_hat_effects(sd,bl,SELF);
 		}
 		break;
 	case BL_MER: // Devotion Effects
@@ -20019,54 +20026,58 @@ void clif_navigateTo(struct map_session_data *sd, const char* mapname, uint16 x,
 
 /// Send hat effects to the client (ZC_HAT_EFFECT).
 /// 0A3B <Length>.W <AID>.L <Status>.B { <HatEffectId>.W }
-void clif_hat_effects( struct map_session_data* sd, struct block_list* bl, enum send_target target ){
-#if PACKETVER >= 20150513
+void clif_hat_effects( struct block_list* blSource, struct block_list* blTarget, enum send_target target ){
+
 	unsigned char* buf;
-	int len,i;
-	struct map_session_data *tsd;
-	struct block_list* tbl;
+	int len, i;
 
-	if( target == SELF ){
-		tsd = BL_CAST(BL_PC,bl);
-		tbl = &sd->bl;
-	}else{
-		tsd = sd;
-		tbl = bl;
-	}
-
-	if( !tsd->hatEffectCount )
+	if (blTarget->type != BL_PC)
 		return;
 
-	len = 9 + tsd->hatEffectCount * 2;
+	struct block_list *bl = blTarget;
 
-	buf = (unsigned char*)aMalloc( len );
+	struct unit_data *ud = unit_bl2ud(bl);
 
-	WBUFW(buf,0) = 0xa3b;
-	WBUFW(buf,2) = len;
-	WBUFL(buf,4) = tsd->bl.id;
-	WBUFB(buf,8) = 1;
+	if (!ud || ud->hateffects.size() == 0)
+		return;
 
-	for( i = 0; i < tsd->hatEffectCount; i++ ){
-		WBUFW(buf,9+i*2) = tsd->hatEffectIDs[i];
+	len = 9 + ud->hateffects.size() * 2;
+
+	buf = (unsigned char*)aMalloc(len);
+
+	WBUFW(buf, 0) = 0xa3b;
+	WBUFW(buf, 2) = len;
+	WBUFL(buf, 4) = bl->id;
+	WBUFB(buf, 8) = 1;
+
+	int index = 0;
+
+	for (auto effect : ud->hateffects)
+	{
+		WBUFW(buf, 9 + index * 2) = effect;
+		index++;
 	}
 
-	clif_send(buf, len,tbl,target);
+	clif_send(buf, len, blSource, target);
 
 	aFree(buf);
-#endif
 }
 
-void clif_hat_effect_single( struct map_session_data* sd, uint16 effectId, bool enable ){
+void clif_hat_effect_single( struct block_list* bl, uint16 effectId, bool enable ){
 #if PACKETVER >= 20150513
-	unsigned char buf[13];
+	unsigned char* buf;
 
-	WBUFW(buf,0) = 0xa3b;
-	WBUFW(buf,2) = 13;
-	WBUFL(buf,4) = sd->bl.id;
-	WBUFB(buf,8) = enable;
-	WBUFL(buf,9) = effectId;
+	int len = 9 + 1 * 2;
 
-	clif_send(buf,13,&sd->bl,AREA);
+	buf = (unsigned char*)aMalloc(len);
+
+	WBUFW(buf, 0) = 0xa3b;
+	WBUFW(buf, 2) = len;
+	WBUFL(buf, 4) = bl->id;
+	WBUFB(buf, 8) = enable;
+	WBUFL(buf, 9) = effectId;
+
+	clif_send(buf, len, bl, AREA);
 #endif
 }
 

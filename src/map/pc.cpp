@@ -1532,11 +1532,6 @@ bool pc_authok(struct map_session_data *sd, uint32 login_id2, time_t expiration_
 	sd->bonus_script.head = NULL;
 	sd->bonus_script.count = 0;
 
-#if PACKETVER >= 20150513
-	sd->hatEffectIDs = NULL;
-	sd->hatEffectCount = 0;
-#endif
-
 	sd->catch_target_class = PET_CATCH_FAIL;
 
 	// Check EXP overflow, since in previous revision EXP on Max Level can be more than 'official' Max EXP
@@ -8008,6 +8003,7 @@ void pc_close_npc(struct map_session_data *sd,int flag)
 	}
 }
 
+
 /*==========================================
  * Invoked when a player has negative current hp
  *------------------------------------------*/
@@ -8167,7 +8163,7 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 				clif_disp_overhead_(&ssd->bl, tx.c_str(), AREA);
 			}
 
-			if (ssd->mast[MASTERY_PUNHO_SUPREMO_DE_ASURA_EX]->active && ssd->mast[MASTERY_PUNHO_SUPREMO_DE_ASURA_EX]->level == 200)
+			if (ssd->mast[MASTERY_PUNHO_SUPREMO_DE_ASURA_EX]->active && ssd->mast[MASTERY_PUNHO_SUPREMO_DE_ASURA_EX]->level == 200 && getRandomValue(1,100) <= 25)
 			{
 				status_percent_heal(src, 0, 100);
 				unit_skilluse_id(src, src->id, CH_SOULCOLLECT, pc_checkskill(ssd, CH_SOULCOLLECT));

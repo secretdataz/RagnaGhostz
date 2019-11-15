@@ -937,6 +937,8 @@
 1026,0,6,4,0,0x1,0,10,1,no,0,0,0,misc,0,0x0,NV_PROVOCATION,Provocation
 1027,0,6,4,0,0x1,0,10,1,no,0,0,0,misc,0,0x0,NV_BUFFS,Buffs
 1028,0,6,4,0,0x1,0,10,1,no,0,0,0,misc,0,0x0,NV_BLOCKALL,Block All
+1029,0,6,4,0,0x1,0,3,1,no,0,0,0,misc,0,0x0,NJ_BYAKUGAN,Byakugan
+1030,10,6,1,0,0x1,0,3,1,no,0,0,0,misc,0,0x0,NJ_SHARINGAN,Sharingan
 2001,0,6,4,0,0x1,0,5,1,yes,0,0,0,none,0,0x0,	RK_ENCHANTBLADE,Enchant Blade
 2002,7:8:9:10:11,6,1,-1,0,0,5,1,no,0,0,0,weapon,0,0x0,	RK_SONICWAVE,Sonic Wave
 2003,0,6,4,0,0x1,0,10,1,no,0,0,0,weapon,3,0x0,	RK_DEATHBOUND,Death Bound

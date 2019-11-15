@@ -1835,7 +1835,7 @@ int status_damage(struct block_list *src,struct block_list *target,int64 dhp, in
 
 	status->hp = 0;
 
-	if (target->type == BL_PC && ((TBL_PC*)target)->mast[MASTERY_JUTSU_DE_SUBSTITUICAO]->level == 175 && ((TBL_PC*)target)->mast[MASTERY_JUTSU_DE_SUBSTITUICAO]->count == 0)
+	if (src && target->type == BL_PC && ((TBL_PC*)target)->mast[MASTERY_JUTSU_DE_SUBSTITUICAO]->level == 175 && ((TBL_PC*)target)->mast[MASTERY_JUTSU_DE_SUBSTITUICAO]->count == 0)
 	{
 		((TBL_PC*)target)->mast[MASTERY_JUTSU_DE_SUBSTITUICAO]->count++;
 
@@ -2865,6 +2865,38 @@ void status_calc_misc(struct block_list *bl, struct status_data *status, int lev
 
 	if(bl->type&BL_REGEN)
 		status_calc_regen(bl, status, status_get_regen_data(bl));
+}
+
+/**
+ * Attach script to player for certain duration
+ * bonus_script "<script code>",<duration>{,<flag>{,<type>{,<status_icon>{,<char_id>}}}};
+ * @param "script code"
+ * @param duration
+ * @param flag
+ * @param icon
+ * @param char_id
+* @author [Cydh]
+ **/
+void addbonus_script(struct map_session_data * sd, const char* script, uint32 duration, uint16 flag, uint8 type, int16 icon)
+{
+	if (sd == NULL || script[0] == '\0' || !duration)
+		return;
+
+	struct s_bonus_script_entry *entry = NULL;
+
+
+	if (strlen(script) >= MAX_BONUS_SCRIPT_LENGTH) {
+		ShowError("addbonus_script: Script string to long: \"%s\".\n", script);
+		return;
+	}
+
+	if (icon <= EFST_BLANK || icon >= EFST_MAX)
+		icon = EFST_BLANK;
+
+	if ((entry = pc_bonus_script_add(sd, script, duration, (enum efst_types)icon, flag, type))) {
+		linkdb_insert(&sd->bonus_script.head, (void *)((intptr_t)entry), entry);
+		status_calc_pc(sd, SCO_NONE);
+	}
 }
 
 /**
