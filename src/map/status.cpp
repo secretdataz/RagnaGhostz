@@ -1921,7 +1921,7 @@ int status_damage(struct block_list *src,struct block_list *target,int64 dhp, in
 		}
 	}
 
-	if( sc && sc->data[SC_KAIZEL] && !map_flag_gvg2(target->m) ) { // flag&8 = disable Kaizel
+	if( sc && sc->data[SC_KAIZEL] && !map_flag_gvg2(target->m) && (target->type == BL_PC && BL_CAST(BL_PC, target)->mast[MASTERY_SEM_RETORNO]->val1 == 0)) { // flag&8 = disable Kaizel
 		int time = skill_get_time2(SL_KAIZEL,sc->data[SC_KAIZEL]->val1, src);
 		// Look for Osiris Card's bonus effect on the character and revive 100% or revive normally
 		if ( target->type == BL_PC && BL_CAST(BL_PC,target)->special_state.restart_full_recover )
@@ -2056,6 +2056,9 @@ int status_heal(struct block_list *bl,int64 hhp,int64 hsp, int flag)
 	status->hp += hp;
 	status->sp += sp;
 
+	updateView(bl, SP_HP);
+	updateView(bl, SP_SP);
+
 	if(hp && sc &&
 		sc->data[SC_AUTOBERSERK] &&
 		sc->data[SC_PROVOKE] &&
@@ -2157,9 +2160,23 @@ int status_revive(struct block_list *bl, unsigned char per_hp, unsigned char per
 	unsigned int hp, sp;
 	if (!status_isdead(bl)) return 0;
 
+	if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_SEM_RETORNO]->val1 == 1)
+		return 1;
+
 	status = status_get_status_data(bl);
 	if (status == &dummy_status)
 		return 0; // Invalid target.
+
+	if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_RETORNO]->active)
+	{
+		per_hp += BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_RETORNO]->level;
+		per_sp += BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_RETORNO]->level;
+	}
+
+	if (per_hp > 100)
+		per_hp = 100;
+	if (per_sp > 100)
+		per_sp == 100;
 
 	hp = (int64)status->max_hp * per_hp/100;
 	sp = (int64)status->max_sp * per_sp/100;
@@ -5721,6 +5738,9 @@ static unsigned short status_calc_str(struct block_list *bl, struct status_chang
 	if(!sc || !sc->count)
 		return cap_value(str,0,USHRT_MAX);
 
+	if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_FORCA]->active)
+		str += BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_FORCA]->level / 10;
+
 	if(sc->data[SC_HARMONIZE]) {
 		str -= sc->data[SC_HARMONIZE]->val2;
 		return (unsigned short)cap_value(str,0,USHRT_MAX);
@@ -5809,6 +5829,9 @@ static unsigned short status_calc_agi(struct block_list *bl, struct status_chang
 	if(!sc || !sc->count)
 		return cap_value(agi,0,USHRT_MAX);
 
+	if (bl && bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_AGILIDADE]->active)
+		agi += BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_AGILIDADE]->level / 10;
+
 	if(sc->data[SC_HARMONIZE]) {
 		agi -= sc->data[SC_HARMONIZE]->val2;
 		return (unsigned short)cap_value(agi,0,USHRT_MAX);
@@ -5829,8 +5852,13 @@ static unsigned short status_calc_agi(struct block_list *bl, struct status_chang
 		agi += 5;
 	if(sc->data[SC_INCREASEAGI])
 		agi += sc->data[SC_INCREASEAGI]->val2;
-	if(sc->data[SC_INCREASING])
+	if (sc->data[SC_INCREASING])
+	{
 		agi += 4; // Added based on skill updates [Reddozen]
+
+		if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_AUMENTAR_PRECISAO_EX]->active)
+			agi += BL_CAST(BL_PC, bl)->mast[MASTERY_AUMENTAR_PRECISAO_EX]->level / 10;
+	}
 	if(sc->data[SC_2011RWC_SCROLL])
 		agi += sc->data[SC_2011RWC_SCROLL]->val1;
 	if(sc->data[SC_DECREASEAGI])
@@ -5884,6 +5912,9 @@ static unsigned short status_calc_vit(struct block_list *bl, struct status_chang
 {
 	if(!sc || !sc->count)
 		return cap_value(vit,0,USHRT_MAX);
+
+	if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_VITALIDADE]->active)
+		vit += BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_VITALIDADE]->level / 10;
 
 	if(sc->data[SC_HARMONIZE]) {
 		vit -= sc->data[SC_HARMONIZE]->val2;
@@ -5950,6 +5981,9 @@ static unsigned short status_calc_int(struct block_list *bl, struct status_chang
 {
 	if(!sc || !sc->count)
 		return cap_value(int_,0,USHRT_MAX);
+
+	if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_INTELIGENCIA]->active)
+		int_ += BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_INTELIGENCIA]->level / 10;
 
 	if(sc->data[SC_HARMONIZE]) {
 		int_ -= sc->data[SC_HARMONIZE]->val2;
@@ -6032,6 +6066,9 @@ static unsigned short status_calc_dex(struct block_list *bl, struct status_chang
 	if(!sc || !sc->count)
 		return cap_value(dex,0,USHRT_MAX);
 
+	if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_DESTREZA]->active)
+		dex += BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_DESTREZA]->level / 10;
+
 	if(sc->data[SC_HARMONIZE]) {
 		dex -= sc->data[SC_HARMONIZE]->val2;
 		return (unsigned short)cap_value(dex,0,USHRT_MAX);
@@ -6060,8 +6097,13 @@ static unsigned short status_calc_dex(struct block_list *bl, struct status_chang
 		else
 			dex >>= 1;
 	}
-	if(sc->data[SC_INCREASING])
+	if (sc->data[SC_INCREASING])
+	{
 		dex += 4; // Added based on skill updates [Reddozen]
+
+		if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_AUMENTAR_PRECISAO_EX]->active)
+			dex += BL_CAST(BL_PC, bl)->mast[MASTERY_AUMENTAR_PRECISAO_EX]->level / 10;
+	}
 	if(sc->data[SC_MARIONETTE])
 		dex -= ((sc->data[SC_MARIONETTE]->val4)>>8)&0xFF;
 	if(sc->data[SC_2011RWC_SCROLL])
@@ -6109,6 +6151,9 @@ static unsigned short status_calc_luk(struct block_list *bl, struct status_chang
 {
 	if(!sc || !sc->count)
 		return cap_value(luk,0,USHRT_MAX);
+
+	if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_SORTE]->active)
+		luk += BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_SORTE]->level / 10;
 
 	if(sc->data[SC_HARMONIZE]) {
 		luk -= sc->data[SC_HARMONIZE]->val2;

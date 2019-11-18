@@ -312,6 +312,8 @@ static int clif_send_sub(struct block_list *bl, va_list ap)
 {
 	struct block_list *src_bl;
 	struct map_session_data *sd;
+	struct map_session_data *source_sd;
+
 	unsigned char *buf;
 	int len, type, fd;
 
@@ -327,7 +329,10 @@ static int clif_send_sub(struct block_list *bl, va_list ap)
 	nullpo_ret(src_bl = va_arg(ap,struct block_list*));
 	type = va_arg(ap,int);
 
-	switch(type) {
+	nullpo_ret(source_sd = (struct map_session_data *)src_bl);
+
+	switch(type)
+	{
 	case AREA_WOS:
 		if (bl == src_bl)
 			return 0;
@@ -396,11 +401,11 @@ int clif_send(const uint8* buf, int len, struct block_list* bl, enum send_target
 
 	sd = BL_CAST(BL_PC, bl);
 
-	switch(type) {
+	switch (type) {
 
 	case ALL_CLIENT: //All player clients.
 		iter = mapit_getallusers();
-		while( (tsd = (TBL_PC*)mapit_next(iter)) != NULL ){
+		while ((tsd = (TBL_PC*)mapit_next(iter)) != NULL) {
 			WFIFOHEAD(tsd->fd, len);
 			memcpy(WFIFOP(tsd->fd, 0), buf, len);
 			WFIFOSET(tsd->fd, len);
@@ -410,12 +415,12 @@ int clif_send(const uint8* buf, int len, struct block_list* bl, enum send_target
 
 	case ALL_SAMEMAP: //All players on the same map
 		iter = mapit_getallusers();
-		while( (tsd = (TBL_PC*)mapit_next(iter)) != NULL )
+		while ((tsd = (TBL_PC*)mapit_next(iter)) != NULL)
 		{
-			if( bl->m == tsd->bl.m ){
+			if (bl->m == tsd->bl.m) {
 				WFIFOHEAD(tsd->fd, len);
-				memcpy(WFIFOP(tsd->fd,0), buf, len);
-				WFIFOSET(tsd->fd,len);
+				memcpy(WFIFOP(tsd->fd, 0), buf, len);
+				WFIFOSET(tsd->fd, len);
 			}
 		}
 		mapit_free(iter);
@@ -424,39 +429,41 @@ int clif_send(const uint8* buf, int len, struct block_list* bl, enum send_target
 	case AREA:
 	case AREA_WOSC:
 		if (sd && bl->prev == NULL) //Otherwise source misses the packet.[Skotlex]
-			clif_send (buf, len, bl, SELF);
+			clif_send(buf, len, bl, SELF);
 	case AREA_WOC:
 	case AREA_WOS:
-		map_foreachinallarea(clif_send_sub, bl->m, bl->x-AREA_SIZE, bl->y-AREA_SIZE, bl->x+AREA_SIZE, bl->y+AREA_SIZE,
+		map_foreachinallarea(clif_send_sub, bl->m, bl->x - AREA_SIZE, bl->y - AREA_SIZE, bl->x + AREA_SIZE, bl->y + AREA_SIZE,
 			BL_PC, buf, len, bl, type);
 		break;
 	case AREA_CHAT_WOC:
-		map_foreachinallarea(clif_send_sub, bl->m, bl->x-(AREA_SIZE-5), bl->y-(AREA_SIZE-5),
-			bl->x+(AREA_SIZE-5), bl->y+(AREA_SIZE-5), BL_PC, buf, len, bl, AREA_WOC);
+		map_foreachinallarea(clif_send_sub, bl->m, bl->x - (AREA_SIZE - 5), bl->y - (AREA_SIZE - 5),
+			bl->x + (AREA_SIZE - 5), bl->y + (AREA_SIZE - 5), BL_PC, buf, len, bl, AREA_WOC);
 		break;
 
 	case CHAT:
 	case CHAT_WOS:
-		{
-			struct chat_data *cd;
-			if (sd) {
-				cd = (struct chat_data*)map_id2bl(sd->chatID);
-			} else if (bl->type == BL_CHAT) {
-				cd = (struct chat_data*)bl;
-			} else break;
-			if (cd == NULL)
-				break;
-			for(i = 0; i < cd->users; i++) {
-				if (type == CHAT_WOS && cd->usersd[i] == sd)
-					continue;
-				if ((fd=cd->usersd[i]->fd) >0 && session[fd]){ // Added check to see if session exists [PoW]
-					WFIFOHEAD(fd,len);
-					memcpy(WFIFOP(fd,0), buf, len);
-					WFIFOSET(fd,len);
-				}
+	{
+		struct chat_data *cd;
+		if (sd) {
+			cd = (struct chat_data*)map_id2bl(sd->chatID);
+		}
+		else if (bl->type == BL_CHAT) {
+			cd = (struct chat_data*)bl;
+		}
+		else break;
+		if (cd == NULL)
+			break;
+		for (i = 0; i < cd->users; i++) {
+			if (type == CHAT_WOS && cd->usersd[i] == sd)
+				continue;
+			if ((fd = cd->usersd[i]->fd) > 0 && session[fd]) { // Added check to see if session exists [PoW]
+				WFIFOHEAD(fd, len);
+				memcpy(WFIFOP(fd, 0), buf, len);
+				WFIFOSET(fd, len);
 			}
 		}
-		break;
+	}
+	break;
 
 	case PARTY_AREA:
 	case PARTY_AREA_WOS:
@@ -472,20 +479,20 @@ int clif_send(const uint8* buf, int len, struct block_list* bl, enum send_target
 			p = party_search(sd->status.party_id);
 
 		if (p) {
-			for(i=0;i<MAX_PARTY;i++){
-				if( (sd = p->data[i].sd) == NULL )
+			for (i = 0; i < MAX_PARTY; i++) {
+				if ((sd = p->data[i].sd) == NULL)
 					continue;
 
-				if( !(fd=sd->fd) )
+				if (!(fd = sd->fd))
 					continue;
 
-				if( sd->bl.id == bl->id && (type == PARTY_WOS || type == PARTY_SAMEMAP_WOS || type == PARTY_AREA_WOS) )
+				if (sd->bl.id == bl->id && (type == PARTY_WOS || type == PARTY_SAMEMAP_WOS || type == PARTY_AREA_WOS))
 					continue;
 
-				if( type != PARTY && type != PARTY_WOS && bl->m != sd->bl.m )
+				if (type != PARTY && type != PARTY_WOS && bl->m != sd->bl.m)
 					continue;
 
-				if( (type == PARTY_AREA || type == PARTY_AREA_WOS) && (sd->bl.x < x0 || sd->bl.y < y0 || sd->bl.x > x1 || sd->bl.y > y1) )
+				if ((type == PARTY_AREA || type == PARTY_AREA_WOS) && (sd->bl.x < x0 || sd->bl.y < y0 || sd->bl.x > x1 || sd->bl.y > y1))
 					continue;
 
 				WFIFOHEAD(fd, len);
@@ -496,12 +503,12 @@ int clif_send(const uint8* buf, int len, struct block_list* bl, enum send_target
 				break;
 
 			iter = mapit_getallusers();
-			while( (tsd = (TBL_PC*)mapit_next(iter)) != NULL )
+			while ((tsd = (TBL_PC*)mapit_next(iter)) != NULL)
 			{
-				if( tsd->partyspy == p->party.party_id ){
+				if (tsd->partyspy == p->party.party_id) {
 					WFIFOHEAD(tsd->fd, len);
-					memcpy(WFIFOP(tsd->fd,0), buf, len);
-					WFIFOSET(tsd->fd,len);
+					memcpy(WFIFOP(tsd->fd, 0), buf, len);
+					WFIFOSET(tsd->fd, len);
 				}
 			}
 			mapit_free(iter);
@@ -513,28 +520,28 @@ int clif_send(const uint8* buf, int len, struct block_list* bl, enum send_target
 		if (!sd || !sd->duel_group) break; //Invalid usage.
 
 		iter = mapit_getallusers();
-		while( (tsd = (TBL_PC*)mapit_next(iter)) != NULL )
+		while ((tsd = (TBL_PC*)mapit_next(iter)) != NULL)
 		{
-			if( type == DUEL_WOS && bl->id == tsd->bl.id )
+			if (type == DUEL_WOS && bl->id == tsd->bl.id)
 				continue;
-			if( sd->duel_group == tsd->duel_group ){
+			if (sd->duel_group == tsd->duel_group) {
 				WFIFOHEAD(tsd->fd, len);
-				memcpy(WFIFOP(tsd->fd,0), buf, len);
-				WFIFOSET(tsd->fd,len);
+				memcpy(WFIFOP(tsd->fd, 0), buf, len);
+				WFIFOSET(tsd->fd, len);
 			}
 		}
 		mapit_free(iter);
 		break;
 
 	case SELF:
-		if (sd && (fd=sd->fd)) {
-			WFIFOHEAD(fd,len);
-			memcpy(WFIFOP(fd,0), buf, len);
-			WFIFOSET(fd,len);
+		if (sd && (fd = sd->fd)) {
+			WFIFOHEAD(fd, len);
+			memcpy(WFIFOP(fd, 0), buf, len);
+			WFIFOSET(fd, len);
 		}
 		break;
 
-	// New definitions for guilds [Valaris] - Cleaned up and reorganized by [Skotlex]
+		// New definitions for guilds [Valaris] - Cleaned up and reorganized by [Skotlex]
 	case GUILD_AREA:
 	case GUILD_AREA_WOS:
 		x0 = bl->x - AREA_SIZE;
@@ -550,39 +557,39 @@ int clif_send(const uint8* buf, int len, struct block_list* bl, enum send_target
 			g = sd->guild;
 
 		if (g) {
-			for(i = 0; i < g->max_member; i++) {
-				if( (sd = g->member[i].sd) != NULL )
+			for (i = 0; i < g->max_member; i++) {
+				if ((sd = g->member[i].sd) != NULL)
 				{
-					if( !(fd=sd->fd) )
+					if (!(fd = sd->fd))
 						continue;
 
-					if( type == GUILD_NOBG && sd->bg_id )
+					if (type == GUILD_NOBG && sd->bg_id)
 						continue;
 
-					if( sd->bl.id == bl->id && (type == GUILD_WOS || type == GUILD_SAMEMAP_WOS || type == GUILD_AREA_WOS) )
+					if (sd->bl.id == bl->id && (type == GUILD_WOS || type == GUILD_SAMEMAP_WOS || type == GUILD_AREA_WOS))
 						continue;
 
-					if( type != GUILD && type != GUILD_NOBG && type != GUILD_WOS && sd->bl.m != bl->m )
+					if (type != GUILD && type != GUILD_NOBG && type != GUILD_WOS && sd->bl.m != bl->m)
 						continue;
 
-					if( (type == GUILD_AREA || type == GUILD_AREA_WOS) && (sd->bl.x < x0 || sd->bl.y < y0 || sd->bl.x > x1 || sd->bl.y > y1) )
+					if ((type == GUILD_AREA || type == GUILD_AREA_WOS) && (sd->bl.x < x0 || sd->bl.y < y0 || sd->bl.x > x1 || sd->bl.y > y1))
 						continue;
 
-					WFIFOHEAD(fd,len);
-					memcpy(WFIFOP(fd,0), buf, len);
-					WFIFOSET(fd,len);
+					WFIFOHEAD(fd, len);
+					memcpy(WFIFOP(fd, 0), buf, len);
+					WFIFOSET(fd, len);
 				}
 			}
 			if (!enable_spy) //Skip unnecessary parsing. [Skotlex]
 				break;
 
 			iter = mapit_getallusers();
-			while( (tsd = (TBL_PC*)mapit_next(iter)) != NULL )
+			while ((tsd = (TBL_PC*)mapit_next(iter)) != NULL)
 			{
-				if( tsd->guildspy == g->guild_id ){
+				if (tsd->guildspy == g->guild_id) {
 					WFIFOHEAD(tsd->fd, len);
-					memcpy(WFIFOP(tsd->fd,0), buf, len);
-					WFIFOSET(tsd->fd,len);
+					memcpy(WFIFOP(tsd->fd, 0), buf, len);
+					WFIFOSET(tsd->fd, len);
 				}
 			}
 			mapit_free(iter);
@@ -599,44 +606,44 @@ int clif_send(const uint8* buf, int len, struct block_list* bl, enum send_target
 	case BG_SAMEMAP_WOS:
 	case BG:
 	case BG_WOS:
-		if( sd && sd->bg_id && (bg = bg_team_search(sd->bg_id)) != NULL )
+		if (sd && sd->bg_id && (bg = bg_team_search(sd->bg_id)) != NULL)
 		{
-			for( i = 0; i < MAX_BG_MEMBERS; i++ )
+			for (i = 0; i < MAX_BG_MEMBERS; i++)
 			{
-				if( (sd = bg->members[i].sd) == NULL || !(fd = sd->fd) )
+				if ((sd = bg->members[i].sd) == NULL || !(fd = sd->fd))
 					continue;
-				if( sd->bl.id == bl->id && (type == BG_WOS || type == BG_SAMEMAP_WOS || type == BG_AREA_WOS) )
+				if (sd->bl.id == bl->id && (type == BG_WOS || type == BG_SAMEMAP_WOS || type == BG_AREA_WOS))
 					continue;
-				if( type != BG && type != BG_WOS && sd->bl.m != bl->m )
+				if (type != BG && type != BG_WOS && sd->bl.m != bl->m)
 					continue;
-				if( (type == BG_AREA || type == BG_AREA_WOS) && (sd->bl.x < x0 || sd->bl.y < y0 || sd->bl.x > x1 || sd->bl.y > y1) )
+				if ((type == BG_AREA || type == BG_AREA_WOS) && (sd->bl.x < x0 || sd->bl.y < y0 || sd->bl.x > x1 || sd->bl.y > y1))
 					continue;
-				WFIFOHEAD(fd,len);
-				memcpy(WFIFOP(fd,0), buf, len);
-				WFIFOSET(fd,len);
+				WFIFOHEAD(fd, len);
+				memcpy(WFIFOP(fd, 0), buf, len);
+				WFIFOSET(fd, len);
 			}
 		}
 		break;
 	case CLAN:
-		if( sd && sd->clan ){
+		if (sd && sd->clan) {
 			struct clan* clan = sd->clan;
 
-			for( i = 0; i < clan->max_member; i++ ){
-				if( ( sd = clan->members[i] ) == NULL || !(fd = sd->fd) ){
+			for (i = 0; i < clan->max_member; i++) {
+				if ((sd = clan->members[i]) == NULL || !(fd = sd->fd)) {
 					continue;
 				}
 
-				WFIFOHEAD(fd,len);
-				memcpy(WFIFOP(fd,0), buf, len);
-				WFIFOSET(fd,len);
+				WFIFOHEAD(fd, len);
+				memcpy(WFIFOP(fd, 0), buf, len);
+				WFIFOSET(fd, len);
 			}
 
 			if (!enable_spy) //Skip unnecessary parsing. [Skotlex]
 				break;
 
 			iter = mapit_getallusers();
-			while ((tsd = (TBL_PC*)mapit_next(iter)) != NULL){
-				if (tsd->clanspy == clan->id){
+			while ((tsd = (TBL_PC*)mapit_next(iter)) != NULL) {
+				if (tsd->clanspy == clan->id) {
 					WFIFOHEAD(tsd->fd, len);
 					memcpy(WFIFOP(tsd->fd, 0), buf, len);
 					WFIFOSET(tsd->fd, len);
@@ -647,7 +654,7 @@ int clif_send(const uint8* buf, int len, struct block_list* bl, enum send_target
 		break;
 
 	default:
-		ShowError("clif_send: Unrecognized type %d\n",type);
+		ShowError("clif_send: Unrecognized type %d\n", type);
 		return -1;
 	}
 
@@ -1458,6 +1465,8 @@ int clif_spawn(struct block_list *bl)
 	if (vd->body_style)
 		clif_refreshlook(bl,bl->id,LOOK_BODY2,vd->body_style,AREA_WOS);
 
+	clif_hat_effects(bl, bl, AREA);
+
 	switch (bl->type)
 	{
 	case BL_PC:
@@ -1476,12 +1485,14 @@ int clif_spawn(struct block_list *bl)
 				clif_spiritcharm(sd);
 			if (sd->status.robe)
 				clif_refreshlook(bl,bl->id,LOOK_ROBE,sd->status.robe,AREA);
+
 			clif_efst_status_change_sub(bl, bl, AREA);
 		}
 		break;
 	case BL_MOB:
 		{
 			TBL_MOB *md = ((TBL_MOB*)bl);
+
 			if(md->special_state.size==SZ_BIG) // tiny/big mobs [Valaris]
 				clif_specialeffect(&md->bl,EF_GIANTBODY2,AREA);
 			else if(md->special_state.size==SZ_MEDIUM)
@@ -1491,6 +1502,7 @@ int clif_spawn(struct block_list *bl)
 	case BL_NPC:
 		{
 			TBL_NPC *nd = ((TBL_NPC*)bl);
+
 			if( nd->size == SZ_BIG )
 				clif_specialeffect(&nd->bl,EF_GIANTBODY2,AREA);
 			else if( nd->size == SZ_MEDIUM )
@@ -1504,8 +1516,6 @@ int clif_spawn(struct block_list *bl)
 			clif_pet_equip_area((TBL_PET*)bl); // needed to display pet equip properly
 		break;
 	}
-
-	clif_hat_effects(bl, bl, AREA);
 
 	return 0;
 }
@@ -3119,6 +3129,8 @@ void clif_guild_xy_remove(struct map_session_data *sd)
  *------------------------------------------*/
 static int clif_hpmeter_sub(struct block_list *bl, va_list ap)
 {
+	return 0;
+
 	struct map_session_data *sd, *tsd;
 #if PACKETVER < 20100126
 	const int cmd = 0x106;
@@ -3163,9 +3175,68 @@ static int clif_hpmeter_sub(struct block_list *bl, va_list ap)
  *------------------------------------------*/
 static int clif_hpmeter(struct map_session_data *sd)
 {
+	return 0;
 	nullpo_ret(sd);
 	map_foreachinallarea(clif_hpmeter_sub, sd->bl.m, sd->bl.x-AREA_SIZE, sd->bl.y-AREA_SIZE, sd->bl.x+AREA_SIZE, sd->bl.y+AREA_SIZE, BL_PC, sd);
 	return 0;
+}
+
+/*
+Comando:
+	updateView
+
+Descri��o:
+	Atualiza visualmente algum status do personagem.
+*/
+void updateView(struct block_list *bl, int stats)
+{
+	if (bl == NULL || status_get_viewdata(bl) == NULL)
+		return;
+
+	unit_attacheffect(bl, 357, false, true);
+	unit_attacheffect(bl, 358, false, true);
+
+	struct view_data *vd = status_get_viewdata(bl);
+
+	int percent = 0;
+
+	int val = 0;
+	int val_max = 0;
+
+	switch (stats)
+	{
+	default:
+		break;
+
+	case SP_HP:
+		val = status_get_hp(bl);
+		val_max = status_get_max_hp(bl);
+
+		unit_attacheffect(bl, vd->display_hp, false, true);
+
+		percent = cap_value((val * 100) / val_max, 0, 100);
+
+		vd->display_hp = (int)(HUDSPRITE_HP1 + (percent - 2) * (HUDSPRITE_HP100 - HUDSPRITE_HP1) / 99);
+
+		unit_attacheffect(bl, vd->display_hp, true, true);
+		break;
+
+	case SP_SP:
+		val = status_get_sp(bl);
+		val_max = status_get_max_sp(bl);
+
+		unit_attacheffect(bl, vd->display_sp, false, true);
+
+		percent = cap_value((val * 100) / val_max, 0, 100);
+
+		vd->display_sp = (int)(HUDSPRITE_SP1 + (percent - 2) * (HUDSPRITE_SP100 - HUDSPRITE_SP1) / 99);
+
+		unit_attacheffect(bl, vd->display_sp, true, true);
+		break;
+	}
+
+	unit_attacheffect(bl, 357, true, true);
+	unit_attacheffect(bl, 358, true, true);
 }
 
 /// Notifies client of a character parameter change.
@@ -3431,15 +3502,10 @@ void clif_updatestatus(struct map_session_data *sd,int type)
 			}
 			break;
 		case SP_HP:
-			if( map_getmapdata(sd->bl.m)->hpmeter_visible ){
-				clif_hpmeter(sd);
-			}
-			if( !battle_config.party_hp_mode && sd->status.party_id ){
-				clif_party_hp(sd);
-			}
-			if( sd->bg_id ){
-				clif_bg_hp(sd);
-			}
+			updateView(&sd->bl, type);
+			break;
+		case SP_SP:
+			updateView(&sd->bl, type);
 			break;
 	}
 }
@@ -4671,6 +4737,9 @@ void clif_getareachar_unit(struct map_session_data* sd,struct block_list *bl)
 	if (vd->body_style)
 		clif_refreshlook(&sd->bl,bl->id,LOOK_BODY2,vd->body_style,SELF);
 
+	if(bl->type != BL_PC)
+		clif_hat_effects(&sd->bl, bl, SELF);
+
 	clif_hat_effects(&sd->bl, bl, SELF);
 
 	switch (bl->type)
@@ -4688,7 +4757,9 @@ void clif_getareachar_unit(struct map_session_data* sd,struct block_list *bl)
 				clif_sendbgemblem_single(sd->fd,tsd);
 			if ( tsd->status.robe )
 				clif_refreshlook(&sd->bl,bl->id,LOOK_ROBE,tsd->status.robe,SELF);
+
 			clif_efst_status_change_sub(&sd->bl, bl, SELF);
+
 		}
 		break;
 	case BL_MER: // Devotion Effects
@@ -7740,6 +7811,7 @@ void clif_party_xy_single(int fd, struct map_session_data *sd)
 /// 080e <account id>.L <hp>.L <max hp>.L (ZC_NOTIFY_HP_TO_GROUPM_R2)
 void clif_party_hp(struct map_session_data *sd)
 {
+	return;
 	unsigned char buf[16];
 #if PACKETVER < 20100126
 	const int cmd = 0x106;
@@ -7804,6 +7876,7 @@ void clif_party_job_and_level(struct map_session_data *sd){
  *------------------------------------------*/
 void clif_hpmeter_single(int fd, int id, unsigned int hp, unsigned int maxhp)
 {
+	return;
 #if PACKETVER < 20100126
 	const int cmd = 0x106;
 #else
@@ -11342,6 +11415,12 @@ void clif_parse_WisMessage(int fd, struct map_session_data* sd)
 	// validate packet and retrieve name and message
 	if( !clif_process_message( sd, true, target, message, output ) )
 		return;
+
+	if (sd->mast[MASTERY_CONTADOR_DE_SEGREDOS]->active)
+	{
+		clif_disp_overhead_(&sd->bl, "Ainda sou incapaz de fazer isto", SELF);
+		return;
+	}
 
 	// Chat logging type 'W' / Whisper
 	log_chat(LOG_CHAT_WHISPER, 0, sd->status.char_id, sd->status.account_id, mapindex_id2name(sd->mapindex), sd->bl.x, sd->bl.y, target, message);
@@ -20889,6 +20968,11 @@ void clif_parse_equipswitch_request( int fd, struct map_session_data* sd ){
 	if( DIFF_TICK(tick, sd->equipswitch_tick) < 0 ) {
 		// Client will not let you send a request
 		return;
+	}
+
+	if (sd->mast[MASTERY_RAPIDEZ_DE_TROCA]->level != 30)
+	{
+		clif_disp_overhead_(&sd->bl, "Ainda sou incapaz de fazer isto sem a maestria [Rapidez de Troca]", SELF);
 	}
 
 	sd->equipswitch_tick = tick + skill_get_cooldown( skill_id, skill_lv );

@@ -3314,6 +3314,16 @@ int unit_free(struct block_list *bl, clr_type clrtype)
 				sd->qi_display = NULL;
 			}
 			sd->qi_count = 0;
+		
+			if (sd->achievement_data.achievements)
+				achievement_free(sd);
+
+			// Clearing...
+			if (sd->bonus_script.head)
+				pc_bonus_script_clear(sd, BSF_REM_ALL);
+
+			skill_clear_unitgroup(bl);
+			status_change_clear(bl,1);
 
 			for (int i = 0; i < CSD_TOTAL; i++)
 			{
@@ -3329,15 +3339,6 @@ int unit_free(struct block_list *bl, clr_type clrtype)
 				sd->mast[i] = NULL;
 			}
 
-			if (sd->achievement_data.achievements)
-				achievement_free(sd);
-
-			// Clearing...
-			if (sd->bonus_script.head)
-				pc_bonus_script_clear(sd, BSF_REM_ALL);
-
-			skill_clear_unitgroup(bl);
-			status_change_clear(bl,1);
 			break;
 		}
 		case BL_PET: {

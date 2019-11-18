@@ -1,0 +1,188 @@
+
+
+phtownall,48,58,1	script	Organizador de Build	556,{
+	
+	.@n$ = "[^9400D3Organizador de Build^000000]";
+	
+	if( BaseLevel < 300 )
+	{
+		mes .@n$;
+		mes "Sinto muito, você ainda não pode usar meus serviços, volte quando estiver no nível máximo.";
+		next;
+		mes .@n$;
+		mes "A menos que esteja somente querendo resetar seus atributos, posso abrir uma exceção e lhe conceder este pedido.";
+
+		if( select( "Não, obrigado.", "Sim, por favor." ) == 2)
+			goto L_reset;
+	}
+
+	mes .@n$;
+	mes "Deseja adquirir um dos meus serviços?";
+
+	if( getgroupid() == 0 )
+		mes "Lembre-se, VIP's tem direito a utilizar 5 slots para salvar suas Build, enquanto que players normais possuem somente 2.";
+
+	L_resql:
+	.@q = query_sql( "SELECT `nome`, `pos`,    `remain_points`, " +
+				     "       `str`,  `agi`,    `vit`,           " +
+				     "       `int_`, `dex`,    `luk`            " +
+				     "  FROM `build_players`                    " +
+				     " WHERE `char_id` = " + getcharid(0) +
+				     " ORDER BY `pos` ",
+				     .@nome$, .@pos, .@remain_points,
+				     .@str, .@agi, .@vit,
+				     .@int, .@dex, .@luk );
+
+	if( .@q == 0 )
+	{
+		for( .@i = 0; .@i < 5; .@i++ )
+		{
+			query_sql(
+				sprintf( "INSERT INTO `build_players` ( `char_id`, `nome`, `pos`, `remain_points`, `str`, `agi`, `vit`, `int_`, `dex`, `luk` ) " +
+				         "     VALUES ( %d, '%s', %d, %d, %d, %d, %d, %d, %d, %d )", getcharid(0), 
+				         "^8B7D7BSlot Vazio (" + .@i + ")^000000", .@i, 0, 0, 0, 0, 0, 0, 0 ) );
+		}
+
+		goto L_resql;
+	}
+
+
+	.@max_slot = getgroupid() == 0 ? 2 : 5;
+
+	switch( select( "^006400@^000000Resetar Atributos", "^DAA520@^000000Carregar Build", "^0000FF@^000000Salvar Build" ) )
+	{
+		case 1:
+			L_reset:
+			next;
+			mes .@n$;
+			mes "Como desejar.";
+			close2;
+			resetstatus();
+			end;
+
+		case 2:
+			next;
+			mes .@n$;
+
+			if( .@q == 0 )
+			{
+				mes "Você ainda não tem nenhuma Build salva comigo.";
+				close;
+			}
+
+			mes "Selecione qual build deseja carregar.";
+
+			.@option = select( implode( .@nome$, ":" ) );
+			.@option--;
+
+			if( .@str[.@option] == 0 )
+			{
+				next;
+				mes .@n$;
+				mes "Esse slot ainda não foi salvo.";
+				close;
+			}
+
+			if( .@option >= 2 && getgroupid() == 0)
+			{
+				next;
+				mes .@n$;
+				mes "Sinto muito, apenas VIP's podem utilizar este número de Slot.";
+				close;
+			}
+
+			close2;
+			resetstatus();
+
+			StatusPoint = .@remain_points[.@option];
+
+			.@str[.@option] -= 1;
+			.@agi[.@option] -= 1;
+			.@vit[.@option] -= 1;
+			.@int[.@option] -= 1;
+			.@dex[.@option] -= 1;
+			.@luk[.@option] -= 1;
+
+			atcommand "@str " + .@str[.@option];
+			atcommand "@agi " + .@agi[.@option];
+			atcommand "@vit " + .@vit[.@option];
+			atcommand "@int " + .@int[.@option];
+			atcommand "@dex " + .@dex[.@option];
+			atcommand "@luk " + .@luk[.@option];
+
+			npctalk "Estou a seu dispor, " + strcharinfo(0);
+			end;
+
+		case 3:
+			next;
+			mes .@n$;
+			mes "Selecione em qual slot deseja salvar sua Build.";
+
+			.@menu$ = "";
+
+			for( .@i = 0; .@i < .@max_slot; .@i++ )
+			{
+				if( .@nome$[.@i] == "" )
+				{
+					.@menu$ += "^8B7D7BSlot Vazio^000000:";
+					.@empty[.@i] = 1;
+				}
+				else
+					.@menu$ += .@nome$[.@i] + ":";
+			}
+
+			.@option = select( .@menu$ );
+			.@option--;
+
+			next;
+			mes .@n$;
+
+			if( .@option >= 2 && getgroupid() == 0)
+			{
+				next;
+				mes .@n$;
+				mes "Sinto muito, apenas VIP's podem utilizar este número de Slot.";
+				close;
+			}
+
+			if( .@empty[.@option] == 0 )
+			{
+				mes "Este Slot atualmente contem salva a Build [^DAA520" + .@nome$[.@option] + "^000000].";
+				mes "Confirma que deseja salvar por cima dela?";
+
+				if( select( "Não", "Sim" ) == 1 ) close;
+				next;
+				mes .@n$;
+			}
+
+			mes "Digite qual será o nome desta build.";
+
+			input .@build_name$;
+
+			.@count_string = getstrlen( .@build_name$ );
+
+			if( .@count_string == 0 || .@count_string > 30 )
+			{
+				next;
+				mes .@n$;
+				mes "O nome da Build deve possuír no mínimo um caractere e no máximo 30.";
+				close;
+			}
+
+			close2;
+
+			if( .@empty[.@option] == 0)
+				query_sql( "DELETE FROM `build_players` WHERE `char_id` = " + getcharid(0) + " AND `pos` = " + .@option + "" );
+
+			query_sql(
+					sprintf( "INSERT INTO `build_players` ( `char_id`, `nome`, `pos`, `remain_points`, `str`, `agi`, `vit`, `int_`, `dex`, `luk` ) " +
+					         "     VALUES ( %d, '%s', %d, %d, %d, %d, %d, %d, %d, %d )", getcharid(0), 
+					         .@build_name$, .@option, StatusPoint, readparam(bStr), readparam(bAgi), readparam(bVit), readparam(bInt), readparam(bDex), readparam(bLuk) ) );
+
+			npctalk "Sua nova Build chamada [" + .@build_name$ + "] foi salva, sei que ela será forte, " + strcharinfo(0);
+			end;
+	}
+	
+	end;
+}
+

@@ -7904,6 +7904,8 @@ void pc_respawn(struct map_session_data* sd, clr_type clrtype)
 	if( sd->bg_id && bg_member_respawn(sd) )
 		return; // member revived by battleground
 
+	sd->mast[MASTERY_SEM_RETORNO]->val1 = 0;
+
 	pc_setstand(sd, true);
 	pc_setrestartvalue(sd,3);
 	if( pc_setpos(sd, sd->status.save_point.map, sd->status.save_point.x, sd->status.save_point.y, clrtype) != SETPOS_OK )
@@ -8171,6 +8173,18 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 				unit_skilluse_id(src, src->id, CH_SOULCOLLECT, pc_checkskill(ssd, CH_SOULCOLLECT));
 				status_percent_heal(src, 0, 100);
 			}
+
+			if (ssd->mast[MASTERY_RASTREAR_O_ALVO_EX]->level == 125 && ssd->mast[MASTERY_RASTREAR_O_ALVO_EX]->val1 == sd->status.account_id)
+			{
+				ssd->mast[MASTERY_RASTREAR_O_ALVO_EX]->val1 = 0;
+				addbonus_script(sd, "bonus bAllStats,15;", 7000);
+			}
+
+			if (ssd->mast[MASTERY_SEM_RETORNO]->level == 150)
+				sd->mast[MASTERY_SEM_RETORNO]->val1 = 1;
+
+			if (sd->mast[MASTERY_DOCE_VINGANCA]->level == 100)
+				sd->mast[MASTERY_DOCE_VINGANCA]->val1 = ssd->status.char_id;
 		}
 
 		if (battle_config.pk_mode&2) {

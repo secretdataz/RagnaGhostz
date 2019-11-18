@@ -1,0 +1,30 @@
+
+phtownall,43,58,0	script	Alugueis	559,{
+
+	if (ismounting()) {
+		message strcharinfo(0),"Remove sua montaria primeiro";
+		end;
+	} else if (((eaclass()&EAJ_THIRDMASK)==EAJ_RANGER) && !countitem(6124)) {
+		if (!checkfalcon() && getskilllv("HT_FALCON") && !checkwug()) {
+			if(select(" ~ Falcon")==1) setfalcon;
+		}
+	} else if (((eaclass()&EAJ_THIRDMASK)==EAJ_MECHANIC) && !checkcart() && getskilllv("MC_PUSHCART")) {
+		if (!checkmadogear() && getskilllv("NC_MADOLICENCE")) {
+			if(select(" ~ Cart")==1) setcart;
+		}
+	} else if (!checkcart() && getskilllv("MC_PUSHCART")) setcart;
+	else if (!checkfalcon() && getskilllv("HT_FALCON") && !checkwug()) setfalcon;
+	else if (!checkriding() && !checkdragon() && getskilllv("KN_RIDING")) {
+		if ((eaclass()&EAJ_THIRDMASK)==EAJ_RUNE_KNIGHT) setdragon;
+		else setriding;
+	}
+	else {
+		npctalk "Miau ~~";
+		end;
+	}
+	specialeffect2 EF_TEIHIT3;
+	end;
+
+}
+
+

@@ -1,7 +1,7 @@
 
 
 // NPC Lists
-phtownall,48,70,1	script	Estilista	878,{
+phtownall,48,70,3	script	Estilista	878,{
 	
 	.@n$ = "[^6B8E23Estilista^000000]";
 	

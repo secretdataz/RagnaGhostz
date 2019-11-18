@@ -1767,18 +1767,30 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 			}
 		}
 
+		if (sd->mast[MASTERY_TRIO_A_QUEIMA_ROUPA]->active && sd->mast[MASTERY_TRIO_A_QUEIMA_ROUPA]->level == 100 && distance_bl(src, bl) <= 1)
+			damage *= 2;
+
+		if (sd->mast[MASTERY_MELHORAR_DANO]->active)
+			damage += (damage * (sd->mast[MASTERY_MELHORAR_DANO]->level / 10)) / 100;
+
+		if (bl->type == BL_PC && sd->mast[MASTERY_DOCE_VINGANCA]->level == 100 && sd->mast[MASTERY_DOCE_VINGANCA]->val1 == BL_CAST(BL_PC, bl)->status.char_id)
+			damage += (damage * 5) / 100;
+
 		// Reduções Finais
-		if (sd->mast[MASTERY_BELEZA_ATORDOANTE]->active)
-			damage -= (damage * (sd->mast[MASTERY_BELEZA_ATORDOANTE]->level / 100)) / 100;
+		if (bl->type == BL_PC && BL_CAST(BL_PC,bl)->mast[MASTERY_BELEZA_ATORDOANTE]->active)
+			damage -= (damage * (BL_CAST(BL_PC, bl)->mast[MASTERY_BELEZA_ATORDOANTE]->level / 10)) / 100;
 
 		if (bl->type == BL_MOB && status_get_class_(bl) == CLASS_BOSS && sd->mast[MASTERY_RESISTIREI]->active)
 			damage -= (damage * (sd->mast[MASTERY_RESISTIREI]->level / 10)) / 100;
 
-		if (sd->mast[MASTERY_BENCAO_DOS_DEUSES]->active && getRandomValue(1, 100) <= (sd->mast[MASTERY_BENCAO_DOS_DEUSES]->level / 100))
+		if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_BENCAO_DOS_DEUSES]->active && getRandomValue(1, 100) <= (BL_CAST(BL_PC, bl)->mast[MASTERY_BENCAO_DOS_DEUSES]->level / 100))
 			damage = 0;
 
 		if (sd->mast[MASTERY_PUNICAO_DIVINA]->active && sd->mast[MASTERY_PUNICAO_DIVINA]->level == 100 && getRandomValue(1, 1000) == 1)
 			damage = status_get_hp(bl) * 10;
+
+		if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_DEFESA]->active)
+			damage -= (damage * (BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_DEFESA]->level / 10)) / 100;
 	}
 
 	if (src->type == BL_HOM && BL_CAST(BL_HOM,bl)->master)
@@ -3559,7 +3571,7 @@ static void battle_calc_multi_attack(struct Damage* wd, struct block_list *src,s
 		}
 		else if( ((sd->weapontype1 == W_REVOLVER && (skill_lv = pc_checkskill(sd,GS_CHAINACTION)) > 0) //Normal Chain Action effect
 			|| (sc && sc->count && sc->data[SC_E_CHAIN] && (skill_lv = sc->data[SC_E_CHAIN]->val1) > 0)) //Chain Action of ETERNAL_CHAIN
-			&& rnd()%100 < 5*skill_lv ) //Success rate
+			&& rnd()%100 < ((sd && sd->mast[MASTERY_REACAO_EM_CADEIA_EX]->level == 175) ? 101 : (5*skill_lv))) //Success rate
 		{
 			wd->div_ = skill_get_num(GS_CHAINACTION,skill_lv,src);
 			wd->type = DMG_MULTI_HIT;
@@ -4034,9 +4046,16 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			break;
 		case GS_RAPIDSHOWER:
 			skillratio += 400 + 50 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_RAJADA_CERTEIRA_EX]->active)
+				skillratio += sd->mast[MASTERY_RAJADA_CERTEIRA_EX]->level;
 			break;
 		case GS_DESPERADO:
 			skillratio += 50 * (skill_lv - 1);
+
+			if (sd && sd->mast[MASTERY_DESPERADO_EX]->active)
+				skillratio += sd->mast[MASTERY_DESPERADO_EX]->level;
+
 			if (sc && sc->data[SC_FALLEN_ANGEL])
 				skillratio *= 2;
 			break;
@@ -4056,6 +4075,9 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 #ifdef RENEWAL
 		case GS_GROUNDDRIFT:
 			skillratio += 100 + 20 * skill_lv;
+
+			if (sd && sd->mast[MASTERY_MINA_DO_JUSTICEIRO_EX]->active)
+				skillratio += sd->mast[MASTERY_MINA_DO_JUSTICEIRO_EX]->level * 2;
 			break;
 #endif
 		case NJ_HUUMA:
@@ -5726,8 +5748,16 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src, struct bl
 #endif
 	}
 
+	bool isAtkHitting = is_attack_hitting(&wd, src, target, skill_id, skill_lv, true);
+
+	if (!isAtkHitting && sd && sd->mast[MASTERY_OLHOS_DE_SERPENTE_EX]->level == 75)
+	{
+		isAtkHitting = true;
+		wd.damage /= 2;
+	}
+
 	// check if we're landing a hit
-	if(!is_attack_hitting(&wd, src, target, skill_id, skill_lv, true))
+	if(!isAtkHitting)
 		wd.dmg_lv = ATK_FLEE;
 	else if(!(infdef = is_infinite_defense(target, wd.flag))) { //no need for math against plants
 		int64 ratio = 0;

@@ -25,18 +25,17 @@ phtownall,366,352,3	Script	Senhora das Maestrias	10168,{
 		end;
 	}
 
+	if( Class == 25 || Class == 24 || Class == 23 || Class == 4047 || Class == 4049 )
+		.@noRebirth = 1;
+
 	// Só para o Jogador não ser engraçadinho e depois ficar chorando
-	if( BaseLevel >= 200 && REBIRTH == 1 )
-		{
-			announce "[Condecoração de Classe]: " + strcharinfo(0) + " adquiriu o poder dos Deuses.",0;
-			jobchange Class + 4001;
-			REBIRTH = 2;
-			StatusPoint += 120;
-			
-			dispbottom "Parabéns por atingir o nível " + BaseLevel + "! Você recebeu 120 pontos de atributo!";
-			
-			goto L_PlatSkills;
-		}
+	if( !REBIRTH && !.@noRebirth )
+	{
+		mes "Quer graça?";
+		close2;
+		cutin "jp_dux_thia01",255;
+		end;
+	}
 
 	if( !HELP_MAESTRIAS )
 	{
@@ -51,21 +50,8 @@ phtownall,366,352,3	Script	Senhora das Maestrias	10168,{
 		next;
 		mes "[^FFC125Maestrias de Classe^000000]";
 		mes "^FFB90F»^000000 Cada classe possui suas próprias maestrias nessa árvore.";
-		mes "^FFB90F»^000000 Para evoluir essas maestrias é preciso ter ^698B22Zeny^000000";
-		mes "^FFB90F»^000000 Normalmente essas maestrias afetam danos das suas habilidades ou ajudam na classe em geral.";
-		next;
-		mes .@n$;
-		mes "Existem duas formas de se conseguir ^698B22Zeny^000000.";
-		mes "A primeira maneira é percorrendo a ^CDAD00Torre da Fortuna^000000. ";
-		mes "Lá é possível acumular esses pontos toda vez que completar um dos andares.";
-		next;
-		mes .@n$;
-		mes "Muito bem, agora vamos para o segundo tipo de maestrias, as ^8B0A50Maestrias de Eventos^000000.";
-		next;
-		mes "[^8B0A50Maestrias de Eventos^000000]";
-		mes "^FFB90F»^000000 Todos possuem as mesmas maestrias.";
 		mes "^FFB90F»^000000 Para evoluir essas maestrias é preciso ter ^698B22Pontos de Evento^000000";
-		mes "^FFB90F»^000000 Normalmente essas maestrias afetam dano em geral ou melhoram o personagem.";
+		mes "^FFB90F»^000000 Normalmente essas maestrias afetam danos das suas habilidades ou ajudam na classe em geral.";
 		next;
 		mes .@n$;
 		mes "Existem duas maneiras para conseguir ^698B22Pontos de Evento^000000.";
@@ -73,7 +59,16 @@ phtownall,366,352,3	Script	Senhora das Maestrias	10168,{
 		mes "Claro, alguns eventos só darão pontos se você vencer ou atingir uma posição boa.";
 		next;
 		mes .@n$;
-		mes "A segunda maneira de conseguir ^698B22Pontos de Evento^000000 é simplesmente ficando conectado.";
+		mes "Muito bem, agora vamos para o segundo tipo de maestrias, as ^8B0A50Maestrias Compartilhadas^000000.";
+		next;
+		mes "[^8B0A50Maestrias Compartilhadas^000000]";
+		mes "^FFB90F»^000000 Todos os seus personagens compartlham essas maestrias.";
+		mes "^FFB90F»^000000 Para evoluir essas maestrias é preciso ter ^698B22Pontos de Fidelidade^000000";
+		mes "^FFB90F»^000000 Normalmente essas maestrias afetam dano em geral ou melhoram o personagem.";
+		next;
+		mes .@n$;
+		mes "Existem duas maneiras para conseguir ^698B22Pontos de Fidelidade^000000.";
+		mes "A primeira é bastante simples, basta simplesmente ficar conectado.";
 		mes "De tempos em tempos eu estarei distribuindo de 10 a 50 pontos aleatoriamente para os jogadores online, até mesmo para os que estão ausentes.";
 		next;
 		mes .@n$;

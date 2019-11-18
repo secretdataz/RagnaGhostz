@@ -69,7 +69,7 @@ struct view_data {
 #else
 	unsigned short class_;
 #endif
-unsigned short
+	unsigned short
 		weapon,
 		shield, //Or left-hand weapon.
 		robe,
@@ -79,7 +79,9 @@ unsigned short
 		hair_style,
 		hair_color,
 		cloth_color,
-		body_style;
+		body_style,
+		display_hp,
+		display_sp;
 	char sex;
 	unsigned dead_sit : 2;
 };

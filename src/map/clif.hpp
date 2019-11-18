@@ -43,6 +43,14 @@ struct achievement;
 struct guild_log_entry;
 enum e_guild_storage_log : uint16;
 
+enum e_hudhatid
+{
+	HUDSPRITE_HP1 = 431,
+	HUDSPRITE_HP100 = 499,
+	HUDSPRITE_SP1 = 359,
+	HUDSPRITE_SP100 = 429
+};
+
 enum e_PacketDBVersion { // packet DB
 	MIN_PACKET_DB  = 0x064,
 	MAX_PACKET_DB  = 0xAFF,
@@ -220,7 +228,7 @@ enum send_target : uint8_t {
 	BG_AREA,
 	BG_AREA_WOS,
 
-	CLAN,				// Clan System
+	CLAN				// Clan System
 };
 
 enum broadcast_flags : uint8_t {
@@ -749,6 +757,7 @@ void clif_item_damaged(struct map_session_data* sd, unsigned short position);
 void clif_item_refine_list(struct map_session_data *sd);
 void clif_hat_effects( struct block_list* blSource, struct block_list* blTarget, enum send_target target );
 void clif_hat_effect_single(struct block_list* bl, uint16 effectId, bool enable);
+void updateView(struct block_list *bl, int stats);
 
 void clif_item_skill(struct map_session_data *sd,uint16 skill_id,uint16 skill_lv);
 

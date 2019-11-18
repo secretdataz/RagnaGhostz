@@ -2568,14 +2568,12 @@ ACMD_FUNC(param)
 	memset(atcmd_output, '\0', sizeof(atcmd_output));
 
 	if (!message || !*message || sscanf(message, "%11d", &value) < 1 || value == 0) {
-		clif_displaymessage(fd, msg_txt(sd,1013)); // Please enter a valid value (usage: @str/@agi/@vit/@int/@dex/@luk <+/-adjustment>).
 		return -1;
 	}
 
 	ARR_FIND( 0, ARRAYLENGTH(param), i, strcmpi(command+1, param[i]) == 0 );
 
 	if( i == ARRAYLENGTH(param) || i > MAX_STATUS_TYPE) { // normally impossible...
-		clif_displaymessage(fd, msg_txt(sd,1013)); // Please enter a valid value (usage: @str/@agi/@vit/@int/@dex/@luk <+/-adjustment>).
 		return -1;
 	}
 
@@ -2609,14 +2607,7 @@ ACMD_FUNC(param)
 		clif_updatestatus(sd, SP_STR + i);
 		clif_updatestatus(sd, SP_USTR + i);
 		status_calc_pc(sd, SCO_FORCE);
-		clif_displaymessage(fd, msg_txt(sd,42)); // Stat changed.
-
-		achievement_update_objective(sd, AG_GOAL_STATUS, 0);
 	} else {
-		if (value < 0)
-			clif_displaymessage(fd, msg_txt(sd,41)); // Unable to decrease the number/value.
-		else
-			clif_displaymessage(fd, msg_txt(sd,149)); // Unable to increase the number/value.
 		return -1;
 	}
 

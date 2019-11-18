@@ -719,8 +719,13 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 		if( PVP_RANKING >= RANKING_PILAR )
 			.@points += rand( 1, 5 );
 		
-		if( .@points > 0 )
+		if( .@points <= 0 )
 			.@points = 5;
+
+		@query$ = "UPDATE `pvp_player`          " +
+				   "   SET `pontos` = `pontos` - " + .@points + ", " +
+				   "       `mortes` = `mortes` - 1" +
+				   " WHERE `char_id`= " + .@cid[.@z];
 		
 		message strcharinfo(0, .@victim),"Perdeu (" + .@points + ") pontos";
 		end;

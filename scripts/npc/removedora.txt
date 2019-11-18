@@ -1,0 +1,78 @@
+
+phtownall,75,69,4	script	Velha das Cartas	78,{
+
+	set .zenycost,200000;    // base cost of the card remover services (in Zeny)
+	set .percardcost,25000;  // cost per card of the card remover services (in Zeny)
+
+	.@n$ = "[^B03060Velha das Cartas^000000]";
+
+	disable_items;
+	mes .@n$;
+	mes "Eu possuo a grande sabedoria para remover cartas de seus equipamentos.";
+	next;
+
+	switch(select("Eu gostaria disso:Não, obrigad" + (Sex ? "o" : "a" ))) {
+	case 1:
+		mes .@n$;
+		mes "Muito bem, que item deseja que eu examine para você?";
+		next;
+
+		setarray .@indices[1], EQI_HEAD_TOP, EQI_ARMOR, EQI_HAND_L, EQI_HAND_R, EQI_GARMENT, EQI_SHOES, EQI_ACC_L, EQI_ACC_R, EQI_HEAD_MID, EQI_HEAD_LOW;
+		for( set .@i,1; .@i <= 10; set .@i,.@i+1 ) {
+			if( getequipisequiped(.@indices[.@i]) )
+				set .@menu$, .@menu$ + "[" + getequipname(.@indices[.@i]) + "]";
+			set .@menu$, .@menu$ + ":";
+		}
+		set .@part, .@indices[ select(.@menu$) ];
+		if(!getequipisequiped(.@part)) {
+			mes .@n$;
+			mes "Não há nada aí para que eu possa remover.";
+			close;
+		}
+		if(getequipcardcnt(.@part) == 0) {
+			mes .@n$;
+			mes "Não há cartas para que eu possa remover.";
+			close;
+		}
+		set .@cardcount,getequipcardcnt(.@part);
+		
+		if (!checkweight(1202,(.@cardcount+1))) { 
+			mes "^3355FFEspere!";
+			mes "Não posso oferecer nenhum de meus serviços por que você está carregando muito peso!";
+			close;
+		}
+
+		mes .@n$;
+		mes "Este item possui " + .@cardcount + " cartas. Para o serviço, irei precisar de " + (.zenycost+(.@cardcount * .percardcost)) + " zeny's.";
+		next;
+
+		if(select("Muito bem, faça isso.:Sou pobre...") == 2) {
+			mes .@n$;
+			mes "Não lembro de ter perguntado.";
+			close;
+		}
+
+		if(zeny < (.zenycost+(.@cardcount * .percardcost))) {
+			mes .@n$;
+			mes "Eu sou velha mas não burra. Me traga todo o dinheiro necessário para o meu serviço.";
+			close;
+		}
+
+		mes .@n$;
+		mes "Muito bem, irei começar.";
+		set Zeny, Zeny - (.zenycost+(.@cardcount * .percardcost));
+		
+		successremovecards .@part;
+		next;
+		mes .@n$;
+		mes "O processo foi um sucesso!";
+		close2;
+		npctalk "Volte sempre, " + strcharinfo(0);
+		end;
+
+	case 2:
+		mes "[Wise Old Woman]";
+		mes "Very well. Return at once if you seek my services.";
+		close;
+	}
+}

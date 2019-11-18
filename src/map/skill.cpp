@@ -2902,6 +2902,9 @@ bool skill_strip_equip(struct block_list *src, struct block_list *target, uint16
 		case GS_DISARM:
 			rate = sstatus->dex / (4 * (7 - skill_lv)) + sstatus->luk / (4 * (6 - skill_lv));
 			rate = rate + status_get_lv(src) - (tstatus->agi * rate / 100) - tstatus->luk - status_get_lv(target);
+
+			if (src->type == BL_PC && BL_CAST(BL_PC, src)->mast[MASTERY_DESARMAR_EX]->active)
+				rate += BL_CAST(BL_PC, src)->mast[MASTERY_DESARMAR_EX]->level / 10;
 			break;
 		case WL_EARTHSTRAIN: {
 			int job_lv = 0;
@@ -5027,6 +5030,9 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 	case RL_BANISHING_BUSTER:
 	case RL_SLUGSHOT:
 	case RL_AM_BLAST:
+		if (skill_id == GS_TRACKING && sd && sd->mast[MASTERY_RASTREAR_O_ALVO_EX]->level == 125)
+			sd->mast[MASTERY_RASTREAR_O_ALVO_EX]->val1 = bl->id;
+
 		skill_attack(BF_WEAPON,src,src,bl,skill_id,skill_lv,tick,flag);
 		break;
 

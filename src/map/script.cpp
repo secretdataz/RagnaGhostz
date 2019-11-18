@@ -24530,6 +24530,21 @@ BUILDIN_FUNC(discord)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+BUILDIN_FUNC(getmasterylevel)
+{
+	int mastery_id = script_getnum(st, 2);
+	TBL_PC *sd = map_charid2sd(script_getnum(st, 3));
+
+	if (mastery_id > MASTERY_TOTAL || !sd || !sd->mast[mastery_id]->active)
+	{
+		script_pushint(st, 0);
+		return SCRIPT_CMD_SUCCESS;
+	}
+
+	script_pushint(st, sd->mast[mastery_id]->level);
+	return SCRIPT_CMD_SUCCESS;
+}
+
 // apply_mastery( .@mastery_id[.@i], .@level[.@i], .@cid, send data? );
 BUILDIN_FUNC(apply_mastery)
 {
@@ -24609,7 +24624,7 @@ BUILDIN_FUNC(openmastery)
 
 	sd->state.mastery_flag = 1;
 
-	clifmeg_openmastery(sd->status.account_id, sd->status.zeny, pc_readregistry(sd, add_str("MEVENT")), pc_readregistry(sd, add_str("MINSTANCE")));
+	clifmeg_openmastery(sd->status.account_id, pc_readreg2(sd, "#EVENT_POINTS"), pc_readreg2(sd, "#ONLINE_POINTS"), 0);
 
 	return SCRIPT_CMD_SUCCESS;
 }
@@ -24672,6 +24687,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(changetitle, "ii"),
 	BUILDIN_DEF(attachinvoker, ""),
 	BUILDIN_DEF(singlesoundeffect, "si"),
+	BUILDIN_DEF(getmasterylevel,"ii"),
 	BUILDIN_DEF(apply_mastery,"iiii"),
 	BUILDIN_DEF(sendpoints, "i"),
 	BUILDIN_DEF(clearplayerdata, "ii"),
