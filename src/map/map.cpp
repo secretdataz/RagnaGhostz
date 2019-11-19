@@ -5165,9 +5165,9 @@ int do_init(int argc, char *argv[])
 	/* Multilanguage */
 
 	// Default map
-	safestrncpy(map_default.mapname, "prontera", MAP_NAME_LENGTH);
-	map_default.x = 156;
-	map_default.y = 191;
+	safestrncpy(map_default.mapname, "phtownall", MAP_NAME_LENGTH);
+	map_default.x = 163;
+	map_default.y = 170;
 
 	cli_get_options(argc,argv);
 

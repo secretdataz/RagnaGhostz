@@ -575,6 +575,7 @@
 	export_constant2("bUnbreakable",SP_UNBREAKABLE);
 
 	export_constant2("bAtkRange",SP_ATTACKRANGE);
+	export_constant2("bAtkRangeOver", SP_ATTACKRANGE);
 	export_constant2("bAtkEle",SP_ATKELE);
 	export_constant2("bDefEle",SP_DEFELE);
 	export_constant2("bCastrate",SP_CASTRATE);

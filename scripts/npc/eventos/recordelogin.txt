@@ -1,0 +1,11 @@
+
+phtownall,64,324,5	Script	Recorde de Jogadores	857,{
+
+	.@n$ = "[^6B8E23Recorde de Jogadores^000000]";
+
+	mes .@n$;
+	mes "Recorde de Jogadores : " + $RECORDE_ONLINE + ".";
+	mes "Quando alcançamos um novo recorde, todos os jogadores conectados recebem 10 pontos de evento!";
+	close;
+
+}

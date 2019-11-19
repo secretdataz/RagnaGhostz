@@ -1,0 +1,548 @@
+
+phtownall,68,360,3	Script	Corrida Poring	719,{
+
+	.@n$ = "[^FFA500Corrida Poring^000000]";
+
+	@CP_APOSTA = 0;
+
+	mes .@n$;
+
+	if( !$@EVENT_STATE[EVENTID_PORINGRACE] )
+	{
+		mes "Olá, o evento não está aberto, mas posso lhe passar informações sobre o mesmo.";
+	}
+	else
+		mes "Olá, veio participar do meu evento?";
+
+	.@menu$ = ( $@EVENT_STATE[EVENTID_PORINGRACE] ? "^FF8C00Participar^000000" : "^FF0000Participar^000000" ) + ":Informações";
+
+	switch( select( .@menu$ ) )
+	{
+		case 1:
+			next;
+			if( !$@EVENT_STATE[EVENTID_PORINGRACE] )
+			{
+				mes .@n$;
+				mes "Como eu disse, o evento está fechado.";
+				close;
+			}
+
+			mes .@n$;
+			mes "Muito bem, boa sorte lá dentro!";
+			close2;
+
+			sql_mac("check",@MAC$,"p_track02",getcharid(0));
+			sql_mac("insert",@MAC$,getcharid(0),"p_track02");
+			warp "p_track02",62,41;
+			end;
+
+		case 2:
+			next;
+			mes .@n$;
+			mes "È muito simples, dentro do evento você vai dizer para o [^0000FFGerenciador de Apostas^000000] em qual Poring deseja apostar.";
+			next;
+			mes .@n$;
+			mes "No final do evento, caso seu Poring seja um vencedor, você recebe de 5 a 15 pontos de evento!";
+			close;
+	}
+	end;
+
+	OnIniciarEvento:
+		$@CP_WIN = 0;
+		$@CP_STATS = 0;
+		movenpc "Poring#race",58,38;
+		movenpc "Drops#race",58,36;
+		movenpc "Poporing#race",58,34;
+		movenpc "Marin#race",58,32;
+		movenpc "Pouring#race",58,30;
+		movenpc "Santa Poring#race",58,28;
+		mapannounce "p_track02","A corrida irá começar em 2 minutos.",bc_blue;
+		sleep 2500;
+		mapannounce "p_track02","Agora vamos aceitar suas apostas, quando a corrida começar, não aceitaremos mais apostas.",bc_blue;
+		sleep 9500;
+		mapannounce "p_track02","Quem desejar apostar, é só falar com Gerenciador de Apostas.",bc_blue;
+		sleep 5000;
+		//mapannounce "p_track02","3 minutes before the race starts..",bc_blue;
+		//sleep 60000;
+		//mapannounce "p_track02","2 minutes before the race starts..",bc_blue;
+		//sleep 60000;
+		mapannounce "p_track02","1 minutos para começar a corrida...",bc_blue;
+		sleep 30000;
+		mapannounce "p_track02","30 segundos para começar a corrida...",bc_blue;
+		sleep 35000;
+		mapannounce "p_track02","Apostas encerradas!",bc_blue;
+		$@CP_STATS = 1;
+		sleep 5000;
+		mapannounce "p_track02","Então lá vamos nós!",bc_blue;
+		sleep 5000;
+		mapannounce "p_track02","Em sua marca!",bc_blue;
+		sleep 3000;
+		mapannounce "p_track02","Preparar!",bc_blue;
+		sleep 3000;
+		mapannounce "p_track02","Disparar!",bc_blue;
+		areawarp "p_track02",58,42,76,18,"p_track02",61,32;
+
+		$@CP_WIN = rand(1,6);
+
+		switch($@CP_WIN)
+		{
+			case 1: donpcevent "Poring#race::OnPoringWin"; break;
+			case 2: donpcevent "Drops#race::OnDropsWin"; break;
+			case 3: donpcevent "Poporing#race::OnPoporingWin"; break;
+			case 4: donpcevent "Marin#race::OnMarinWin"; break;
+			case 5: donpcevent "Pouring#race::OnPouringWin"; break;
+			default: donpcevent "Santa Poring#race::OnSantaWin"; break;
+		}
+
+		donpcevent "Gerenciador de Apostas::OnRaceStart";
+		end;
+
+}
+
+p_track02,73,22,1	script	Gerenciador de Apostas	109,{
+
+	if( $@CP_STATS == 1 )
+		end;
+
+	.@n$ = "[^0000FFGerenciador de Apostas^000000]";
+
+	mes .@n$;
+
+
+	if( $@CP_STATS == 0 )
+	{
+		mes "Em qual Poring deseja apostar?";
+
+		setarray .@poring$[1],"Poring","Drops","Poporing","Marin","Pouring","Santa Poring";
+
+		@CP_APOSTA = select( "Poring", "Drops", "Poporing", "Marin", "Pouring", "Santa Poring" );
+
+		if( $@CP_STATS == 1 )
+		{
+			@CP_APOSTA = 0;
+			npctalk "Olha só, " + strcharinfo(0) + " tentou fazer gracinha...";
+			end;
+		}
+
+		if( Sex )
+			npctalk sprintf( "O Jogador (%s) acaba de apostar em (%s)", strcharinfo(0), .@poring$[@CP_APOSTA] );
+		else
+			npctalk sprintf( "A Jogadora (%s) acaba de apostar em (%s)", strcharinfo(0), .@poring$[@CP_APOSTA] );
+
+		close;
+	}
+
+	if( $@CP_STATS == 1)
+	{
+		mes "Desculpa, não posso mais aceitar apostas.";
+		close;
+	}
+
+	if( $@CP_STATS == 2 )
+	{
+		warp "Save",0,0;
+		end;
+	}
+}
+
+//======================================Race Function=================================================
+//====================================================================================================
+p_track02,58,38,3	script	Poring#race	1002,{
+
+	end;
+
+	OnInit:
+		npcspeed 200;
+		end;
+
+	OnPoringWin:
+		npcwalkto 55,38;
+		donpcevent "Drops#race::OnDropsLose";
+		donpcevent "Poporing#race::OnPoporingLose";
+		donpcevent "Marin#race::OnMarinLose";
+		donpcevent "Pouring#race::OnPouringLose";
+		donpcevent "Santa Poring#race::OnSantaLose";
+		sleep 2500;
+		npcwalkto 52,38;
+		sleep 4000;
+		npcwalkto 46,38;
+		sleep 2500;
+		npcwalkto 41,38;
+		sleep 2500;
+		npcwalkto 37,38;
+		sleep 2500;
+		npcwalkto 30,38;
+		sleep 10000;
+		mapannounce "p_track02","Poring venceu a corrida!!",bc_blue;
+		$@CP_STATS = 2;
+		npcwalkto 58,38;
+
+		bot_announce( "E o vencedor da Corrida Poring foi o Poring!!", CHANNEL_GERAL );
+		$@EVENT_STATE[EVENTID_PORINGRACE] = 0;
+
+		addrid(5,0,"p_track02");
+
+		if( @CP_APOSTA == $@CP_WIN )
+		{
+			.@rand = rand(5,15);
+			#EVENT_POINTS += .@rand;
+			dispbottom "--------------------------------------------------";
+			dispbottom "Você recebeu " + .@rand + " pontos de evento!";
+			dispbottom "Total de pontos: " + #EVENT_POINTS;
+			dispbottom "--------------------------------------------------";
+		}
+		end;
+
+	OnPoringLose:
+		npcwalkto 53,38;
+		sleep 4000;
+		npcwalkto 46,38;
+		sleep 2500;
+		npcwalkto 44,38;
+		sleep 2500;
+		npcwalkto 39,38;
+		sleep 2500;
+		npcwalkto 36,38;
+		sleep 4500;
+		npcwalkto 30,38;
+		sleep 3000;
+		npcwalkto 58,38;
+		end;
+}
+
+p_track02,58,36,3	script	Drops#race	1113,{
+end;
+
+OnInit:
+npcspeed 200;
+end;
+
+OnDropsWin:
+npcwalkto 55,36;
+donpcevent "Poring#race::OnPoringLose";
+donpcevent "Poporing#race::OnPoporingLose";
+donpcevent "Marin#race::OnMarinLose";
+donpcevent "Pouring#race::OnPouringLose";
+donpcevent "Santa Poring#race::OnSantaLose";
+sleep 2500;
+npcwalkto 52,36;
+sleep 4000;
+npcwalkto 46,36;
+sleep 2500;
+npcwalkto 41,36;
+sleep 2500;
+npcwalkto 37,36;
+sleep 2500;
+npcwalkto 30,36;
+sleep 10000;
+mapannounce "p_track02","Drops venceu a corrida!!",bc_blue;
+$@CP_STATS = 2;
+
+bot_announce( "E o vencedor da Corrida Poring foi o Drops!!", CHANNEL_GERAL );
+$@EVENT_STATE[EVENTID_PORINGRACE] = 0;
+
+npcwalkto 58,36;
+
+		addrid(5,0,"p_track02");
+
+		if( @CP_APOSTA == $@CP_WIN )
+		{
+			.@rand = rand(5,15);
+			#EVENT_POINTS += .@rand;
+			dispbottom "--------------------------------------------------";
+			dispbottom "Você recebeu " + .@rand + " pontos de evento!";
+			dispbottom "Total de pontos: " + #EVENT_POINTS;
+			dispbottom "--------------------------------------------------";
+		}
+end;
+
+OnDropsLose:
+npcwalkto 54,36;
+sleep 4000;
+npcwalkto 47,36;
+sleep 2500;
+npcwalkto 43,36;
+sleep 2500;
+npcwalkto 37,36;
+sleep 2500;
+npcwalkto 35,36;
+sleep 4500;
+npcwalkto 30,36;
+sleep 3000;
+npcwalkto 58,36;
+end;
+
+
+
+
+}
+
+p_track02,58,34,3	script	Poporing#race	1031,{
+end;
+
+OnInit:
+npcspeed 200;
+end;
+
+OnPoporingWin:
+npcwalkto 55,34;
+donpcevent "Poring#race::OnPoringLose";
+donpcevent "Drops#race::OnDropsLose";
+donpcevent "Marin#race::OnMarinLose";
+donpcevent "Pouring#race::OnPouringLose";
+donpcevent "Santa Poring#race::OnSantaLose";
+sleep 500;
+npcwalkto 52,34;
+sleep 4000;
+npcwalkto 46,34;
+sleep 2500;
+npcwalkto 41,34;
+sleep 2500;
+npcwalkto 37,34;
+sleep 2500;
+npcwalkto 30,34;
+sleep 10000;
+mapannounce "p_track02","Poporing venceu a corrida!!",bc_blue;
+$@CP_STATS = 2;
+bot_announce( "E o vencedor da Corrida Poring foi o Poporing!!", CHANNEL_GERAL );
+$@EVENT_STATE[EVENTID_PORINGRACE] = 0;
+
+npcwalkto 58,34;
+
+		addrid(5,0,"p_track02");
+
+		if( @CP_APOSTA == $@CP_WIN )
+		{
+			.@rand = rand(5,15);
+			#EVENT_POINTS += .@rand;
+			dispbottom "--------------------------------------------------";
+			dispbottom "Você recebeu " + .@rand + " pontos de evento!";
+			dispbottom "Total de pontos: " + #EVENT_POINTS;
+			dispbottom "--------------------------------------------------";
+		}
+end;
+
+
+OnPoporingLose:
+npcwalkto 54,34;
+sleep 4000;
+npcwalkto 47,34;
+sleep 2500;
+npcwalkto 43,34;
+sleep 2500;
+npcwalkto 37,34;
+sleep 2500;
+npcwalkto 34,34;
+sleep 4500;
+npcwalkto 30,34;
+sleep 3000;
+npcwalkto 58,34;
+end;
+
+}
+
+p_track02,58,32,3	script	Marin#race	1242,{
+end;
+
+OnInit:
+npcspeed 200;
+end;
+
+OnMarinWin:
+npcwalkto 55,32;
+donpcevent "Poring#race::OnPoringLose";
+donpcevent "Drops#race::OnDropsLose";
+donpcevent "Poporing#race::OnPoporingLose";
+donpcevent "Pouring#race::OnPouringLose";
+donpcevent "Santa Poring#race::OnSantaLose";
+sleep 2500;
+npcwalkto 52,32;
+sleep 4000;
+npcwalkto 46,32;
+sleep 2500;
+npcwalkto 41,32;
+sleep 2500;
+npcwalkto 37,32;
+sleep 2500;
+npcwalkto 30,32;
+sleep 10000;
+mapannounce "p_track02","Marin venceu a corrida!!",bc_blue;
+$@CP_STATS = 2;
+bot_announce( "E o vencedor da Corrida Poring foi o Marin!!", CHANNEL_GERAL );
+$@EVENT_STATE[EVENTID_PORINGRACE] = 0;
+
+npcwalkto 58,32;
+
+		addrid(5,0,"p_track02");
+
+		if( @CP_APOSTA == $@CP_WIN )
+		{
+			.@rand = rand(5,15);
+			#EVENT_POINTS += .@rand;
+			dispbottom "--------------------------------------------------";
+			dispbottom "Você recebeu " + .@rand + " pontos de evento!";
+			dispbottom "Total de pontos: " + #EVENT_POINTS;
+			dispbottom "--------------------------------------------------";
+		}
+end;
+
+
+OnMarinLose:
+npcwalkto 52,32;
+sleep 4000;
+npcwalkto 48,32;
+sleep 2500;
+npcwalkto 40,32;
+sleep 2500;
+npcwalkto 37,32;
+sleep 2500;
+npcwalkto 33,32;
+sleep 4500;
+npcwalkto 30,32;
+sleep 3000;
+npcwalkto 58,32;
+end;
+
+
+}
+
+p_track02,58,30,3	script	Pouring#race	1894,{
+end;
+npcspeed 200;
+
+OnInit:
+npcspeed 200;
+end;
+
+OnPouringWin:
+npcwalkto 55,30;
+donpcevent "Poring#race::OnPoringLose";
+donpcevent "Drops#race::OnDropsLose";
+donpcevent "Poporing#race::OnPoporingLose";
+donpcevent "Marin#race::OnMarinLose";
+donpcevent "Santa Poring#race::OnSantaLose";
+sleep 2500;
+npcwalkto 52,30;
+sleep 4000;
+npcwalkto 46,30;
+sleep 2500;
+npcwalkto 41,30;
+sleep 2500;
+npcwalkto 37,30;
+sleep 2500;
+npcwalkto 30,30;
+sleep 10000;
+mapannounce "p_track02","Pouring venceu a corrida!!",bc_blue;
+$@CP_STATS = 2;
+bot_announce( "E o vencedor da Corrida Poring foi o Pouring!!", CHANNEL_GERAL );
+$@EVENT_STATE[EVENTID_PORINGRACE] = 0;
+
+npcwalkto 58,30;
+
+		addrid(5,0,"p_track02");
+
+		if( @CP_APOSTA == $@CP_WIN )
+		{
+			.@rand = rand(5,15);
+			#EVENT_POINTS += .@rand;
+			dispbottom "--------------------------------------------------";
+			dispbottom "Você recebeu " + .@rand + " pontos de evento!";
+			dispbottom "Total de pontos: " + #EVENT_POINTS;
+			dispbottom "--------------------------------------------------";
+		}
+end;
+
+OnPouringLose:
+npcwalkto 50,30;
+sleep 4000;
+npcwalkto 43,30;
+sleep 2500;
+npcwalkto 38,30;
+sleep 2500;
+npcwalkto 35,30;
+sleep 2500;
+npcwalkto 31,30;
+sleep 4500;
+npcwalkto 30,30;
+sleep 3000;
+npcwalkto 58,30;
+end;
+
+
+
+}
+
+p_track02,58,28,3	script	Santa Poring#race	1062,{
+end;
+npcspeed 200;
+
+OnInit:
+npcspeed 200;
+end;
+
+OnSantaWin:
+	npcwalkto 55,28;
+	donpcevent "Poring#race::OnPoringLose";
+	donpcevent "Drops#race::OnDropsLose";
+	donpcevent "Poporing#race::OnPoporingLose";
+	donpcevent "Pouring#race::OnPouringLose";
+	donpcevent "Marin#race::OnMarinLose";
+	sleep 2500;
+	npcwalkto 52,28;
+	sleep 4000;
+	npcwalkto 46,28;
+	sleep 2500;
+	npcwalkto 41,28;
+	sleep 2500;
+	npcwalkto 37,28;
+	sleep 4500;
+	npcwalkto 30,28;
+	sleep 10000;
+	mapannounce "p_track02","Santa Poring venceu a corrida!!",bc_blue;
+	$@CP_STATS = 2;
+	$@EVENT_STATE[EVENTID_PORINGRACE] = 0;
+
+	bot_announce( "E o vencedor da Corrida Poring foi o Santa Poring, HOHOHO!!", CHANNEL_GERAL );
+	npcwalkto 58,28;
+
+			addrid(5,0,"p_track02");
+
+		if( @CP_APOSTA == $@CP_WIN )
+		{
+			.@rand = rand(5,15);
+			#EVENT_POINTS += .@rand;
+			dispbottom "--------------------------------------------------";
+			dispbottom "Você recebeu " + .@rand + " pontos de evento!";
+			dispbottom "Total de pontos: " + #EVENT_POINTS;
+			dispbottom "--------------------------------------------------";
+		}
+	end;
+
+OnSantaLose:
+	npcwalkto 49,28;
+	sleep 4000;
+	npcwalkto 48,28;
+	sleep 2500;
+	npcwalkto 47,28;
+	sleep 2500;
+	npcwalkto 35,28;
+	sleep 2500;
+	npcwalkto 32,28;
+	sleep 4500;
+	npcwalkto 30,28;
+	sleep 3000;
+	npcwalkto 58,28;
+	end;
+}
+
+
+p_track02	mapflag	nowarp
+p_track02	mapflag	nowarpto
+p_track02	mapflag	noskill
+p_track02	mapflag	noteleport
+p_track02	mapflag	nomemo
+p_track02	mapflag	nosave	SavePoint
+p_track02	mapflag	noicewall
+p_track02	mapflag	noreturn
+p_track02	mapflag	noloot
+

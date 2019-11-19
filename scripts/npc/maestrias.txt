@@ -54,8 +54,7 @@ phtownall,366,352,3	Script	Senhora das Maestrias	10168,{
 		mes "^FFB90F»^000000 Normalmente essas maestrias afetam danos das suas habilidades ou ajudam na classe em geral.";
 		next;
 		mes .@n$;
-		mes "Existem duas maneiras para conseguir ^698B22Pontos de Evento^000000.";
-		mes "A primeira é bastante simples, basta apenas na Zona de Hugel participar dos eventos e pronto!";
+		mes "Para conseguir ^698B22Pontos de Evento^000000 é bastante simples, basta apenas na Zona de Hugel, participar dos eventos e pronto!";
 		mes "Claro, alguns eventos só darão pontos se você vencer ou atingir uma posição boa.";
 		next;
 		mes .@n$;
@@ -67,15 +66,14 @@ phtownall,366,352,3	Script	Senhora das Maestrias	10168,{
 		mes "^FFB90F»^000000 Normalmente essas maestrias afetam dano em geral ou melhoram o personagem.";
 		next;
 		mes .@n$;
-		mes "Existem duas maneiras para conseguir ^698B22Pontos de Fidelidade^000000.";
-		mes "A primeira é bastante simples, basta simplesmente ficar conectado.";
-		mes "De tempos em tempos eu estarei distribuindo de 10 a 50 pontos aleatoriamente para os jogadores online, até mesmo para os que estão ausentes.";
+		mes "Para conseguir ^698B22Pontos de Fidelidade^000000 é bastante simples, basta simplesmente ficar conectado.";
+		mes "De tempos em tempos eu estarei distribuindo de 10 a 30 pontos aleatoriamente para os jogadores online, até mesmo para os que estão ausentes.";
 		next;
 		mes .@n$;
 		mes "Por último temos as ^104E8BMaestrias de Instâncias^000000.";
 		next;
 		mes "[^104E8BMaestrias de Instâncias^000000]";
-		mes "^FFB90F»^000000 São obtidas aleatoriamente ao completas Instâncias.";
+		mes "^FFB90F»^000000 São obtidas aleatoriamente ao completar Instâncias.";
 		mes "^FFB90F»^000000 Não podem ser evoluídas com pontos, apenas a ''obtendo'' novamente na instância e consequentemente aumentando seu nível.";
 		mes "^FFB90F»^000000 Normalmente essas maestrias possuem grande impacto na força do jogador.";
 		next;
@@ -114,4 +112,14 @@ phtownall,366,352,3	Script	Senhora das Maestrias	10168,{
 
 	mastery( "UpMastery", getcharid(0), .@mastery_id, .@mastery_level );
 	end;
+
+	OnMinute01:
+		addrid(0);
+		.@rand = rand(10,30);
+		#ONLINE_POINTS += .@rand;
+		dispbottom "--------------------------------------------------";
+		dispbottom "Você recebeu " + .@rand + " pontos de fidelidade!";
+		dispbottom "Total de pontos: " + #ONLINE_POINTS;
+		dispbottom "--------------------------------------------------";
+		end;
 }

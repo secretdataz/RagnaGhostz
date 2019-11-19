@@ -7386,6 +7386,34 @@
 29506,,99LV DEEP PINK,,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{},{},{}
 29507,,99LV BLACK,,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{},{},{}
 29508,,99LV WHITE,,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{},{},{}
+29509,Moeda_Poring,Moeda Poring,2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "mp_use",29509; },{},{}
+29510,Bomba_Poring,Bomba Poring,2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "mp_use",29510; },{},{}
+29511,Portal_Poring,Portal Poring,2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "mp_use",29511; },{},{}
+29512,Armadilha_Poring,Armadilha Poring,2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "mp_use",29512; },{},{}
+29513,Salto_Poring,Salto Poring,2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "mp_use",29513; },{},{}
+29514,Dica_Poring,Dica Poring,2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "mp_use",29514; },{},{}
+29515,Trapaça_Poring,Trapaça Poring,2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "mp_use",29515; },{},{}
+29516,Guerra_Poring,Guerra Poring,2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "mp_use",29516; },{},{}
+29517,Paz_Poring,Paz Poring,2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "mp_use",29517; },{},{}
+29518,Troll_Poring,Troll Poring,2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "mp_use",29518; },{},{}
+29519,Bomba_Corrida,Bomba [Corrida],2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "cp_use",29519; },{},{}
+29520,Alada_Corrida,Alada [Corrida],2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "cp_use",29520; },{},{}
+29521,Barreira_Corrida,Barreira [Corrida],2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "cp_use",29521; },{},{}
+29522,Esfriar_Corrida,Esfriar [Corrida],2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "cp_use",29522; },{},{}
+29523,Quebrar_Gelo_Corrida,Quebrar Gelo [Corrida],2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "cp_use",29523; },{},{}
+29524,Reverter_Corrida,Reverter [Corrida],2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "cp_use",29524; },{},{}
+29525,Aposta_Corrida,Aposta [Corrida],2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "cp_use",29525; },{},{}
+29526,Sem_Ejetar_Corrida,Sem Ejetar [Corrida],2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "cp_use",29526; },{},{}
+29527,C_Spell_Circuit,Auréola dos Deuses [QUEST],4,0,,0,,1,,4,0xFFFFFFFF,63,2,1024,,1,1,1301,{ bonus bInt,25; bonus bVit,5; bonus bMagicDamageReturn,3; bonus2 bAddMagicDamageClass,4008,7; },{},{}
+29528,C_Seraph_Wing_Helm,Elmo do Serafim [QUEST],4,0,,0,,1,,4,0xFFFFFFFF,63,2,1024,,1,1,1352,{ bonus bInt,20; bonus bVit,10; bonus bLongWeaponDamageReturn,3; bonus bShortWeaponDamageReturn,3; bonus2 bAddMagicDamageClass,4017,7; },{},{}
+29529,Garuda_Hat,Coroa do Garuda [QUEST],4,20,,100,,1,,4,0xFFFFFFFE,63,2,256,,1,1,677,{ bonus bStr,20; bonus bVit,15; bonus2 bSubEle,Ele_Fire,50; },{},{}
+29530,Evil_Marcher_Hat,Chapéu da Banda [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,256,,1,0,687,{ bonus bLuk,20; bonus bDex,20; bonus bMaxHPrate,-3; if( Class == 4020 || Class == 4021 ) { bonus bUnstripableArmor; } },{},{}
+29531,Bone_de_Caveira,Boné de Caveira [QUEST],4,20,,500,,10,,3,0xFFFFFFFF,63,2,256,,1,0,713,{ bonus bStr,10; bonus2 bSubSkill,271,15; if( Class != 4013 && Class != 4018 ) { bonus bMaxHPrate,-5; } },{},{}
+29532,Bencao_de_Asgard_[QUEST],Bênção de Asgard [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,256,,1,0,724,{ bonus bMaxHPrate,7; bonus bNoKnockback; bonus bSpeedRate,30; },{},{}
+29533,Quepe_com_Pluma_[QUEST],Quepe com Pluma [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,256,,1,0,731,{ bonus bDex,10; bonus bAgi,10; bonus bAtkRangeOver,1; },{},{}
+29534,Cartola_de_Leprechaun_[QUEST],Cartola de Leprechaun [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,256,,1,0,735,{ bonus bVit,25; bonus bLuk,10; bonus bUnbreakable,30; },{},{}
+29535,Decoracao_Dourada_[QUEST],Decoração Dourada [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,256,,1,0,739,{ bonus2 bAddClass,Class_All,5; bonus2 bHPDrainRate,500,10; },{},{}
+29536,Tiara_das_Cinco_Almas_[QUEST],Tiara das Cinco Almas [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,256,,1,0,564,{ bonus bAllStats,1; },{ rgzbonus(4,1); },{ rgzbonus(4,0); }
 30000,,(null),,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{},{},{}
 31016,Decorated_Evil_Tree_Card,Carta Árvore Maldita Decorada,6,20,,10,,,,,,,,16,,,,,{ bonus bMaxHP,1000; bonus bMaxSP,150; bonus bFlee,-25; },{},{}
 31017,Vicious_Cookie_Card,Carta Cookie Aterrorizante,6,20,,10,,,,,,,,64,,,,,{ .@r = getrefine(); bonus2 bAddClass,Class_All,1+.@r; bonus bMatkRate,1+.@r; bonus bMaxHPrate,-(2+(.@r*2)); },{},{}

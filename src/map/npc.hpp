@@ -1243,6 +1243,10 @@ void do_final_npc(void);
 void do_init_npc(void);
 void npc_event_do_oninit(void);
 
+int npc_event_export_2(struct npc_data *nd, int i);
+void npc_duplicate_2(struct npc_data *nd);
+int npc_timerevent_export(struct npc_data *nd, int i);
+
 int npc_event_do(const char* name);
 int npc_event_do_id(const char* name, int rid);
 int npc_event_doall(const char* name);

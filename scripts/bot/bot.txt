@@ -1,0 +1,16 @@
+
+// Arg 0 = MSG
+// Arg 1 = ID do Canal
+// Arg 2 = Arguments
+
+function	script	bot_announce	{
+
+	.@msg$ = getarg(0);
+	.@id_canal = getarg(1);
+
+	if( getargcount() == 3)
+		.@func$ = getarg(2);
+
+	query_sql( "INSERT INTO `discord_bot` ( `msg`, `channel` ) VALUES ( '" + .@msg$ + "', " + .@id_canal + " )" );
+	return;
+}

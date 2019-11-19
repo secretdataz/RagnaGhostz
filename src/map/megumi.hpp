@@ -21,7 +21,8 @@ enum e_megumi_packet
 	MP_CLOSEDMASTERY,
 	MP_BUYMASTERY,
 	MP_HELPMASTERY,
-	MP_REFRESHMASTERY
+	MP_REFRESHMASTERY,
+	MP_SENDMAC
 };
 
 enum e_const_cleardata

@@ -1,0 +1,59 @@
+
+//ID's:
+
+function	script	sql_mac	{
+
+	//Apaga todos os Registros
+	//sql_mac("reset",CID ou 0)
+	if(getarg(0)=="reset")
+	{
+		if(getarg(1)==0)
+		{
+			query_sql( "DELETE FROM `mac_check`");
+			return;
+		}
+		else
+		{
+			.@cid = getarg(1);
+
+			query_sql("DELETE FROM `mac_check` " +
+			          " WHERE `cid` = '"+.@cid+"'");
+			return;
+		}
+	}
+		
+	//Registra o MAC em
+	//sql_mac("insert",mac,cid,map)
+	if(getarg(0)=="insert")
+	{
+		.@mac$ = getarg(1);
+		.@cid  = getarg(2);
+		.@map$ = getarg(3);
+		
+		query_sql "insert into `mac_check` (`mac`, `cid`, `map`) values ('"+.@mac$+"','"+.@cid+"','"+.@map$+"')";
+		return;
+	}
+	
+	//Verifica se já existe uma conta do jogador no mesmo PC no ID.
+	//sql_mac("check",mac,map,cid)
+	if(getarg(0)=="check")
+	{
+		.@mac$ = getarg(1);
+		.@map$ = getarg(2);
+		.@cid  = getarg(3);
+		
+		.@nb = query_sql("SELECT `cid` FROM `mac_check` WHERE `mac` = '"+.@mac$+"' AND `map` = '"+.@map$+"' AND `cid` != '"+.@cid+"'",.@cid);
+
+		if(.@nb > 0)
+		{
+			mes "[^4682B4Sistema AntiDual^000000]";
+			mes "Sinto muito, mas você já possui estes personagens neste lugar:";
+			for(.@i = 0; .@i < .@nb; .@i++)
+				mes strcharinfo(0,.@cid[.@i]) + " - " + strcharinfo(3,.@cid[.@i]);
+			close;
+		}
+		
+		return;
+	}
+
+}

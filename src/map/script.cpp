@@ -8715,7 +8715,7 @@ BUILDIN_FUNC(getequipid)
 	else if (equip_index_check(num)) // get inventory position of item
 		i = pc_checkequip(sd, equip_bitmask[num]);
 	else {
-		ShowError( "buildin_getequipid: Unknown equip index '%d'\n", num );
+		ShowError( "buildin_]: Unknown equip index '%d'\n", num );
 		script_pushint(st,-1);
 		return SCRIPT_CMD_FAILURE;
 	}
@@ -24629,6 +24629,214 @@ BUILDIN_FUNC(openmastery)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+BUILDIN_FUNC(requestmac)
+{
+	TBL_PC *sd = map_charid2sd(script_getnum(st, 2));
+
+	if (sd == NULL)
+		return SCRIPT_CMD_FAILURE;
+
+	clifmeg_requestmac(sd->status.account_id);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
+BUILDIN_FUNC(countplayerson)
+{
+	struct map_session_data *sd;
+
+	int count = 0;
+
+	struct s_mapiterator* iter = mapit_getallusers();
+
+	for (sd = (TBL_PC*)mapit_first(iter); mapit_exists(iter); sd = (TBL_PC*)mapit_next(iter)) {
+		if (sd && sd->state.autotrade == 0)
+			count++;
+	}
+
+	script_pushint(st, count);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
+// Apenas ativa um estado
+// rgzbonus effect,state;
+BUILDIN_FUNC(rgzbonus)
+{
+	TBL_PC *sd;
+
+	int effect = script_getnum(st, 2);
+	bool state = script_getnum(st, 3) == 1;
+
+	if (script_rid2sd(sd))
+	{
+		switch (effect)
+		{
+		case CSD_ITEM_TIARA_DAS_CINCO_ALMAS:
+			sd->csd[effect]->active = state;
+			sd->csd[effect]->val1 = 0; // Contagem de Players
+			sd->csd[effect]->val2 = 0; // Contagem de Monstros
+			break;
+		}
+	}
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
+// [Zell]
+// DuplicateCreate("sourcename", "targetnameshown", "targetnamehidden", "targetmap", targetx, targety, targetdir{, targetspriteid{, targetxs, targetys}});
+BUILDIN_FUNC(duplicatecreate)
+{
+	const char *npcOriginal = script_getstr(st, 2);
+	const char *dupNome = script_getstr(st, 3);
+	const char *dupNomeInv = script_getstr(st, 4);
+	const char *mapa = script_getstr(st, 5);
+
+	int x = script_getnum(st, 6);
+	int y = script_getnum(st, 7);
+	int dir = script_getnum(st, 8);
+
+	int sprite = script_getnum(st, 9);
+
+	int touchX = 0;
+	int touchY = 0;
+
+	if (script_hasdata(st, 10))
+		touchX = script_getnum(st, 10);
+
+	if (script_hasdata(st, 11))
+		touchY = script_getnum(st, 11);
+
+	struct npc_data *nd_original;
+	struct npc_data *nd_duplicata;
+
+	char nomeNPC[NPC_NAME_LENGTH] = "";
+
+	strcat(nomeNPC, dupNome);
+	strncat(nomeNPC, "#", 1);
+	strncat(nomeNPC, dupNomeInv, strlen(dupNomeInv));
+
+	if ((strlen(dupNome) + strlen(dupNomeInv)) > NPC_NAME_LENGTH)
+	{
+		ShowError("duplicate: NPC name exceeded maximum size (%s)\n", nomeNPC);
+		script_pushint(st, 0);
+		return 0;
+	}
+
+	if (npc_name2id(nomeNPC) != NULL)
+	{
+		ShowError("duplicatecreate: NPC name (%s) already exist\n", nomeNPC);
+		script_pushint(st, 0);
+		return 0;
+	}
+
+	nd_original = npc_name2id(npcOriginal);
+
+	if (nd_original == NULL)
+	{
+		ShowError("duplicatecreate: Original NPC not found. (%s)\n", npcOriginal);
+		script_pushint(st, 0);
+		return 0;
+	}
+
+	int sourceid, type, dupmapid;
+
+	sourceid = nd_original->src_id ? nd_original->src_id : nd_original->bl.id;
+	type = nd_original->subtype;
+	dupmapid = map_mapname2mapid(mapa);
+
+	if (dupmapid < 0)
+	{
+		ShowError("duplicatecreate: Map not found. (%s)\n", mapa);
+		script_pushint(st, 0);
+		return 0;
+	}
+
+	CREATE(nd_duplicata, struct npc_data, 1);
+
+	nd_duplicata->bl.prev = nd_duplicata->bl.next = NULL;
+	nd_duplicata->bl.id = npc_get_new_npc_id();
+	nd_duplicata->bl.m = dupmapid;
+	nd_duplicata->bl.x = x;
+	nd_duplicata->bl.y = y;
+	nd_duplicata->sc_display = NULL;
+	nd_duplicata->sc_display_count = 0;
+
+	nd_duplicata->ud.dir = dir;
+
+	safestrncpy(nd_duplicata->name, nomeNPC, ARRAYLENGTH(nd_duplicata->name));
+	safestrncpy(nd_duplicata->exname, nomeNPC, ARRAYLENGTH(nd_duplicata->exname));
+
+	nd_duplicata->class_ = sprite;
+	nd_duplicata->speed = 200;
+	nd_duplicata->bl.type = BL_NPC;
+	nd_duplicata->subtype = NPCTYPE_SCRIPT;
+	nd_duplicata->src_id = sourceid;
+
+	nd_duplicata->u.scr.xs = touchX;
+	nd_duplicata->u.scr.ys = touchY;
+	nd_duplicata->u.scr.script = nd_original->u.scr.script;
+
+	nd_duplicata->u.scr.label_list = nd_original->u.scr.label_list;
+	nd_duplicata->u.scr.label_list_num = nd_original->u.scr.label_list_num;
+
+	//Add the npc to its location
+	map_addnpc(dupmapid, nd_duplicata);
+	status_change_init(&nd_duplicata->bl);
+	unit_dataset(&nd_duplicata->bl);
+	nd_duplicata->ud.dir = dir;
+	npc_setcells(nd_duplicata);
+
+	map_addblock(&nd_duplicata->bl);
+
+	status_set_viewdata(&nd_duplicata->bl, nd_duplicata->class_);
+
+	if (map[nd_duplicata->bl.m].users)
+		clif_spawn(&nd_duplicata->bl);
+
+	npc_duplicate_2(nd_duplicata);
+
+	int i = 0;
+	for (i = 0; i < nd_original->u.scr.label_list_num; i++) {
+		if (npc_event_export_2(nd_duplicata, i)) {
+			ShowWarning("duplicatecreate : duplicate event %s::%s\n",
+				nd_duplicata->exname, nd_duplicata->u.scr.label_list[i].name);
+		}
+		npc_timerevent_export(nd_duplicata, i);
+	}
+
+	nd_duplicata->u.scr.timerid = INVALID_TIMER;
+
+	script_pushint(st, 1);
+	return 0;
+}
+
+// [Zell]
+// DuplicateRemove({"NPCname"});
+BUILDIN_FUNC(duplicateremove)
+{
+	struct npc_data *nd;
+
+	if (script_hasdata(st, 2))
+	{
+		nd = npc_name2id(script_getstr(st, 2));
+		if (nd == NULL)
+		{
+			ShowError("getnpcgid: NPC not found: %s\n", script_getstr(st, 2));
+			script_pushint(st, -1);
+			return 0;
+		}
+	}
+	else
+		nd = (struct npc_data *)map_id2bl(st->oid);
+
+	npc_unload(nd, true);
+
+	script_pushint(st, 1);
+	return 0;
+}
+
+
 #include "../custom/script.inc"
 
 // declarations that were supposed to be exported from npc_chat.cpp
@@ -24692,6 +24900,11 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(sendpoints, "i"),
 	BUILDIN_DEF(clearplayerdata, "ii"),
 	BUILDIN_DEF(openmastery, "i"),
+	BUILDIN_DEF(requestmac,"i"),
+	BUILDIN_DEF(countplayerson,""),
+	BUILDIN_DEF(duplicatecreate, "ssssiii???"),
+	BUILDIN_DEF(duplicateremove, "?"),
+	BUILDIN_DEF(rgzbonus, "ii"),
 	// NPC interaction
 	BUILDIN_DEF(mes,"s*"),
 	BUILDIN_DEF(next,""),

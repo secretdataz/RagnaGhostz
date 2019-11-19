@@ -3025,6 +3025,17 @@ int mob_dead(struct mob_data *md, struct block_list *src, int type)
 			pc_setparam(mvp_sd, SP_KILLEDGID, md->bl.id);
 			pc_setparam(mvp_sd, SP_KILLEDRID, md->mob_id);
 			npc_script_event(mvp_sd, NPCE_KILLNPC); // PCKillNPC [Lance]
+
+			if (mvp_sd->csd[CSD_ITEM_TIARA_DAS_CINCO_ALMAS]->active)
+			{
+				mvp_sd->csd[CSD_ITEM_TIARA_DAS_CINCO_ALMAS]->val2++;
+
+				if (mvp_sd->csd[CSD_ITEM_TIARA_DAS_CINCO_ALMAS]->val2 == 15)
+				{
+					addbonus_script(mvp_sd, "bonus bAllStats,5;", 7000, 1, 1);
+					mvp_sd->csd[CSD_ITEM_TIARA_DAS_CINCO_ALMAS]->val2 = 0;
+				}
+			}
 		}
 	}
 

@@ -164,12 +164,13 @@ int megumipackethandle(int fd)
 		return 1;
 
 	sd->megumi_packet.data1 = data1;
+	std::vector<std::string> d;
 
 	switch (clienttype)
 	{
 	case MP_STYLE:
 		{
-			std::vector<std::string> d = util_explode(data1, ":");
+			d = util_explode(data1, ":");
 
 			pc_changelook(sd, LOOK_HAIR, std::atoi(d[0].c_str()));
 			pc_changelook(sd, LOOK_HAIR_COLOR, std::atoi(d[1].c_str()));
@@ -186,12 +187,16 @@ int megumipackethandle(int fd)
 	case MP_BUYMASTERY:
 		if (!sd->state.mastery_flag) return 1;
 
-		std::vector<std::string> d = util_explode(data1, ":");
+		d = util_explode(data1, ":");
 
 		pc_setreg(sd, add_str("@MASTERY_UP"), std::atoi(d[0].c_str()));
 		pc_setreg(sd, add_str("@MASTERY_LEVEL"), std::atoi(d[1].c_str()));
 
 		npc = "BUY_MASTERY";
+		break;
+
+	case MP_SENDMAC:
+		pc_setregstr(sd, add_str("@MAC$"), data1);
 		break;
 	}
 

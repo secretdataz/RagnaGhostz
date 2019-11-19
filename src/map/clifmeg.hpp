@@ -17,6 +17,7 @@ enum PK_MEGCLIF
 
 void clifmeg_send(int account_id, std::string pk, std::string data);
 
+void clifmeg_requestmac(int aid);
 void clifmeg_dressroomopened(int aid, int state);
 void clifmeg_rpc(int aid, std::string title, std::string desc, std::string lik, std::string lit, std::string sik = "NONE", std::string sit = "NONE");
 void clifmeg_openmastery(int aid, int zeny, int events, int instance);

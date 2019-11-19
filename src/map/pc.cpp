@@ -3008,6 +3008,19 @@ void pc_bonus(struct map_session_data *sd,int type,int val)
 			if(sd->state.lr_flag != 2)
 				sd->dsprate+=val;
 			break;
+		case SP_ATKRANGEOVER:
+			switch (sd->state.lr_flag) {
+			case 2:
+				status->rhw.range += val;
+				break;
+			case 1:
+				status->lhw.range += val;
+				break;
+			default:
+				status->rhw.range += val;
+				break;
+			}
+			break;
 		case SP_ATTACKRANGE:
 			switch (sd->state.lr_flag) {
 			case 2:
@@ -8119,6 +8132,12 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 	//PVP
 	sd->pvp.streak = 0;
 
+	if (sd->csd[CSD_ITEM_TIARA_DAS_CINCO_ALMAS]->active)
+	{
+		sd->csd[CSD_ITEM_TIARA_DAS_CINCO_ALMAS]->val1 = 0;
+		sd->csd[CSD_ITEM_TIARA_DAS_CINCO_ALMAS]->val2 = 0;
+	}
+
 	if (src && src->type == BL_PC) {
 		struct map_session_data *ssd = (struct map_session_data *)src;
 
@@ -8185,6 +8204,17 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 
 			if (sd->mast[MASTERY_DOCE_VINGANCA]->level == 100)
 				sd->mast[MASTERY_DOCE_VINGANCA]->val1 = ssd->status.char_id;
+
+			if (ssd->csd[CSD_ITEM_TIARA_DAS_CINCO_ALMAS]->active)
+			{
+				ssd->csd[CSD_ITEM_TIARA_DAS_CINCO_ALMAS]->val1++;
+
+				if (ssd->csd[CSD_ITEM_TIARA_DAS_CINCO_ALMAS]->val1 == 5)
+				{
+					addbonus_script(ssd, "bonus bAllStats,20;", 15000, 1, 1);
+					ssd->csd[CSD_ITEM_TIARA_DAS_CINCO_ALMAS]->val1 = 0;
+				}
+			}
 		}
 
 		if (battle_config.pk_mode&2) {

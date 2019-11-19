@@ -4793,6 +4793,34 @@
 28905,467,100	// Unity_Buckler
 //28914,467,100	//
 //28953,499,100	//
+29509,511,100	// Moeda_Poring
+29510,511,100	// Bomba_Poring
+29511,511,100	// Portal_Poring
+29512,511,100	// Armadilha_Poring
+29513,511,100	// Salto_Poring
+29514,511,100	// Dica_Poring
+29515,511,100	// Trapaça_Poring
+29516,511,100	// Guerra_Poring
+29517,511,100	// Paz_Poring
+29518,511,100	// Troll_Poring
+29519,511,100	// Bomba_Corrida
+29520,511,100	// Alada_Corrida
+29521,511,100	// Barreira_Corrida
+29522,511,100	// Esfriar_Corrida
+29523,511,100	// Quebrar_Gelo_Corrida
+29524,511,100	// Reverter_Corrida
+29525,511,100	// Aposta_Corrida
+29526,511,100	// Sem_Ejetar_Corrida
+29527,9,100	// C_Spell_Circuit
+29528,9,100	// C_Seraph_Wing_Helm
+29529,9,100	// Garuda_Hat
+29530,9,100	// Evil_Marcher_Hat
+29531,9,100	// Bone_de_Caveira
+29532,9,100	// Bencao_de_Asgard_[QUEST]
+29533,9,100	// Quepe_com_Pluma_[QUEST]
+29534,9,100	// Cartola_de_Leprechaun_[QUEST]
+29535,9,100	// Decoracao_Dourada_[QUEST]
+29536,9,100	// Tiara_das_Cinco_Almas_[QUEST]
 31105,507,100	// C_RO_Celebration_Hat
 31140,467,100	// C_Cowboy_Hat_
 31141,467,100	// C_Rose_Corsage_

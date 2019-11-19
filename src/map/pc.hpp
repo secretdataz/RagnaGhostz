@@ -777,7 +777,7 @@ struct map_session_data {
 
 	} kill_info;
 
-	// Custom Skills Data
+	// Custom Skills Data ou Bonus
 	struct custom_skill_data *csd[CSD_TOTAL];
 
 	//Maestrias

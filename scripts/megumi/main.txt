@@ -2,6 +2,19 @@
 
 -	Script	MegumiCore	-1,{
 
+	OnInit:
+		sql_mac( "reset", 0 );
+		bindatcmd "mac",strnpcinfo(3) + "::OnMacCommand";
+		end;
+
+	OnMacCommand:
+		unittalk getcharid(3),"MAC: " + @MAC$;
+		end;
+
+	OnPCLogoutEvent:
+		sql_mac("reset", getcharid(0) );
+		end;
+
 	OnPcLoginEvent:
 		.@query$ = "SELECT acc.userid, acc.user_pass " +
 		           "  FROM `login` acc               " +
@@ -11,14 +24,20 @@
 		
 		.@result = attachMegumi( getcharid(0), .@username$, .@password$ );
 
-		//if( .@result < 0 )
-		//{
-		//	// Jogador tentou se conectar por fora do launcher
-		//	dispbottom "Login Inválido";
-		//	atcommand "@kick " + strcharinfo(0);
-		//	end;
-		//}
-		
+		if( .@result < 0 )
+		{
+			// Jogador tentou se conectar por fora do launcher
+			dispbottom "Falha na autenticação de seu Token!";
+
+			if( getgroupid() != 99 )
+			{
+				atcommand "@kick " + strcharinfo(0);
+				end;
+			}
+		}
+
+		requestmac( getcharid(0) );
+
 		// Vamos pedir para a Megumi limpar qualquer data de jogador que possuía antes
 		clearplayerdata( CLEARDATA_MASTERY, getcharid(0) );
 
@@ -34,5 +53,28 @@
 		// Discord RPC
 		@RPC_DOING$ = "Vou ser " + ( Sex ? "o" : "a" ) + " mais forte!";
 		rpc( getcharid(0) );
+
+		// Evento de Recorde de Logine está aqui por segurança
+		.@who = countplayerson();
+
+		if( .@who > $RECORDE_ONLINE )
+		{
+			$RECORDE_ONLINE = .@who;
+
+			announce "Batemos um novo Recorde de Jogadores Conectados graças a __" + strcharinfo(0) + "__ (já descontando os autotrade)! 10 Pontos de Evento para todos em comemoração!",0;
+			bot_announce( "**Obrigado a todos! Batemos um novo recorde de Jogadores Conectados graças a __" + strcharinfo(0) + "__  (excluindo os autotrade). Estamos distribuindo 10 pontos de evento e fidelidade para todos online.**", CHANNEL_GERAL );
+
+			addrid(0);
+			.@rand = 10;
+			#EVENT_POINTS += .@rand;
+			#ONLINE_POINTS += .@rand;
+			dispbottom "--------------------------------------------------";
+			dispbottom "Você recebeu " + .@rand + " pontos de evento!";
+			dispbottom "Total de pontos: " + #EVENT_POINTS;
+			dispbottom "--------------------------------------------------";
+			dispbottom "Você recebeu " + .@rand + " pontos de fidelidade!";
+			dispbottom "Total de pontos: " + #ONLINE_POINTS;
+			dispbottom "--------------------------------------------------";
+		}
 		end;
 }

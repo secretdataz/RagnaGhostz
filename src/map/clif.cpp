@@ -3421,6 +3421,7 @@ void clif_updatestatus(struct map_session_data *sd,int type)
 	 * Tells the client how far it is allowed to attack (weapon range)
 	 **/
 	case SP_ATTACKRANGE:
+	case SP_ATKRANGEOVER:
 		WFIFOW(fd,0)=0x13a;
 		WFIFOW(fd,2)=sd->battle_status.rhw.range;
 		len=4;

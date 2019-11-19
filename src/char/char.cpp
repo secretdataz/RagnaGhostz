@@ -2779,9 +2779,9 @@ void char_set_defaults(){
 	charserv_config.start_zeny = 0;
 	charserv_config.guild_exp_rate = 100;
 
-	safestrncpy(charserv_config.default_map, "prontera", MAP_NAME_LENGTH);
-	charserv_config.default_map_x = 156;
-	charserv_config.default_map_y = 191;
+	safestrncpy(charserv_config.default_map, "phtownall", MAP_NAME_LENGTH);
+	charserv_config.default_map_x = 163;
+	charserv_config.default_map_y = 170;
 
 	charserv_config.clan_remove_inactive_days = 14;
 	charserv_config.mail_return_days = 14;

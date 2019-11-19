@@ -22,6 +22,21 @@ function	script	rpc	{
 	.@d$[1] = "Torre da Jornada - " + getvar( @TORRE_NAME$, .@char_id );
 	.@e$[1] = "Irei zerar esta Torre!";
 	.@r$[1] = "torre_jornada";
+
+	.@m$[2] = "morocc";
+	.@d$[2] = "Evento - Moeda Poring";
+	.@e$[2] = "Irei coletar 10 moedas!";
+	.@r$[2] = "moeda_poring";
+
+	.@m$[3] = "turbo_e_4";
+	.@d$[3] = "Evento - Corrida RagnaGhostz";
+	.@e$[3] = "Irei chegar em primeiro!";
+	.@r$[3] = "corrida_rgz";
+
+	.@m$[4] = "p_track02";
+	.@d$[4] = "Evento - Corrida Poring";
+	.@e$[4] = "Em quem vou apostar?";
+	.@r$[4] = "corrida_poring";
 	
 	.@id = inarray( .@m$, .@map$ );
 	
@@ -129,6 +144,7 @@ function	script	rpc	{
 
 -	Script	rpc_wrapper	-1,{
 
+	if(strcharinfo(3)=="phtownall") sql_mac("reset",getcharid(0));
 	rpc( getcharid(0) );
 	end;
 

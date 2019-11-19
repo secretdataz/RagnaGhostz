@@ -1,0 +1,98 @@
+
+phtownall,51,335,5	Script	Mata-Mata	827,{
+
+	.@n$ = "[^FFA500Mata-Mata^000000]";
+
+	mes .@n$;
+
+	if( !$@EVENT_STATE[EVENTID_MATAMATA] )
+	{
+		mes "Olá, o evento não está aberto, mas posso lhe passar informações sobre o mesmo.";
+	}
+	else
+		mes "Olá, veio participar do meu evento?";
+
+	.@menu$ = ( $@EVENT_STATE[EVENTID_MATAMATA] ? "^FF8C00Participar^000000" : "^FF0000Participar^000000" ) + ":Informações";
+
+	switch( select( .@menu$ ) )
+	{
+		case 1:
+			close2;
+			if( !$@EVENT_STATE[EVENTID_MATAMATA] )
+			{
+				mes .@n$;
+				mes "Como eu disse, o evento não está liberado.";
+				close;
+			}
+
+			if( $@EVENT_STATE[EVENTID_MATAMATA] >= 2)
+			{
+				mes .@n$;
+				mes "No momento está ocorrendo o evento.";
+				close;
+			}
+
+			warp "guild_vs2",50,50;
+			npctalk strcharinfo(0) + " entrou no evento!";
+			end;
+
+		case 2:
+			next;
+			mes .@n$;
+			mes "È muito simples, o último a sobreviver vence!";
+			next;
+			mes .@n$;
+			mes "A premiação para este evento é de 40 pontos de Evento!";
+			close;
+	}
+	end;
+
+	OnStartEvent:
+		if( getmapusers("guild_vs2") <= 1 )
+		{
+			$@EVENT_STATE[EVENTID_MATAMATA] = 0;
+			mapannounce "guild_vs2","[Mata-Mata]: O evento foi cancelado por falta de participantes.",bc_map;
+			end;
+		}
+
+		$@EVENT_STATE[EVENTID_MATAMATA] = 2;
+
+		mapannounce "guild_vs2","[Mata-Mata]: Se preparem, em 30 segundos irei ligar o uso de habilidades!",bc_map;
+		sleep 30000;
+		removemapflag "guild_vs2",MF_NOSKILL;
+		mapannounce "guild_vs2","[Mata-Mata]: Se preparem, em 30 segundos irei ligar o PvP e o último a sobreviver, vence!",bc_map;
+		sleep 30000;
+		setmapflag "guild_vs2",mf_pvp_noguild;
+		setmapflag "guild_vs2",mf_pvp_noparty;
+		setmapflag "guild_vs2",mf_pvp;
+
+		mapannounce "guild_vs2","[Mata-Mata]: Comecem!",bc_map;
+
+		$@EVENT_STATE[EVENTID_MATAMATA] = 3;
+
+		while( getmapusers("guild_vs2") != 1 )
+		{
+			sleep 15000;
+			mapannounce "guild_vs2","[Mata-Mata]: Restam " + getmapusers("guild_vs2")  + " jogadores!",bc_map;
+		}
+
+		addrid(5,0,"guild_vs2");
+		announce "[Mata-Mata]: O grande vencedor do mata-mata é " + strcharinfo(0) + "!",0;
+		bot_announce( "O vencedor do **Mata-Mata** é " + strcharinfo(0) + "!", CHANNEL_GERAL );
+
+		.@rand = 40;
+		#EVENT_POINTS += .@rand;
+		dispbottom "--------------------------------------------------";
+		dispbottom "Você recebeu " + .@rand + " pontos de evento!";
+		dispbottom "Total de pontos: " + #EVENT_POINTS;
+		dispbottom "--------------------------------------------------";
+		warp "Save",0,0;
+		end;
+
+	OnPcDieEvent:
+		if( strcharinfo(3) != "guild_vs2" ) end;
+		if( $@EVENT_STATE[EVENTID_MATAMATA] != 3 ) end;
+
+		warp "Save",0,0;
+		end;
+}

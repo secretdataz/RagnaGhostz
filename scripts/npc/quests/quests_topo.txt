@@ -1,0 +1,52 @@
+
+phtownall,204,340,3	Script	Quests Topo Vol 1	10060,{
+	
+	.@n$ = "[Quests Topo - Primeiro Volume]";
+
+	mes "Selecione o número da Quest que deseja fazer.";
+	for( .@i = 0; .@i < getarraysize(.item_id); .@i++ )
+		mes sprintf("^696969[ID - %d]:^000000 <ITEM>%s<INFO>%d</INFO></ITEM>", ( .@i ), getitemname( .item_id[.@i] ), .item_id[.@i] );
+	close;
+
+	OnInit:
+		// Aurea Especial
+		.item_id[0]   = 29527;
+		.item_req$[0] = "ITEM_ID:ITEM_QTD|";
+
+		// Elmo de Serafim Especial
+		.item_id[1] = 29528;
+		.item_req$[1] = "ITEM_ID:ITEM_QTD|";
+
+		// Coroa do Garuda (18508)
+		.item_id[2] = 29529;
+		.item_req$[2] = "ITEM_ID:ITEM_QTD|";
+
+		// Chápeu de Banda (18522)
+		.item_id[3] = 29530;
+		.item_req$[3] = "ITEM_ID:ITEM_QTD|";
+
+		// Boné de Caveira (18539)
+		.item_id[4] = 29531;
+		.item_req$[4] = "ITEM_ID:ITEM_QTD|";
+
+		// Benção de Asgard (18550)
+		.item_id[5] = 29532;
+		.item_req$[5] = "ITEM_ID:ITEM_QTD|";
+
+		// Quepe com Pluma (18561)
+		.item_id[6] = 29533;
+		.item_req$[6] = "ITEM_ID:ITEM_QTD|";
+
+		// Cartola de Leprechaun (18565)
+		.item_id[7] = 29534;
+		.item_req$[7] = "ITEM_ID:ITEM_QTD|";
+
+		// Decoração Dourada Antiga (18570)
+		.item_id[8] = 29535;
+		.item_req$[8] = "ITEM_ID:ITEM_QTD|";
+
+		// Tiara das Cinco Almas (18590)
+		.item_id[9] = 29536;
+		.item_req$[9] = "ITEM_ID:ITEM_QTD|";
+		end;
+}

@@ -1,0 +1,124 @@
+
+phtownall,71,338,5	Script	Gerenciador de Eventos	531 ,{
+	
+
+	.@n$ = "[Gerenciador de Eventos]";
+
+	mes .@n$;
+
+	if( getgroupid() != 99 )
+	{
+		mes "Está um belo dia para participar de um evento, não?";
+		close;
+	}
+
+	mes "Deseja iniciar algum evento?";
+
+	if(select("Não:Sim") == 1) close;
+	.@sleep = 5000;
+	input .@rand;
+	close2;
+	goto L_Start;
+
+
+	OnInit:
+		.event_name$[EVENTID_PORINGPOINT] = "Moeda Poring";
+		.npc_event$[EVENTID_PORINGPOINT] = "Saída do Evento#zp::OnStart";
+		.npc_name$[EVENTID_PORINGPOINT] = "Moeda Poring";
+		.event_map$[EVENTID_PORINGPOINT] = "morocc";
+
+		.event_name$[EVENTID_PORINGRACE] = "Corrida Poring";
+		.npc_event$[EVENTID_PORINGRACE] = "Corrida Poring::OnPoringRaceStart";
+		.npc_name$[EVENTID_PORINGRACE] = "Corrida Poring";
+		.event_map$[EVENTID_PORINGRACE] = "p_track02";
+
+		.event_name$[EVENTID_CORRIDAMALUCA] = "Corrida RagnaGhostz";
+		.npc_event$[EVENTID_CORRIDAMALUCA] = "Corrida RagnaGhostz::OnIniciarEvento";
+		.npc_name$[EVENTID_CORRIDAMALUCA] = "Corrida RagnaGhostz";
+		.event_map$[EVENTID_CORRIDAMALUCA] = "turbo_e_4";
+
+		.event_name$[EVENTID_TESTEDEVISAO] = "Teste de Visão";
+		.npc_event$[EVENTID_TESTEDEVISAO] = "Teste de Visão::OnStart";
+		.npc_name$[EVENTID_TESTEDEVISAO] = "Teste de Visão";
+		.event_map$[EVENTID_TESTEDEVISAO] = "";
+
+		.event_name$[EVENTID_MATAMATA] = "Mata-Mata";
+		.npc_event$[EVENTID_MATAMATA] = "Mata-Mata::OnStartEvent";
+		.npc_name$[EVENTID_MATAMATA] = "Mata-Mata";
+		.event_map$[EVENTID_MATAMATA] = "guild_vs2";
+
+		for( .@i = 0; .@i < getarraysize( .event_map$ ); .@i++ )
+		{
+			if(.event_map$[.@i] == "") continue;
+
+			//setmapflag .event_map$[.@i],MF_PVP_NOPARTY;
+			//setmapflag .event_map$[.@i],MF_PVP_NOPARTY;
+			//setmapflag .event_map$[.@i],MF_PVP_NOGUILD;
+			setmapflag .event_map$[.@i],MF_NOWARP;
+			setmapflag .event_map$[.@i],MF_NOSAVE;
+			setmapflag .event_map$[.@i],MF_NOSKILL;
+			setmapflag .event_map$[.@i],MF_NOTELEPORT;
+		}
+
+		end;
+
+	OnClock0020:
+	OnClock0100:
+	OnClock0130:
+	OnClock0200:
+	OnClock0300:
+	OnClock0400:
+	OnClock0500:
+	OnClock0600:
+	OnClock0700:
+	OnClock0800:
+	OnClock0900:
+	OnClock1000:
+	OnClock1030:
+	OnClock1100:
+	OnClock1130:
+	OnClock1200:
+	OnClock1230:
+	OnClock1300:
+	OnClock1330:
+	OnClock1400:
+	OnClock1430:
+	OnClock1500:
+	OnClock1530:
+	OnClock1600:
+	OnClock1630:
+	OnClock1700:
+	OnClock1730:
+	OnClock1800:
+	OnClock1830:
+	OnClock1900:
+	OnClock1930:
+	OnClock2000:
+	OnClock2030:
+	OnClock2100:
+	OnClock2130:
+	OnClock2230:
+	OnClock2300:
+	OnClock2400:
+		.@rand = rand( 1, getarraysize( .event_nam$ ) ) - 1;
+		.@sleep = 60000;
+	L_Start:
+		if(.@i == 0) .@i = 3;
+
+		$@EVENT_STATE[.@rand] = 1;
+
+		while(.@i != 0)
+		{
+			announce "[Gerenciador de Eventos]: O Evento [" + .event_name$[.@rand] + "] irá começar em "+ .@i + " minuto" + ( .@i > 1 ? "s" : "" ) + ".",0;
+
+			bot_announce( "O Evento **" + .event_name$[.@rand] + "** irá começar em **"+ .@i + "** minuto" + ( .@i > 1 ? "s" : "" ) + ".", CHANNEL_GERAL );
+
+			sleep .@sleep;
+			.@i--;
+		}
+
+		announce "[Gerenciador de Eventos]: O Evento [" + .event_name$[.@rand] + "] começou!",0;
+		bot_announce( "O Evento **" + .event_name$[.@rand] + "** começou!", CHANNEL_GERAL );
+		donpcevent .npc_event$[.@rand];
+		end;
+}

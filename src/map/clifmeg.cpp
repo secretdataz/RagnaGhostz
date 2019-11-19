@@ -62,6 +62,14 @@ void clifmeg_send(int account_id, std::string pk, std::string data) {
 	WFIFOSET(meg.fd, data_len);
 }
 
+// Pede o MAC
+void clifmeg_requestmac(int aid)
+{
+	std::string pk = std::to_string(aid);
+
+	clifmeg_send(aid, "REQMAC", pk);
+}
+
 // Avisa que a Tela de Dressroom está aberta.
 // CMD:DRESSROOM:STATE
 void clifmeg_dressroomopened(int aid, int state)

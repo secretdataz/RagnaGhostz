@@ -118,6 +118,38 @@ struct script_event_s{
 // Holds pointers to the commonly executed scripts for speedup. [Skotlex]
 std::map<enum npce_event, std::vector<struct script_event_s>> script_event;
 
+void npc_duplicate_2(struct npc_data *nd)
+{
+	strdb_put(npcname_db, nd->exname, nd);
+}
+
+/*==========================================
+* exports a npc event label
+* called from npc_parse_script
+*------------------------------------------*/
+static int script_event_export(struct npc_data *nd, int i)
+{
+	char* lname = nd->u.scr.label_list[i].name;
+	int pos = nd->u.scr.label_list[i].pos;
+	if ((lname[0] == 'O' || lname[0] == 'o') && (lname[1] == 'N' || lname[1] == 'n')) {
+		struct event_data *ev;
+		char buf[EVENT_NAME_LENGTH];
+		// NPC:<name> the prefix uses 4 characters
+		if (!strncasecmp(lname, script_config.onwhisper_event_name, NAME_LENGTH) && strlen(nd->exname) > (NAME_LENGTH - 4)) { // The client only allows that many character so that NPC could not be whispered by unmodified clients
+			return 0;
+		}
+
+		snprintf(buf, ARRAYLENGTH(buf), "%s::%s", nd->exname, lname);
+		// generate the data and insert it
+		CREATE(ev, struct event_data, 1);
+		ev->nd = nd;
+		ev->pos = pos;
+		if (strdb_put(ev_db, buf, ev)) // There was already another event of the same name?
+			return 1;
+	}
+	return 0;
+}
+
 struct view_data* npc_get_viewdata(int class_)
 {	//Returns the viewdata for normal npc classes.
 	if( class_ == JT_INVISIBLE )
@@ -349,6 +381,43 @@ int npc_event_dequeue(struct map_session_data* sd,bool free_script_stack)
 	memmove(sd->eventqueue[0], sd->eventqueue[1], (MAX_EVENTQUEUE-1)*sizeof(sd->eventqueue[0]));
 	sd->eventqueue[MAX_EVENTQUEUE-1][0]=0;
 	return 1;
+}
+
+/*==========================================
+* exports a npc event label
+* called from npc_parse_script
+*------------------------------------------*/
+int npc_event_export_2(struct npc_data *nd, int i)
+{
+	char* lname = nd->u.scr.label_list[i].name;
+	int pos = nd->u.scr.label_list[i].pos;
+	if ((lname[0] == 'O' || lname[0] == 'o') && (lname[1] == 'N' || lname[1] == 'n')) {
+		struct event_data *ev;
+		char buf[EVENT_NAME_LENGTH];
+		if (nd->bl.m > -1 && map[nd->bl.m].instance_id > 0) { // Block script events in instances
+			int j;
+			for (j = 0; j < NPCE_MAX; j++) {
+				if (strcmpi(npc_get_script_event_name(j), lname) == 0) {
+					ShowWarning("npc_event_export: attempting to duplicate a script event in an instance (%s::%s), ignoring\n", nd->name, lname);
+					return 0;
+				}
+			}
+		}
+		// NPC:<name> the prefix uses 4 characters
+		if (!strncasecmp(lname, script_config.onwhisper_event_name, NAME_LENGTH) && strlen(nd->exname) > (NAME_LENGTH - 4)) { // The client only allows that many character so that NPC could not be whispered by unmodified clients
+			ShowWarning("Whisper event i/n npc '" CL_WHITE "%s" CL_RESET "' was ignored, because it's name is too long.\n", nd->exname);
+			return 0;
+		}
+
+		snprintf(buf, ARRAYLENGTH(buf), "%s::%s", nd->exname, lname);
+		// generate the data and insert it
+		CREATE(ev, struct event_data, 1);
+		ev->nd = nd;
+		ev->pos = pos;
+		if (strdb_put(ev_db, buf, ev)) // There was already another event of the same name?
+			return 1;
+	}
+	return 0;
 }
 
 /*==========================================

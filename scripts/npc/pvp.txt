@@ -127,6 +127,9 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 			.@option = select( .@menu$ );
 			
 			.@option--;
+
+			sql_mac("check",@MAC$,.ranked_maps$[.@option],getcharid(0));
+			sql_mac("insert",@MAC$,getcharid(0),.ranked_maps$[.@option]);
 						
 			.@announce$ = sprintf( "%s [%s - %s] acaba de entrar na arena [%s]",
 			              ( Sex ? "O Jogador " : "A Jogadora " ),
@@ -558,6 +561,7 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 				setmapflag .ranked_maps$[.@i],MF_PVP_NOPARTY;
 				setmapflag .ranked_maps$[.@i],MF_PVP_NOGUILD;
 				setmapflag .ranked_maps$[.@i],MF_NOWARP;
+				setmapflag .ranked_maps$[.@i],MF_NOSAVE;
 			}
 			else
 			{

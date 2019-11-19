@@ -1,0 +1,353 @@
+
+
+phtownall,56,342,5	Script	Moeda Poring	501,{
+
+	.@n$ = "[^DAA520Coordenadora do Evento^000000]";
+
+	mes .@n$;
+
+	if( !$@EVENT_STATE[EVENTID_PORINGPOINT] )
+	{
+		mes "Olá, o evento não está aberto, mas posso lhe passar informações sobre o mesmo.";
+		for(.@i = 0; .@i < getarraysize(.idItens); .@i++)
+					delitem .idItens[.@i],countitem(.idItens[.@i]);
+	}
+	else
+		mes "Olá, veio participar do meu evento?";
+
+	.@menu$ = ( $@EVENT_STATE[EVENTID_PORINGPOINT] ? "^FF8C00Participar^000000" : "^FF0000Participar^000000" ) + ":Informações:Último Vencedor";
+
+	switch( select( .@menu$ ) )
+	{
+		case 1:
+			next;
+			if( !$@EVENT_STATE[EVENTID_PORINGPOINT] )
+			{
+				mes .@n$;
+				mes "Como eu disse, o evento está fechado.";
+				close;
+			}
+
+			mes .@n$;
+			mes "Muito bem, boa sorte lá dentro!";
+			close2;
+
+			if( !@MP_TELEPORTE )
+			{
+				for(.@i = 0; .@i < getarraysize(.idItens); .@i++)
+					delitem .idItens[.@i],countitem(.idItens[.@i]);
+
+				PONTOS_PORING = 0;
+			}
+
+			sql_mac("check",@MAC$,.map$,getcharid(0));
+			sql_mac("insert",@MAC$,getcharid(0),.map$);
+
+			@MP_TELEPORTE = 0;
+
+			warp .map$,159,137;
+			
+			sleep2 3000;
+
+			if( !$@EVENT_STATE[EVENTID_PORINGPOINT] ) atcommand "@killmonster2";
+			end;
+
+		case 2:
+			break;
+
+		case 3:
+			next;
+			mes .@n$;
+			mes "O último vencedor do Moeda Poring foi " + $MP_LASTOWNER$ + ".";
+			close;
+	}
+
+	next;
+	mes .@n$;
+	mes "O que deseja saber sobre o evento?";
+	switch(select("Regras Gerais:Itens do Evento:Recompensas"))
+	{
+		case 1:
+			next;
+			mes .@n$;
+			mes "O objetivo do jogo é acumular ^FF8C0010 pontos de Moeda Poring^000000.";
+			mes "No mapa do evento aleatoriamente irá surgir vários Porings de tempo em tempos.";
+			mes "Cada Poring irá ter uma chance de dropar um item do evento.";
+			next;
+			mes .@n$;
+			mes "Os itens que podem ser obtidos são:";
+			mes " ";
+
+			for( .@i = 0; .@i < getarraysize(.idItens); .@i++ )
+				mes sprintf( "^696969[%d]:^000000 %s", ( .@i + 1 ), getitemname( .idItens[.@i] ) );
+
+			next;
+			mes .@n$;
+			mes "Aquele que conseguir 10 pontos com a [Moeda Poring] consumindo o item irá ganhar o evento e a recompensa!";
+			next;
+			mes .@n$;
+			mes "É preciso ter estratégia de quando utilizar os itens na hora certa, então estude os itens antes de jogar!";
+			next;
+			mes .@n$;
+			mes "Ah, não é possível utilizar habilidades lá dentro, então cuidado com o efeito de certos itens para não ficar tiltado!";
+			close;
+
+		case 2:
+			next;
+			mes .@n$;
+			mes "Ah sim, clique no item que deseja obter informação!";
+
+			for( .@i = 0; .@i < getarraysize(.idItens); .@i++ )
+				mes sprintf("^696969[%d]:^000000 <ITEM>%s<INFO>%d</INFO></ITEM>", ( .@i + 1 ), getitemname( .idItens[.@i] ), .idItens[.@i] );
+			close;
+
+		case 3:
+			next;
+			mes .@n$;
+			mes "A recompensa para quem conseguir os 10 pontos primeiro são:";
+			mes "^696969[*]:^000000 20 a 50 Pontos de Evento";
+			mes "^696969[*]:^000000 100 Pontos de Cash";
+			close;
+	}
+	end;
+
+
+	OnInit:
+		setarray .idItens[0],29509,29510,29511,29512,29513,29514,29515,29516,29517,29518;
+
+		.map$ = "morocc";
+		end;
+}
+
+morocc,160,138,5	script	Saída do Evento#zp	501,{
+
+	.@n$ = "[^DAA520Coordenadora do Evento^000000]";
+
+	mes .@n$;
+	mes "Deseja saír do evento? Lembre-se de que seus pontos são removidos ao saír da arena.";
+	if(select("Sim:Não")==2) close;
+	warp "Save",0,0;
+	end;
+
+	OnStart:
+		if( !$@EVENT_STATE[EVENTID_PORINGPOINT] ) end;
+
+		while($@EVENT_STATE[EVENTID_PORINGPOINT])
+		{
+			if( mobcount( "morocc", "" ) < 30 )
+				monster "morocc",0,0,"[Evento]Poring :3",1002,rand(1,5);
+
+			sleep 15000;
+		}
+		end;
+
+	OnNPCKillEvent:
+		if(killedrid == 1725) atcommand "@die";
+		if(strcharinfo(3) != "morocc" || killedrid != 1002 || !$@EVENT_STATE[EVENTID_PORINGPOINT]) end;
+		setarray .@idItens[0],29510,29511,29512,29513,29514,29515,29516,29517,29518;
+		setarray .@chance[0],15,7,20,40,60,10,15,15,20;
+
+		.@moeda = 29509;
+
+		if(rand(1,5) != 1 && @chanceZP < 2)
+		{
+			message strcharinfo(0),"Que pena, nada aqui!";
+			@chanceZP++;
+			end;
+		}
+
+		@chanceZP = 0;
+
+		if(rand(1,2) == 1)
+		{
+			getitem 29509,1;
+			sleep2 5000;
+			announce "[Evento]: " + strcharinfo(0) + " conseguiu uma moeda poring!",bc_map;
+			end;
+		}
+		else
+			message strcharinfo(0),"Que pena, nenhuma moeda aqui!";
+
+		while(.@i < 5)
+		{
+			.@i++;
+			.@dropItem = rand(getarraysize(.@idItens));
+			if(rand(.@chance[.@dropItem]) > rand(100))
+			{
+				announce "[Evento]: " + strcharinfo(0) + " conseguiu um item do evento!",bc_map;
+				getitem .@idItens[.@dropItem],1;
+				end;
+			}
+		}
+		end;
+}
+
+//ARG0 - Item DB
+function	script	mp_use	{
+
+	.@item = getarg(0);
+
+	if(strcharinfo(3) != "morocc")
+	{
+		message strcharinfo(0),"Este item não pode ser usado aqui";
+		getitem .@item,1;
+		end;
+	}
+
+	if( !$@EVENT_STATE[EVENTID_PORINGPOINT] )
+	{
+		message strcharinfo(0),"O evento acabou!";
+		end;
+	}
+
+	//Moeda Poring
+	if(.@item == 29509)
+	{
+		PONTOS_PORING++;
+
+		l_pontos:
+		if(PONTOS_PORING >= 10)
+		{
+			$@EVENT_STATE[EVENTID_PORINGPOINT] = 0;
+			announce "[Evento]: " + strcharinfo(0) + " acaba de ganhar o evento Moeda Poring!",0;
+			$MP_LASTOWNER$ = strcharinfo(0);
+			pvpoff "morocc";
+			atcommand "@killmonster2";
+
+			.@rand = rand(10,30);
+			#EVENT_POINTS += .@rand;
+			dispbottom "--------------------------------------------------";
+			dispbottom "Você recebeu " + .@rand + " pontos de evento!";
+			dispbottom "Total de pontos: " + #EVENT_POINTS;
+			dispbottom "--------------------------------------------------";
+
+			bot_announce( strcharinfo(0) + " acaba de ganhar o evento Moeda Poring!", CHANNEL_GERAL );
+
+			addrid(1);
+			sleep2 5000;
+			warp "Save",0,0;
+			end;
+		}
+
+		message strcharinfo(0),"Você está com (" + PONTOS_PORING + ") pontos";
+		end;
+	}
+
+	//Bomba Poring
+	if(.@item == 29510)
+	{
+		.@used = getcharid(0);
+		announce "[Evento]: " + strcharinfo(0) + " utilizou uma [Bomba Poring]!",bc_map;
+		addrid(1);
+		if(.@used == getcharid(0)) end;
+		//showdamage 900,getcharid(0),1,1;
+		bonus_script "bonus bSpeedAddRate,-30;",7,3;
+		specialeffect2 38;
+		sleep2 7000;
+		specialeffect2 37;
+		end;
+	}
+
+	//Portal Poring
+	if(.@item == 29511)
+	{
+		.@used = getcharid(0);
+		announce "[Evento]: " + strcharinfo(0) + " utilizou um [Portal Poring]!",bc_map;
+		addrid(1);
+		if(.@used == getcharid(0)) end;
+		@MOEDA_TELEPORTE = 1;
+		warp "Save",0,0;
+		end;
+	}
+
+	//Armadilha Poring
+	if(.@item == 29512)
+	{
+		getmapxy(.@m$,.@x,.@y,0);
+		announce "[Evento]: " + strcharinfo(0) + " utilizou uma [Armadilha Poring]!",bc_map;
+		monster "morocc",.@x,.@y,"[Evento]Poring >:3",1725,1;
+		end;
+	}
+
+	//Salto Poring
+	if(.@item == 29513)
+	{
+		warp strcharinfo(3),0,0;
+		announce "[Evento]: " + strcharinfo(0) + " utilizou um [Salto Poring]!",bc_map;
+		end;
+	}
+
+	//Dica Poring
+	if(.@item == 29514)
+	{
+		announce "[Evento]: " + strcharinfo(0) + " utilizou uma [Dica Poring]!",bc_map;
+		atcommand "@showmobs " + 1725;
+		atcommand "@showmobs " + 1002;
+		end;
+	}
+
+	//Trapaceiro Poring
+	if(.@item == 29515)
+	{
+		announce "[Evento]: " + strcharinfo(0) + " utilizou um [Trapaça Poring]!",bc_map;
+		.@select = select("Remover Pontos:Remover Moedas");
+		.@used = getcharid(0);
+
+		if(.@select == 1)
+		{
+			addrid(1);
+			if(.@used == getcharid(0)) end;
+			if(PONTOS_PORING <= 2 ) PONTOS_PORING = 0;
+			else PONTOS_PORING -= 2;
+			message strcharinfo(0),"Você agora tem ( " + PONTOS_PORING + ") pontos";
+			end;
+		}
+		else
+		{
+			addrid(1);
+			if(.@used == getcharid(0)) end;
+			delitem 29509,2;
+			message strcharinfo(0),"Você agora tem ( " + countitem(29509) + ") moedas";
+			end;
+		}
+		end;
+	}
+
+	//Guerra Poring
+	if(.@item == 29516)
+	{
+		announce "[Evento]: " + strcharinfo(0) + " utilizou um [Guerra Poring]!",bc_map;
+		pvpon "morocc";
+		end;
+	}
+
+	//Paz Poring
+	if(.@item == 29517)
+	{
+		if(getmapflag(strcharinfo(3),mf_pvp))
+		{
+			.@rand = rand(1,100);
+			if(.@rand <= 5)
+			{
+				pvpoff "morocc";
+				PONTOS_PORING += 2;
+				goto l_pontos;
+			}
+		}
+		pvpoff "morocc";
+		announce "[Evento]: " + strcharinfo(0) + " utilizou um [Paz Poring]!",bc_map;
+		end;
+	}
+
+	//Troll Poring
+	if(.@item == 29518)
+	{
+		announce "[Evento]: " + strcharinfo(0) + " utilizou um [Troll Poring]!",bc_map;
+		addrid(1);
+		atcommand "@disguise Poring";
+		sleep2 30000;
+		atcommand "@undisguise";
+		end;
+	}
+	end;
+}
