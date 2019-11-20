@@ -3034,6 +3034,7 @@ int mob_dead(struct mob_data *md, struct block_list *src, int type)
 				{
 					addbonus_script(mvp_sd, "bonus bAllStats,5;", 7000, 1, 1);
 					mvp_sd->csd[CSD_ITEM_TIARA_DAS_CINCO_ALMAS]->val2 = 0;
+					clif_specialeffect(src, 261, AREA);
 				}
 			}
 		}

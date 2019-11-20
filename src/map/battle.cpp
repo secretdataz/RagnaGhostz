@@ -1776,6 +1776,9 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 		if (bl->type == BL_PC && sd->mast[MASTERY_DOCE_VINGANCA]->level == 100 && sd->mast[MASTERY_DOCE_VINGANCA]->val1 == BL_CAST(BL_PC, bl)->status.char_id)
 			damage += (damage * 5) / 100;
 
+		if (sd->csd[CSD_ITEM_DIADEMA_DE_GRIFO]->active && pc_isriding(sd))
+			damage += (damage * 5) / 100;
+
 		// Reduções Finais
 		if (bl->type == BL_PC && BL_CAST(BL_PC,bl)->mast[MASTERY_BELEZA_ATORDOANTE]->active)
 			damage -= (damage * (BL_CAST(BL_PC, bl)->mast[MASTERY_BELEZA_ATORDOANTE]->level / 10)) / 100;
@@ -1791,6 +1794,9 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 
 		if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_DEFESA]->active)
 			damage -= (damage * (BL_CAST(BL_PC, bl)->mast[MASTERY_MELHORAR_DEFESA]->level / 10)) / 100;
+
+		if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->csd[CSD_ITEM_TIARA_POPSTAR]->active && getRandomValue(1, 100) <= 3)
+			damage -= (damage * 50) / 100;
 	}
 
 	if (src->type == BL_HOM && BL_CAST(BL_HOM,bl)->master)

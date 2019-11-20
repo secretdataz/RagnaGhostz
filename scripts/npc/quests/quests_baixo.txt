@@ -1,0 +1,74 @@
+
+phtownall,204,336,3	Script	Quests Baixo Vol 1	858,{
+	
+	.@n$ = "[Quests Baixo - Primeiro Volume]";
+
+	mes "Selecione o número da Quest que deseja fazer.";
+	for( .@i = 0; .@i < getarraysize(.item_id); .@i++ )
+		mes sprintf("^696969[Num %d]:^000000 <ITEM>%s<INFO>%d</INFO></ITEM>", ( .@i ), getitemname( .item_id[.@i] ), .item_id[.@i] );
+
+	input .@quest;
+
+	if( .@quest < 0 || .@quest > 9 )
+		close;
+
+	next;
+	mes .@n$;
+	mes "Você precisa ter ^DAA52010 Pontos de Fortuna^000000 para adquirir ^B03060" + getitemname( .item_id[.@quest] ) + "^000000.";
+	mes " ";
+	mes "Pontos de Fortuna: " + #FORTUNA_POINTS;
+
+	if( #FORTUNA_POINTS < 10 )
+		close;
+
+	if( select( "Continuar Olhando:Quero este item") == 1 ) close;
+
+	npctalk strcharinfo(0) + " acaba de materializar o item " + getitemname( .item_id[.@quest] );
+
+	#FORTUNA_POINTS -= 10;
+
+	getitem .item_id[.@quest],1;
+	close;
+
+	OnInit:
+		// Nariz de Madeira (18567)
+		.item_id[0]   = 29547;
+		.item_req$[0] = "ITEM_ID:ITEM_QTD|";
+
+		// Seringa na Boca (18697)
+		.item_id[1] = 29548;
+		.item_req$[1] = "ITEM_ID:ITEM_QTD|";
+
+		// Sopro de Skadi (18746)
+		.item_id[2] = 29549;
+		.item_req$[2] = "ITEM_ID:ITEM_QTD|";
+
+		// Fone Descolado (19274)
+		.item_id[3] = 29550;
+		.item_req$[3] = "ITEM_ID:ITEM_QTD|";
+
+		// Pombinho Branco (19321)
+		.item_id[4] = 29551;
+		.item_req$[4] = "ITEM_ID:ITEM_QTD|";
+
+		// Olhos Felino (19912)
+		.item_id[5] = 29552;
+		.item_req$[5] = "ITEM_ID:ITEM_QTD|";
+
+		// Aura Fantasmagorica [1267]
+		.item_id[6] = 29553;
+		.item_req$[6] = "ITEM_ID:ITEM_QTD|";
+
+		// Cachecol de Lutie [1312]
+		.item_id[7] = 29554;
+		.item_req$[7] = "ITEM_ID:ITEM_QTD|";
+
+		// Cachecol de Eremes [1416] 
+		.item_id[8] = 29555;
+		.item_req$[8] = "ITEM_ID:ITEM_QTD|";
+
+		// Visor Holográfico [1351]
+		.item_id[9] = 29556;
+		.item_req$[9] = "ITEM_ID:ITEM_QTD|";
+		end;
+}

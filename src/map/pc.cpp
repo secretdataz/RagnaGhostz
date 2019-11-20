@@ -8213,6 +8213,7 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 				{
 					addbonus_script(ssd, "bonus bAllStats,20;", 15000, 1, 1);
 					ssd->csd[CSD_ITEM_TIARA_DAS_CINCO_ALMAS]->val1 = 0;
+					clif_specialeffect(src, 261, AREA);
 				}
 			}
 		}

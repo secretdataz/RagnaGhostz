@@ -11761,7 +11761,6 @@ BUILDIN_FUNC(getstatus)
  *------------------------------------------*/
 BUILDIN_FUNC(debugmes)
 {
-	const char *str;
 	ShowNotice("[%s]: %s \n", script_getstr(st,2), script_getstr(st,3));
 	return SCRIPT_CMD_SUCCESS;
 }
@@ -24494,7 +24493,6 @@ BUILDIN_FUNC(sendPacket)
 {
 	TBL_PC *sd;
 	int color = 0;
-	const char *message;
 
 	if (!script_charid2sd(4, sd))
 		return SCRIPT_CMD_FAILURE;
@@ -24672,11 +24670,20 @@ BUILDIN_FUNC(rgzbonus)
 	{
 		switch (effect)
 		{
+		case CSD_ITEM_ASAS_DE_PEGASOS:
 		case CSD_ITEM_TIARA_DAS_CINCO_ALMAS:
+		case CSD_ITEM_DIADEMA_DE_GRIFO:
 			sd->csd[effect]->active = state;
-			sd->csd[effect]->val1 = 0; // Contagem de Players
-			sd->csd[effect]->val2 = 0; // Contagem de Monstros
+			sd->csd[effect]->val1 = 0;
+			sd->csd[effect]->val2 = 0;
 			break;
+
+		case CSD_ITEM_TIARA_POPSTAR:
+			sd->csd[effect]->active = state;
+			break;
+
+		default:
+			return SCRIPT_CMD_FAILURE;
 		}
 	}
 

@@ -1,0 +1,161 @@
+
+phtownall,63,194,3	Script	Torre da Fortuna	757,{
+
+	.@n$ = "[^6B8E23Torre da Fortuna^000000]";
+
+	mes .@n$;
+
+	if( BaseLevel < 300 )
+	{
+		mes "É com pesar que devo lhe informar que a Torre da Fortuna não está aberta para jogadores que não estejam no nível máximo.";
+		close;
+	}
+
+	mes "Deseja entrar na Torre da Fortuna?";
+	mes "Pontos de Fortuna: " + #FORTUNA_POINTS;
+
+	switch( select( "Sim", "O que é esta Torre?" ) )
+	{
+		case 1:
+			close2;
+			npctalk "Tenha um ótimo grind, " + strcharinfo(0);
+			warp "c_tower1",0,0;
+			end;
+
+		case 2:
+			next;
+			mes .@n$;
+			mes "Diferente da Torre da Jornada, aqui você irá compartilhar com os outros jogadores o seu grind.";
+			mes "Mate monstros para conseguir Pontos de Fortuna para utilizar em quest's.";
+			next;
+			mes .@n$;
+			mes "Cada monstro concede 1% (vips possuem 3%) de chance de conseguir 1 ponto de fortuna.";
+			mes "A cada 450 monstros que você matar, irá receber 1 ponto de evento.";
+			mes "A cada 300 monstros que você matar, 1 ponto de fortuna é concedido.";
+			mes "A cada 150 monstros que você matar, irá receber 1kk de zeny's.";
+			next;
+			mes .@n$;
+			mes "A cada 30 minutos irá ocorrer um evento dentro da Torre da Jornada, podendo ser ele...";
+			next;
+			mes .@n$;
+			mes "[^DAA5201^000000] - Nascimento de um Poring especial que quando morto, concede 3 pontos de fortuna.";
+			next;
+			mes .@n$;
+			mes "[^DAA5202^000000] - Todos dentro da Torre recebem 3 pontos de fortuna.";
+			next;
+			mes .@n$;
+			mes "[^DAA5203^000000] - Todos dentro da Torre que possuírem mais de 10 pontos, perdem 3 pontos de fortuna (com exceção de vips).";
+			close;
+	}
+
+	end;
+
+	OnInit:
+		monster "c_tower1",0,0,"Drops da Fortuna",1572,500,"Torre da Fortuna::OnDrops";
+		end;
+
+	OnMinute30:
+	OnMinute00:
+		killmonster "c_tower1","Torre da Fortuna::OnDrops";
+		monster "c_tower1",0,0,"Drops da Fortuna",1572,500,"Torre da Fortuna::OnDrops";
+		switch( rand(1,5) )
+		{
+			case 1:
+				killmonster "c_tower1","OnSpecialPoring";
+				mapannounce "c_tower1","Um poring especial acaba de nascer!",0;
+				monster "c_tower1",0,0,"Poring Especial",1002,1,"Torre da Fortuna::OnSpecialPoring";
+				end;
+
+			case 2:
+				mapannounce "c_tower1","Todos acabam de receber 1 ponto de fortuna!",0;
+				addrid(5,0,"c_tower1");
+				#FORTUNA_POINTS++;
+				dispbottom "Total de Pontos de Fortuna: " + #FORTUNA_POINTS;
+				end;
+
+			case 3:
+				mapannounce "c_tower1","Todos acabam de receber 3 ponto de fortuna!",0;
+				addrid(5,0,"c_tower1");
+				if( getgroupid() > 0 || #FORTUNA_POINTS < 10 ) end;
+				#FORTUNA_POINTS--;
+				dispbottom "Total de Pontos de Fortuna: " + #FORTUNA_POINTS;
+				end;
+
+			default:
+				mapannounce "c_tower1","Hmm, dessa vez nenhum evento ocorreu, apenas a faxina rotineira!",0;
+				end;
+		}
+
+
+		end;
+
+	OnSpecialPoring:
+		mapannounce "c_tower1", strcharinfo(0) + " acaba de abater o Poring Especial!",0;
+		#FORTUNA_POINTS += 2;
+	OnDrops:
+		.@mob_dead_num = mobcount( "c_tower1","Torre da Fortuna::OnDrops");
+
+		if( .@mob_dead_num == 1 )
+		{
+			killmonster "c_tower1","Torre da Fortuna::OnDrops";
+			monster "c_tower1",0,0,"Drops da Fortuna",1572,500,"Torre da Fortuna::OnDrops";
+		}
+
+		#FORTUNA_KILLS++;
+
+		.@oldFortuna = #FORTUNA_POINTS;
+
+		.@rand = getgroupid() == 0 ? 1 : 3;
+
+		if( #FORTUNA_KILLS > 160 )
+			.@rand += 1;
+		else if( #FORTUNA_KILLS > 400 )
+			.@rand += 3;
+
+		.@sort = rand(1,100);
+
+		if( getgroupid() == 99 )
+			message strcharinfo(0),"Chance foi de " + .@sort;
+
+		if( .@sort <= .@rand )
+		{
+			message strcharinfo(0),"Recebeu 1 ponto de fortuna!";
+			#FORTUNA_POINTS++;
+			specialeffect2 709;
+		}
+
+		if( #FORTUNA_KILLS == 150 || #FORTUNA_KILLS == 300 || #FORTUNA_KILLS == 450 )
+		{
+			message strcharinfo(0),"Recebeu 1kk de Zeny's!";
+			specialeffect2 268;
+			Zeny += 1000000;
+		}
+
+		if( #FORTUNA_KILLS == 300 )
+		{
+			dispbottom "Recebeu 1 ponto de fortuna extra!";
+			specialeffect2 709;
+			#FORTUNA_POINTS++;
+		}
+		else if( #FORTUNA_KILLS >= 450 )
+		{
+			dispbottom "Recebeu 1 ponto de evento!";
+			#FORTUNA_POINTS++;
+			#FORTUNA_KILLS = 0;
+			specialeffect2 68;
+		}
+
+		if( .@oldFortuna != #FORTUNA_POINTS )
+		{
+			dispbottom "-------------------------";
+			dispbottom "Total de Pontos de Fortuna: " + #FORTUNA_POINTS;
+			dispbottom "-------------------------";
+		}
+		else
+		{
+			dispbottom "-------------------------";
+			dispbottom "Total de Monstros Eliminados: " + #FORTUNA_KILLS;
+			dispbottom "-------------------------";
+		}
+		end;
+}

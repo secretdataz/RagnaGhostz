@@ -3185,7 +3185,7 @@ static int clif_hpmeter(struct map_session_data *sd)
 Comando:
 	updateView
 
-Descriï¿½ï¿½o:
+Descri??o:
 	Atualiza visualmente algum status do personagem.
 */
 void updateView(struct block_list *bl, int stats)
@@ -4783,6 +4783,33 @@ void clif_getareachar_unit(struct map_session_data* sd,struct block_list *bl)
 	case BL_MOB:
 		{
 			TBL_MOB* md = (TBL_MOB*)bl;
+
+			if (md->mob_id == 1572)
+			{
+				switch (getRandomValue(1, 5))
+				{
+				case 1:
+					clif_disp_overhead(bl, "Qual foi, vai encarar? Vem no x1!");
+					break;
+
+				case 2:
+					clif_disp_overhead(bl, "Pode me matar, não vou te dar nada mesmo");
+					break;
+					 
+				case 3:
+					clif_disp_overhead(bl, "Acha que tenho medo de você? Já matei aprendizes mais fortes!");
+					break;
+
+				case 4:
+					clif_disp_overhead(bl, "Caneta Azul, Azual Caneta ~~");
+					break;
+
+				case 5:
+					clif_disp_overhead(bl, "Por favor não me mate, eu tenho filhos, mate eles!");
+					break;
+				}
+			}
+
 			if(md->special_state.size==SZ_BIG) // tiny/big mobs [Valaris]
 				clif_specialeffect_single(bl,EF_GIANTBODY2,sd->fd);
 			else if(md->special_state.size==SZ_MEDIUM)
@@ -4794,7 +4821,7 @@ void clif_getareachar_unit(struct map_session_data* sd,struct block_list *bl)
 					if( md->dmglog[i].id == sd->status.char_id )
 						clif_monster_hp_bar(md, sd->fd);
 			}
-#endif
+#endif		
 		}
 		break;
 	case BL_PET:

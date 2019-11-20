@@ -100,7 +100,7 @@ phtownall,71,338,5	Script	Gerenciador de Eventos	531 ,{
 	OnClock2230:
 	OnClock2300:
 	OnClock2400:
-		.@rand = rand( 1, getarraysize( .event_nam$ ) ) - 1;
+		.@rand = rand( 1, getarraysize( .event_name$ ) ) - 1;
 		.@sleep = 60000;
 	L_Start:
 		if(.@i == 0) .@i = 3;

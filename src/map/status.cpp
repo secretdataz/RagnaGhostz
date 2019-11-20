@@ -1830,6 +1830,19 @@ int status_damage(struct block_list *src,struct block_list *target,int64 dhp, in
 	if( status->hp || (flag&8) ) { // Still lives or has been dead before this damage.
 		if (walkdelay)
 			unit_set_walkdelay(target, gettick(), walkdelay, 0);
+
+		if (target->type == BL_PC && BL_CAST(BL_PC, target)->csd[CSD_ITEM_ASAS_DE_PEGASOS]->active)
+		{
+			BL_CAST(BL_PC, target)->csd[CSD_ITEM_ASAS_DE_PEGASOS]->val1++;
+
+			if (BL_CAST(BL_PC, target)->csd[CSD_ITEM_ASAS_DE_PEGASOS]->val1 == 12)
+			{
+				BL_CAST(BL_PC, target)->csd[CSD_ITEM_ASAS_DE_PEGASOS]->val1 = 0;
+				addbonus_script(BL_CAST(BL_PC, target), "bonus bSpeedRate,150;", 7000, 1, 1);
+				clif_specialeffect(target, 37, AREA);
+			}
+		}
+
 		return (int)(hp+sp);
 	}
 
@@ -1931,7 +1944,7 @@ int status_damage(struct block_list *src,struct block_list *target,int64 dhp, in
 			int increase = BL_CAST(BL_PC, target)->mast[MASTERY_KAIZEL_EX]->level / 100;
 
 			status_revive(target, 70 + increase, 0);
-			status_percent_heal(target, 0, increase, 0);
+			status_percent_heal(target, 0, increase);
 		}
 		else
 			status_revive(target, sc->data[SC_KAIZEL]->val2, 0);
@@ -2176,7 +2189,7 @@ int status_revive(struct block_list *bl, unsigned char per_hp, unsigned char per
 	if (per_hp > 100)
 		per_hp = 100;
 	if (per_sp > 100)
-		per_sp == 100;
+		per_sp = 100;
 
 	hp = (int64)status->max_hp * per_hp/100;
 	sp = (int64)status->max_sp * per_sp/100;

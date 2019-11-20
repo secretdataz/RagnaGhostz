@@ -5331,6 +5331,8 @@ ACMD_FUNC(haton)
 	}
 
 	unit_attacheffect(&sd->bl, type, true);
+
+	return SCRIPT_CMD_SUCCESS;
 }
 
 ACMD_FUNC(hatoff)
@@ -5344,6 +5346,8 @@ ACMD_FUNC(hatoff)
 	}
 
 	unit_attacheffect(&sd->bl, type, false);
+
+	return SCRIPT_CMD_SUCCESS;
 }
 
 /*==========================================
