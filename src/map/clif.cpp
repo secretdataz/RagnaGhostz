@@ -4793,11 +4793,11 @@ void clif_getareachar_unit(struct map_session_data* sd,struct block_list *bl)
 					break;
 
 				case 2:
-					clif_disp_overhead(bl, "Pode me matar, não vou te dar nada mesmo");
+					clif_disp_overhead(bl, "Pode me matar, nÃ£o vou te dar nada mesmo");
 					break;
 					 
 				case 3:
-					clif_disp_overhead(bl, "Acha que tenho medo de você? Já matei aprendizes mais fortes!");
+					clif_disp_overhead(bl, "Acha que tenho medo de vocÃª? JÃ¡ matei aprendizes mais fortes!");
 					break;
 
 				case 4:
@@ -4805,7 +4805,7 @@ void clif_getareachar_unit(struct map_session_data* sd,struct block_list *bl)
 					break;
 
 				case 5:
-					clif_disp_overhead(bl, "Por favor não me mate, eu tenho filhos, mate eles!");
+					clif_disp_overhead(bl, "Por favor nÃ£o me mate, eu tenho filhos, mate eles!");
 					break;
 				}
 			}
@@ -5521,6 +5521,28 @@ void clif_skillinfo(struct map_session_data *sd,int skill_id, int inf)
 	WFIFOSET(fd,packet_len(0x7e1));
 }
 
+void clif_skill_scale(struct block_list *bl, int src_id, int x, int y, uint16 skill_id, uint16 skill_lv, int casttime)
+{
+	const int cmd = 0xA41;
+
+	unsigned char buf[32];
+
+	WBUFW(buf, 0) = cmd;
+	WBUFL(buf, 2) = src_id;
+	WBUFW(buf, 6) = skill_id;
+	WBUFW(buf, 8) = skill_lv;
+	WBUFW(buf, 10) = x;
+	WBUFW(buf, 12) = y;
+	WBUFL(buf, 14) = casttime + 2000;
+
+	if (disguised(bl)) {
+		clif_send(buf, 18, bl, AREA_WOS);
+		WBUFL(buf, 2) = -src_id;
+		clif_send(buf, 18, bl, SELF);
+	}
+	else
+		clif_send(buf, 18, bl, AREA);
+}
 
 /// Notifies clients in area, that an object is about to use a skill.
 /// 013e <src id>.L <dst id>.L <x>.W <y>.W <skill id>.W <property>.L <delaytime>.L (ZC_USESKILL_ACK)
@@ -5537,7 +5559,7 @@ void clif_skillinfo(struct map_session_data *sd,int skill_id, int inf)
 /// is disposable:
 ///     0 = yellow chat text "[src name] will use skill [skill name]."
 ///     1 = no text
-void clif_skillcasting(struct block_list* bl, int src_id, int dst_id, int dst_x, int dst_y, uint16 skill_id, int property, int casttime)
+void clif_skillcasting(struct block_list* bl, int src_id, int dst_id, int dst_x, int dst_y, uint16 skill_id, int skill_lv, int property, int casttime)
 {
 #if PACKETVER < 20091124
 	const int cmd = 0x13e;
@@ -5564,6 +5586,7 @@ void clif_skillcasting(struct block_list* bl, int src_id, int dst_id, int dst_x,
 		clif_send(buf,packet_len(cmd), bl, SELF);
 	} else
 		clif_send(buf,packet_len(cmd), bl, AREA);
+
 }
 
 
