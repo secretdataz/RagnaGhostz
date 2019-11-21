@@ -23059,7 +23059,7 @@ BUILDIN_FUNC(jobcanentermap) {
 		script_pushint(st, false);
 		return SCRIPT_CMD_FAILURE;
 	}
-
+	
 	if (script_hasdata(st, 3)) {
 		jobid = script_getnum(st, 3);
 	} else {

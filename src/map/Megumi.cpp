@@ -37,7 +37,7 @@ static std::map<int, megumi>::iterator megumiIT;
 	Megumi Database
 */
 
-inline uint32_t GenerateMegumiHash(const std::string& str)
+uint32_t GenerateMegumiHash(const std::string& str)
 {
 	uint32_t hash = 0x811c9dc5;
 	uint32_t prime = 0x1000193;

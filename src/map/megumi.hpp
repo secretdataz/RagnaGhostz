@@ -46,7 +46,7 @@ struct megumi GetMegumiData(uint32 hash);
 void UpdateMegumi(int hash, struct megumi);
 int AddMegumi(std::string UP, int fd);
 
-inline uint32_t GenerateMegumiHash(const std::string& str);
+uint32_t GenerateMegumiHash(const std::string& str);
 int megumipackethandle(int fd);
 
 #endif /* MEGUMI_HPP */
