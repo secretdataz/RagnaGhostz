@@ -5,12 +5,6 @@ phtownall,63,194,3	Script	Torre da Fortuna	757,{
 
 	mes .@n$;
 
-	if( BaseLevel < 300 )
-	{
-		mes "É com pesar que devo lhe informar que a Torre da Fortuna não está aberta para jogadores que não estejam no nível máximo.";
-		close;
-	}
-
 	mes "Deseja entrar na Torre da Fortuna?";
 	mes "Pontos de Fortuna: " + #FORTUNA_POINTS;
 
