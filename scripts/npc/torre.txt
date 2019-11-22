@@ -1165,6 +1165,18 @@ function	script	F_Torre_Warp	{
 				JobLevel++;
 				BaseLevel++;
 			}
+			
+		if( BaseLevel >= 200 && REBIRTH == 1 )
+		{
+			announce "[Condecoração de Classe]: " + strcharinfo(0) + " adquiriu o poder dos Deuses.",0;
+			jobchange Class + 4001;
+			REBIRTH = 2;
+			StatusPoint += 120;
+			
+			dispbottom "Parabéns por atingir o nível " + BaseLevel + "! Você recebeu 120 pontos de atributo!";
+			
+			goto L_PlatSkills;
+		}
 		
 		if (.@mob_dead_num < 1)
 		{
