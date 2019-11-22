@@ -1145,8 +1145,11 @@ function	script	F_Torre_Warp	{
 			hideonnpc instance_npcname("#PortalTorre");
 		end;
 		
+	OnPCBaseLevelUp:
+		percentheal 100,100;
+		end;
+
 	OnMyMobDead:
-	
 		.@map$ = instance_mapname("1@tower");
 		
 		.@mob_dead_num = mobcount(.@map$,instance_npcname("TorreLogic")+"::OnMyMobDead");
@@ -1156,7 +1159,7 @@ function	script	F_Torre_Warp	{
 		if( getgroupid() == 99 )
 			dispbottom "Diferença de Nível: " + .@dif;
 		
-		if( ( .@dif >= -15 && .@dif <= 15 ) || 'TORREID == 5  )
+		if( ( .@dif >= -70 && .@dif <= 70 ) || BaseLevel <= 250 || 'TORREID == 5  )
 			if( rand( 1, 100 ) <= 'chance['TORREID] )
 			{
 				JobLevel++;
