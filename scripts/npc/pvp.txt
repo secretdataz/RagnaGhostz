@@ -677,7 +677,7 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 				   "       `abates` = " + PVP_KILLS + " " +
 		           ( PVP_MAXSTREAK < MAX_STREAK ?
 				   "       ,`recabates` = " + PVP_STREAK : " " ) +
-				   " WHERE `char_id`= " + .@cid[.@z];
+				   " WHERE `char_id`= " + getcharid(0);
 						   
 		query_sql( .@query$ );
 		
@@ -699,7 +699,7 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
                         .rank_name$[PVP_RANKING],
 						jobname( Class ),
 						strcharinfo( 0, .@victim ),
-						readparam( PVP_RANKING, .@victim ),
+						.rank_name$[readparam( PVP_RANKING, .@victim )],
 						jobname( readparam( Class, .@victim ) ),
 						.@a,
 						.@a == 1 ? "abate" : "abates consecutivos" );
@@ -729,7 +729,7 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 		@query$ = "UPDATE `pvp_player`          " +
 				   "   SET `pontos` = `pontos` - " + .@points + ", " +
 				   "       `mortes` = `mortes` - 1" +
-				   " WHERE `char_id`= " + .@cid[.@z];
+				   " WHERE `char_id`= " + .@victim;
 		
 		message strcharinfo(0, .@victim),"Perdeu (" + .@points + ") pontos";
 		end;
