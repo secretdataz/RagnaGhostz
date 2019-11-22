@@ -87,6 +87,8 @@ phtownall,63,194,3	Script	Torre da Fortuna	757,{
 		mapannounce "c_tower1", strcharinfo(0) + " acaba de abater o Poring Especial!",0;
 		#FORTUNA_POINTS += 2;
 	OnDrops:
+		Zeny += rand( 100000, 200000 );
+		
 		.@mob_dead_num = mobcount( "c_tower1","Torre da Fortuna::OnDrops");
 
 		if( .@mob_dead_num == 1 )
