@@ -416,7 +416,7 @@ function	script	F_Torre_Monstros	{
 				setarray .@ms$[0],"Relógio|1528|6",
 				                  "Comodo|2867|4",
 								  "Chung|1631|5",
-								  "Sangue nos Olhos|2008|3",
+								  "Sangue nos Olhos|1268|3",
 								  "Kapha|1543|2",
 								  "Chepet|2351|1";
 				break;

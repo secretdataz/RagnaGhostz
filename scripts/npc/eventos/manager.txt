@@ -28,7 +28,7 @@ phtownall,71,338,5	Script	Gerenciador de Eventos	531 ,{
 		.event_map$[EVENTID_PORINGPOINT] = "morocc";
 
 		.event_name$[EVENTID_PORINGRACE] = "Corrida Poring";
-		.npc_event$[EVENTID_PORINGRACE] = "Corrida Poring::OnPoringRaceStart";
+		.npc_event$[EVENTID_PORINGRACE] = "Corrida Poring::OnIniciarEvento";
 		.npc_name$[EVENTID_PORINGRACE] = "Corrida Poring";
 		.event_map$[EVENTID_PORINGRACE] = "p_track02";
 
