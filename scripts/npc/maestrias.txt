@@ -1,6 +1,6 @@
 
 
-phtownall,366,352,3	Script	Senhora das Maestrias	10168,{
+phtownall,339,324,3	Script	Senhora das Maestrias	10168,{
 	
 	.@n$ = "[^008B8BSenhora das Maestrias^000000]";
 

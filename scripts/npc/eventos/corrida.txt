@@ -791,7 +791,7 @@ phtownall,61,360,5	Script	Corrida RagnaGhostz	497,{
 		
 	OnIniciarEvento:
 		.@i = 1;
-		removemapflag "flag_event",mf_pvp;
+		//removemapflag "flag_event",mf_pvp;
 		$RACE_START = 0;
 
 		if(.@i == 0) .@i = 5;
