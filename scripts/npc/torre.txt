@@ -278,7 +278,7 @@ function	script	F_Torre_Monstros	{
 								  "Piere|1238|1",
 								  "Coco|1860|5",
 								  "Fumacento|1811|4",
-								  "Esporo|2446|2";	
+								  "Esporo|1014|2";	
 				break;
 
 			case 2: // 18 ~ 24
