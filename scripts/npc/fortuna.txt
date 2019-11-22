@@ -55,7 +55,7 @@ phtownall,63,194,3	Script	Torre da Fortuna	757,{
 		switch( rand(1,5) )
 		{
 			case 1:
-				killmonster "c_tower1","OnSpecialPoring";
+				killmonster "c_tower1","Torre da Fortuna::OnSpecialPoring";
 				mapannounce "c_tower1","Um poring especial acaba de nascer!",0;
 				monster "c_tower1",0,0,"Poring Especial",1002,1,"Torre da Fortuna::OnSpecialPoring";
 				end;
@@ -85,9 +85,12 @@ phtownall,63,194,3	Script	Torre da Fortuna	757,{
 
 	OnSpecialPoring:
 		mapannounce "c_tower1", strcharinfo(0) + " acaba de abater o Poring Especial!",0;
+		message strcharinfo(0),"Recebeu 30kk de Zeny's!";
+		specialeffect2 268;
+		Zeny += 30000000;
 		#FORTUNA_POINTS += 2;
 	OnDrops:
-		Zeny += rand( 100000, 200000 );
+		Zeny += rand( 100000, 300000 );
 		
 		.@mob_dead_num = mobcount( "c_tower1","Torre da Fortuna::OnDrops");
 
