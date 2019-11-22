@@ -7414,13 +7414,13 @@
 29534,Cartola_de_Leprechaun_[QUEST],Cartola de Leprechaun [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,256,,1,1,735,{ bonus bVit,25; bonus bLuk,10; bonus bUnbreakable,30; },{},{}
 29535,Decoracao_Dourada_[QUEST],Decoração Dourada [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,256,,1,1,739,{ bonus2 bAddClass,Class_All,5; bonus2 bHPDrainRate,500,10; },{},{}
 29536,Tiara_das_Cinco_Almas_[QUEST],Tiara das Cinco Almas [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,256,,1,1,564,{ bonus bAllStats,1; },{ rgzbonus(4,1); },{ rgzbonus(4,0); }
-29537,Mascara_dos_Esplendidos_[QUEST],Máscara dos Esplêndidos [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,0,760,{ bonus bStr,20; bonus bVit,-5; bonus2 bHPVanishRate,50,3; if( Class == 4013 ) { bonus bDoubleAddRate,3; } },{},{}
+29537,Mascara_dos_Esplendidos_[QUEST],Máscara dos Esplêndidos [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,1,760,{ bonus bStr,20; bonus bVit,-5; bonus2 bHPVanishRate,50,3; if( Class == 4013 ) { bonus bDoubleAddRate,3; } },{},{}
 29538,Oculos_Magicos_[QUEST],Óculos Mágicos [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,1,404,{ bonus bInt,20; bonus bLongAtkDef,10; },{},{}
 29539,Parafusos_de_Ragenstein_[QUEST],Parafusos de Ragenstein [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,1,696,{ bonus bMaxHP,5000; bonus bNoWeaponDamage,6; if( Class == 4011 ) { bonus bUnbreakable,75; } },{},{}
 29540,Asas_de_Pegaso_[QUEST],Asas de Pégaso [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,1,568,{ bonus bStr,5; bonus bAgi,20; },{ rgzbonus(5,1); },{ rgzbonus(5,0); }
 29541,Óculos_Retrofuturistas_[QUEST],Óculos Retrofuturistas [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,1,856,{ bonus bLuk,15; bonus bLongWeaponDamageReturn,5; },{},{}
 29542,Diadema_do_Grifo_[QUEST],Diadema do Grifo [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,1,935,{ bonus bStr,10; bonus bVit,10; },{ rgzbonus(6,1); },{ rgzbonus(6,0); }
-29543,Asas_de_Tapaton_[QUEST],Asas de Tapaton [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,0,1008,{ bonus bStr,15; bonus bInt,5; bonus2 bSubEle,Ele_Dark,35; bonus2 bSubEle,Ele_Poison,35; },{},{}
+29543,Asas_de_Tapaton_[QUEST],Asas de Tapaton [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,1,1008,{ bonus bStr,15; bonus bInt,5; bonus2 bSubEle,Ele_Dark,35; bonus2 bSubEle,Ele_Poison,35; },{},{}
 29544,Tiara_de_Popstar_[QUEST],Tiara de Popstar [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,1,1423,{ bonus bMaxHPrate,10; bonus bMaxSPrate,10; },{ if( Class == 4020 || Class == 4021 ) rgzbonus(7,1); },{ rgzbonus(7,0); }
 29545,Asinhas_do_Inverno_[QUEST],Asinhas do Inverno [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,1,564,{ bonus bInt,7; skill 89,25; },{},{}
 29546,Gato_Rabugento_[QUEST],Gato Rabugento [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,1,1292,{ bonus bLuk,10; bonus3 bAutoSpell,136,10,40; bonus bMaxHPrate,-10; },{},{}

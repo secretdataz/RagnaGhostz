@@ -3,8 +3,7 @@ phtownall,84,64,5	Script	Refinador	63,{
 
 	atcommand "@repairall";
 	
-	.@max_refine = 9;
-	.@max_refine_vip = 15;
+	.@max_refine = 15;
 	
 	.@n$ = "[^A52A2ARefinador^000000]";
 	
@@ -12,9 +11,8 @@ phtownall,84,64,5	Script	Refinador	63,{
 	mes "Deseja refinar algum item?";
 	mes " ";
 	mes "Máximo de Refinamento: " + .@max_refine;
-	mes "Máximo de Refinamento VIP: " + .@max_refine_vip;
 	
-	.@max_refine = getgroupid() == 0 ? .@max_refine : .@max_refine_vip;
+	.@max_refine = getgroupid() == 0 ? .@max_refine : .@max_refine;
 	
 	setarray .@equips[1],EQI_HEAD_TOP,EQI_HEAD_MID,EQI_HEAD_LOW,EQI_ARMOR,EQI_HAND_L,EQI_HAND_R,EQI_GARMENT,EQI_SHOES,EQI_ACC_L,EQI_ACC_R;
 	setarray .@color$[1],"^A52A2A","^228B22","^483D8B","^FFA500","^DAA520","^6B8E23","^A020F0","^2F4F4F","^698B69","^CD6090";
