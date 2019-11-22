@@ -3,7 +3,7 @@
 
 	percentheal 50,50;
 
-	skilleffect 384,0; sc_start SC_MELTDOWN,360000,5;
+	skilleffect 384,0; sc_start SC_MELTDOWN,5000,5;
 	skilleffect 383,0; sc_start SC_WINDWALK,360000,5;
 	//skilleffect 378,0; sc_start SC_EDP,360000,5;
 	//skilleffect 465,0; sc_start SC_KAITE,360000,7;
