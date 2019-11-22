@@ -105,7 +105,7 @@ phtownall,56,342,5	Script	Moeda Poring	501,{
 			next;
 			mes .@n$;
 			mes "A recompensa para quem conseguir os 10 pontos primeiro são:";
-			mes "^696969[*]:^000000 20 a 50 Pontos de Evento";
+			mes "^696969[*]:^000000 75 a 120 Pontos de Evento";
 			mes "^696969[*]:^000000 100 Pontos de Cash";
 			close;
 	}
@@ -217,7 +217,7 @@ function	script	mp_use	{
 			pvpoff "morocc";
 			atcommand "@killmonster2";
 
-			.@rand = rand(10,30);
+			.@rand = rand(75,120);
 			
 			if(getmasterylevel( 200, getcharid(0) ) >= 100)
 				.@rand += (.@rand * 20) / 100;
@@ -227,6 +227,8 @@ function	script	mp_use	{
 			dispbottom "Você recebeu " + .@rand + " pontos de evento!";
 			dispbottom "Total de pontos: " + #EVENT_POINTS;
 			dispbottom "--------------------------------------------------";
+			
+			#CASHPOINTS += 100;
 
 			bot_announce( strcharinfo(0) + " acaba de ganhar o evento Moeda Poring!", CHANNEL_GERAL );
 

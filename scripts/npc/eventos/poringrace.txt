@@ -42,7 +42,7 @@ phtownall,68,360,3	Script	Corrida Poring	719,{
 			mes "È muito simples, dentro do evento você vai dizer para o [^0000FFGerenciador de Apostas^000000] em qual Poring deseja apostar.";
 			next;
 			mes .@n$;
-			mes "No final do evento, caso seu Poring seja um vencedor, você recebe de 5 a 15 pontos de evento!";
+			mes "No final do evento, caso seu Poring seja um vencedor, você recebe de 70 pontos de evento!";
 			close;
 	}
 	end;
@@ -184,7 +184,7 @@ p_track02,58,38,3	script	Poring#race	1002,{
 
 		if( @CP_APOSTA == $@CP_WIN )
 		{
-			.@rand = rand(5,15);
+			.@rand = 70;
 			#EVENT_POINTS += .@rand;
 			dispbottom "--------------------------------------------------";
 			dispbottom "Você recebeu " + .@rand + " pontos de evento!";
@@ -247,7 +247,7 @@ npcwalkto 58,36;
 
 		if( @CP_APOSTA == $@CP_WIN )
 		{
-			.@rand = rand(5,15);
+			.@rand = 70;
 			
 			if(getmasterylevel( 200, getcharid(0) ) >= 100)
 				.@rand += (.@rand * 20) / 100;
@@ -317,7 +317,7 @@ npcwalkto 58,34;
 
 		if( @CP_APOSTA == $@CP_WIN )
 		{
-			.@rand = rand(5,15);
+			.@rand = 70;
 			#EVENT_POINTS += .@rand;
 			dispbottom "--------------------------------------------------";
 			dispbottom "Você recebeu " + .@rand + " pontos de evento!";
@@ -381,7 +381,7 @@ npcwalkto 58,32;
 
 		if( @CP_APOSTA == $@CP_WIN )
 		{
-			.@rand = rand(5,15);
+			.@rand = 70;
 			#EVENT_POINTS += .@rand;
 			dispbottom "--------------------------------------------------";
 			dispbottom "Você recebeu " + .@rand + " pontos de evento!";
@@ -447,7 +447,7 @@ npcwalkto 58,30;
 
 		if( @CP_APOSTA == $@CP_WIN )
 		{
-			.@rand = rand(5,15);
+			.@rand = 70;
 			#EVENT_POINTS += .@rand;
 			dispbottom "--------------------------------------------------";
 			dispbottom "Você recebeu " + .@rand + " pontos de evento!";
@@ -513,7 +513,7 @@ OnSantaWin:
 
 		if( @CP_APOSTA == $@CP_WIN )
 		{
-			.@rand = rand(5,15);
+			.@rand = 70;
 			#EVENT_POINTS += .@rand;
 			dispbottom "--------------------------------------------------";
 			dispbottom "Você recebeu " + .@rand + " pontos de evento!";

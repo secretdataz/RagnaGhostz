@@ -121,5 +121,12 @@ phtownall,339,324,3	Script	Senhora das Maestrias	10168,{
 		dispbottom "Você recebeu " + .@rand + " pontos de fidelidade!";
 		dispbottom "Total de pontos: " + #ONLINE_POINTS;
 		dispbottom "--------------------------------------------------";
+		
+		.@rand = rand(10,30);
+		#EVENT_POINTS += .@rand;
+		dispbottom "--------------------------------------------------";
+		dispbottom "Você recebeu " + .@rand + " pontos de evento!";
+		dispbottom "Total de pontos: " + #EVENT_POINTS;
+		dispbottom "--------------------------------------------------";
 		end;
 }

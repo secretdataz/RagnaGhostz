@@ -453,23 +453,23 @@ turbo_e_4,168,363,5	script	WarpRace#0	45,1,1,{
 			
 			if($@PRIMEIRO_LUGAR$[.@meuMapa]==strcharinfo(0))
 			{
-				.@rand = 75;
+				.@rand = 150;
 				bot_announce( "E na Corrida RagnaGhostz, " + strcharinfo(0) + " chegou em primeiro lugar!", CHANNEL_GERAL );
 			}
 			else if($@SEGUNDO_LUGAR$[.@meuMapa]==strcharinfo(0))
 			{
 				bot_announce( "E na Corrida RagnaGhostz, " + strcharinfo(0) + " chegou em segundo lugar!", CHANNEL_GERAL );
-				.@rand = 50;
+				.@rand = 100;
 			}
 			else if($@TERCEIRO_LUGAR$[.@meuMapa]==strcharinfo(0))
 			{
-				.@rand = 30;
+				.@rand = 75;
 				
 				bot_announce( "E na Corrida RagnaGhostz, " + strcharinfo(0) + " chegou em terceiro lugar!", CHANNEL_GERAL );
 			}
 			else
 			{
-				.@rand = 5;
+				.@rand = 15;
 			}
 
 			if(getmasterylevel( 200, getcharid(0) ) >= 100)
@@ -747,10 +747,10 @@ phtownall,61,360,5	Script	Corrida RagnaGhostz	497,{
 			mes "Você também irá enfrentar armadilhas durante os percursos. Ficar nas primeiras posições pode ser um tanto quanto ingrato.";
 			next;
 			mes .@n$;
-			mes "O Primeiro lugar recebe 75 pontos de evento e 30 pontos de corrida.";
-			mes "O Segundo lugar recebe 50 pontos de evento e 20 pontos de corrida.";
-			mes "O Terceiro lugar recebe 30 pontos de evento e 10 pontos de corrida.";
-			mes "Demais posições recebem 5 pontos de evento e 5 pontos de corrida.";
+			mes "O Primeiro lugar recebe 150 pontos de evento e 30 pontos de corrida.";
+			mes "O Segundo lugar recebe 100 pontos de evento e 20 pontos de corrida.";
+			mes "O Terceiro lugar recebe 75 pontos de evento e 10 pontos de corrida.";
+			mes "Demais posições recebem 10 pontos de evento e 5 pontos de corrida.";
 			next;
 			mes .@n$;
 			mes "Velocidade não garante sua vitória, é preciso ter estratégia!";

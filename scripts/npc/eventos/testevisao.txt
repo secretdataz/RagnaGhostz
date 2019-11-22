@@ -59,7 +59,7 @@ phtownall,29,363,4	script	Teste de Visão	100,{
 			mes "Falhando ou não, terá que esperar 90 segundos antes de poder tentar novamente.";
 			next;
 			mes .@n$;
-			mes "A premiação para este evento é de 5 pontos de Evento!";
+			mes "A premiação para este evento é de 20 pontos de Evento!";
 			close;
 	}
 	end;
@@ -154,7 +154,7 @@ phtownall,29,361,4	script	Teste de Visão#1	1002,{
 	{
 		npctalk "Parabéns, " + strcharinfo(0) + " acertou!";
 
-		.@rand = 5;
+		.@rand = 20;
 		
 		if(getmasterylevel( 200, getcharid(0) ) >= 100)
 			.@rand += (.@rand * 20) / 100;
