@@ -1145,7 +1145,7 @@ function	script	F_Torre_Warp	{
 			hideonnpc instance_npcname("#PortalTorre");
 		end;
 		
-	OnPCBaseLevelUp:
+	OnPCBaseLvUpEvent:
 		percentheal 100,100;
 		end;
 

@@ -1,6 +1,8 @@
 
 -	Script	1027	-1,{
 
+	percentheal 50,50;
+
 	skilleffect 384,0; sc_start SC_MELTDOWN,360000,5;
 	skilleffect 383,0; sc_start SC_WINDWALK,360000,5;
 	//skilleffect 378,0; sc_start SC_EDP,360000,5;
