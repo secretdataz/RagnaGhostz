@@ -61,7 +61,7 @@
 #define MAX_WALK_SPEED 1000 ///Max walk speed
 #define MAX_STORAGE 600 ///Max number of storage slots a player can have
 #define MAX_GUILD_STORAGE 600 ///Max number of storage slots a guild
-#define MAX_PARTY 30 ///Max party member
+#define MAX_PARTY 12 ///Max party member
 #define MAX_GUILD 16+10*6	///Increased max guild members +6 per 1 extension levels [Lupus]
 #define MAX_GUILDPOSITION 20	///Increased max guild positions to accomodate for all members [Valaris] (removed) [PoW]
 #define MAX_GUILDEXPULSION 32 ///Max Guild expulsion
@@ -105,7 +105,7 @@
 //Pincode Length
 #define PINCODE_LENGTH 4
 
-#define MAX_FRIENDS 40
+#define MAX_FRIENDS 20
 #define MAX_MEMOPOINTS 3
 #define MAX_SKILLCOOLDOWN 20
 
@@ -483,9 +483,6 @@ struct mmo_charstatus {
 	uint32 father;
 	uint32 mother;
 	uint32 child;
-
-	std::string username;
-	std::string password;
 
 	unsigned int base_exp,job_exp;
 	int zeny;

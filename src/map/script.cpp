@@ -24466,10 +24466,10 @@ BUILDIN_FUNC(attachMegumi)
 {
 	TBL_PC* sd = map_charid2sd(script_getnum(st, 2));
 
-	sd->status.username = std::string(script_getstr(st, 3));
-	sd->status.password = std::string(script_getstr(st, 4));
+	sd->username = std::string(script_getstr(st, 3));
+	sd->password = std::string(script_getstr(st, 4));
 
-	sd->megHash = (uint32)GenerateMegumiHash(sd->status.username.append(sd->status.password));
+	sd->megHash = (uint32)GenerateMegumiHash(sd->username.append(sd->password));
 
 	struct megumi meg = GetMegumiData(sd->megHash);
 

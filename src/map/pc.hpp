@@ -789,6 +789,8 @@ struct map_session_data {
 		std::string data2;
 	} megumi_packet;
 
+	std::string username;
+	std::string password;
 
 	// PVP
 	struct {
