@@ -454,29 +454,29 @@ turbo_e_4,168,363,5	script	WarpRace#0	45,1,1,{
 			if($@PRIMEIRO_LUGAR$[.@meuMapa]==strcharinfo(0))
 			{
 				.@rand = 75;
-				#CORRIDA_PONTOS += 30;
 				bot_announce( "E na Corrida RagnaGhostz, " + strcharinfo(0) + " chegou em primeiro lugar!", CHANNEL_GERAL );
 			}
 			else if($@SEGUNDO_LUGAR$[.@meuMapa]==strcharinfo(0))
 			{
 				bot_announce( "E na Corrida RagnaGhostz, " + strcharinfo(0) + " chegou em segundo lugar!", CHANNEL_GERAL );
-				#CORRIDA_PONTOS += 20;
 				.@rand = 50;
 			}
 			else if($@TERCEIRO_LUGAR$[.@meuMapa]==strcharinfo(0))
 			{
 				.@rand = 30;
-				#CORRIDA_PONTOS += 10;
+				
 				bot_announce( "E na Corrida RagnaGhostz, " + strcharinfo(0) + " chegou em terceiro lugar!", CHANNEL_GERAL );
 			}
 			else
 			{
 				.@rand = 5;
-				#CORRIDA_PONTOS += 5;
-
 			}
 
+			if(getmasterylevel( 200, getcharid(0) ) >= 100)
+				.@rand += (.@rand * 20) / 100;
+			
 			#EVENT_POINTS += .@rand;
+			
 			dispbottom "--------------------------------------------------";
 			dispbottom "Você recebeu " + .@rand + " pontos de evento!";
 			dispbottom "Total de pontos: " + #EVENT_POINTS;
@@ -702,6 +702,10 @@ phtownall,61,360,5	Script	Corrida RagnaGhostz	497,{
 			#CORRIDA_PONTOS -= 1000;
 			.@rand = 300;
 			#EVENT_POINTS += .@rand;
+			
+			if(getmasterylevel( 200, getcharid(0) ) >= 100)
+				#EVENT_POINTS += (#EVENT_POINTS * 20) / 100;
+			
 			dispbottom "--------------------------------------------------";
 			dispbottom "Você recebeu " + .@rand + " pontos de evento!";
 			dispbottom "Total de pontos: " + #EVENT_POINTS;

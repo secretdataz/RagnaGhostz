@@ -248,6 +248,10 @@ npcwalkto 58,36;
 		if( @CP_APOSTA == $@CP_WIN )
 		{
 			.@rand = rand(5,15);
+			
+			if(getmasterylevel( 200, getcharid(0) ) >= 100)
+				.@rand += (.@rand * 20) / 100;
+			
 			#EVENT_POINTS += .@rand;
 			dispbottom "--------------------------------------------------";
 			dispbottom "Você recebeu " + .@rand + " pontos de evento!";

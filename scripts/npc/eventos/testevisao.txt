@@ -155,11 +155,16 @@ phtownall,29,361,4	script	Teste de Visão#1	1002,{
 		npctalk "Parabéns, " + strcharinfo(0) + " acertou!";
 
 		.@rand = 5;
+		
+		if(getmasterylevel( 200, getcharid(0) ) >= 100)
+			.@rand += (.@rand * 20) / 100;
+				
 		#EVENT_POINTS += .@rand;
 		dispbottom "--------------------------------------------------";
 		dispbottom "Você recebeu " + .@rand + " pontos de evento!";
 		dispbottom "Total de pontos: " + #EVENT_POINTS;
 		dispbottom "--------------------------------------------------";
+		
 	}
 	else
 		npctalk "Que pena, " + strcharinfo(0) + " errou! Quem é o próximo?";

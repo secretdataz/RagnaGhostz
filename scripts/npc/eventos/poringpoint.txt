@@ -215,6 +215,10 @@ function	script	mp_use	{
 			atcommand "@killmonster2";
 
 			.@rand = rand(10,30);
+			
+			if(getmasterylevel( 200, getcharid(0) ) >= 100)
+				.@rand += (.@rand * 20) / 100;
+			
 			#EVENT_POINTS += .@rand;
 			dispbottom "--------------------------------------------------";
 			dispbottom "Você recebeu " + .@rand + " pontos de evento!";

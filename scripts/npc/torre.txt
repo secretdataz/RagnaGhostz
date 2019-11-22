@@ -167,7 +167,7 @@
 			mes .@n$;
 			mes "Estão todos aqui?";
 			
-			if( select( "Sim", "Não, irei esperar." ) == 1 )
+			if( select( "Sim", "Não, irei esperar." ) == 2 )
 			{
 				next;
 				mes .@n$;
@@ -191,7 +191,7 @@
 			
 			@TORRE_NAME$ = .NOME_RPC$;
 
-			getmapxy( .@m$, .@x, .@y, 0 );
+			getmapxy( .@m$, .@x, .@y, BL_PC );
 			
 			if( strcharinfo(3) != "phtownall" )
 			{
@@ -199,7 +199,7 @@
 				end;
 			}
 			
-			if( distance( 155,233, .@x, .@y ) > 16 )
+			if( distance( 332,344, .@x, .@y ) > 16 )
 			{
 				dispbottom "Você está muito distante do Guardião da Torre da Jornada. Seu grupo adentrou sem você.";
 				end;
@@ -1143,10 +1143,6 @@ function	script	F_Torre_Warp	{
 			callfunc "F_Torre_Monstros",'TORREID, 'LEVEL, instance_mapname("1@tower"), instance_npcname("TorreLogic")+"::OnMyMobDead";
 			
 			hideonnpc instance_npcname("#PortalTorre");
-		end;
-		
-	OnPCBaseLvUpEvent:
-		percentheal 100,100;
 		end;
 
 	OnMyMobDead:

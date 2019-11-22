@@ -81,6 +81,10 @@ phtownall,51,335,5	Script	Mata-Mata	827,{
 		bot_announce( "O vencedor do **Mata-Mata** é " + strcharinfo(0) + "!", CHANNEL_GERAL );
 
 		.@rand = 40;
+		
+		if(getmasterylevel( 200, getcharid(0) ) >= 100)
+			.@rand += (.@rand * 20) / 100;
+			
 		#EVENT_POINTS += .@rand;
 		dispbottom "--------------------------------------------------";
 		dispbottom "Você recebeu " + .@rand + " pontos de evento!";

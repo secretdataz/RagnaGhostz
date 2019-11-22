@@ -66,10 +66,14 @@
 
 			addrid(0);
 			.@rand = 10;
-			#EVENT_POINTS += .@rand;
+			
+			if(getmasterylevel( 200, getcharid(0) ) >= 100)
+				.@randeve += (.@rand * 20) / 100;
+			
+			#EVENT_POINTS += .@randeve;
 			#ONLINE_POINTS += .@rand;
 			dispbottom "--------------------------------------------------";
-			dispbottom "Você recebeu " + .@rand + " pontos de evento!";
+			dispbottom "Você recebeu " + .@randeve + " pontos de evento!";
 			dispbottom "Total de pontos: " + #EVENT_POINTS;
 			dispbottom "--------------------------------------------------";
 			dispbottom "Você recebeu " + .@rand + " pontos de fidelidade!";
