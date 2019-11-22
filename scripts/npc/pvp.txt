@@ -692,7 +692,7 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 		
 		.@a = PVP_STREAK >= 14 ? 14 : PVP_STREAK;
 		
-		soundeffect sprintf( "%s_%d.wav", .anunci_sound$[PVP_ANNOUNCER], .@a ),0;
+		soundeffectall sprintf( "%s_%d.wav", .anunci_sound$[PVP_ANNOUNCER], .@a ),0;
 		
 		.@announce$ = sprintf( "[%s][%s][%s] acaba de abater [%s][%s][%s] e está com %d %s!!",
 			            strcharinfo(0),
@@ -700,7 +700,7 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 						jobname( Class ),
 						strcharinfo( 0, .@victim ),
 						readparam( PVP_RANKING, .@victim ),
-						jobname( readparam( Class ) ),
+						jobname( readparam( Class, .@victim ) ),
 						.@a,
 						.@a == 1 ? "abate" : "abates consecutivos" );
 						  
