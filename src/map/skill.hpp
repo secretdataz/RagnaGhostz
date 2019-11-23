@@ -27,7 +27,7 @@ struct status_change_entry;
 #define MAX_ARROW_RESULT		5 /// Max Arrow results/created
 #define MAX_SKILL_ABRA_DB		160 /// Max Skill list of Abracadabra DB
 #define MAX_SKILL_IMPROVISE_DB 30 /// Max Skill for Improvise
-#define MAX_SKILL_LEVEL 13 /// Max Skill Level (for skill_db storage)
+#define MAX_SKILL_LEVEL 30 /// Max Skill Level (for skill_db storage)
 #define MAX_MOBSKILL_LEVEL 100	/// Max monster skill level (on skill usage)
 #define MAX_SKILL_CRIMSON_MARKER 3 /// Max Crimson Marker targets (RL_C_MARKER)
 #define SKILL_NAME_LENGTH 31 /// Max Skill Name length
