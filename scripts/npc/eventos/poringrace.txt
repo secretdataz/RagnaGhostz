@@ -94,7 +94,7 @@ phtownall,68,360,3	Script	Corrida Poring	719,{
 			default: donpcevent "Santa Poring#race::OnSantaWin"; break;
 		}
 
-		donpcevent "Gerenciador de Apostas::OnRaceStart";
+		//donpcevent "Gerenciador de Apostas::OnRaceStart";
 		end;
 
 }
