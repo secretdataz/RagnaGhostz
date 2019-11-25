@@ -1197,12 +1197,13 @@ function	script	F_Torre_Warp	{
 			else
 				'NEXT = 1;
 		
-			initnpctimer;
+			sleep 5000;
+			goto L_portal;
 		} else
 			mapannounce .@map$, "Número de Monstros no Andar ~~ " +.@mob_dead_num,bc_map,"0x00ff99";
 		end;
 		
-	OnTimer5000:
+	L_portal:
 		mapannounce instance_mapname("1@tower"), "Todos os Monstros do andar " + ( 'LEVEL - 1 ) + " foram eliminados!",bc_map,"0xffff00";
 		stopnpctimer;
 		
@@ -1226,3 +1227,5 @@ function	script	F_Torre_Warp	{
 		hideonnpc instance_npcname("#PortalTorre");
 		end;
 }
+
+1@tower	mapflag	noteleport	

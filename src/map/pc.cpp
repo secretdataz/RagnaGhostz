@@ -5132,7 +5132,7 @@ bool pc_isUseitem(struct map_session_data *sd,int n)
 	if (sd->state.mastery_flag)
 		return false;
 
-	if (item->flag.dead_branch && (mapdata->flag[MF_NOBRANCH] || mapdata_flag_gvg2(mapdata)))
+	if (item->flag.dead_branch)
 		return false;
 
 	switch( nameid ) {
@@ -6034,7 +6034,7 @@ int pc_get_skillcooldown(struct map_session_data *sd, uint16 skill_id, uint16 sk
 	switch (skill_id)
 	{
 	case NV_STORAGE:
-		return sd->group_id == 0 ? 300000 : 15000;
+		return sd->group_id == 0 ? 15000 : 1000;
 	case NV_BUFFS:
 		return sd->group_id == 0 ? 15000 : 10000;
 	}

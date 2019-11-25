@@ -124,29 +124,34 @@ morocc,160,138,5	script	Saída do Evento#zp	501,{
 	.@n$ = "[^DAA520Coordenadora do Evento^000000]";
 
 	mes .@n$;
-	mes "Deseja saír do evento? Lembre-se de que seus pontos são removidos ao saír da arena.";
+	mes "Deseja saír do evento? Lembre-se de que seus pontos e itens são removidos ao saír da arena.";
 	if(select("Sim:Não")==2) close;
 	warp "Save",0,0;
 	end;
 
 	OnStart:
-		if( !$@EVENT_STATE[EVENTID_PORINGPOINT] ) end;
-
+		killmonster "morocc","Saída do Evento#zp::OnPoring";
+		killmonster "morocc","Saída do Evento#zp::OnPoringTrap";
+		sleep 5000;
+		
 		removemapflag "morocc",mf_pvp;
 		setmapflag "morocc",mf_noskill;
 		
 		while($@EVENT_STATE[EVENTID_PORINGPOINT])
 		{
 			if( mobcount( "morocc", "" ) < 30 )
-				monster "morocc",0,0,"[Evento]Poring :3",1002,rand(1,5);
+				monster "morocc",0,0,"Poring :3",1002,rand(1,7),"Saída do Evento#zp::OnPoring";
 
 			sleep 15000;
 		}
 		end;
 
-	OnNPCKillEvent:
-		if(killedrid == 1725) atcommand "@die";
-		if(strcharinfo(3) != "morocc" || killedrid != 1002 || !$@EVENT_STATE[EVENTID_PORINGPOINT]) end;
+	OnPoringTrap:
+		atcommand "@die";
+		end;
+
+	OnPoring:
+		if(!$@EVENT_STATE[EVENTID_PORINGPOINT]) end;
 		setarray .@idItens[0],29510,29511,29512,29513,29514,29515,29516,29517,29518;
 		setarray .@chance[0],15,7,20,40,60,10,15,15,20;
 
@@ -215,8 +220,9 @@ function	script	mp_use	{
 			announce "[Evento]: " + strcharinfo(0) + " acaba de ganhar o evento Moeda Poring!",0;
 			$MP_LASTOWNER$ = strcharinfo(0);
 			pvpoff "morocc";
-			atcommand "@killmonster2";
-
+			killmonster "morocc","Saída do Evento#zp::OnPoring";
+			killmonster "morocc","Saída do Evento#zp::OnPoringTrap";
+			
 			.@rand = rand(75,120);
 			
 			if(getmasterylevel( 200, getcharid(0) ) >= 100)
@@ -274,7 +280,7 @@ function	script	mp_use	{
 	{
 		getmapxy(.@m$,.@x,.@y,0);
 		announce "[Evento]: " + strcharinfo(0) + " utilizou uma [Armadilha Poring]!",bc_map;
-		monster "morocc",.@x,.@y,"[Evento]Poring >:3",1725,1;
+		monster "morocc",.@x,.@y,"Poring >:3",1725,1,"Saída do Evento#zp::OnPoringTrap";
 		end;
 	}
 
