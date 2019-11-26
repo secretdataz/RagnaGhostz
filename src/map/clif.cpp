@@ -788,7 +788,7 @@ void clif_dropflooritem(struct flooritem_data* fitem, bool canShowEffect)
 	uint8 buf[19];
 	uint32 header=0x84b;
 #else
-	uint8 buf[17];
+	uint8 buf[17]; 
 	uint32 header=0x09e;
 #endif
 	int view, offset=0;
@@ -813,7 +813,15 @@ void clif_dropflooritem(struct flooritem_data* fitem, bool canShowEffect)
 	WBUFW(buf, offset+15) = fitem->item.amount;
 #if PACKETVER >= 20180418
 	if( canShowEffect ){
-		uint8 dropEffect = itemdb_dropeffect(fitem->item.nameid);
+
+		uint8 dropEffect;
+
+		if (itemtype(fitem->item.nameid) == IT_CARD)
+		{
+			dropEffect = mob_db(fitem->mob_id)->mexp > 0 ? 4 : 2;
+		}
+		else
+			dropEffect = itemdb_dropeffect(fitem->item.nameid);
 
 		if( dropEffect > 0 ){
 			WBUFB(buf, offset+17) = 1;
