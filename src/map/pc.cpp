@@ -4533,10 +4533,10 @@ int pc_identifyall(struct map_session_data *sd, bool identify_item)
 int pc_modifybuyvalue(struct map_session_data *sd,int orig_value)
 {
 	int skill,val = orig_value,rate1 = 0,rate2 = 0;
-	if((skill=pc_checkskill(sd,MC_DISCOUNT))>0)	// merchant discount
-		rate1 = 5+skill*2-((skill==10)? 1:0);
-	if((skill=pc_checkskill(sd,RG_COMPULSION))>0)	 // rogue discount
-		rate2 = 5+skill*4;
+	//if((skill=pc_checkskill(sd,MC_DISCOUNT))>0)	// merchant discount
+		//rate1 = 5+skill*2-((skill==10)? 1:0);
+	//if((skill=pc_checkskill(sd,RG_COMPULSION))>0)	 // rogue discount
+		//rate2 = 5+skill*4;
 	if(rate1 < rate2) rate1 = rate2;
 	if(rate1)
 		val = (int)((double)orig_value*(double)(100-rate1)/100.);
@@ -8018,6 +8018,27 @@ void pc_close_npc(struct map_session_data *sd,int flag)
 	}
 }
 
+/*
+Comando:
+	skillarea_range
+
+Descri��o:
+	Executa a ultimate em um range em volta do alvo.
+
+Exemplo de Uso:
+	map_foreachinallrange(skillarea_range, targetarea, area, BL, src id, skill_id);
+*/
+int buildin_excalibur(struct block_list *bl, va_list ap)
+{
+	struct block_list *src = map_id2bl(va_arg(ap, int));
+	struct block_list *trg = bl;
+
+	if (!src || !trg || trg->id == src->id ) return 0;
+
+	clif_specialeffect(bl, 17, AREA);
+	status_damage(src, trg, status_get_max_hp(src), 0, 0, 0);
+	return 1;
+}
 
 /*==========================================
  * Invoked when a player has negative current hp
@@ -8214,6 +8235,37 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 					addbonus_script(ssd, "bonus bAllStats,20;", 15000, 1, 1);
 					ssd->csd[CSD_ITEM_TIARA_DAS_CINCO_ALMAS]->val1 = 0;
 					clif_specialeffect(src, 261, AREA);
+				}
+			}
+
+			if (ssd->mast[MASTERY_EXCALIBUR]->active)
+			{
+				ssd->mast[MASTERY_EXCALIBUR]->val1++;
+
+				if(ssd->mast[MASTERY_EXCALIBUR]->val1 == 1)
+					clif_disp_overhead_(&ssd->bl, "E", AREA);
+				else if (ssd->mast[MASTERY_EXCALIBUR]->val1 == 2)
+					clif_disp_overhead_(&ssd->bl, "EX", AREA);
+				else if (ssd->mast[MASTERY_EXCALIBUR]->val1 == 3)
+					clif_disp_overhead_(&ssd->bl, "EXC", AREA);
+				else if (ssd->mast[MASTERY_EXCALIBUR]->val1 == 4)
+					clif_disp_overhead_(&ssd->bl, "EXCA", AREA);
+				else if (ssd->mast[MASTERY_EXCALIBUR]->val1 == 5)
+					clif_disp_overhead_(&ssd->bl, "EXCAL", AREA);
+				else if (ssd->mast[MASTERY_EXCALIBUR]->val1 == 6)
+					clif_disp_overhead_(&ssd->bl, "EXCAL", AREA);
+				else if (ssd->mast[MASTERY_EXCALIBUR]->val1 == 7)
+					clif_disp_overhead_(&ssd->bl, "EXCALI", AREA);
+				else if (ssd->mast[MASTERY_EXCALIBUR]->val1 == 8)
+					clif_disp_overhead_(&ssd->bl, "EXCALIB", AREA);
+				else if (ssd->mast[MASTERY_EXCALIBUR]->val1 == 9)
+				{
+					ssd->mast[MASTERY_EXCALIBUR]->val1 = 10;
+
+					clif_specialeffect(&ssd->bl, 220, AREA);
+					clif_disp_overhead_(&ssd->bl, "EXCALIBAAAAAAH", AREA);
+					map_foreachinallrange(buildin_excalibur, &ssd->bl, 5, BL_MOB | BL_PC, ssd->bl.id);
+					ssd->mast[MASTERY_EXCALIBUR]->val1 = 0;
 				}
 			}
 		}

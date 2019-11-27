@@ -6642,7 +6642,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 			return 1;
 
 		case NV_RETURN:
-			unit_warp(src, map_mapname2mapid("phtownall"), sd->status.save_point.x, sd->status.save_point.y, CLR_TELEPORT);
+			pc_setpos((TBL_PC*)bl, map_id2index(map_mapname2mapid("phtownall")), sd->status.save_point.x, sd->status.save_point.y, CLR_TELEPORT);
 			return 1;
 
 		case NV_REPAIRALL:

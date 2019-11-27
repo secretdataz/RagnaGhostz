@@ -17,6 +17,47 @@ function	script	mastery	{
 		#MASTERY_FT = 1;
 	}
 
+	if( .@func$ == "GiveMastery" )
+	{
+		.@mast_id = getarg(2);
+		.@item_id = getarg(3);
+
+		.@my_mastlevel = getmasterylevel( .@mast_id, .@cid ) + 1;
+
+		.@c = query_sql("SELECT `max_level`, `nome` " +
+			            "  FROM `mastery` " +
+			            " WHERE `id` = " + .@mast_id, .@max_level, .@nome$ );
+
+		if( .@my_mastlevel > .@max_level )
+		{
+			message strcharinfo(0),"Maestria já está no nível máximo";
+			getitem .@item_id,1;
+			end;
+		}
+
+		bot_announce( strcharinfo(0) + " acaba de adquirir a maestria [" + getitemname(29558) + "]", CHANNEL_CONQUISTAS);
+
+		if( .@my_mastlevel == 1 )
+		{
+			query_sql( 
+				sprintf( "INSERT INTO `mastery_player` ( `bound`, `mastery_id`, `level` ) " +
+					 	 "     VALUES ( '%d', '%d', '%d' ) ", .@cid, .@mast_id, .@my_mastlevel ) );
+		}
+		else
+		{
+			query_sql( "UPDATE `mastery_player` " +
+			           "   SET `level` = " + .@my_mastlevel +
+			           " WHERE `bound` = " + .@cid +
+			           "   AND `mastery_id` = " + .@mast_id );
+		}
+
+		dispbottom "A maestria [" + .@nome$ + "] agora está no nível (" + .@my_mastlevel + ").";
+
+		apply_mastery( .@mast_id, .@my_mastlevel, .@cid, 1 );
+
+		return;
+	}
+
 	if( .@func$ == "LoadPlayerData" || .@func$ == "SendPlayerData" )
 	{
 		.@c = query_sql( "SELECT `mastery_id`, `level` " +

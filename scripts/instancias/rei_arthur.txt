@@ -1,0 +1,74 @@
+phtownall,338,203,5	Script	Memória do Rei Arthur	628 ,{
+	
+	inst( "INICIO", getcharid(0), INSTANCIA_MEMORIA_DE_REI_ARTHUR );
+	end;
+
+}
+
+2@mir,101,51,3	Script	Lancelot#IN1	628,{
+
+	if( 'LANCELOT == 2 )
+	{
+		npctalk "Muito obrigado " + strcharinfo(0) + "!";
+
+		.@rand = rand( 5, 30 );
+
+		#EVENT_POINTS += .@rand;
+		dispbottom "--------------------------------------------------";
+		dispbottom "Você recebeu " + .@rand + " pontos de evento!";
+		dispbottom "Total de pontos: " + #EVENT_POINTS;
+		dispbottom "--------------------------------------------------";
+
+		warp "Save",0,0;
+		end;
+	}
+
+	if( getpartyleader( getcharid(1), 2 ) != getcharid(0) )
+	{
+		npctalk "Onde está seu líder?";
+		end;
+	}
+
+	if( 'LANCELOT == 1 ) end;
+
+	'LANCELOT = 1;
+
+	.@talk$[0] = "Obrigado por atender meu chamado!";
+	.@sleep[0] = 1500;
+
+	.@talk$[1] = "O Espírito de nosso antigo rei voltou buscando vingança!";
+	.@sleep[1] = 3000;
+
+	.@talk$[2] = "Ele parece ter perdido o controle de sí mesmo....";
+	.@sleep[2] = 3500;
+
+	.@talk$[3] = "Por favor, o derrotem e o libertem desta horrível maldição!";
+	.@sleep[3] = 3000;
+
+	for( ; .@i < getarraysize( .@talk$ ); .@i++ )
+	{
+		npctalk .@talk$[.@i],"",BC_AREA,0xFF8C00;
+		sleep2 .@sleep[.@i];
+	}
+
+	unittalk getcharid(3),sprintf( "Atenção [%s], preparem-se para a batalha!", strcharinfo(1) );
+
+	sleep2 5000;
+
+	monster instance_mapname( strcharinfo(3) ),101,95,"Memória do Rei Arthur",3599,1,instance_npcname( "Lancelot#IN1" ) + "::OnKillBoss";
+
+	inst( "DESTROY_BARRICADE", instance_mapname( "2@mir" ), 86, 54, 117, 54, "Lancelot#IN1::OnBarricade" );
+
+	end;
+
+	OnKillBoss:
+		mapannounce instance_mapname( "2@mir" ),"A Memória do Rei Arthur foi derrotado!",bc_map,"0x00CED1";
+		'LANCELOT = 2;
+		end;
+
+	OnInstanceInit:
+		'LANCELOT = 0;
+		inst( "DESTROY_BARRICADE", instance_mapname( "2@mir" ), 86, 54, 117, 54, "Lancelot#IN1::OnBarricade" );
+		inst( "DEPLOY_BARRICADE", instance_mapname( "2@mir" ), 86, 54, 117, 54, "Lancelot#IN1::OnBarricade" );
+		end;
+}

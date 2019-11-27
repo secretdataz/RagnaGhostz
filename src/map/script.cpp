@@ -10595,6 +10595,8 @@ BUILDIN_FUNC(areamonster)
 
 	md->state.npc_killmonster = 1;
 
+	clif_specialeffect(bl, 941, AREA);
+
 	if(!allflag){
 		if(strcmp(event,md->npc_event)==0)
 			status_kill(bl);
@@ -15054,7 +15056,7 @@ BUILDIN_FUNC(message)
 }
 
 /**
- * npctalk("<message>"{,"<NPC name>","<flag>"});
+ * npctalk("<message>"{,"<NPC name>","<flag>","<color>"});
  * @param flag: Specify target
  *   BC_ALL  - Broadcast message is sent server-wide.
  *   BC_MAP  - Message is sent to everyone in the same map as the source of the npc.
@@ -15085,13 +15087,25 @@ BUILDIN_FUNC(npctalk)
 			}
 		}
 		safesnprintf(message, sizeof(message), "%s", str);
+
+		int color = 0;
+
+		if (script_hasdata(st, 5))
+		{
+			color = script_getnum(st, 5); // <color>
+
+			color = (color & 0x0000FF) << 16 | (color & 0x00FF00) | (color & 0xFF0000) >> 16; // RGB to BGR
+		}
+		else
+			color = color_table[COLOR_WHITE];
+
 		if (target != SELF)
-			clif_messagecolor(&nd->bl, color_table[COLOR_WHITE], message, false, target);
+			clif_messagecolor(&nd->bl, color, message, false, target);
 		else {
 			TBL_PC *sd = map_id2sd(st->rid);
 			if (sd == NULL)
 				return SCRIPT_CMD_FAILURE;
-			clif_messagecolor_target(&nd->bl, color_table[COLOR_WHITE], message, false, target, sd);
+			clif_messagecolor_target(&nd->bl, color, message, false, target, sd);
 		}
 	}
 	return SCRIPT_CMD_SUCCESS;
@@ -16663,12 +16677,23 @@ BUILDIN_FUNC(setnpcdisplay)
 	else
 		size = -1;
 
-	if( class_ != JT_FAKENPC && nd->class_ != class_ )
+	if( class_ != JT_FAKENPC && class_ != JT_DEATHNPC && nd->class_ != class_ )
 		npc_setclass(nd, class_);
 	else if( size != -1 )
 	{ // Required to update the visual size
 		clif_clearunit_area(&nd->bl, CLR_OUTSIGHT);
 		clif_spawn(&nd->bl);
+	}
+
+	if (class_ == JT_DEATHNPC)
+	{
+		clif_clearunit_area(&nd->bl, CLR_DEAD);
+		nd->class_ = class_;
+	}
+	else if (class_ == JT_FAKENPC)
+	{
+		clif_clearunit_area(&nd->bl, CLR_OUTSIGHT);
+		nd->class_ = class_;
 	}
 
 	script_pushint(st,0);
@@ -19626,7 +19651,7 @@ BUILDIN_FUNC(isbegin_quest)
 }
 
 /**
- * showevent <icon>{,<mark color>{,<char_id>}}
+ * showevent <icon>{,<mark color>{,<char_id>},{npc_name}}
  **/
 BUILDIN_FUNC(showevent)
 {
@@ -19635,7 +19660,7 @@ BUILDIN_FUNC(showevent)
 	if (!script_charid2sd(4,sd))
 		return SCRIPT_CMD_FAILURE;
 
-	struct npc_data *nd = map_id2nd(st->oid);
+	struct npc_data *nd = script_hasdata(st,5) ? npc_name2id(script_getstr(st,5)) : map_id2nd(st->oid);
 
 	if (!nd)
 		return SCRIPT_CMD_SUCCESS;
@@ -19665,6 +19690,7 @@ BUILDIN_FUNC(showevent)
 	clif_quest_show_event(sd, &nd->bl, static_cast<e_questinfo_types>(icon), static_cast<e_questinfo_markcolor>(color));
 	return SCRIPT_CMD_SUCCESS;
 }
+
 
 /*==========================================
  * BattleGround System
@@ -24573,6 +24599,10 @@ BUILDIN_FUNC(apply_mastery)
 			if (level == 400 && pc_checkskill(sd, NJ_SHARINGAN) <= 0)
 				pc_skill(sd, NJ_SHARINGAN, 1, e_addskill_type::ADDSKILL_PERMANENT_GRANTED);
 			break;
+
+		case MASTERY_EXCALIBUR:
+			pc_skill(sd, MAST_EXCALIBUR, 1, e_addskill_type::ADDSKILL_PERMANENT_GRANTED);
+			break;
 	}
 
 	status_calc_pc(sd, SCO_FORCE);
@@ -24679,6 +24709,7 @@ BUILDIN_FUNC(rgzbonus)
 			break;
 
 		case CSD_ITEM_TIARA_POPSTAR:
+		case CSD_CARD_MEMORIA_DO_REI_ARTHUR:
 			sd->csd[effect]->active = state;
 			break;
 
@@ -25181,7 +25212,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF2(atcommand,"charcommand","s"), // [MouseJstr]
 	BUILDIN_DEF(movenpc,"sii?"), // [MouseJstr]
 	BUILDIN_DEF(message,"ss"), // [MouseJstr]
-	BUILDIN_DEF(npctalk,"s??"), // [Valaris]
+	BUILDIN_DEF(npctalk,"s???"), // [Valaris]
 	BUILDIN_DEF(chatmes,"s?"), // [Jey]
 	BUILDIN_DEF(mobcount,"ss"),
 	BUILDIN_DEF(getlook,"i?"),
@@ -25423,7 +25454,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(checkquest, "i??"),
 	BUILDIN_DEF(isbegin_quest,"i?"),
 	BUILDIN_DEF(changequest, "ii?"),
-	BUILDIN_DEF(showevent, "i??"),
+	BUILDIN_DEF(showevent, "i???"),
 	BUILDIN_DEF(questinfo_refresh, "?"),
 
 	//Bound items [Xantara] & [Akinari]

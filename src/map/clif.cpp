@@ -4731,6 +4731,9 @@ void clif_getareachar_unit(struct map_session_data* sd,struct block_list *bl)
 	if(bl->type == BL_NPC && !((TBL_NPC*)bl)->chat_id && (((TBL_NPC*)bl)->sc.option&OPTION_INVISIBLE))
 		return;
 
+	if (bl->type == BL_NPC && ((TBL_NPC*)bl)->class_ < 0)
+		return;
+
 	/*
 	 Variable Requirements to See NPC
 	*/

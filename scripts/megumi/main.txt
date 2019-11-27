@@ -5,6 +5,10 @@
 	OnInit:
 		sql_mac( "reset", 0 );
 		bindatcmd "mac",strnpcinfo(3) + "::OnMacCommand";
+		
+		
+		query_sql( "DELETE FROM `char_reg_num` WHERE `key`='INSTANCE_TIMER' " );
+		query_sql( "DELETE FROM `char_reg_num` WHERE `key`='TV_TIME' " );
 		end;
 
 	OnMacCommand:

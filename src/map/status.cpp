@@ -10205,8 +10205,13 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 			// val4&1 signals the presence of a wall.
 			// val4&2 makes cloak not end on normal attacks [Skotlex]
 			// val4&4 makes cloak not end on using skills
-			if (bl->type == BL_PC || (bl->type == BL_MOB && ((TBL_MOB*)bl)->special_state.clone) )	// Standard cloaking.
-				val4 |= battle_config.pc_cloak_check_type&7;
+			if (bl->type == BL_PC || (bl->type == BL_MOB && ((TBL_MOB*)bl)->special_state.clone))
+			{// Standard cloaking.
+				if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->mast[MASTERY_ATAQUE_SUBMERSO]->active && get_percentage(status->hp, status->max_hp) >= 70)
+					val4 |= 2&7;
+				else
+					val4 |= battle_config.pc_cloak_check_type & 7;
+			}
 			else
 				val4 |= battle_config.monster_cloak_check_type&7;
 			break;

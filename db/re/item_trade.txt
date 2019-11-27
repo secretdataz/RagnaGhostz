@@ -3936,7 +3936,7 @@
 18100,507,100	// Shooting_Star_C
 18106,499,100	// P_Bow3
 18107,507,100	// Malang_Snow_Crab
-18108,507,100	// Brindle_Eel
+18108,505,100	// Brindle_Eel
 18112,1,100	// Upg_Bow
 18116,499,100	// Metal_Bow
 18118,499,100	// TE_Woe_Bow
@@ -4841,6 +4841,10 @@
 29554,9,100	// Cachecol_de_Lutie_[QUEST]
 29555,9,100	// Cachecol_do_Eremes_[QUEST]
 29556,9,100	// Visor_Holografico_[QUEST]
+29557,9,100	// Pontos_de_Evento
+29558,9,100	// Ataque_Submerso
+29559,137,100	// Excalibur_
+29560,8,100	// Carta_Memoria_de_Rei_Arthur
 31105,507,100	// C_RO_Celebration_Hat
 31140,467,100	// C_Cowboy_Hat_
 31141,467,100	// C_Rose_Corsage_

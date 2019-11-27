@@ -2917,7 +2917,7 @@ static bool attack_ignores_def(struct Damage* wd, struct block_list *src, struct
 	else
 #endif
 
-	if (target->type == BL_PC && BL_CAST(BL_PC, target)->mast[MASTERY_ESPIRITO_IMPENETRAVEL]->level == 275)
+	if (target->type == BL_PC && (BL_CAST(BL_PC, target)->mast[MASTERY_ESPIRITO_IMPENETRAVEL]->level == 275 || BL_CAST(BL_PC, target)->csd[CSD_CARD_MEMORIA_DO_REI_ARTHUR]->active))
 		return false;
 
 	if (sc && sc->data[SC_FUSION])

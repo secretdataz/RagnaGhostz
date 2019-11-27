@@ -312,7 +312,7 @@ function	script	F_Torre_Monstros	{
 				setarray .@ms$[0],"Cookie|1741|5",
 				                  "Rosa Selvagem|1965|5",
 								  "Presente|1743|6",
-								  "Sapo de Thara|2635|5",
+								  "Sapo de Thara|1034|5",
 								  "Mastering|1014|1",
 								  "Chepet|1250|1";
 				break;
@@ -331,7 +331,7 @@ function	script	F_Torre_Monstros	{
 				                  "Argos|1100|7",
 								  "Stouf|1968|5",
 								  "Chung|1519|5",
-								  "Molusco|2666|10",
+								  "Molusco|1074|10",
 								  "Baphome Jr|1729|1";
 				break;
 				
@@ -348,7 +348,7 @@ function	script	F_Torre_Monstros	{
 				setarray .@ms$[0],"Eggyra|1116|10",
 				                  "Pau|1277|5",
 								  "Mimíco|1191|5",
-								  "Jacaré|2907|7",
+								  "Jacaré|1271|7",
 								  "Frilldora|1119|5",
 								  "Munak|1026|1";
 				break;
@@ -400,7 +400,7 @@ function	script	F_Torre_Monstros	{
 								  "Wraith|1475|5",
 								  "Orc Arqueiro|1982|5",
 								  "Petite|1466|5",
-								  "Pasana|2719|4";
+								  "Pasana|1154|4";
 				break;
 				
 			case 5: // 79 ~~ 81
@@ -408,13 +408,13 @@ function	script	F_Torre_Monstros	{
 				                  "Li Me|1517|6",
 								  "Druída|1435|6",
 								  "Bode|1372|8",
-								  "Metaling|2855|5",
+								  "Metaling|1107|5",
 								  "Poring|1002|36";
 				break;
 				
 			case 6: // 81 ~~ 83
 				setarray .@ms$[0],"Relógio|1528|6",
-				                  "Comodo|2867|4",
+				                  "Comodo|2152|4",
 								  "Chung|1631|5",
 								  "Sangue nos Olhos|1268|3",
 								  "Kapha|1543|2",
@@ -423,8 +423,8 @@ function	script	F_Torre_Monstros	{
 				
 			case 7: // 83 ~~ 85
 				setarray .@ms$[0],"Harpia|1376|5",
-				                  "Loli Ruri|2349|3",
-								  "Mavka|1886|4",
+				                  "Loli Ruri|1505|3",
+								  "Mavka|1884|4",
 								  "Novus|1718|7",
 								  "Aranha|1304|9",
 								  "Miyabi|1552|4";
@@ -433,7 +433,7 @@ function	script	F_Torre_Monstros	{
 			case 8: // 86 ~~ 87
 				setarray .@ms$[0],"Bathory|1102|5",
 							      "Rafflesia|1790|3",
-								  "Petite|2714|4",
+								  "Petite|1155|4",
 								  "Leib|1306|5",
 								  "Hyegun|1512|4",
 								  "Fumaça|1621|3";
@@ -458,7 +458,7 @@ function	script	F_Torre_Monstros	{
 				break;
 				
 			case 11: // 91 ~~ 95
-				setarray .@ms$[0],"Ursinho|2636|5",
+				setarray .@ms$[0],"Ursinho|1622|5",
 				                  "Elder|1377|8",
 								  "Bebe Hatii|1515|3",
 								  "Borboleta|1408|5",
@@ -488,7 +488,7 @@ function	script	F_Torre_Monstros	{
 				setarray .@ms$[0],"Siroma|1776|5",
 				                  "Rybio|1201|8",
 								  "Tengu|1405|5",
-								  "Cavalheiro da Morte|1876|1",
+								  "Cavalheiro da Morte|1373|1",
 								  "Angeling|1766|1",
 								  "Bradium|2049|1";
 				break;
@@ -546,10 +546,10 @@ function	script	F_Torre_Monstros	{
 				
 			case 5: // 112 ~~ 118
 				setarray .@ms$[0],"Aliza|1737|5",
-                                  "Raydric|2691|10",
+                                  "Raydric|1163|10",
                                   "Alicel|1739|4",
 								  "Banshee|1974|2",
-								  "Violinista|2623|4",
+								  "Violinista|1390|4",
 								  "Gremlin|1632|8";
 				break;
 				
@@ -1207,7 +1207,7 @@ function	script	F_Torre_Warp	{
 		mapannounce instance_mapname("1@tower"), "Todos os Monstros do andar " + ( 'LEVEL - 1 ) + " foram eliminados!",bc_map,"0xffff00";
 		stopnpctimer;
 		
-		hideoffnpc instance_npcname("#PortalTorre");
+		setnpcdisplay( instance_npcname( "#PortalTorre" ), -1 );
 		end;
 }
 
@@ -1224,7 +1224,7 @@ function	script	F_Torre_Warp	{
 		mapwarp instance_mapname("1@tower"),instance_mapname("1@tower"),50,355;
 		callfunc "F_Torre_Monstros",'TORREID, 'LEVEL, instance_mapname("1@tower"), instance_npcname("TorreLogic")+"::OnMyMobDead";
 		cleanmap instance_mapname("1@tower");
-		hideonnpc instance_npcname("#PortalTorre");
+		setnpcdisplay( instance_npcname( "#PortalTorre" ), 45 );
 		end;
 }
 

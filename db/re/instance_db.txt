@@ -5,4 +5,6 @@
 //
 // EnterMap is considered as Map1
 
-1,Torre da Jornada,34400,300,1@tower,50,355,2@tower,3@tower,4@tower,5@tower,6@tower
+1,Torre da Jornada,34400,100,1@tower,50,355,2@tower,3@tower,4@tower,5@tower,6@tower
+2,Monstro do Lago,34400,100,gld_dun02,20,160
+3,Memoria do Rei Arthur,34400,100,2@mir,102,12

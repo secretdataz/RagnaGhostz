@@ -1,0 +1,122 @@
+
+
+function	script	inst	{
+
+	.@func$ = getarg(0);
+
+	// Monstro do Lago
+	.@nome_inst$[INSTANCIA_MONSTRO_DO_LAGO] = "Monstro do Lago";
+	.@desc$[INSTANCIA_MONSTRO_DO_LAGO] = "Enfrente o Monstro do Lago para ter chances de receber a Maestria [%s] e outros itens especiais!";
+	.@delay[INSTANCIA_MONSTRO_DO_LAGO] = 35;
+	.@item[INSTANCIA_MONSTRO_DO_LAGO] = 29558;
+
+	// Rei Arthur
+	.@nome_inst$[INSTANCIA_MEMORIA_DE_REI_ARTHUR] = "Memoria do Rei Arthur";
+	.@desc$[INSTANCIA_MEMORIA_DE_REI_ARTHUR] = "Enfrente a Memória de Rei Arthur para ter chances de receber a Maestria [%s] e outros itens especiais!";
+	.@delay[INSTANCIA_MEMORIA_DE_REI_ARTHUR] = 55;
+	.@item[INSTANCIA_MEMORIA_DE_REI_ARTHUR] = 29559;
+
+	if( .@func$ == "INICIO" )
+	{
+		.@cid = getarg(1);
+		.@iid = getarg(2);
+
+		if( .@cid == 0 )
+			end;
+
+		mes sprintf( "[^8A2BE2%s^000000]", .@nome_inst$[.@iid] );
+
+		callsub L_Check, .@cid, .@iid, .@delay[.@iid];
+		
+		mes "^556B2FTempo de Recarga:^000000 " + .@delay[INSTANCIA_MONSTRO_DO_LAGO] + " minutos.";
+		mes sprintf( .@desc$[.@iid], sprintf("<ITEM>%s<INFO>%d</INFO></ITEM>", getitemname( .@item[.@iid] ), .@item[.@iid] ) );
+
+		select( "Entrar" );
+
+		instance_create( .@nome_inst$[.@iid], IM_PARTY );
+
+		npctalk sprintf( "Boa sorte ao grupo %s!", strcharinfo(1) ),"",BC_AREA,0xFF8C00;
+
+		.IID$ = .@nome_inst$[.@iid];
+
+		.iid = .@iid;
+		.delay = .@delay[.@iid];
+
+		addrid( 2, 0, getcharid(1) );
+
+		callsub L_Check, getcharid(0), .iid, .delay;
+
+		instance_enter( .IID$, -1, -1, getcharid(0), instance_id(IM_PARTY) );
+
+		INSTANCE_TIMER[.iid] = gettimetick(2);
+
+		.iid = 0;
+		.delay = 0;
+		.IID$ = "";
+
+		close;
+	}
+
+	if( .@func$ == "DEPLOY_BARRICADE" || .@func$ == "DESTROY_BARRICADE" )
+	{
+		.@mob_id = 1906;
+
+		.@m$ = getarg(1);
+		.@x1 = getarg(2);
+		.@y1 = getarg(3);
+		.@x2 = getarg(4);
+		.@y2 = getarg(5);
+
+		.@event$ = getarg(6);
+
+		if( .@func$ == "DEPLOY_BARRICADE" )
+		{
+			if( .@x1 != .@x2 )
+			{
+				for( .@i = .@x1; .@i < .@x2 + 1; .@i++ )
+				{
+					monster .@m$,.@x1 + .@inc,.@y1,"",.@mob_id,1,.@event$;
+					.@inc++;
+				}
+			}
+
+			if( .@y1 != .@y2 )
+			{
+				for( .@i = .@y1; .@i < .@y2 + 1; .@i++ )
+				{
+					monster .@m$,.@x1,.@y1 + .@inc,"",.@mob_id,1,.@event$;
+					.@inc++;
+				}
+
+			}
+		}
+		else
+			killmonster .@m$,.@event$;
+
+		setcell .@m$,.@x1,.@y1,.@x2,.@y2,cell_walkable, .@func$ == "DEPLOY_BARRICADE" ? 0 : 1;
+		return;
+	}
+
+	L_Check:
+		.@cid = getarg(0);
+		.@iid = getarg(1);
+		.@delay = getarg(2);
+
+		if( BaseLevel < 300 )
+			callsub L_erro, "É preciso alcançar o nível 300 antes de participar de Instâncias.";
+		else if( ( gettimetick(2) - INSTANCE_TIMER[.@iid] ) < ( .@delay * 60 ) )
+			callsub L_erro, "Instância em Tempo de Recarga, aguarde " + ( ( ( ( .@delay * 60 ) - ( gettimetick(2) - INSTANCE_TIMER[.@iid] ) ) / 60 ) + 1 ) + " minutos.";
+		else if( getcharid(1) == 0 )
+			callsub L_erro, "É preciso estar em um grupo para iniciar uma instância.";
+		else if( getpartyleader( getcharid(1), 2 ) != .@cid )
+			callsub L_erro, "É preciso ser o líder para iniciar a instância.";
+		else if( ZONE$ != "Zona Juno" )
+			callsub L_erro, "Seu grupo iniciou uma instância, mas você estava fora da Zona de teleporte.";
+		return;
+
+	L_erro:
+		mes getarg(0);;
+		close;
+}
+
+

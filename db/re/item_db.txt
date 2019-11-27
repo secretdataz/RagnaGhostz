@@ -7434,6 +7434,10 @@
 29554,Cachecol_de_Lutie_[QUEST],Cachecol de Lutie [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,1,,1,1,1312,{ bonus bMaxHPrate,5; bonus2 bSubEle,Ele_Water,15; },{},{}
 29555,Cachecol_do_Eremes_[QUEST],Cachecol do Eremes [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,1,,1,1,1416,{ bonus bFleeRate,7; skill 135,10; },{},{}
 29556,Visor_Holografico_[QUEST],Visor Holográfico [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,1,,1,1,1351,{ bonus bInt,17; bonus bUnbreakable,15; },{},{}
+29557,Pontos_de_Evento,Pontos de Evento,2,1,,1,,,,,0xFFFFFFFF,63,2,,,,,,{ .@rand = rand( 1, 100 ); #EVENT_POINTS += .@rand; dispbottom "--------------------------------------------------"; dispbottom "Você recebeu " + .@rand + " pontos de evento!"; dispbottom "Total de pontos: " + #EVENT_POINTS; dispbottom "--------------------------------------------------"; },{},{}
+29558,Ataque_Submerso,Ataque Submerso,2,1,,1,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "mastery","GiveMastery",getcharid(0),206,29558; },{},{}
+29559,Excalibur_,Excalibur,2,1,,1,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "mastery","GiveMastery",getcharid(0),207,29559; },{},{}
+29560,Carta_Memoria_de_Rei_Arthur,Carta Memória de Rei Arthur,6,20,,10,,,,,,,,2,,,,,{},{ rgzbonus(8,1); },{ rgzbonus(8,0); }
 30000,,(null),,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{},{},{}
 31016,Decorated_Evil_Tree_Card,Carta Árvore Maldita Decorada,6,20,,10,,,,,,,,16,,,,,{ bonus bMaxHP,1000; bonus bMaxSP,150; bonus bFlee,-25; },{},{}
 31017,Vicious_Cookie_Card,Carta Cookie Aterrorizante,6,20,,10,,,,,,,,64,,,,,{ .@r = getrefine(); bonus2 bAddClass,Class_All,1+.@r; bonus bMatkRate,1+.@r; bonus bMaxHPrate,-(2+(.@r*2)); },{},{}

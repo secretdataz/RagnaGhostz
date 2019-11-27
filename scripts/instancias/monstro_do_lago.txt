@@ -1,0 +1,193 @@
+
+phtownall,339,205,5	Script	Monstro do Lago	537,{
+	
+	inst( "INICIO", getcharid(0), INSTANCIA_MONSTRO_DO_LAGO );
+	end;
+
+}
+
+gld_dun02,75,55,5	Script	Isca#1	1127,{
+
+	if( 'LAGUNA != 2 )
+		end;
+
+	specialeffect 1;
+
+	.@hp = getd( "'ISCA_HP" + strnpcinfo(2) );
+
+	if( .@hp < 0 )
+		end;
+
+	.@hp--;
+
+	npctalk "Vida: " + .@hp;
+
+	setd "'ISCA_HP" + strnpcinfo(2), .@hp;
+
+	if( .@hp == 0 )
+	{
+		setnpcdisplay( instance_npcname( strnpcinfo(0) ), -2 );
+
+		mapannounce instance_mapname( strcharinfo(3) ), strcharinfo(0) + " acaba de recolher 1 isca",bc_map,"0xffff00";
+
+		'ISCAS++;
+
+		setd "'ISCA_HP" + strnpcinfo(2), -1;
+
+		if( 'ISCAS >= 6 )
+			mapannounce instance_mapname( strcharinfo(3) ), strcharinfo(0) + " acaba de recolher a última isca",bc_map,"0xffff00";
+	}
+
+	end;
+}
+
+gld_dun02,88,45,3	duplicate(Isca#1)	Isca#2	1127
+gld_dun02,113,112,3	duplicate(Isca#1)	Isca#3	1127
+gld_dun02,122,128,3	duplicate(Isca#1)	Isca#4	1127
+gld_dun02,125,131,3	duplicate(Isca#1)	Isca#5	1127
+gld_dun02,95,136,3	duplicate(Isca#1)	Isca#6	1127
+
+gld_dun02,107,140,3	Script	Colocar Isca#Laguna	111,{
+
+	if( getpartyleader( getcharid(1), 2 ) != getcharid(0) )
+	{
+		message strcharinfo(0),"O Líder deve falar com o NPC";
+		end;
+	}
+
+	if( 'LAGUNA == 5 ) end;
+
+	setnpcdisplay( instance_npcname( strnpcinfo(0) ), -1 );
+
+	'LAGUNA = 5;
+
+	unittalk getcharid(3),sprintf( "Atenção [%s], preparem-se para a batalha!", strcharinfo(1) );
+	
+	sleep2 5000;
+
+	mapannounce instance_mapname( strcharinfo(3) ),"Então vocês acham que podem me derrotar?",bc_map,"0x00CED1";
+
+	sleep2 3000;
+
+	mapannounce instance_mapname( strcharinfo(3) ),"Vamos ver do que são capazes!",bc_map,"0x00CED1";
+
+	sleep2 3000;
+
+	monster instance_mapname( strcharinfo(3) ),112,135,"Monstro do Lago",2320,1,instance_npcname( "Colocar Isca#Laguna" ) + "::OnKillBoss";
+	end;
+
+	OnKillBoss:
+		mapannounce instance_mapname( "gld_dun02" ),"O Monstro do Lago foi derrotado!",bc_map,"0x00CED1";
+
+		'LAGUNA = 6;
+		end;
+}
+
+gld_dun02,29,160,3	Script	Laguna#IN1	537,{
+
+	if( 'LAGUNA == 6 )
+	{
+		npctalk "Muito obrigada " + strcharinfo(0) + "!";
+
+		.@rand = rand( 5, 50 );
+
+		#EVENT_POINTS += .@rand;
+		dispbottom "--------------------------------------------------";
+		dispbottom "Você recebeu " + .@rand + " pontos de evento!";
+		dispbottom "Total de pontos: " + #EVENT_POINTS;
+		dispbottom "--------------------------------------------------";
+
+		warp "Save",0,0;
+		end;
+	}
+
+	if( 'LAGUNA == 5 )
+		end;
+
+	if( 'LAGUNA == 4 || getgroupid() == 99 )
+	{
+		npctalk "Agora jogue a isca onde estou marcando no mapa para enfrentar o Monstro do Lago!","",BC_AREA,0xFF8C00;
+		showevent QTYPE_QUEST,QMARK_YELLOW,getcharid(0),instance_npcname( "Colocar Isca#Laguna" );
+
+		if( getgroupid() == 99 )
+			inst( "DESTROY_BARRICADE", instance_mapname( "gld_dun02" ), 32, 156, 32, 163, "Monstro do Lago::OnBarricade" );
+
+		end;
+	}
+	else if( 'LAGUNA == 3 ) end;
+
+	if( 'ISCAS > 0 )
+	{
+		if( 'ISCAS < 6 )
+		{
+			npctalk "Ainda não é o suficiente, precisamos de mais iscas!","",BC_AREA,0xFF8C00;
+		}
+		else
+		{
+			'LAGUNA = 3;
+			npctalk "Acho que isso é o suficiente...","",BC_AREA,0xFF8C00;
+			sleep2 3000;
+			npctalk "Agora jogue a isca onde estou marcando no mapa para enfrentar o Monstro do Lago!","",BC_AREA,0xFF8C00;
+
+			showevent QTYPE_QUEST,QMARK_YELLOW,getcharid(0),instance_npcname( "Colocar Isca#Laguna" );
+			'LAGUNA = 4;
+		}
+		end;
+	}
+
+	if( 'LAGUNA == 2 )
+	{
+		npctalk "Quando pegar as iscas, fale comigo.","",BC_AREA,0xFF8C00;
+		end;
+	}
+	else if( 'LAGUNA == 1 )
+		end;
+
+	if( getpartyleader( getcharid(1), 2 ) != getcharid(0) )
+	{
+		npctalk "Onde está seu líder?";
+		end;
+	}
+
+	'LAGUNA = 1;
+
+	.@talk$[0] = "Obrigado por atender meu chamado!";
+	.@sleep[0] = 1500;
+
+	.@talk$[1] = "Um grande mal se esconde nessa caverna!";
+	.@sleep[1] = 2000;
+
+	.@talk$[2] = "Mas parece que ele está adormecido...";
+	.@sleep[2] = 2500;
+
+	.@talk$[3] = "Já sei, por que você não tenta atraír ele com uma isca? Talvez encontre em uma das poças...";
+	.@sleep[3] = 3000;
+
+	for( ; .@i < getarraysize( .@talk$ ); .@i++ )
+	{
+		npctalk .@talk$[.@i],"",BC_AREA,0xFF8C00;
+		sleep2 .@sleep[.@i];
+	}
+
+	inst( "DESTROY_BARRICADE", instance_mapname( "gld_dun02" ), 32, 156, 32, 163, "Monstro do Lago::OnBarricade" );
+
+	'LAGUNA = 2;
+	end;
+
+	OnInstanceInit:
+		inst( "DESTROY_BARRICADE", instance_mapname( "gld_dun02" ), 32, 156, 32, 163, "Monstro do Lago::OnBarricade" );
+		inst( "DEPLOY_BARRICADE", instance_mapname( "gld_dun02" ), 32, 156, 32, 163, "Monstro do Lago::OnBarricade" );
+		'LAGUNA = 0;
+
+		'ISCAS = 0;
+		'ISCA_HP1 = 15;
+		'ISCA_HP2 = 9;
+		'ISCA_HP3 = 10;
+		'ISCA_HP4 = 18;
+		'ISCA_HP5 = 12;
+		'ISCA_HP6 = 20;
+
+		end;
+}
+
+gld_dun02	mapflag	noteleport

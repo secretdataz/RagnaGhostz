@@ -3037,6 +3037,39 @@ int mob_dead(struct mob_data *md, struct block_list *src, int type)
 					clif_specialeffect(src, 261, AREA);
 				}
 			}
+
+			if (mvp_sd->mast[MASTERY_EXCALIBUR]->active)
+			{
+				mvp_sd->mast[MASTERY_EXCALIBUR]->val1++;
+
+				if (mvp_sd->mast[MASTERY_EXCALIBUR]->val1 == 1)
+					clif_disp_overhead_(&mvp_sd->bl, "E", AREA);
+				else if (mvp_sd->mast[MASTERY_EXCALIBUR]->val1 == 2)
+					clif_disp_overhead_(&mvp_sd->bl, "EX", AREA);
+				else if (mvp_sd->mast[MASTERY_EXCALIBUR]->val1 == 3)
+					clif_disp_overhead_(&mvp_sd->bl, "EXC", AREA);
+				else if (mvp_sd->mast[MASTERY_EXCALIBUR]->val1 == 4)
+					clif_disp_overhead_(&mvp_sd->bl, "EXCA", AREA);
+				else if (mvp_sd->mast[MASTERY_EXCALIBUR]->val1 == 5)
+					clif_disp_overhead_(&mvp_sd->bl, "EXCAL", AREA);
+				else if (mvp_sd->mast[MASTERY_EXCALIBUR]->val1 == 6)
+					clif_disp_overhead_(&mvp_sd->bl, "EXCALI", AREA);
+				else if (mvp_sd->mast[MASTERY_EXCALIBUR]->val1 == 7)
+					clif_disp_overhead_(&mvp_sd->bl, "EXCALIB", AREA);
+				else if (mvp_sd->mast[MASTERY_EXCALIBUR]->val1 == 8)
+					clif_disp_overhead_(&mvp_sd->bl, "EXCALIBU", AREA);
+				else if (mvp_sd->mast[MASTERY_EXCALIBUR]->val1 == 9)
+				{
+					mvp_sd->mast[MASTERY_EXCALIBUR]->val1 = 10;
+
+					clif_specialeffect(&mvp_sd->bl, 220, AREA);
+					clif_disp_overhead_(&mvp_sd->bl, "EXCALIBAAAAAAH", AREA);
+					map_foreachinallrange(buildin_excalibur, &mvp_sd->bl, 5, BL_MOB | BL_PC, mvp_sd->bl.id);
+
+					mvp_sd->mast[MASTERY_EXCALIBUR]->val1 = 0;
+
+				}
+			}
 		}
 	}
 
@@ -5008,6 +5041,9 @@ static void mob_drop_ratio_adjust(void){
 
 		mob_id = pair.first;
 		mob = &pair.second;
+
+		if (pair.second.status.sp == 123456)
+			continue;
 
 		if( mob_is_clone( mob_id ) ){
 			continue;

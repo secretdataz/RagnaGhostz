@@ -2029,3 +2029,4 @@
 11023  // Increase_Stamina_Study
 11024  // Vital_Drink_CB
 //--- 2010 / 03 / 12
+29560  // Carta_Memoria_de_Rei_Arthur

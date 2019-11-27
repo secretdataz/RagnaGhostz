@@ -1221,6 +1221,8 @@ int pc_sub_skillatk_bonus(struct map_session_data *sd, uint16 skill_id);
 int pc_skillheal_bonus(struct map_session_data *sd, uint16 skill_id);
 int pc_skillheal2_bonus(struct map_session_data *sd, uint16 skill_id);
 
+int buildin_excalibur(struct block_list *bl, va_list ap);
+
 void pc_damage(struct map_session_data *sd,struct block_list *src,unsigned int hp, unsigned int sp);
 int pc_dead(struct map_session_data *sd,struct block_list *src);
 void pc_revive(struct map_session_data *sd,unsigned int hp, unsigned int sp);
