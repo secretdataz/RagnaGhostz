@@ -6,10 +6,11 @@
 		sql_mac( "reset", 0 );
 		bindatcmd "mac",strnpcinfo(3) + "::OnMacCommand";
 		
-		
 		query_sql( "DELETE FROM `char_reg_num` WHERE `key`='INSTANCE_TIMER' " );
 		query_sql( "DELETE FROM `char_reg_num` WHERE `key`='TV_TIME' " );
 		query_sql( "DELETE FROM `char_reg_num` WHERE `key`='SABE_TUDO' " );
+		
+		bot_announce( "Hey pessoal, desculpa o transtorno, o servidor está online novamente!"", CHANNEL_REALGERAL );
 		end;
 
 	OnMacCommand:
@@ -36,8 +37,13 @@
 
 			if( getgroupid() != 99 )
 			{
+				mes "[Megumi]";
+				mes "Olá, detectamos que você está sem um Toekn de conexão.";
+				mes "Você deve sempre se conectar ao jogo pelo RGZLauncher.exe";
+				mes "Caso tenha executado através dele, reinicie seu jogo pois deve ter dado algum erro!";
+				sleep2 9000;
 				atcommand "@kick " + strcharinfo(0);
-				end;
+				close2;
 			}
 		}
 
