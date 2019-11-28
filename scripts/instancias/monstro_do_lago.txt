@@ -98,6 +98,12 @@ gld_dun02,29,160,3	Script	Laguna#IN1	537,{
 		dispbottom "--------------------------------------------------";
 
 		warp "Save",0,0;
+
+		sleep 2000;
+
+		if( getmapusers( instance_mapname( "gld_dun02" ) ) == 0 )
+			instance_destroy();
+		
 		end;
 	}
 

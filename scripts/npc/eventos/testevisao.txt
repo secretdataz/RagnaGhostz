@@ -31,14 +31,14 @@ phtownall,29,363,4	script	Teste de Visão	100,{
 				close;
 			}
 
-			TV_TIME = gettimetick(2);
-
 			if( $@EVENT_STATE[EVENTID_TESTEDEVISAO] >= 2 )
 			{
 				mes .@n$;
 				mes "Alguém já está testando a visão comigo, tente mais tarde.";
 				close;
 			}
+
+			TV_TIME = gettimetick(2);
 
 			$@EVENT_STATE[EVENTID_TESTEDEVISAO] = 2;
 

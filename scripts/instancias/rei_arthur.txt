@@ -20,6 +20,12 @@ phtownall,338,203,5	Script	Memória do Rei Arthur	628 ,{
 		dispbottom "--------------------------------------------------";
 
 		warp "Save",0,0;
+
+		sleep 2000;
+
+		if( getmapusers( instance_mapname( "2@mir" ) ) == 0 )
+			instance_destroy();
+
 		end;
 	}
 

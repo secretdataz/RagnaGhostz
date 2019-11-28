@@ -58,6 +58,8 @@ phtownall,71,338,5	Script	Gerenciador de Eventos	531 ,{
 			setmapflag .event_map$[.@i],MF_NOSAVE;
 			setmapflag .event_map$[.@i],MF_NOSKILL;
 			setmapflag .event_map$[.@i],MF_NOTELEPORT;
+
+			$@EVENT_STATE[.@i] = 0;
 		}
 
 		end;

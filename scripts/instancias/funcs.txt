@@ -28,7 +28,7 @@ function	script	inst	{
 
 		callsub L_Check, .@cid, .@iid, .@delay[.@iid];
 		
-		mes "^556B2FTempo de Recarga:^000000 " + .@delay[INSTANCIA_MONSTRO_DO_LAGO] + " minutos.";
+		mes "^556B2FTempo de Recarga:^000000 " + .@delay[.@iid] + " minutos.";
 		mes sprintf( .@desc$[.@iid], sprintf("<ITEM>%s<INFO>%d</INFO></ITEM>", getitemname( .@item[.@iid] ), .@item[.@iid] ) );
 
 		select( "Entrar" );
@@ -37,22 +37,22 @@ function	script	inst	{
 
 		npctalk sprintf( "Boa sorte ao grupo %s!", strcharinfo(1) ),"",BC_AREA,0xFF8C00;
 
-		.IID$ = .@nome_inst$[.@iid];
+		$IID$ = .@nome_inst$[.@iid];
 
-		.iid = .@iid;
-		.delay = .@delay[.@iid];
+		$iid = .@iid;
+		$delay = .@delay[.@iid];
 
 		addrid( 2, 0, getcharid(1) );
 
-		callsub L_Check, getcharid(0), .iid, .delay;
+		callsub L_Check, getcharid(0), $iid, $delay;
 
-		instance_enter( .IID$, -1, -1, getcharid(0), instance_id(IM_PARTY) );
+		instance_enter( $IID$, -1, -1, getcharid(0), instance_id(IM_PARTY) );
 
-		INSTANCE_TIMER[.iid] = gettimetick(2);
+		INSTANCE_TIMER[$iid] = gettimetick(2);
 
-		.iid = 0;
-		.delay = 0;
-		.IID$ = "";
+		$iid = 0;
+		$delay = 0;
+		$IID$ = "";
 
 		close;
 	}
