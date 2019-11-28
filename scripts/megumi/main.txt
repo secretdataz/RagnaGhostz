@@ -9,6 +9,7 @@
 		
 		query_sql( "DELETE FROM `char_reg_num` WHERE `key`='INSTANCE_TIMER' " );
 		query_sql( "DELETE FROM `char_reg_num` WHERE `key`='TV_TIME' " );
+		query_sql( "DELETE FROM `char_reg_num` WHERE `key`='SABE_TUDO' " );
 		end;
 
 	OnMacCommand:

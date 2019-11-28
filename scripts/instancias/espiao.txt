@@ -1,0 +1,71 @@
+// Maestria: Permite o uso da habilidade [Furtividade]
+// Carta Espião: Permite ver jogadores invisiveis que sejam da mesma classe que a sua. Equipa em acessório.
+
+phtownall,336,198,5	Script	Vida de Espião	418,{
+	
+	inst( "INICIO", getcharid(0), INSTANCIA_VIDA_DE_ESPIAO );
+	end;
+
+}
+
+gef_tower,57,93,1	script	Guarda#geft1	418,0,12,{
+
+	end;
+	
+	OnTouch:
+	if(isbegin_quest(1014)!=1)
+		end;
+	
+	getmapxy(.@map$,.@x,.@y,0);
+	
+	if(.@y>=93){
+		emotion 0;
+		.@n$ = "[^DAA520Guarda^000000]";
+		mes .@n$;
+		mes "Voc� n�o deveria estar aqui!";
+		close2;
+		warp "in_rogue",364,117;
+		sleep2 3000;
+		unittalk getcharid(3),"N�o acredito que tive que fugir dos guardas at� aqui...";
+		end;
+	}
+	end;
+}
+
+gef_tower,50,93,1	script	Guarda#geft1	418,0,12,{
+
+	if( 'GUARDA > 0 ) end;
+	
+	if( getpartyleader( getcharid(1), 2 ) != getcharid(0) )
+	{
+		npctalk "Onde está seu líder?";
+		end;
+	}
+	
+	'GUARDA = 1;
+	
+	.@talk$[0] = "Obrigado por atender meu chamado!";
+	.@sleep[0] = 1500;
+
+	.@talk$[1] = "Precisamos espionar os comunistas, mas está dificil de passar pelos guardas!";
+	.@sleep[1] = 4000;
+
+	.@talk$[2] = "Precisamos pegar a senha secreta dos misseis mágicos que podem destruir a qualquer momento nossa cidade!";
+	.@sleep[2] = 4000;
+
+	.@talk$[3] = "Esperamos que seu grupo possa nos ajudar!";
+	.@sleep[3] = 4000;
+
+	for( ; .@i < getarraysize( .@talk$ ); .@i++ )
+	{
+		npctalk .@talk$[.@i],"",BC_AREA,0xFF8C00;
+		sleep2 .@sleep[.@i];
+	}
+
+	'GUARDA = 2;
+	end;
+
+	OnInstanceInit:
+		'GUARDA = 0;
+		end;
+}

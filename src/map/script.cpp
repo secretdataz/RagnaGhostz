@@ -24721,6 +24721,37 @@ BUILDIN_FUNC(rgzbonus)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+// isselling( char_id, npc_name, item_id )
+BUILDIN_FUNC(isselling)
+{
+	TBL_PC *sd = map_charid2sd(script_getnum(st, 2));
+
+	if (!sd) return SCRIPT_CMD_FAILURE;
+
+	TBL_NPC *nd = npc_name2id(script_getstr(st, 3));
+
+	if (!nd) return SCRIPT_CMD_FAILURE;
+
+	int itemid = script_getnum(st, 4);
+
+	if (!itemdb_exists(itemid))
+	{
+		script_pushint(st, 0);
+		return SCRIPT_CMD_SUCCESS;
+	}
+
+	for (int i = 0; i < nd->u.shop.count; i++)
+	{
+		if (nd->u.shop.shop_item[i].nameid == itemid)
+		{
+			script_pushint(st, 1);
+			return SCRIPT_CMD_SUCCESS;
+		}
+	}
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
 // [Zell]
 // DuplicateCreate("sourcename", "targetnameshown", "targetnamehidden", "targetmap", targetx, targety, targetdir{, targetspriteid{, targetxs, targetys}});
 BUILDIN_FUNC(duplicatecreate)
@@ -24943,6 +24974,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(duplicatecreate, "ssssiii???"),
 	BUILDIN_DEF(duplicateremove, "?"),
 	BUILDIN_DEF(rgzbonus, "ii"),
+	BUILDIN_DEF(isselling, "isi"),
 	// NPC interaction
 	BUILDIN_DEF(mes,"s*"),
 	BUILDIN_DEF(next,""),

@@ -97,13 +97,11 @@ gld_dun02,29,160,3	Script	Laguna#IN1	537,{
 		dispbottom "Total de pontos: " + #EVENT_POINTS;
 		dispbottom "--------------------------------------------------";
 
-		warp "Save",0,0;
-
-		sleep 2000;
-
-		if( getmapusers( instance_mapname( "gld_dun02" ) ) == 0 )
+		if( getmapusers( instance_mapname( "gld_dun02" ) ) == 1 )
 			instance_destroy();
+			
 		
+		warp "Save",0,0;
 		end;
 	}
 
@@ -135,7 +133,7 @@ gld_dun02,29,160,3	Script	Laguna#IN1	537,{
 			sleep2 3000;
 			npctalk "Agora jogue a isca onde estou marcando no mapa para enfrentar o Monstro do Lago!","",BC_AREA,0xFF8C00;
 
-			showevent QTYPE_QUEST,QMARK_YELLOW,getcharid(0),instance_npcname( "Colocar Isca#Laguna" );
+			showevent QTYPE_CLICKME,QMARK_YELLOW,getcharid(0),instance_npcname( "Colocar Isca#Laguna" );
 			'LAGUNA = 4;
 		}
 		end;

@@ -35,7 +35,7 @@ function	script	mastery	{
 			end;
 		}
 
-		bot_announce( strcharinfo(0) + " acaba de adquirir a maestria [" + getitemname(29558) + "]", CHANNEL_CONQUISTAS);
+		bot_announce( strcharinfo(0) + " acaba de adquirir a maestria [" + getitemname( .@item_id ) + "]", CHANNEL_CONQUISTAS );
 
 		if( .@my_mastlevel == 1 )
 		{

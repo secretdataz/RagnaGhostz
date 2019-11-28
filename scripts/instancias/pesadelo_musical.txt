@@ -1,0 +1,227 @@
+// Maestria: Atacar alvos com % de vida atual maior que a sua causa +5% de dano. Nível máximo 5
+// Carta Piano Maldito: +30% de dano com Rajada de Flechas. Equipa em arma.
+
+phtownall,337,201,5	Script	Pesadelo Musical	724,{
+	
+	inst( "INICIO", getcharid(0), INSTANCIA_PESADELO_MUSICAL );
+	end;
+
+}
+
+job_duncer,43,93,4	script	Piano Maldito	724,{
+
+	if( 'PIANO == 2 )
+	{
+		'PIANO = 3;
+		unittalk getcharid(3),"Eu irei lhe desafiar!";
+		sleep2 1000;
+		npctalk "Então vem tranquilo!","",BC_AREA,0xFF8C00;
+		sleep2 3000;
+		
+		npctalk "Você tem 1 minuto para conseguir 100 pontos de dança!","",BC_AREA,0xFF8C00;
+		sleep2 5000;
+		
+		'dancer = getcharid(0);
+		'gid = getcharid(3);
+		'dstep = 0;
+		'estouEm$ = "";
+		'meuPasso$ = "";
+		'pts = 0;
+		
+		pcblockmove getcharid(3),0;
+		
+		warp instance_mapname( "job_duncer" ),69,110;
+
+		sleep 60000;
+		
+		if( 'PIANO == 3 )
+		{
+			npctalk "Uma pena, seu tempo acabou! Quem é o próximo?","",BC_AREA,0xFF8C00;
+			'PIANO = 2;
+			pcblockmove 'gid,0;
+			
+			warp de volta pra plateia
+		}
+		
+		end;
+	}
+	
+	if( 'PIANO > 0 )
+		end;
+		
+	if( getpartyleader( getcharid(1), 2 ) != getcharid(0) )
+	{
+		npctalk "Onde está seu líder?";
+		end;
+	}
+	
+	if( 'AILE == 2 )
+	{
+		'PIANO = 1;
+		
+		.@talk$[0] = "Tcs, acha que podem vencer meu desafio para me enfrentar?!";
+		.@sleep[0] = 3500;
+		
+		.@talk$[1] = "Escolha 1 membro do grupo para me desafiar!";
+		.@sleep[1] = 3000;
+		
+		.@talk$[2] = "Venha, fale comigo quem for corajoso!";
+		.@sleep[2] = 1000;
+		
+		for( ; .@i < getarraysize( .@talk$ ); .@i++ )
+		{
+			npctalk .@talk$[.@i],"",BC_AREA,0xFF8C00;
+			sleep2 .@sleep[.@i];
+		}
+		
+		'PIANO = 2;
+		end;
+	}
+	
+	end;
+	
+	OnBossKill:
+		mapannounce instance_mapname( "job_duncer" ),"O Piano Maldito foi derrotado!",bc_map,"0x00CED1";
+		'PIANO = 10;
+		end;
+}
+
+job_duncer,69,110,4	script	Meio#0	723,1,1,{
+
+	if( 'PIANO != 3 || 'dancer != getcharid(0) ) end;
+	
+	.@passo$ = strnpcinfo(1);
+	
+	'estouEm$ = .@passo$;
+	
+	getmapxy( .@m$, .@x, .@y, BL_NPC );
+	
+	if( 'meuPasso$ == .@passo$ )
+	{
+		specialeffect 911;
+		soundeffect "normal-hitclap.wav",0;
+		'pts++;
+		
+		if( rand(1,10) == 1 )
+			npctalk "Até que você é bom!",instance_npcname( "Piano Maldito" ),BC_AREA,0xFF8C00;
+	}
+	else
+	{
+		npctalk "Que pena, perdeu 10 pontos!",instance_npcname( "Piano Maldito" ),BC_AREA,0xFF8C00;
+		'pts -= 10;
+		
+		if( 'pts < 0 ) 'pts = 0;
+	}
+	
+	unitmove getcharid(3),.@x,.@y;
+	
+	if( 'pts < 100 )
+	{
+		.@dir$[0] = "Meio";
+		.@dir$[1] = "Esquerda";
+		.@dir$[2] = "Cima";
+		.@dir$[3] = "Baixo";
+		.@dir$[4] = "Direita";
+		
+		do
+		{
+			'meuPasso$ = .@dir$[rand(getarraysize(.@dir$))];
+		} while( 'meuPasso$ == .@passo$ );
+		
+		instance_announce instance_id(),"[Piano Maldito]: " + @meuPasso$,bc_self;
+	}
+	else
+	{
+		specialeffect 941,AREA,instance_npcname( "Piano Maldito" );
+		specialeffect 950,AREA,instance_npcname( "Piano Maldito" );
+		specialeffect 369,AREA,instance_npcname( "Piano Maldito" );
+		
+		'PIANO = 4;
+		npctalk "Há, você é digno de me enfrentar!",instance_npcname( "Piano Maldito" ),BC_AREA,0xFF8C00;
+		sleep2 4500;
+		unittalk getcharid(3),sprintf( "Atenção [%s], preparem-se para a batalha!", strcharinfo(1) );
+
+		warp de volta pra plateia
+		
+		pcblockmove 'gid,1;
+
+		sleep2 5000;
+	}
+	
+	end;
+}
+
+job_duncer,66,110,3	duplicate(Meio#0)	Esquerda#1	723,1,1
+job_duncer,69,113,3	duplicate(Meio#0)	Cima#2	723,1,1
+job_duncer,69,107,3	duplicate(Meio#0)	Baixo#3	723,1,1
+job_duncer,72,110,3	duplicate(Meio#0)	Direita#4	723,1,1
+
+job_duncer,43,93,4	script	Aile#IN1	724,{
+
+	if( 'PIANO == 10 )
+	{
+		npctalk "Muito obrigado " + strcharinfo(0) + "!";
+
+		.@rand = rand( 7, 60 );
+
+		#EVENT_POINTS += .@rand;
+		dispbottom "--------------------------------------------------";
+		dispbottom "Você recebeu " + .@rand + " pontos de evento!";
+		dispbottom "Total de pontos: " + #EVENT_POINTS;
+		dispbottom "--------------------------------------------------";
+
+		if( getmapusers( instance_mapname( "job_duncer" ) ) == 1 )
+			instance_destroy();
+		
+		warp "Save",0,0;
+		end;
+	}
+	
+	if( 'AILE > 0 )
+		end;
+		
+	if( getpartyleader( getcharid(1), 2 ) != getcharid(0) )
+	{
+		npctalk "Onde está seu líder?";
+		end;
+	}
+	
+	'AILE = 1;
+
+	.@talk$[0] = "Obrigado por atender meu chamado!";
+	.@sleep[0] = 1500;
+
+	.@talk$[1] = "Um dos nossos pianos criou vida e disse que nosso show é uma porcaria!!";
+	.@sleep[1] = 4000;
+
+	.@talk$[2] = "Chamamos especialistas para derrotar ele, mas ele usa uma magia muito especial...";
+	.@sleep[2] = 4000;
+
+	.@talk$[3] = "Para quebrar a magia alguém precisa vencer ele no desafio da dança!";
+	.@sleep[3] = 4000;
+	
+	.@talk$[4] = "Por favor, ajude-nos " + strcharinfo(1) + "!";
+	.@sleep[4] = 4000;
+
+	for( ; .@i < getarraysize( .@talk$ ); .@i++ )
+	{
+		npctalk .@talk$[.@i],"",BC_AREA,0xFF8C00;
+		sleep2 .@sleep[.@i];
+	}
+	
+	'AILE = 2;
+	
+	inst( "DESTROY_BARRICADE", instance_mapname( "gld_dun02" ), 32, 156, 32, 163, "Monstro do Lago::OnBarricade" );
+	end;
+	
+	OnInstanceInit:
+		'AILE = 0;
+		'PIANO = 0;
+		'dancer = 0;
+		'dstep = 0;
+		'estouEm$ = "";
+		'meuPasso$ = "";
+		'pts = 0;
+		'gid = 0;
+		end;
+}

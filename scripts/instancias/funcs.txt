@@ -15,7 +15,19 @@ function	script	inst	{
 	.@desc$[INSTANCIA_MEMORIA_DE_REI_ARTHUR] = "Enfrente a Memória de Rei Arthur para ter chances de receber a Maestria [%s] e outros itens especiais!";
 	.@delay[INSTANCIA_MEMORIA_DE_REI_ARTHUR] = 55;
 	.@item[INSTANCIA_MEMORIA_DE_REI_ARTHUR] = 29559;
+	
+	// Pesadelo Musical
+	.@nome_inst$[INSTANCIA_PESADELO_MUSICAL] = "Pesadelo Musical";
+	.@desc$[INSTANCIA_PESADELO_MUSICAL] = "Passe pelo teste do Piano Amaldiçoado e então o enfrente para ter chances de receber a Maestria [%s] e outros itens especiais!";
+	.@delay[INSTANCIA_PESADELO_MUSICAL] = 60;
+	.@item[INSTANCIA_PESADELO_MUSICAL] = 29601;
 
+	// Vida de Espião
+	.@nome_inst$[INSTANCIA_VIDA_DE_ESPIAO] = "Vida de Espião";
+	.@desc$[INSTANCIA_VIDA_DE_ESPIAO] = "Passe pelos guardas e enfrente a horda dos monstros para ter chances de receber a Maestria [%s] e outros itens especiais!";
+	.@delay[INSTANCIA_VIDA_DE_ESPIAO] = 120;
+	.@item[INSTANCIA_VIDA_DE_ESPIAO] = 29602;
+	
 	if( .@func$ == "INICIO" )
 	{
 		.@cid = getarg(1);
@@ -33,7 +45,13 @@ function	script	inst	{
 
 		select( "Entrar" );
 
-		instance_create( .@nome_inst$[.@iid], IM_PARTY );
+		.@ok = instance_create( .@nome_inst$[.@iid], IM_PARTY );
+		
+		if( .@ok < 0 )
+		{
+			message strcharinfo(0),"Erro, recrie seu grupo ou aguarde mais alguns segundos!";
+			end;
+		}
 
 		npctalk sprintf( "Boa sorte ao grupo %s!", strcharinfo(1) ),"",BC_AREA,0xFF8C00;
 

@@ -1,9 +1,55 @@
 
-phtownall,177,50,5	Script	TouchML1	-1,12,12,{
+phtownall,177,50,5	Script	Tio Sabe Tudo	933,12,12,{
 
-	OnTouch:
+	.@n$ = "[^8B4513Tio Sabe Tudo^000000]";
 	
-	setarray .@frases$[1],"Vem que aqui em %s é mais barato!",
+	if( ( gettimetick(2) - SABE_TUDO ) < 10 )
+	{
+		mes .@n$;
+		mes "Minha memória não é tão boa como antigamente... espere 10 segundos para que eu possa descansar!";
+		close;
+	}
+	
+	mes .@n$;
+	mes "Eu vivi anos aqui, então sei onde estão todos os itens!";
+	next;
+	mes .@n$;
+	mes "Digite o ID do item que procura.";
+	
+	input .@id;
+	
+	SABE_TUDO = gettimetick(2);
+	
+	for( .@i = 1; .@i < getarraysize(.npcs$); .@i++ )
+	{
+		.@achou = isselling( getcharid(0), .npcs$[.@i], .@id );
+		
+		if( .@achou )
+		{
+			next;
+			mes .@n$;
+			mes "Ah sim, o nome deste item seria " + getitemname( .@id ) + "?";
+			next;
+			mes .@n$;
+			mes "Essa é fácil! " + .npcs$[.@i] + " tem o item que você busca!";
+			close2;
+			
+			npctalk "Eu tenho o que você precisa, " + strcharinfo(0),.npcs$[.@i],BC_AREA,0xFF8C00;
+			showevent QTYPE_CLICKME,QMARK_GREEN,getcharid(0),.npcs$[.@i];
+			end;
+		}
+	}
+	
+	next;
+	mes .@n$;
+	mes "Hmm, eu desconheço quem vende este item... por favor não me bata por não saber! Sou só um velinho!";
+	close;
+	
+	end;
+	
+	OnInit:
+	
+	setarray .frases$[0],"Vem que aqui em %s é mais barato!",
 	                   "Vem que tem pro moção e pra mocinha!",
 					   "Produtos de ótima qualidade aqui!",
 					   "O chefe ficou maluco, vem que tá barato!",
@@ -22,7 +68,7 @@ phtownall,177,50,5	Script	TouchML1	-1,12,12,{
 					   "Se quiser ser o melhor em RagnaGhostz, é comprando comigo que se garente isso!",
 					   "Vem conferir se eu coloquei preço errado";
 		
-	setarray .@npcs$[1],"Loja dos Consumíveis",
+	setarray .npcs$[1],"Loja dos Consumíveis",
 						"Facilidades do Robin",
 						"Armaduras do Bob",
 						"Armaduras do José",
@@ -52,9 +98,11 @@ phtownall,177,50,5	Script	TouchML1	-1,12,12,{
 						"Katars do Hiro",
 						"Fuuma do Otaku",
 						"Armas do Bolsonaro",
-						"Balas e Granadas da Ditadura",
+						"Balas da Ditadura",
 						"Shurikens e Kunais",
+						"Pedras",
 						"Bombas do Doidão",
+						"Pet Shop",
 						"Dono da Pet Shop",
 						"Loja do Edward",
 						"Cartas - Acessórios",
@@ -66,35 +114,37 @@ phtownall,177,50,5	Script	TouchML1	-1,12,12,{
 						"Cartas - Cabeça",
 						"Cartas Seladas",
 						"Cartas MB",
-						"Cabeça Cima",
-						"Cabeça Cima",
-						"Cabeça Cima",
-						"Cabeça Cima",
-						"Cabeça Cima",
-						"Cabeça Cima",
-						"Cabeça Meio",
-						"Cabeça Baixo",
-						"Cima e Baixo",
+						"Cabeça Cima [A]",
+						"Cabeça Cima [B]",
+						"Cabeça Cima [C]",
+						"Cabeça Cima [D]",
+						"Cabeça Cima [E]",
+						"Cabeça Cima [F]",
+						"Cabeça Meio [A]",
+						"Cabeça Baixo [A]",
+						"Cima e Baixo [A]",
 						"Senhor das Máscaras",
 						"Cima, Baixo e Topo",
 						"Visuais [A]",
 						"Visuais [B]",
-						"Visuais [C]";
+						"Visuais [C];
+	end;
 	
-	.@rand = rand(7, 20);
-	
-	for(.@i = 0; .@i < .@rand; .@i++)
-	{
-		.@r_npc = rand( 1, getarraysize( .@npcs$ ) );
-		.@r_fala = rand( 1, getarraysize( .@frases$ ) );
+	OnTouch:
+		.@rand = rand(7, 20);
 		
-		if( .@r_fala == 1 )
-			.@fala$ = sprintf( .@frases$[.@r_fala], .@npcs$[.@r_npc] );
-		else
-			.@fala$ = .@frases$[.@r_fala];
+		for(.@i = 0; .@i < .@rand; .@i++)
+		{
+			.@r_npc = rand( 1, getarraysize( .npcs$ ) );
+			.@r_fala = rand( 1, getarraysize( .frases$ ) );
 			
-		npctalk .@fala$, .@npcs$[.@r_npc];
-	}
+			if( .@r_fala == 1 )
+				.@fala$ = sprintf( .frases$[.@r_fala], .npcs$[.@r_npc] );
+			else
+				.@fala$ = .frases$[.@r_fala];
+				
+			npctalk .@fala$, .npcs$[.@r_npc];
+		}
 	
 	end;
 }
@@ -159,7 +209,7 @@ phtownall,181,38,3	shop	Fuuma do Otaku	498,13305:500000,13313:500000,13307:50000
 
 phtownall,184,41,3	shop	Armas do Bolsonaro	855,13103:8000000,13114:8000000,13105:8000000,13110:8000000,13106:8000000,13101:8000000,13108:8000000,13115:8000000,13107:8000000,13150:8000000,13152:8000000,13153:8000000,13176:8000000,13166:8000000,13170:8000000,13164:8000000,13171:8000000,13159:8000000,13157:8000000,13177:8000000,13172:8000000,13155:8000000,13156:8000000,13167:8000000,13178:8000000,13173:8000000,13169:8000000,13161:8000000,13179:8000000,13162:8000000,13174:8000000
 
-phtownall,187,41,3	shop	Balas e Granadas da Ditadura	832,13202:-1,13200:-1,13208:-1,13206:-1,13203:-1,13207:-1,13204:-1,13205:-1
+phtownall,187,41,3	shop	Balas da Ditadura	832,13202:-1,13200:-1,13208:-1,13206:-1,13203:-1,13207:-1,13204:-1,13205:-1
 
 phtownall,190,41,3	shop	Shurikens e Kunais	880,13252:-1,13293:-1,13251:-1,13253:-1,13250:-1,13254:-1,13256:-1,13292:-1,13294:-1,13259:-1,13258:-1,13257:-1,13255:-1,13291:-1
 
