@@ -173,14 +173,17 @@ gld_dun02,29,160,3	Script	Laguna#IN1	537,{
 		sleep2 .@sleep[.@i];
 	}
 
-	inst( "DESTROY_BARRICADE", instance_mapname( "gld_dun02" ), 32, 156, 32, 163, "Monstro do Lago::OnBarricade" );
+	inst( "DESTROY_BARRICADE", instance_mapname( "gld_dun02" ), 32, 156, 32, 163, "Laguna#IN1::OnBarricade" );
 
 	'LAGUNA = 2;
 	end;
 
+	OnBarricade:
+		end;
+
 	OnInstanceInit:
-		inst( "DESTROY_BARRICADE", instance_mapname( "gld_dun02" ), 32, 156, 32, 163, "Monstro do Lago::OnBarricade" );
-		inst( "DEPLOY_BARRICADE", instance_mapname( "gld_dun02" ), 32, 156, 32, 163, "Monstro do Lago::OnBarricade" );
+		inst( "DESTROY_BARRICADE", instance_mapname( "gld_dun02" ), 32, 156, 32, 163, "Laguna#IN1::OnBarricade" );
+		inst( "DEPLOY_BARRICADE", instance_mapname( "gld_dun02" ), 32, 156, 32, 163, "Laguna#IN1::OnBarricade" );
 		'LAGUNA = 0;
 
 		'ISCAS = 0;

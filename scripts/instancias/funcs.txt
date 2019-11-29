@@ -19,14 +19,14 @@ function	script	inst	{
 	// Pesadelo Musical
 	.@nome_inst$[INSTANCIA_PESADELO_MUSICAL] = "Pesadelo Musical";
 	.@desc$[INSTANCIA_PESADELO_MUSICAL] = "Passe pelo teste do Piano Amaldiçoado e então o enfrente para ter chances de receber a Maestria [%s] e outros itens especiais!";
-	.@delay[INSTANCIA_PESADELO_MUSICAL] = 60;
-	.@item[INSTANCIA_PESADELO_MUSICAL] = 29601;
+	.@delay[INSTANCIA_PESADELO_MUSICAL] = 90;
+	.@item[INSTANCIA_PESADELO_MUSICAL] = 29561;
 
 	// Vida de Espião
-	.@nome_inst$[INSTANCIA_VIDA_DE_ESPIAO] = "Vida de Espião";
-	.@desc$[INSTANCIA_VIDA_DE_ESPIAO] = "Passe pelos guardas e enfrente a horda dos monstros para ter chances de receber a Maestria [%s] e outros itens especiais!";
-	.@delay[INSTANCIA_VIDA_DE_ESPIAO] = 120;
-	.@item[INSTANCIA_VIDA_DE_ESPIAO] = 29602;
+	//.@nome_inst$[INSTANCIA_VIDA_DE_ESPIAO] = "Vida de Espionagem";
+	//.@desc$[INSTANCIA_VIDA_DE_ESPIAO] = "Passe pelos guardas e enfrente a horda dos monstros para ter chances de receber a Maestria [%s] e outros itens especiais!";
+	//.@delay[INSTANCIA_VIDA_DE_ESPIAO] = 120;
+	//.@item[INSTANCIA_VIDA_DE_ESPIAO] = 29561;
 	
 	if( .@func$ == "INICIO" )
 	{

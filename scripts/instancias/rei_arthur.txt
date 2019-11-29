@@ -64,6 +64,9 @@ phtownall,338,203,5	Script	Memória do Rei Arthur	628 ,{
 
 	end;
 
+	OnBarricade:
+		end;
+
 	OnKillBoss:
 		mapannounce instance_mapname( "2@mir" ),"A Memória do Rei Arthur foi derrotado!",bc_map,"0x00CED1";
 		'LANCELOT = 2;

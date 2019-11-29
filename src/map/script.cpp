@@ -24752,6 +24752,20 @@ BUILDIN_FUNC(isselling)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+BUILDIN_FUNC(unitmove)
+{
+	block_list *bl =  map_id2bl(script_getnum(st, 2));
+	int16 x = script_getnum(st, 3);
+	int16 y = script_getnum(st, 4);
+
+	if (!bl) return SCRIPT_CMD_SUCCESS;
+
+	unit_movepos(bl, x, y, 0, false);
+	clif_slide(bl, x, y);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
 // [Zell]
 // DuplicateCreate("sourcename", "targetnameshown", "targetnamehidden", "targetmap", targetx, targety, targetdir{, targetspriteid{, targetxs, targetys}});
 BUILDIN_FUNC(duplicatecreate)
@@ -24975,6 +24989,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(duplicateremove, "?"),
 	BUILDIN_DEF(rgzbonus, "ii"),
 	BUILDIN_DEF(isselling, "isi"),
+	BUILDIN_DEF(unitmove,"iii"),
 	// NPC interaction
 	BUILDIN_DEF(mes,"s*"),
 	BUILDIN_DEF(next,""),

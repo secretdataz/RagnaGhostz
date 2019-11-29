@@ -812,7 +812,7 @@ void clif_dropflooritem(struct flooritem_data* fitem, bool canShowEffect)
 	WBUFB(buf, offset+14) = fitem->suby;
 	WBUFW(buf, offset+15) = fitem->item.amount;
 #if PACKETVER >= 20180418
-	if( canShowEffect ){
+	if (canShowEffect && fitem->mob_id > 0 && mob_db(fitem->mob_id)) {
 
 		uint8 dropEffect;
 

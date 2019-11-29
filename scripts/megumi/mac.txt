@@ -3,6 +3,8 @@
 
 function	script	sql_mac	{
 
+	return;
+	
 	//Apaga todos os Registros
 	//sql_mac("reset",CID ou 0)
 	if(getarg(0)=="reset")

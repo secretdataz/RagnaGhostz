@@ -7438,6 +7438,8 @@
 29558,Ataque_Submerso,Ataque Submerso,2,1,,1,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "mastery","GiveMastery",getcharid(0),206,29558; },{},{}
 29559,Excalibur_,Excalibur,2,1,,1,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "mastery","GiveMastery",getcharid(0),207,29559; },{},{}
 29560,Carta_Memoria_de_Rei_Arthur,Carta Memória de Rei Arthur,6,20,,10,,,,,,,,2,,,,,{},{ rgzbonus(8,1); },{ rgzbonus(8,0); }
+29561,Grave_Musical,Grave Musical,2,1,,1,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "mastery","GiveMastery",getcharid(0),208,29561; },{},{}
+29562,Carta_Piano_Maldito,Carta Piano Maldito,6,20,,10,,,,,,,,2,,,,,{ bonus2 bSkillAtk,46,30; },{},{}
 30000,,(null),,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{},{},{}
 31016,Decorated_Evil_Tree_Card,Carta Árvore Maldita Decorada,6,20,,10,,,,,,,,16,,,,,{ bonus bMaxHP,1000; bonus bMaxSP,150; bonus bFlee,-25; },{},{}
 31017,Vicious_Cookie_Card,Carta Cookie Aterrorizante,6,20,,10,,,,,,,,64,,,,,{ .@r = getrefine(); bonus2 bAddClass,Class_All,1+.@r; bonus bMatkRate,1+.@r; bonus bMaxHPrate,-(2+(.@r*2)); },{},{}

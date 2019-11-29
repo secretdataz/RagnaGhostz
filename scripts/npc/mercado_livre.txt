@@ -35,7 +35,7 @@ phtownall,177,50,5	Script	Tio Sabe Tudo	933,12,12,{
 			close2;
 			
 			npctalk "Eu tenho o que você precisa, " + strcharinfo(0),.npcs$[.@i],BC_AREA,0xFF8C00;
-			showevent QTYPE_CLICKME,QMARK_GREEN,getcharid(0),.npcs$[.@i];
+			showevent QTYPE_EVENT,QMARK_YELLOW,getcharid(0),.npcs$[.@i];
 			end;
 		}
 	}
@@ -127,7 +127,7 @@ phtownall,177,50,5	Script	Tio Sabe Tudo	933,12,12,{
 						"Cima, Baixo e Topo",
 						"Visuais [A]",
 						"Visuais [B]",
-						"Visuais [C];
+						"Visuais [C]";
 	end;
 	
 	OnTouch:

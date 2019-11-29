@@ -159,7 +159,12 @@ function	script	mastery	{
 			end;
 		}
 
+		// 150 -> 50
+		// 151 -> 50
+		// 152 -> 50
 		.@cost = 1 * ( ( .@level + .@mastery_newlevel - 1) * .@increasing ) / 2;
+
+		.@cost = .@cost / 3;
 
 		// Vamos descobrir se o jogador pode arcar com os custos ou se tá chitado
 		switch(.@type)

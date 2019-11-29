@@ -4845,6 +4845,8 @@
 29558,9,100	// Ataque_Submerso
 29559,137,100	// Excalibur_
 29560,8,100	// Carta_Memoria_de_Rei_Arthur
+29561,137,100	// Grave_Musical
+29562,8,100	// Carta_Piano_Maldito
 31105,507,100	// C_RO_Celebration_Hat
 31140,467,100	// C_Cowboy_Hat_
 31141,467,100	// C_Rose_Corsage_

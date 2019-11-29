@@ -10,7 +10,7 @@
 		query_sql( "DELETE FROM `char_reg_num` WHERE `key`='TV_TIME' " );
 		query_sql( "DELETE FROM `char_reg_num` WHERE `key`='SABE_TUDO' " );
 		
-		bot_announce( "Hey pessoal, desculpa o transtorno, o servidor está online novamente!"", CHANNEL_REALGERAL );
+		bot_announce( "Desculpa o transtorno, o servidor está online novamente!", CHANNEL_REALGERAL );
 		end;
 
 	OnMacCommand:

@@ -146,7 +146,7 @@ phtownall,29,363,4	script	Teste de Visão	100,{
 		end;
 }
 
-phtownall,29,361,4	script	Teste de Visão#1	1002,{
+phtownall,29,361,4	script	Teste de Visão#1	10222,{
 
 	if( $@TV_PLAYER$ != strcharinfo(0) || $@EVENT_STATE[EVENTID_TESTEDEVISAO] != 3 ) end;
 
@@ -200,6 +200,6 @@ OnInit:
 	set $@xymy[atoi(strnpcinfo(2))],.@y;
 	end;
 }
-phtownall,27,361,4	duplicate(Teste de Visão#1)	Teste de Visão#2	1002
-phtownall,31,361,4	duplicate(Teste de Visão#1)	Teste de Visão#3	1002
+phtownall,27,361,4	duplicate(Teste de Visão#1)	Teste de Visão#2	10222
+phtownall,31,361,4	duplicate(Teste de Visão#1)	Teste de Visão#3	10222
 
