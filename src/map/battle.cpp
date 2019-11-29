@@ -1782,6 +1782,9 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 		if (sd->mast[MASTERY_GRAVE_MUSICAL]->active && get_percentage(status_get_hp(src), status_get_max_hp(src)) < get_percentage(status_get_hp(bl), status_get_max_hp(bl)))
 			damage += (damage * sd->mast[MASTERY_GRAVE_MUSICAL]->level) / 100;
 
+		if (sd->mast[MASTERY_IMPOSTO]->active && bl->type == BL_PC && sd->status.zeny > BL_CAST(BL_PC, bl)->status.zeny)
+			damage += (damage * 5) / 100;
+
 		// Reduções Finais
 		if (bl->type == BL_PC && BL_CAST(BL_PC,bl)->mast[MASTERY_BELEZA_ATORDOANTE]->active)
 			damage -= (damage * (BL_CAST(BL_PC, bl)->mast[MASTERY_BELEZA_ATORDOANTE]->level / 10)) / 100;

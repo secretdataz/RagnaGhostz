@@ -1364,7 +1364,7 @@ int npc_click(struct map_session_data* sd, struct npc_data* nd)
 	nullpo_retr(1, sd);
 
 	if (sd->npc_id != 0) {
-		ShowError("npc_click: npc_id != 0\n");
+		//ShowError("npc_click: npc_id != 0\n");
 		return 1;
 	}
 

@@ -20,6 +20,7 @@
 29558,2048
 29559,2048
 29561,2048
+29564,2048
 
 // Logged as Dead Branch item
 604,1 //Branch_Of_Dead_Tree

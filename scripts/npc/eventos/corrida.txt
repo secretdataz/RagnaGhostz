@@ -455,20 +455,24 @@ turbo_e_4,168,363,5	script	WarpRace#0	45,1,1,{
 			{
 				.@rand = 150;
 				bot_announce( "E na Corrida RagnaGhostz, " + strcharinfo(0) + " chegou em primeiro lugar!", CHANNEL_GERAL );
+				#CORRIDA_PONTOS += 30;
 			}
 			else if($@SEGUNDO_LUGAR$[.@meuMapa]==strcharinfo(0))
 			{
 				bot_announce( "E na Corrida RagnaGhostz, " + strcharinfo(0) + " chegou em segundo lugar!", CHANNEL_GERAL );
 				.@rand = 100;
+				#CORRIDA_PONTOS += 20;
 			}
 			else if($@TERCEIRO_LUGAR$[.@meuMapa]==strcharinfo(0))
 			{
 				.@rand = 75;
+				#CORRIDA_PONTOS += 10;
 				
 				bot_announce( "E na Corrida RagnaGhostz, " + strcharinfo(0) + " chegou em terceiro lugar!", CHANNEL_GERAL );
 			}
 			else
 			{
+				#CORRIDA_PONTOS += 5;
 				.@rand = 15;
 			}
 

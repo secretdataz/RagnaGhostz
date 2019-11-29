@@ -87,10 +87,21 @@ phtownall,63,194,3	Script	Torre da Fortuna	757,{
 		mapannounce "c_tower1", strcharinfo(0) + " acaba de abater o Poring Especial!",0;
 		message strcharinfo(0),"Recebeu 30kk de Zeny's!";
 		specialeffect2 268;
-		Zeny += 30000000;
+		.@zeny = 30000000;
+
+		if( isequipped( 29563 ) )
+			.@zeny += ( .@zeny * countplayerson() ) / 100;
+
+		Zeny += .@zeny;
+
 		#FORTUNA_POINTS += 2;
 	OnDrops:
-		Zeny += rand( 100000, 300000 );
+		.@zeny = rand( 100000, 300000 );
+
+		if( isequipped( 29563 ) )
+			.@zeny += ( .@zeny * countplayerson() ) / 100;
+
+		Zeny += .@zeny;
 		
 		.@mob_dead_num = mobcount( "c_tower1","Torre da Fortuna::OnDrops");
 

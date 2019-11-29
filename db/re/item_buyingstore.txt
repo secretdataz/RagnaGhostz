@@ -2031,3 +2031,4 @@
 //--- 2010 / 03 / 12
 29560  // Carta_Memoria_de_Rei_Arthur
 29562  // Carta_Piano_Maldito
+29563  // Carta_Guarda_Comunista

@@ -8035,8 +8035,18 @@ int buildin_excalibur(struct block_list *bl, va_list ap)
 
 	if (!src || !trg || trg->id == src->id ) return 0;
 
+	if (trg->type == BL_PC && src->type == BL_PC)
+	{
+		if (!map_getmapflag(bl->m, MF_PVP)) return 0;
+
+		map_session_data *sd = BL_CAST(BL_PC, src);
+		map_session_data *tsd = BL_CAST(BL_PC, trg);
+
+		if (sd->status.party_id == tsd->status.party_id) return 0;
+	}
+
 	clif_specialeffect(bl, 17, AREA);
-	status_damage(src, trg, status_get_max_hp(src), 0, 0, 0);
+	status_damage(src, trg, status_get_hp(src), 0, 0, 0);
 	return 1;
 }
 
@@ -8264,7 +8274,7 @@ int pc_dead(struct map_session_data *sd,struct block_list *src)
 
 					clif_specialeffect(&ssd->bl, 220, AREA);
 					clif_disp_overhead_(&ssd->bl, "EXCALIBAAAAAAH", AREA);
-					map_foreachinallrange(buildin_excalibur, &ssd->bl, 5, BL_MOB | BL_PC, ssd->bl.id);
+					map_foreachinallrange(buildin_excalibur, &ssd->bl, 3, BL_MOB | BL_PC, ssd->bl.id);
 					ssd->mast[MASTERY_EXCALIBUR]->val1 = 0;
 				}
 			}

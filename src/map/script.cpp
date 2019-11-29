@@ -24891,7 +24891,7 @@ BUILDIN_FUNC(duplicatecreate)
 	nd_duplicata->u.scr.timerid = INVALID_TIMER;
 
 	script_pushint(st, 1);
-	return 0;
+	return SCRIPT_CMD_SUCCESS;
 }
 
 // [Zell]
@@ -24916,7 +24916,18 @@ BUILDIN_FUNC(duplicateremove)
 	npc_unload(nd, true);
 
 	script_pushint(st, 1);
-	return 0;
+	return SCRIPT_CMD_SUCCESS;
+}
+
+BUILDIN_FUNC(changedir)
+{
+	struct block_list *bl = map_id2bl(script_getnum(st, 2));
+
+	if (!bl) return SCRIPT_CMD_SUCCESS;
+
+	unit_setdir(bl, script_getnum(st, 3));
+
+	return SCRIPT_CMD_SUCCESS;
 }
 
 
@@ -24990,6 +25001,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(rgzbonus, "ii"),
 	BUILDIN_DEF(isselling, "isi"),
 	BUILDIN_DEF(unitmove,"iii"),
+	BUILDIN_DEF(changedir,"ii"),
 	// NPC interaction
 	BUILDIN_DEF(mes,"s*"),
 	BUILDIN_DEF(next,""),

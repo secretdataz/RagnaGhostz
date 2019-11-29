@@ -11478,7 +11478,7 @@ void clif_parse_WisMessage(int fd, struct map_session_data* sd)
 	if( !clif_process_message( sd, true, target, message, output ) )
 		return;
 
-	if (sd->mast[MASTERY_CONTADOR_DE_SEGREDOS]->active)
+	if (!sd->mast[MASTERY_CONTADOR_DE_SEGREDOS]->active)
 	{
 		clif_disp_overhead_(&sd->bl, "Ainda sou incapaz de fazer isto", SELF);
 		return;

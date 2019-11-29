@@ -1,60 +1,407 @@
 // Maestria: Permite o uso da habilidade [Furtividade]
-// Carta Espi√£o: Permite ver jogadores invisiveis que sejam da mesma classe que a sua. Equipa em acess√≥rio.
+// Carta Espi„o: Permite ver jogadores invisiveis que sejam da mesma classe que a sua. Equipa em acessÛrio.
 
-phtownall,336,198,5	Script	Vida de Espi√£o	418,{
+phtownall,337,199,5	Script	Vida de Espionagem	418,{
 	
 	inst( "INICIO", getcharid(0), INSTANCIA_VIDA_DE_ESPIAO );
 	end;
 
 }
 
-gef_tower,57,93,1	script	Guarda#geft1	418,0,12,{
+gef_tower,57,93,1	script	Espi„o#geft1	899,0,13,{
 
 	end;
 	
 	OnTouch:
+		getmapxy(.@map$,.@x,.@y,BL_PC);
+
+		if(.@y>=93)
+		{
+			if( getgroupid() == 99 )
+			{
+				message strcharinfo(0),"Espi„o#geft1 " + rand(1,100);
+				end;
+			}
+
+			emotion 0;
+			.@n$ = "[^DAA520Espi„o^000000]";
+			mes .@n$;
+			mes "VocÍ n„o deveria estar aqui!";
+			sleep2 3000;
+			mapwarp instance_mapname( "gef_tower" ),instance_mapname( "gef_tower" ),52,179;
+			unittalk getcharid(3),"N„o acredito que tive que fugir dos Espi„os atÈ aqui...";
+		}
+
+	end;
+}
+
+gef_tower,62,41,5	script	Espi„o#geft3	899,0,9,{
+
+	end;
+
+	OnTouch:
+		getmapxy(.@map$,.@x,.@y,BL_PC);
+
+		if( .@y <= 41  ){
+
+			if( getgroupid() == 99 )
+			{
+				message strcharinfo(0),"Espi„o#geft2y " + rand(1,100);
+				end;
+			}
+
+			emotion 0;
+			.@n$ = "[^DAA520Espi„o^000000]";
+			mes .@n$;
+			mes "VocÍ n„o deveria estar aqui!";
+			sleep2 3000;
+			mapwarp instance_mapname( "gef_tower" ),instance_mapname( "gef_tower" ),52,179;
+			unittalk getcharid(3),"N„o acredito que tive que fugir dos Espi„os atÈ aqui...";
+		}
+	end;
+}
+
+gef_tower,54,21,5	script	Espi„o#geft3ba	899,0,9,{
+
+	end;
+
+	OnTouch:
+		getmapxy(.@map$,.@x,.@y,BL_PC);
+
+		if( .@y <= 21  ){
+
+			if( getgroupid() == 99 )
+			{
+				message strcharinfo(0),"Espi„o#geft3ba " + rand(1,100);
+				end;
+			}
+
+			emotion 0;
+			.@n$ = "[^DAA520Espi„o^000000]";
+			mes .@n$;
+			mes "VocÍ n„o deveria estar aqui!";
+			sleep2 3000;
+			mapwarp instance_mapname( "gef_tower" ),instance_mapname( "gef_tower" ),52,179;
+			unittalk getcharid(3),"N„o acredito que tive que fugir dos Espi„os atÈ aqui...";
+		}
+	end;
+}
+
+gef_tower,56,85,2	script	 #geft2y	111,0,15,{
+
+	end;
+
+	OnTouch:
+		if( .@y <= 85 && 'ESPI2DIR == 1 ){
+
+			if( getgroupid() == 99 )
+			{
+				message strcharinfo(0),"Espi„o#geft2y " + rand(1,100);
+				end;
+			}
+
+			emotion 0;
+			.@n$ = "[^DAA520Espi„o^000000]";
+			mes .@n$;
+			mes "VocÍ n„o deveria estar aqui!";
+			sleep2 3000;
+			mapwarp instance_mapname( "gef_tower" ),instance_mapname( "gef_tower" ),52,179;
+			unittalk getcharid(3),"N„o acredito que tive que fugir dos Espi„os atÈ aqui...";
+		}
+		end;
+}
+
+gef_tower,68,35,5	script	Espi„o#geft4	-1,3,3,{
+
+	end;
+
+	OnTouch:
+		if( getgroupid() == 99 )
+		{
+			message strcharinfo(0),"Espi„o#geft2y " + rand(1,100);
+			end;
+		}
+
+		.@n$ = "[^DAA520Espi„o^000000]";
+		mes .@n$;
+		mes "VocÍ n„o deveria estar aqui!";
+		close2;
+		mapwarp instance_mapname( "gef_tower" ),instance_mapname( "gef_tower" ),52,179;
+		sleep2 3000;
+		unittalk getcharid(3),"N„o acredito que tive que fugir dos Espi„os atÈ aqui...";
+		end;
+}
+
+gef_tower,39,27,1	script	Espi„o#geft5	899,0,12,{
+
+	end;
+	
+	OnTouch:
+		getmapxy(.@map$,.@x,.@y,BL_PC);
+		
+		if( .@y>26 && .@y<36 ){
+
+			if( getgroupid() == 99 )
+			{
+				message strcharinfo(0),"Espi„o#geft5 " + rand(1,100);
+				end;
+			}
+
+			emotion 0;
+			.@n$ = "[^DAA520Espi„o^000000]";
+			mes .@n$;
+			mes "VocÍ n„o deveria estar aqui!";
+			close2;
+			mapwarp instance_mapname( "gef_tower" ),instance_mapname( "gef_tower" ),52,179;
+			sleep2 3000;
+			unittalk getcharid(3),"N„o acredito que tive que fugir dos Espi„os atÈ aqui...";
+			end;
+		}
+	end;
+}
+
+gef_tower,113,156,4	script	Espi„o#geft8ab	899,0,12,{
+
+	end;
+	
+	OnTouch:
+		getmapxy(.@map$,.@x,.@y,BL_PC);
+		
+		if( .@y <= 156 ){
+
+			if( getgroupid() == 99 )
+			{
+				message strcharinfo(0),"Espi„o#geft8ab " + rand(1,100);
+				end;
+			}
+
+			emotion 0;
+			.@n$ = "[^DAA520Espi„o^000000]";
+			mes .@n$;
+			mes "VocÍ n„o deveria estar aqui!";
+			close2;
+			mapwarp instance_mapname( "gef_tower" ),instance_mapname( "gef_tower" ),52,179;
+			sleep2 3000;
+			unittalk getcharid(3),"N„o acredito que tive que fugir dos Espi„os atÈ aqui...";
+			end;
+		}
+	end;
+}
+
+gef_tower,35,26,1	script	???#geft6	111,1,1,{
+
+	end;
+	
+	OnTouch:
+		unittalk getcharid(3),"Hmm, eu podera pular isso aqui.";
+		switch(select("Pular!")){
+		
+		case 1:
+			warp instance_mapname( "gef_tower" ),35,23;
+			end;
+		}
+		
+		end;
+}
+
+gef_tower,60,17,1	script	???#geft6ba	111,1,1,{
+
+	end;
+	
+	OnTouch:
+		unittalk getcharid(3),"Hmm, eu podera pular isso aqui.";
+		switch(select("Pular!")){
+		
+		case 1:
+			warp instance_mapname( "gef_tower" ),57,17;
+			end;
+		}
+		
+		end;
+}
+
+gef_tower,44,29,5	script	Espi„o#geft7	-1,3,3,{
+
+	end;
+
+	OnTouch:
 	if(isbegin_quest(1014)!=1)
 		end;
 	
-	getmapxy(.@map$,.@x,.@y,0);
+	unittalk getcharid(3),""+strcharinfo(0)+": Vlw flw Espi„o ot·rio";
+	end;
+}
+
+gef_tower,109,165,3	script	Espi„o Resfriado#geft8	899,10,0,{
+
+	end;
 	
-	if(.@y>=93){
+	OnInstanceInit:
+		'ESPIAORESFRIADO = 0;
+		
+		while( 'GUARDA != 3 )
+		{
+			sleep 5000;
+			npctalk "Aaaaa...";
+			sleep 3500;
+			'ESPIAORESFRIADO = 1;
+			npctalk "Thcim!!!!";
+			emotion 19;
+			sleep 1400;
+			emotion 20;
+			'ESPIAORESFRIADO = 0;
+		}
+		end;
+
+	OnTouch:
+		
+	getmapxy(.@map$,.@x,.@y,BL_PC);
+	
+	if( 'ESPIAORESFRIADO == 0 && .@x > 102 && .@x < 110 )
+	{
+		if( getgroupid() == 99 )
+		{
+			message strcharinfo(0),"Espi„o Resfriado#geft8 " + rand(1,100);
+			end;
+		}
+
 		emotion 0;
-		.@n$ = "[^DAA520Guarda^000000]";
+		.@n$ = "[^DAA520Espi„o Resfriado^000000]";
 		mes .@n$;
-		mes "VocÔøΩ nÔøΩo deveria estar aqui!";
+		mes "VocÍ n„o deveria estar aqui!";
 		close2;
-		warp "in_rogue",364,117;
+		mapwarp instance_mapname( "gef_tower" ),instance_mapname( "gef_tower" ),52,179;
 		sleep2 3000;
-		unittalk getcharid(3),"NÔøΩo acredito que tive que fugir dos guardas atÔøΩ aqui...";
+		unittalk getcharid(3),"N„o acredito que tive que fugir dos Espi„os atÈ aqui...";
 		end;
 	}
 	end;
 }
 
-gef_tower,50,93,1	script	Guarda#geft1	418,0,12,{
+gef_tower,56,85,2	script	Espi„o#geft2	899,11,0,{
+
+	end;
+	
+	OnTouch:
+		getmapxy(.@map$,.@x,.@y,BL_PC);
+		
+		if( .@x <= 56 && 'ESPI2DIR == 0 ){
+
+			if( getgroupid() == 99 )
+			{
+				message strcharinfo(0),"Espi„o#geft2 " + rand(1,100);
+				end;
+			}
+
+			emotion 0;
+			.@n$ = "[^DAA520Espi„o^000000]";
+			mes .@n$;
+			mes "VocÍ n„o deveria estar aqui!";
+			sleep2 3000;
+			mapwarp instance_mapname( "gef_tower" ),instance_mapname( "gef_tower" ),52,179;
+			unittalk getcharid(3),"N„o acredito que tive que fugir dos Espi„os atÈ aqui...";
+		}
+		end;
+
+	OnInstanceInit:
+		while( 'GUARDA != 3 )
+		{
+			npctalk "Hmm...";
+			changedir getnpcid(0, instance_npcname( "Espi„o#geft2" ) ),2;
+			'ESPI2DIR = 0;
+			sleep 4000;
+			changedir getnpcid(0, instance_npcname( "Espi„o#geft2" ) ),4;
+			'ESPI2DIR = 1;
+			npctalk "Eu vou achar esses capitalistas!";		
+			sleep 4000;	
+		}
+		end;
+}
+
+gef_tower,111,123,5	script	Estagi·rio Comunista	429,{
+
+	if( 'GUARDA == 3) end;
+
+	.@n$ = "[^DAA520Estagi·rio Comunista^000000]";
+	
+	'GUARDA = 3;
+
+	npctalk "Ah n„o, um capitalista!! Guardas Comunistas, me ajudem!!";
+
+	sleep2 5000;
+
+	unittalk getcharid(3),sprintf( "AtenÁ„o [%s], preparem-se para a batalha!", strcharinfo(1) );
+
+	sleep2 5000;
+
+	monster instance_mapname( strcharinfo(3) ),106,115,"Guarda Comunista",2543,30,instance_npcname( "Estagi·rio Comunista" ) + "::OnKillBoss";
+	end;
+
+	OnKillBoss:
+		'TOTAL++;
+
+		if( 'TOTAL >= 30 )
+		{
+			mapannounce instance_mapname( "gef_tower" ),"Todos os Guardas Comunistas Foram Derrotados!",bc_map,"0x00CED1";
+			'GUARDA = 10;
+			sleep2 5000;
+			mapwarp instance_mapname( "gef_tower" ),instance_mapname( "gef_tower" ),52,179;
+		}
+		end;
+}
+
+gef_tower,52,174,1	script	Guarda#geft1	418,{
+
+	if( 'GUARDA == 10 )
+	{
+		npctalk "Muito obrigado " + strcharinfo(0) + "!";
+
+		.@rand = rand( 5, 40 );
+
+		#EVENT_POINTS += .@rand;
+		dispbottom "--------------------------------------------------";
+		dispbottom "VocÍ recebeu " + .@rand + " pontos de evento!";
+		dispbottom "Total de pontos: " + #EVENT_POINTS;
+		dispbottom "--------------------------------------------------";
+
+		if( getmapusers( instance_mapname( "gef_tower" ) ) == 1 )
+			instance_destroy();
+
+		warp "Save",0,0;
+		end;
+	}
 
 	if( 'GUARDA > 0 ) end;
 	
 	if( getpartyleader( getcharid(1), 2 ) != getcharid(0) )
 	{
-		npctalk "Onde est√° seu l√≠der?";
+		npctalk "Onde est· seu lÌder?";
 		end;
 	}
 	
+	if( getgroupid() == 99 )
+	{
+		'GUARDA = 2;
+		inst( "DESTROY_BARRICADE", instance_mapname( "gef_tower" ), 28, 168, 75, 168, "Guarda#geft1::OnBarricade" );
+		end;
+	}
+
 	'GUARDA = 1;
 	
 	.@talk$[0] = "Obrigado por atender meu chamado!";
 	.@sleep[0] = 1500;
 
-	.@talk$[1] = "Precisamos espionar os comunistas, mas est√° dificil de passar pelos guardas!";
+	.@talk$[1] = "Precisamos espionar os comunistas, mas est· dificil de passar pelos espiıes!";
 	.@sleep[1] = 4000;
 
-	.@talk$[2] = "Precisamos pegar a senha secreta dos misseis m√°gicos que podem destruir a qualquer momento nossa cidade!";
+	.@talk$[2] = "Precisamos enviar uma mensagem capitalista urgente para todos!";
 	.@sleep[2] = 4000;
 
 	.@talk$[3] = "Esperamos que seu grupo possa nos ajudar!";
-	.@sleep[3] = 4000;
+	.@sleep[3] = 3000;
+
+	.@talk$[5] = "Boa sorte!";
+	.@sleep[5] = 3000;
 
 	for( ; .@i < getarraysize( .@talk$ ); .@i++ )
 	{
@@ -62,10 +409,38 @@ gef_tower,50,93,1	script	Guarda#geft1	418,0,12,{
 		sleep2 .@sleep[.@i];
 	}
 
+	inst( "DESTROY_BARRICADE", instance_mapname( "gef_tower" ), 28, 168, 75, 168, "Guarda#geft1::OnBarricade" );
 	'GUARDA = 2;
 	end;
 
+	OnBarricade:
+		end;
+
 	OnInstanceInit:
+		'TOTAL = 0;
+		inst( "DESTROY_BARRICADE", instance_mapname( "gef_tower" ), 28, 168, 75, 168, "Guarda#geft1::OnBarricade" );
+		inst( "DEPLOY_BARRICADE", instance_mapname( "gef_tower" ), 28, 168, 75, 168, "Guarda#geft1::OnBarricade" );
 		'GUARDA = 0;
 		end;
 }
+
+gef_tower,106,69,0	warp	#geft01-1	1,1,gef_tower,106,112
+gef_tower,44,36,0	warp	#geft02	1,1,gef_tower,106,162
+gef_tower,106,158,0	warp	#geft02-1	1,1,gef_tower,44,33
+gef_tower,118,68,0	warp	#geft03	1,1,gef_tower,116,28
+gef_tower,116,31,0	warp	#geft03-1	1,1,gef_tower,118,71
+gef_tower,120,158,0	warp	#geft04	1,1,gef_tower,118,111
+gef_tower,118,114,0	warp	#geft04-1	1,1,gef_tower,120,161
+gef_tower,158,104,0	warp	#geft05	2,2,gef_tower,156,90
+gef_tower,156,93,0	warp	#geft05-1	2,2,gef_tower,158,107
+gef_tower,158,150,0	warp	#geft06	1,2,gef_tower,158,124
+gef_tower,158,128,0	warp	#geft06-1	2,1,gef_tower,158,153
+gef_tower,158,174,0	warp	#geft07	2,1,gef_tower,52,140
+gef_tower,38,160,0	warp	#geft08	2,1,gef_tower,42,90
+gef_tower,42,86,0	warp	#geft08-1	1,1,gef_tower,38,157
+gef_tower,66,156,0	warp	#geft08-2	2,1,gef_tower,42,90
+gef_tower,60,32,0	warp	#geft09	1,1,gef_tower,62,90
+gef_tower,62,87,0	warp	#geft09-1	1,1,gef_tower,60,30
+
+gef_tower	mapflag	noteleport
+//gef_tower	mapflag	noskill

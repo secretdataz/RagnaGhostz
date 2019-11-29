@@ -121,10 +121,6 @@ job_duncer,69,110,4	script	Meio#0	723,1,1,{
 		
 		if( 'pts < 0 ) 'pts = 0;
 	}
-	
-	pcblockmove getcharid(3),0;
-	unitmove getcharid(3),.@x,.@y;
-	pcblockmove getcharid(3),1;
 
 	if( 'pts < 100 )
 	{
@@ -139,7 +135,11 @@ job_duncer,69,110,4	script	Meio#0	723,1,1,{
 			'meuPasso$ = .@dir$[rand(getarraysize(.@dir$))];
 		} while( 'meuPasso$ == .@passo$ );
 		
-		instance_announce instance_id(),"[Piano Maldito]: " + 'meuPasso$,bc_map;
+		instance_announce instance_id(),"[Piano Maldito]: " + 'meuPasso$,bc_self;
+
+		pcblockmove getcharid(3),0;
+		unitmove getcharid(3),.@x,.@y;
+		pcblockmove getcharid(3),1;
 	}
 	else
 	{

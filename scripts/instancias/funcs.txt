@@ -23,10 +23,10 @@ function	script	inst	{
 	.@item[INSTANCIA_PESADELO_MUSICAL] = 29561;
 
 	// Vida de Espião
-	//.@nome_inst$[INSTANCIA_VIDA_DE_ESPIAO] = "Vida de Espionagem";
-	//.@desc$[INSTANCIA_VIDA_DE_ESPIAO] = "Passe pelos guardas e enfrente a horda dos monstros para ter chances de receber a Maestria [%s] e outros itens especiais!";
-	//.@delay[INSTANCIA_VIDA_DE_ESPIAO] = 120;
-	//.@item[INSTANCIA_VIDA_DE_ESPIAO] = 29561;
+	.@nome_inst$[INSTANCIA_VIDA_DE_ESPIAO] = "Vida de Espionagem";
+	.@desc$[INSTANCIA_VIDA_DE_ESPIAO] = "Passe pelos guardas e enfrente a horda dos monstros para ter chances de receber a Maestria [%s] e outros itens especiais!";
+	.@delay[INSTANCIA_VIDA_DE_ESPIAO] = 120;
+	.@item[INSTANCIA_VIDA_DE_ESPIAO] = 29562;
 	
 	if( .@func$ == "INICIO" )
 	{
@@ -38,7 +38,7 @@ function	script	inst	{
 
 		mes sprintf( "[^8A2BE2%s^000000]", .@nome_inst$[.@iid] );
 
-		callsub L_Check, .@cid, .@iid, .@delay[.@iid];
+		callsub L_Check, .@cid, .@iid, .@delay[.@iid], 1;
 		
 		mes "^556B2FTempo de Recarga:^000000 " + .@delay[.@iid] + " minutos.";
 		mes sprintf( .@desc$[.@iid], sprintf("<ITEM>%s<INFO>%d</INFO></ITEM>", getitemname( .@item[.@iid] ), .@item[.@iid] ) );
@@ -62,7 +62,7 @@ function	script	inst	{
 
 		addrid( 2, 0, getcharid(1) );
 
-		callsub L_Check, getcharid(0), $iid, $delay;
+		callsub L_Check, getcharid(0), $iid, $delay, 0;
 
 		instance_enter( $IID$, -1, -1, getcharid(0), instance_id(IM_PARTY) );
 
@@ -119,6 +119,7 @@ function	script	inst	{
 		.@cid = getarg(0);
 		.@iid = getarg(1);
 		.@delay = getarg(2);
+		.@checkleader = getarg(3);
 
 		if( BaseLevel < 300 )
 			callsub L_erro, "É preciso alcançar o nível 300 antes de participar de Instâncias.";
@@ -126,7 +127,7 @@ function	script	inst	{
 			callsub L_erro, "Instância em Tempo de Recarga, aguarde " + ( ( ( ( .@delay * 60 ) - ( gettimetick(2) - INSTANCE_TIMER[.@iid] ) ) / 60 ) + 1 ) + " minutos.";
 		else if( getcharid(1) == 0 )
 			callsub L_erro, "É preciso estar em um grupo para iniciar uma instância.";
-		else if( getpartyleader( getcharid(1), 2 ) != .@cid )
+		else if( getpartyleader( getcharid(1), 2 ) != .@cid && .@checkleader )
 			callsub L_erro, "É preciso ser o líder para iniciar a instância.";
 		else if( ZONE$ != "Zona Juno" )
 			callsub L_erro, "Seu grupo iniciou uma instância, mas você estava fora da Zona de teleporte.";
