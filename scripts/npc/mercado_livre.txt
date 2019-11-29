@@ -135,8 +135,10 @@ phtownall,177,50,5	Script	Tio Sabe Tudo	933,12,12,{
 		
 		for(.@i = 0; .@i < .@rand; .@i++)
 		{
-			.@r_npc = rand( 1, getarraysize( .npcs$ ) );
-			.@r_fala = rand( 1, getarraysize( .frases$ ) );
+			.@r_npc = rand( 0, getarraysize( .npcs$ ) );
+			.@r_fala = rand( 0, getarraysize( .frases$ ) );
+			
+			if( .npcs$[.@r_npc] == "" ) continue;
 			
 			if( .@r_fala == 1 )
 				.@fala$ = sprintf( .frases$[.@r_fala], .npcs$[.@r_npc] );
