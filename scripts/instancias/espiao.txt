@@ -356,7 +356,7 @@ gef_tower,52,174,1	script	Guarda#geft1	418,{
 	{
 		npctalk "Muito obrigado " + strcharinfo(0) + "!";
 
-		.@rand = rand( 5, 40 );
+		.@rand = rand( 5, 50 );
 
 		#EVENT_POINTS += .@rand;
 		dispbottom "--------------------------------------------------";
@@ -400,8 +400,8 @@ gef_tower,52,174,1	script	Guarda#geft1	418,{
 	.@talk$[3] = "Esperamos que seu grupo possa nos ajudar!";
 	.@sleep[3] = 3000;
 
-	.@talk$[5] = "Boa sorte!";
-	.@sleep[5] = 3000;
+	.@talk$[4] = "Boa sorte!";
+	.@sleep[4] = 3000;
 
 	for( ; .@i < getarraysize( .@talk$ ); .@i++ )
 	{
