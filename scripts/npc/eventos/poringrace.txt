@@ -7,20 +7,20 @@ phtownall,68,360,3	Script	Corrida Poring	719,{
 
 	mes .@n$;
 
-	if( !$@EVENT_STATE[EVENTID_PORINGRACE] )
+	if( !$EVENT_STATE[EVENTID_PORINGRACE] )
 	{
 		mes "Olá, o evento não está aberto, mas posso lhe passar informações sobre o mesmo.";
 	}
 	else
 		mes "Olá, veio participar do meu evento?";
 
-	.@menu$ = ( $@EVENT_STATE[EVENTID_PORINGRACE] ? "^FF8C00Participar^000000" : "^FF0000Participar^000000" ) + ":Informações";
+	.@menu$ = ( $EVENT_STATE[EVENTID_PORINGRACE] ? "^FF8C00Participar^000000" : "^FF0000Participar^000000" ) + ":Informações";
 
 	switch( select( .@menu$ ) )
 	{
 		case 1:
 			next;
-			if( !$@EVENT_STATE[EVENTID_PORINGRACE] )
+			if( !$EVENT_STATE[EVENTID_PORINGRACE] )
 			{
 				mes .@n$;
 				mes "Como eu disse, o evento está fechado.";
@@ -178,7 +178,7 @@ p_track02,58,38,3	script	Poring#race	1002,{
 		npcwalkto 58,38;
 
 		bot_announce( "E o vencedor da Corrida Poring foi o Poring!!", CHANNEL_GERAL );
-		$@EVENT_STATE[EVENTID_PORINGRACE] = 0;
+		$EVENT_STATE[EVENTID_PORINGRACE] = 0;
 
 		addrid(5,0,"p_track02");
 
@@ -239,7 +239,7 @@ mapannounce "p_track02","Drops venceu a corrida!!",bc_blue;
 $@CP_STATS = 2;
 
 bot_announce( "E o vencedor da Corrida Poring foi o Drops!!", CHANNEL_GERAL );
-$@EVENT_STATE[EVENTID_PORINGRACE] = 0;
+$EVENT_STATE[EVENTID_PORINGRACE] = 0;
 
 npcwalkto 58,36;
 
@@ -309,7 +309,7 @@ sleep 10000;
 mapannounce "p_track02","Poporing venceu a corrida!!",bc_blue;
 $@CP_STATS = 2;
 bot_announce( "E o vencedor da Corrida Poring foi o Poporing!!", CHANNEL_GERAL );
-$@EVENT_STATE[EVENTID_PORINGRACE] = 0;
+$EVENT_STATE[EVENTID_PORINGRACE] = 0;
 
 npcwalkto 58,34;
 
@@ -373,7 +373,7 @@ sleep 10000;
 mapannounce "p_track02","Marin venceu a corrida!!",bc_blue;
 $@CP_STATS = 2;
 bot_announce( "E o vencedor da Corrida Poring foi o Marin!!", CHANNEL_GERAL );
-$@EVENT_STATE[EVENTID_PORINGRACE] = 0;
+$EVENT_STATE[EVENTID_PORINGRACE] = 0;
 
 npcwalkto 58,32;
 
@@ -439,7 +439,7 @@ sleep 10000;
 mapannounce "p_track02","Pouring venceu a corrida!!",bc_blue;
 $@CP_STATS = 2;
 bot_announce( "E o vencedor da Corrida Poring foi o Pouring!!", CHANNEL_GERAL );
-$@EVENT_STATE[EVENTID_PORINGRACE] = 0;
+$EVENT_STATE[EVENTID_PORINGRACE] = 0;
 
 npcwalkto 58,30;
 
@@ -504,7 +504,7 @@ OnSantaWin:
 	sleep 10000;
 	mapannounce "p_track02","Santa Poring venceu a corrida!!",bc_blue;
 	$@CP_STATS = 2;
-	$@EVENT_STATE[EVENTID_PORINGRACE] = 0;
+	$EVENT_STATE[EVENTID_PORINGRACE] = 0;
 
 	bot_announce( "E o vencedor da Corrida Poring foi o Santa Poring, HOHOHO!!", CHANNEL_GERAL );
 	npcwalkto 58,28;

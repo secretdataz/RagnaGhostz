@@ -4,20 +4,20 @@ phtownall,29,363,4	script	Teste de Visão	100,{
 
 	mes .@n$;
 
-	if( !$@EVENT_STATE[EVENTID_TESTEDEVISAO] )
+	if( !$EVENT_STATE[EVENTID_TESTEDEVISAO] )
 	{
 		mes "Olá, o evento não está liberado, mas posso lhe passar informações sobre o mesmo.";
 	}
 	else
 		mes "Olá, veio participar do meu evento?";
 
-	.@menu$ = ( $@EVENT_STATE[EVENTID_TESTEDEVISAO] ? "^FF8C00Participar^000000" : "^FF0000Participar^000000" ) + ":Informações";
+	.@menu$ = ( $EVENT_STATE[EVENTID_TESTEDEVISAO] ? "^FF8C00Participar^000000" : "^FF0000Participar^000000" ) + ":Informações";
 
 	switch( select( .@menu$ ) )
 	{
 		case 1:
 			close2;
-			if( !$@EVENT_STATE[EVENTID_TESTEDEVISAO] )
+			if( !$EVENT_STATE[EVENTID_TESTEDEVISAO] )
 			{
 				mes .@n$;
 				mes "Como eu disse, o evento não está liberado.";
@@ -31,7 +31,7 @@ phtownall,29,363,4	script	Teste de Visão	100,{
 				close;
 			}
 
-			if( $@EVENT_STATE[EVENTID_TESTEDEVISAO] >= 2 )
+			if( $EVENT_STATE[EVENTID_TESTEDEVISAO] >= 2 )
 			{
 				mes .@n$;
 				mes "Alguém já está testando a visão comigo, tente mais tarde.";
@@ -40,7 +40,7 @@ phtownall,29,363,4	script	Teste de Visão	100,{
 
 			TV_TIME = gettimetick(2);
 
-			$@EVENT_STATE[EVENTID_TESTEDEVISAO] = 2;
+			$EVENT_STATE[EVENTID_TESTEDEVISAO] = 2;
 
 			$@TV_PLAYER$ = strcharinfo(0);
 
@@ -124,15 +124,15 @@ phtownall,29,363,4	script	Teste de Visão	100,{
 	donpcevent "Teste de Visão#1::OnWallkx";
 	donpcevent "Teste de Visão#2::OnWallkx";
 	donpcevent "Teste de Visão#3::OnWallkx";
-	$@EVENT_STATE[EVENTID_TESTEDEVISAO] = 3;
+	$EVENT_STATE[EVENTID_TESTEDEVISAO] = 3;
 
 	npctalk "Você tem 9 segundos para clicar em qual achar que é o correto!";
 	sleep 9000;
 
-	if($@EVENT_STATE[EVENTID_TESTEDEVISAO] == 3)
+	if($EVENT_STATE[EVENTID_TESTEDEVISAO] == 3)
 	{
 		npctalk "Que pena, seu tempo acabou, quem é o próximo?";
-		$@EVENT_STATE[EVENTID_TESTEDEVISAO] = 1;
+		$EVENT_STATE[EVENTID_TESTEDEVISAO] = 1;
 		$@TV_PLAYER$ = "";
 	}
 	end;
@@ -142,13 +142,13 @@ phtownall,29,363,4	script	Teste de Visão	100,{
 		npctalk "Venham todos, vocês serão capaz de me vencer?";
 		sleep 300000;
 		npctalk "O evento acabou, obrigado a todos que tentaram!";
-		$@EVENT_STATE[EVENTID_TESTEDEVISAO] = 0;
+		$EVENT_STATE[EVENTID_TESTEDEVISAO] = 0;
 		end;
 }
 
 phtownall,29,361,4	script	Teste de Visão#1	10222,{
 
-	if( $@TV_PLAYER$ != strcharinfo(0) || $@EVENT_STATE[EVENTID_TESTEDEVISAO] != 3 ) end;
+	if( $@TV_PLAYER$ != strcharinfo(0) || $EVENT_STATE[EVENTID_TESTEDEVISAO] != 3 ) end;
 
 	if(atoi(strnpcinfo(2))==$@randsxv)
 	{
@@ -169,9 +169,9 @@ phtownall,29,361,4	script	Teste de Visão#1	10222,{
 	else
 		npctalk "Que pena, " + strcharinfo(0) + " errou! Quem é o próximo?";
 
-	if( $@EVENT_STATE[EVENTID_TESTEDEVISAO] == 0 ) end;
+	if( $EVENT_STATE[EVENTID_TESTEDEVISAO] == 0 ) end;
 
-	$@EVENT_STATE[EVENTID_TESTEDEVISAO] = 1;
+	$EVENT_STATE[EVENTID_TESTEDEVISAO] = 1;
 	$@TV_PLAYER$ = "";
 	end;
 

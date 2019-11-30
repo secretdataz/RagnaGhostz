@@ -5,27 +5,27 @@ phtownall,51,335,5	Script	Mata-Mata	827,{
 
 	mes .@n$;
 
-	if( !$@EVENT_STATE[EVENTID_MATAMATA] )
+	if( !$EVENT_STATE[EVENTID_MATAMATA] )
 	{
 		mes "Olá, o evento não está aberto, mas posso lhe passar informações sobre o mesmo.";
 	}
 	else
 		mes "Olá, veio participar do meu evento?";
 
-	.@menu$ = ( $@EVENT_STATE[EVENTID_MATAMATA] ? "^FF8C00Participar^000000" : "^FF0000Participar^000000" ) + ":Informações";
+	.@menu$ = ( $EVENT_STATE[EVENTID_MATAMATA] ? "^FF8C00Participar^000000" : "^FF0000Participar^000000" ) + ":Informações";
 
 	switch( select( .@menu$ ) )
 	{
 		case 1:
 			close2;
-			if( !$@EVENT_STATE[EVENTID_MATAMATA] )
+			if( !$EVENT_STATE[EVENTID_MATAMATA] )
 			{
 				mes .@n$;
 				mes "Como eu disse, o evento não está liberado.";
 				close;
 			}
 
-			if( $@EVENT_STATE[EVENTID_MATAMATA] >= 2)
+			if( $EVENT_STATE[EVENTID_MATAMATA] >= 2)
 			{
 				mes .@n$;
 				mes "No momento está ocorrendo o evento.";
@@ -50,12 +50,12 @@ phtownall,51,335,5	Script	Mata-Mata	827,{
 	OnStartEvent:
 		if( getmapusers("guild_vs2") <= 1 )
 		{
-			$@EVENT_STATE[EVENTID_MATAMATA] = 0;
+			$EVENT_STATE[EVENTID_MATAMATA] = 0;
 			mapannounce "guild_vs2","[Mata-Mata]: O evento foi cancelado por falta de participantes.",bc_map;
 			end;
 		}
 
-		$@EVENT_STATE[EVENTID_MATAMATA] = 2;
+		$EVENT_STATE[EVENTID_MATAMATA] = 2;
 
 		mapannounce "guild_vs2","[Mata-Mata]: Se preparem, em 30 segundos irei ligar o uso de habilidades!",bc_map;
 		sleep 30000;
@@ -68,7 +68,7 @@ phtownall,51,335,5	Script	Mata-Mata	827,{
 
 		mapannounce "guild_vs2","[Mata-Mata]: Comecem!",bc_map;
 
-		$@EVENT_STATE[EVENTID_MATAMATA] = 3;
+		$EVENT_STATE[EVENTID_MATAMATA] = 3;
 
 		while( getmapusers("guild_vs2") != 1 )
 		{
@@ -95,7 +95,7 @@ phtownall,51,335,5	Script	Mata-Mata	827,{
 
 	OnPcDieEvent:
 		if( strcharinfo(3) != "guild_vs2" ) end;
-		if( $@EVENT_STATE[EVENTID_MATAMATA] != 3 ) end;
+		if( $EVENT_STATE[EVENTID_MATAMATA] != 3 ) end;
 
 		warp "Save",0,0;
 		end;

@@ -6,7 +6,7 @@ phtownall,56,342,5	Script	Moeda Poring	501,{
 
 	mes .@n$;
 
-	if( !$@EVENT_STATE[EVENTID_PORINGPOINT] )
+	if( !$EVENT_STATE[EVENTID_PORINGPOINT] )
 	{
 		mes "Olá, o evento não está aberto, mas posso lhe passar informações sobre o mesmo.";
 		for(.@i = 0; .@i < getarraysize(.idItens); .@i++)
@@ -15,13 +15,13 @@ phtownall,56,342,5	Script	Moeda Poring	501,{
 	else
 		mes "Olá, veio participar do meu evento?";
 
-	.@menu$ = ( $@EVENT_STATE[EVENTID_PORINGPOINT] ? "^FF8C00Participar^000000" : "^FF0000Participar^000000" ) + ":Informações:Último Vencedor";
+	.@menu$ = ( $EVENT_STATE[EVENTID_PORINGPOINT] ? "^FF8C00Participar^000000" : "^FF0000Participar^000000" ) + ":Informações:Último Vencedor";
 
 	switch( select( .@menu$ ) )
 	{
 		case 1:
 			next;
-			if( !$@EVENT_STATE[EVENTID_PORINGPOINT] )
+			if( !$EVENT_STATE[EVENTID_PORINGPOINT] )
 			{
 				mes .@n$;
 				mes "Como eu disse, o evento está fechado.";
@@ -40,16 +40,9 @@ phtownall,56,342,5	Script	Moeda Poring	501,{
 				PONTOS_PORING = 0;
 			}
 
-			sql_mac("check",@MAC$,.map$,getcharid(0));
-			sql_mac("insert",@MAC$,getcharid(0),.map$);
-
 			@MP_TELEPORTE = 0;
 
 			warp .map$,159,137;
-			
-			sleep2 3000;
-
-			if( !$@EVENT_STATE[EVENTID_PORINGPOINT] ) atcommand "@killmonster2";
 			end;
 
 		case 2:
@@ -132,18 +125,31 @@ morocc,160,138,5	script	Saída do Evento#zp	501,{
 	OnStart:
 		killmonster "morocc","Saída do Evento#zp::OnPoring";
 		killmonster "morocc","Saída do Evento#zp::OnPoringTrap";
-		sleep 5000;
 		
 		removemapflag "morocc",mf_pvp;
 		setmapflag "morocc",mf_noskill;
 		
-		while($@EVENT_STATE[EVENTID_PORINGPOINT])
+		while( $EVENT_STATE[EVENTID_PORINGPOINT] && .@none < 5 )
 		{
 			if( mobcount( "morocc", "" ) < 30 )
 				monster "morocc",0,0,"Poring :3",1002,rand(1,7),"Saída do Evento#zp::OnPoring";
 
 			sleep 15000;
+			
+			if( getmapusers( "morocc" ) == 0 )
+				.@none++;
 		}
+		
+		if( .@none >= 5 )
+		{
+			$EVENT_STATE[EVENTID_PORINGPOINT] = 0;
+			
+			bot_announce( "Que pena! Não tivemos nenhum vencedor na **Moeda Poring**!", CHANNEL_GERAL );
+			announce "[Moeda Poring]: "Que pena! Não tivemos nenhum vencedor!",0;
+		}
+		
+		killmonster "morocc","Saída do Evento#zp::OnPoring";
+		killmonster "morocc","Saída do Evento#zp::OnPoringTrap";
 		end;
 
 	OnPoringTrap:
@@ -151,7 +157,8 @@ morocc,160,138,5	script	Saída do Evento#zp	501,{
 		end;
 
 	OnPoring:
-		if(!$@EVENT_STATE[EVENTID_PORINGPOINT]) end;
+		if( !$EVENT_STATE[EVENTID_PORINGPOINT] ) end;
+		
 		setarray .@idItens[0],29510,29511,29512,29513,29514,29515,29516,29517,29518;
 		setarray .@chance[0],15,7,20,40,60,10,15,15,20;
 
@@ -170,7 +177,7 @@ morocc,160,138,5	script	Saída do Evento#zp	501,{
 		{
 			getitem 29509,1;
 			sleep2 5000;
-			announce "[Evento]: " + strcharinfo(0) + " conseguiu uma moeda poring!",bc_map;
+			announce "[Moeda Poring]: " + strcharinfo(0) + " conseguiu uma moeda poring!",bc_map;
 			end;
 		}
 		else
@@ -182,7 +189,7 @@ morocc,160,138,5	script	Saída do Evento#zp	501,{
 			.@dropItem = rand(getarraysize(.@idItens));
 			if(rand(.@chance[.@dropItem]) > rand(100))
 			{
-				announce "[Evento]: " + strcharinfo(0) + " conseguiu um item do evento!",bc_map;
+				announce "[Moeda Poring]: " + strcharinfo(0) + " conseguiu um item do evento!",bc_map;
 				getitem .@idItens[.@dropItem],1;
 				end;
 			}
@@ -198,11 +205,10 @@ function	script	mp_use	{
 	if(strcharinfo(3) != "morocc")
 	{
 		message strcharinfo(0),"Este item não pode ser usado aqui";
-		getitem .@item,1;
 		end;
 	}
 
-	if( !$@EVENT_STATE[EVENTID_PORINGPOINT] )
+	if( !$EVENT_STATE[EVENTID_PORINGPOINT] )
 	{
 		message strcharinfo(0),"O evento acabou!";
 		end;
@@ -216,8 +222,8 @@ function	script	mp_use	{
 		l_pontos:
 		if(PONTOS_PORING >= 10)
 		{
-			$@EVENT_STATE[EVENTID_PORINGPOINT] = 0;
-			announce "[Evento]: " + strcharinfo(0) + " acaba de ganhar o evento Moeda Poring!",0;
+			$EVENT_STATE[EVENTID_PORINGPOINT] = 0;
+			announce "[Moeda Poring]: " + strcharinfo(0) + " acaba de ganhar o evento Moeda Poring!",0;
 			$MP_LASTOWNER$ = strcharinfo(0);
 			pvpoff "morocc";
 			killmonster "morocc","Saída do Evento#zp::OnPoring";
@@ -236,7 +242,7 @@ function	script	mp_use	{
 			
 			#CASHPOINTS += 100;
 
-			bot_announce( strcharinfo(0) + " acaba de ganhar o evento Moeda Poring!", CHANNEL_GERAL );
+			bot_announce( "**" + strcharinfo(0) + "** acaba de ganhar o evento **Moeda Poring**!", CHANNEL_GERAL );
 
 			addrid(1);
 			sleep2 5000;
@@ -252,7 +258,7 @@ function	script	mp_use	{
 	if(.@item == 29510)
 	{
 		.@used = getcharid(0);
-		announce "[Evento]: " + strcharinfo(0) + " utilizou uma [Bomba Poring]!",bc_map;
+		announce "[Moeda Poring]: " + strcharinfo(0) + " utilizou uma [Bomba Poring]!",bc_map;
 		addrid(1);
 		if(.@used == getcharid(0)) end;
 		//showdamage 900,getcharid(0),1,1;
@@ -266,10 +272,10 @@ function	script	mp_use	{
 	//Portal Poring
 	if(.@item == 29511)
 	{
-		.@used = getcharid(0);
-		announce "[Evento]: " + strcharinfo(0) + " utilizou um [Portal Poring]!",bc_map;
+		$USED_PORTAL = getcharid(0);
+		announce "[Moeda Poring]: " + strcharinfo(0) + " utilizou um [Portal Poring]!",bc_map;
 		addrid(1);
-		if(.@used == getcharid(0)) end;
+		if( $USED_PORTAL == getcharid(0) ) end;
 		@MOEDA_TELEPORTE = 1;
 		warp "Save",0,0;
 		end;
@@ -279,7 +285,7 @@ function	script	mp_use	{
 	if(.@item == 29512)
 	{
 		getmapxy(.@m$,.@x,.@y,0);
-		announce "[Evento]: " + strcharinfo(0) + " utilizou uma [Armadilha Poring]!",bc_map;
+		announce "[Moeda Poring]: " + strcharinfo(0) + " utilizou uma [Armadilha Poring]!",bc_map;
 		monster "morocc",.@x,.@y,"Poring >:3",1725,1,"Saída do Evento#zp::OnPoringTrap";
 		end;
 	}
@@ -288,14 +294,14 @@ function	script	mp_use	{
 	if(.@item == 29513)
 	{
 		warp strcharinfo(3),0,0;
-		announce "[Evento]: " + strcharinfo(0) + " utilizou um [Salto Poring]!",bc_map;
+		announce "[Moeda Poring]: " + strcharinfo(0) + " utilizou um [Salto Poring]!",bc_map;
 		end;
 	}
 
 	//Dica Poring
 	if(.@item == 29514)
 	{
-		announce "[Evento]: " + strcharinfo(0) + " utilizou uma [Dica Poring]!",bc_map;
+		announce "[Moeda Poring]: " + strcharinfo(0) + " utilizou uma [Dica Poring]!",bc_map;
 		atcommand "@showmobs " + 1725;
 		atcommand "@showmobs " + 1002;
 		end;
@@ -304,7 +310,7 @@ function	script	mp_use	{
 	//Trapaceiro Poring
 	if(.@item == 29515)
 	{
-		announce "[Evento]: " + strcharinfo(0) + " utilizou um [Trapaça Poring]!",bc_map;
+		announce "[Moeda Poring]: " + strcharinfo(0) + " utilizou um [Trapaça Poring]!",bc_map;
 		.@select = select("Remover Pontos:Remover Moedas");
 		.@used = getcharid(0);
 
@@ -331,7 +337,7 @@ function	script	mp_use	{
 	//Guerra Poring
 	if(.@item == 29516)
 	{
-		announce "[Evento]: " + strcharinfo(0) + " utilizou um [Guerra Poring]!",bc_map;
+		announce "[Moeda Poring]: " + strcharinfo(0) + " utilizou um [Guerra Poring]!",bc_map;
 		removemapflag "morocc",mf_noskill;
 		setmapflag "morocc",mf_pvp;
 		end;
@@ -353,14 +359,14 @@ function	script	mp_use	{
 			}
 		}
 		pvpoff "morocc";
-		announce "[Evento]: " + strcharinfo(0) + " utilizou um [Paz Poring]!",bc_map;
+		announce "[Moeda Poring]: " + strcharinfo(0) + " utilizou um [Paz Poring]!",bc_map;
 		end;
 	}
 
 	//Troll Poring
 	if(.@item == 29518)
 	{
-		announce "[Evento]: " + strcharinfo(0) + " utilizou um [Troll Poring]!",bc_map;
+		announce "[Moeda Poring]: " + strcharinfo(0) + " utilizou um [Troll Poring]!",bc_map;
 		addrid(1);
 		atcommand "@disguise Poring";
 		sleep2 30000;

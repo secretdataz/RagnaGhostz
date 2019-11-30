@@ -1,25 +1,4 @@
 
-//NPC Bomba
-
--	Script	CORRIDA_BOMBA	-1,{
-	
-	unitskilluseid getcharid(3),150,1;
-	bonus_script "bonus bSpeedRate,-95;",5;
-	specialeffect2 585;
-	duplicateremove(strnpcinfo(0));
-	end;
-}
-
-//NPC Barreira
-
--	Script	CORRIDA_BARREIRA	-1,{
-	
-	getmapxy(.@m$,.@x,.@y,1);
-	sleep2 5000;
-	setcell strnpcinfo(4),.@x,.@y,.@x,.@y,cell_walkable,1;
-	duplicateremove(strnpcinfo(0));
-	end;
-}
 
 //NPC Ejetores
 
@@ -30,7 +9,7 @@
 	OnTouch:
 		npcLonge = 1;
 		if(@EJETORES || @NO_EJECT) end;
-		getmapxy(.@m$,.@x,.@y,1,strnpcinfo(0));
+		getmapxy(.@m$,.@x,.@y,BL_NPC,strnpcinfo(0));
 		warp .@m$,.@x,.@y;
 		pcblockmove getcharid(3),1;
 		specialeffect2 1072;
@@ -366,7 +345,7 @@ turbo_e_4,332,36,0	duplicate(TurboTrap_n4)	trap_n4#F41	139,1,1
 turbo_e_4,168,363,5	script	WarpRace#0	45,1,1,{
 
 		OnTouch:
-		if($@EVENT_STATE[EVENTID_CORRIDAMALUCA] != 2)
+		if($EVENT_STATE[EVENTID_CORRIDAMALUCA] != 2)
 		{
 			message strcharinfo(0),"Portal Desativado. Aguarde um pouco mais.";
 			end;
@@ -380,12 +359,12 @@ turbo_e_4,168,363,5	script	WarpRace#0	45,1,1,{
 
 		.@meuMapa = strnpcinfo(2);
 		
-		if($@PRIMEIRO_LUGAR$[.@meuMapa]=="")
-			$@PRIMEIRO_LUGAR$[.@meuMapa] = strcharinfo(0);
-		else if($@SEGUNDO_LUGAR$[.@meuMapa]=="")
-			$@SEGUNDO_LUGAR$[.@meuMapa] = strcharinfo(0);
-		else if($@TERCEIRO_LUGAR$[.@meuMapa]=="")
-			$@TERCEIRO_LUGAR$[.@meuMapa] = strcharinfo(0);
+		if($PRIMEIRO_LUGAR$[.@meuMapa]=="")
+			$PRIMEIRO_LUGAR$[.@meuMapa] = strcharinfo(0);
+		else if($SEGUNDO_LUGAR$[.@meuMapa]=="")
+			$SEGUNDO_LUGAR$[.@meuMapa] = strcharinfo(0);
+		else if($TERCEIRO_LUGAR$[.@meuMapa]=="")
+			$TERCEIRO_LUGAR$[.@meuMapa] = strcharinfo(0);
 	
 		setarray .@nomePercurso$[0],"Percurso de Madeira",
 									"Percurso dos Baús",
@@ -451,19 +430,19 @@ turbo_e_4,168,363,5	script	WarpRace#0	45,1,1,{
 			npcLonge = 0;
 			mapannounce "turbo_e_4","" + strcharinfo(0) +" há pouco chegou à Linha de Chegada! Parabéns!",bc_map,"0xFFFF00";
 			
-			if($@PRIMEIRO_LUGAR$[.@meuMapa]==strcharinfo(0))
+			if($PRIMEIRO_LUGAR$[.@meuMapa]==strcharinfo(0))
 			{
 				.@rand = 150;
 				bot_announce( "E na Corrida RagnaGhostz, " + strcharinfo(0) + " chegou em primeiro lugar!", CHANNEL_GERAL );
 				#CORRIDA_PONTOS += 30;
 			}
-			else if($@SEGUNDO_LUGAR$[.@meuMapa]==strcharinfo(0))
+			else if($SEGUNDO_LUGAR$[.@meuMapa]==strcharinfo(0))
 			{
 				bot_announce( "E na Corrida RagnaGhostz, " + strcharinfo(0) + " chegou em segundo lugar!", CHANNEL_GERAL );
 				.@rand = 100;
 				#CORRIDA_PONTOS += 20;
 			}
-			else if($@TERCEIRO_LUGAR$[.@meuMapa]==strcharinfo(0))
+			else if($TERCEIRO_LUGAR$[.@meuMapa]==strcharinfo(0))
 			{
 				.@rand = 75;
 				#CORRIDA_PONTOS += 10;
@@ -491,7 +470,7 @@ turbo_e_4,168,363,5	script	WarpRace#0	45,1,1,{
 			end;
 		}
 		
-		if($@PRIMEIRO_LUGAR$[.@meuMapa] == strcharinfo(0))
+		if($PRIMEIRO_LUGAR$[.@meuMapa] == strcharinfo(0))
 		{
 			if(rand(100)<=5)
 			{
@@ -523,14 +502,14 @@ turbo_e_4,63,350,5	script	StartCheck#corrida	-1,1,30,{
 	end;
 	
 	OnInit:
-		for(.@i = 0; .@i < getarraysize($@PRIMEIRO_LUGA$); .@i++)
-			$@PRIMEIRO_LUGAR$[.@i] = "";
+		for(.@i = 0; .@i < getarraysize($PRIMEIRO_LUGA$); .@i++)
+			$PRIMEIRO_LUGAR$[.@i] = "";
 		
-		for(.@i = 0; .@i < getarraysize($@SEGUNDO_LUGAR$); .@i++)
-			$@SEGUNDO_LUGAR$[.@i] = "";
+		for(.@i = 0; .@i < getarraysize($SEGUNDO_LUGAR$); .@i++)
+			$SEGUNDO_LUGAR$[.@i] = "";
 		
-		for(.@i = 0; .@i < getarraysize($@TERCEIRO_LUGAR$); .@i++)
-			$@TERCEIRO_LUGAR$[.@i] = "";
+		for(.@i = 0; .@i < getarraysize($TERCEIRO_LUGAR$); .@i++)
+			$TERCEIRO_LUGAR$[.@i] = "";
 		
 		setcell strnpcinfo(4),62,379,62,350,cell_walkable,0;
 		
@@ -545,28 +524,32 @@ turbo_e_4,297,154,3	Script	CORRIDA_NPC	-1,{
 		if(getmapusers("turbo_e_4") == 0)
 		{
 			for(.@i = 0; .@i < .rand; .@i++)
-				duplicateremove(" "+.@i+"EJET");
+				duplicateremove( " "+ .@i + "EJET" );
 		
 			.rand = 0;
 			announce "[Corrida RagnaGhostz]: Tivemos uma ótima corrida!",0;
 			sleep 3000;
-			announce "[Corrida RagnaGhostz]: O primeiro lugar foi de "+$@PRIMEIRO_LUGAR$[7]+"!",0;
+			announce "[Corrida RagnaGhostz]: O primeiro lugar foi de "+$PRIMEIRO_LUGAR$[7]+"!",0;
 			sleep 3000;
-			announce "[Corrida RagnaGhostz]: O segundo lugar foi de "+$@SEGUNDO_LUGAR$[7]+"!",0;
+			announce "[Corrida RagnaGhostz]: O segundo lugar foi de "+$SEGUNDO_LUGAR$[7]+"!",0;
 			sleep 3000;
-			announce "[Corrida RagnaGhostz]: O terceiro lugar foi de "+$@TERCEIRO_LUGAR$[7]+"!",0;
+			announce "[Corrida RagnaGhostz]: O terceiro lugar foi de "+$TERCEIRO_LUGAR$[7]+"!",0;
 			$RACE_START = 0;
-			$@EVENT_STATE[EVENTID_CORRIDAMALUCA] = 0;
+			$EVENT_STATE[EVENTID_CORRIDAMALUCA] = 0;
 			setcell strnpcinfo(4),62,379,62,350,cell_walkable,0;
 			$EVENTO_CORRIDA = 0;
 		}
 		end;
 	
 	OnStart:
-		$@CORRIDA_PORTAL = 0;
+		$CORRIDA_PORTAL = 0;
 
-		for(.@i = 0; .@i < $@PRIMEIRO_LUGAR; .@i++)
-			$@PRIMEIRO_LUGAR[.@i] = "";
+		for(.@i = 0; .@i < getarraysize( $PRIMEIRO_LUGAR ); .@i++)
+		{
+			$PRIMEIRO_LUGAR[.@i] = "";
+			$SEGUNDO_LUGAR[.@i] = "";
+			$TERCEIRO_LUGAR[.@i] = "";
+		}
 		
 		mapwarp strnpcinfo(4),strnpcinfo(4),59,364,0;
 		sleep 5000;
@@ -580,7 +563,7 @@ turbo_e_4,297,154,3	Script	CORRIDA_NPC	-1,{
 		mapannounce strnpcinfo(4),"A corrida começou!",0;
 		setcell strnpcinfo(4),62,379,62,350,cell_walkable,1;
 		$RACE_START = 1;
-		$@EVENT_STATE[EVENTID_CORRIDAMALUCA] = 2;
+		$EVENT_STATE[EVENTID_CORRIDAMALUCA] = 2;
 		//Adiciona os Ejetores
 		.rand = rand(1,200);
 		
@@ -649,23 +632,23 @@ phtownall,61,360,5	Script	Corrida RagnaGhostz	497,{
 	
 	mes .@n$;
 
-	if($@EVENT_STATE[EVENTID_CORRIDAMALUCA] != 0)
+	if($EVENT_STATE[EVENTID_CORRIDAMALUCA] != 0)
 		mes "A "+.@c$+" ainda não começou. Deseja saber sobre alguma coisa?";
-	else if($@EVENT_STATE[EVENTID_CORRIDAMALUCA] == 1)
+	else if($EVENT_STATE[EVENTID_CORRIDAMALUCA] == 1)
 		mes "A "+.@c$+" está para começar. Venha rápido se preparar na sala de espera!";
 	else
 		mes "A "+.@c$+" está ocorrendo neste momento. Venha participar na próxima!";
 		
 	mes "Seus Pontos de Corrida: " + #CORRIDA_PONTOS;
 
-	.@participar$ = ($@EVENT_STATE[EVENTID_CORRIDAMALUCA] == 1 ? "^2E8B57" : "^FF0000") + "Participar^000000";
+	.@participar$ = ($EVENT_STATE[EVENTID_CORRIDAMALUCA] == 1 ? "^2E8B57" : "^FF0000") + "Participar^000000";
 	
 	switch(select(.@participar$,"^9400D3@^000000Informações","^FFD700@^000000Pontos"))
 	{
 		case 1:
 			next;
 			mes .@n$;
-			if($@EVENT_STATE[EVENTID_CORRIDAMALUCA] != 1)
+			if($EVENT_STATE[EVENTID_CORRIDAMALUCA] != 1)
 			{
 				mes "Não posso lhe deixar entrar.";
 				close;
@@ -678,12 +661,16 @@ phtownall,61,360,5	Script	Corrida RagnaGhostz	497,{
 			sql_mac("insert",MAC$,getcharid(0),"turbo_e_4");
 			mes "Muito bem, boa sorte!";
 			close2;
+			
 			if (checkriding())
 			{
 				mes .@n$;
 				mes "Ah, sem montaria né.";
 				close;
 			}
+			
+			sc_end sc_all;
+			
 			warp "turbo_e_4",297,161;
 			end;
 		
@@ -811,11 +798,11 @@ phtownall,61,360,5	Script	Corrida RagnaGhostz	497,{
 		if(getmapusers("turbo_e_4") == 0)
 		{
 			announce "[Corrida RagnaGhostz]: Tivemos alguns problemas técnicos. Teremos que adiar a corrida!",0;
-			$@EVENT_STATE[EVENTID_CORRIDAMALUCA] = 0;
+			$EVENT_STATE[EVENTID_CORRIDAMALUCA] = 0;
 			end;
 		}
 		announce "[Corrida RagnaGhostz]: A Corrida irá começar!",0;
-		$@EVENT_STATE[EVENTID_CORRIDAMALUCA] = 2;
+		$EVENT_STATE[EVENTID_CORRIDAMALUCA] = 2;
 		donpcevent "CORRIDA_NPC::OnStart";
 		end;
 }

@@ -49,17 +49,18 @@ phtownall,71,338,5	Script	Gerenciador de Eventos	531 ,{
 
 		for( .@i = 0; .@i < getarraysize( .event_map$ ); .@i++ )
 		{
-			if(.event_map$[.@i] == "") continue;
+			if(.event_map$[.@i] != "")
+			{
+				//setmapflag .event_map$[.@i],MF_PVP_NOPARTY;
+				//setmapflag .event_map$[.@i],MF_PVP_NOPARTY;
+				//setmapflag .event_map$[.@i],MF_PVP_NOGUILD;
+				setmapflag .event_map$[.@i],MF_NOWARP;
+				setmapflag .event_map$[.@i],MF_NOSAVE;
+				setmapflag .event_map$[.@i],MF_NOSKILL;
+				setmapflag .event_map$[.@i],MF_NOTELEPORT;
+			}
 
-			//setmapflag .event_map$[.@i],MF_PVP_NOPARTY;
-			//setmapflag .event_map$[.@i],MF_PVP_NOPARTY;
-			//setmapflag .event_map$[.@i],MF_PVP_NOGUILD;
-			setmapflag .event_map$[.@i],MF_NOWARP;
-			setmapflag .event_map$[.@i],MF_NOSAVE;
-			setmapflag .event_map$[.@i],MF_NOSKILL;
-			setmapflag .event_map$[.@i],MF_NOTELEPORT;
-
-			$@EVENT_STATE[.@i] = 0;
+			$EVENT_STATE[.@i] = 0;
 		}
 
 		end;
@@ -107,7 +108,7 @@ phtownall,71,338,5	Script	Gerenciador de Eventos	531 ,{
 	L_Start:
 		if(.@i == 0) .@i = 3;
 
-		$@EVENT_STATE[.@rand] = 1;
+		$EVENT_STATE[.@rand] = 1;
 
 		while(.@i != 0)
 		{
