@@ -26,7 +26,7 @@ function	script	inst	{
 	.@nome_inst$[INSTANCIA_VIDA_DE_ESPIAO] = "Vida de Espionagem";
 	.@desc$[INSTANCIA_VIDA_DE_ESPIAO] = "Passe pelos guardas e enfrente a horda dos monstros para ter chances de receber a Maestria [%s] e outros itens especiais!";
 	.@delay[INSTANCIA_VIDA_DE_ESPIAO] = 120;
-	.@item[INSTANCIA_VIDA_DE_ESPIAO] = 29562;
+	.@item[INSTANCIA_VIDA_DE_ESPIAO] = 29564;
 	
 	if( .@func$ == "INICIO" )
 	{

@@ -63,8 +63,8 @@ phtownall,51,335,5	Script	Mata-Mata	827,{
 		mapannounce "guild_vs2","[Mata-Mata]: Se preparem, em 30 segundos irei ligar o PvP e o último a sobreviver, vence!",bc_map;
 		sleep 30000;
 		setmapflag "guild_vs2",mf_pvp_noguild;
-		setmapflag "guild_vs2",mf_pvp_noparty;
 		setmapflag "guild_vs2",mf_pvp;
+		setmapflag "guild_vs2",mf_pvp_noparty;
 
 		mapannounce "guild_vs2","[Mata-Mata]: Comecem!",bc_map;
 

@@ -16,7 +16,6 @@ phtownall,71,338,5	Script	Gerenciador de Eventos	531 ,{
 
 	if(select("Não:Sim") == 1) close;
 	.@sleep = 5000;
-	.@force_start = 1;
 	input .@rand;
 	close2;
 	goto L_Start;
@@ -47,26 +46,21 @@ phtownall,71,338,5	Script	Gerenciador de Eventos	531 ,{
 		.npc_event$[EVENTID_MATAMATA] = "Mata-Mata::OnStartEvent";
 		.npc_name$[EVENTID_MATAMATA] = "Mata-Mata";
 		.event_map$[EVENTID_MATAMATA] = "guild_vs2";
-		
-		//.event_name$[EVENTID_JOKENPO] = "Jokenpo";
-		//.npc_event$[EVENTID_JOKENPO] = "Gerente do Jokenpo::OnStartEvent";
-		//.npc_name$[EVENTID_JOKENPO] = "Jokenpo";
-		//.event_map$[EVENTID_JOKENPO] = erro;
 
 		for( .@i = 0; .@i < getarraysize( .event_map$ ); .@i++ )
 		{
-			if(.event_map$[.@i] != "")
-			{
-				//setmapflag .event_map$[.@i],MF_PVP_NOPARTY;
-				//setmapflag .event_map$[.@i],MF_PVP_NOPARTY;
-				//setmapflag .event_map$[.@i],MF_PVP_NOGUILD;
-				setmapflag .event_map$[.@i],MF_NOWARP;
-				setmapflag .event_map$[.@i],MF_NOSAVE;
-				setmapflag .event_map$[.@i],MF_NOSKILL;
-				setmapflag .event_map$[.@i],MF_NOTELEPORT;
-			}
+			if(.event_map$[.@i] == "") continue;
 
-			$EVENT_STATE[.@i] = 0;
+			//setmapflag .event_map$[.@i],MF_PVP_NOPARTY;
+			//setmapflag .event_map$[.@i],MF_PVP_NOPARTY;
+			//setmapflag .event_map$[.@i],MF_PVP_NOGUILD;
+			setmapflag .event_map$[.@i],MF_NOWARP;
+			setmapflag .event_map$[.@i],MF_NOSAVE;
+			setmapflag .event_map$[.@i],MF_NOSKILL;
+			setmapflag .event_map$[.@i],MF_NOTELEPORT;
+			setmapflag .event_map$[.@i],MF_NOTELEPORT;
+
+			$@EVENT_STATE[.@i] = 0;
 		}
 
 		end;
@@ -109,19 +103,13 @@ phtownall,71,338,5	Script	Gerenciador de Eventos	531 ,{
 	OnClock2230:
 	OnClock2300:
 	OnClock2400:
-	L_resort:
 		.@rand = rand( 1, getarraysize( .event_name$ ) ) - 1;
 		.@sleep = 60000;
 	L_Start:
 		if(.@i == 0) .@i = 3;
-		
-		// Não recomeçamos eventos em progresso nem os últimos eventos.
-		if( .@force_start == 0 && ( $EVENT_STATE[.@rand] > 0 || $LAST_EVENT == .@rand ) )
-			goto L_resort;
-			
-		$EVENT_STATE[.@rand] = 1;
-		$LAST_EVENT = .@rand;
-		
+
+		$@EVENT_STATE[.@rand] = 1;
+
 		while(.@i != 0)
 		{
 			announce "[Gerenciador de Eventos]: O Evento [" + .event_name$[.@rand] + "] irá começar em "+ .@i + " minuto" + ( .@i > 1 ? "s" : "" ) + ".",0;
