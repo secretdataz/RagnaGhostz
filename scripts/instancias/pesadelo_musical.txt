@@ -90,6 +90,9 @@ job_duncer,63,104,4	script	Piano Maldito	3073,{
 	OnBossKill:
 		mapannounce instance_mapname( "job_duncer" ),"O Piano Maldito foi derrotado!",bc_map,"0x00CED1";
 		'PIANO = 10;
+		dispbottom "Desfazendo Grupo em 7 segundos...";
+		sleep 7000;
+		inst( "REWARD", 15, 85, instance_mapname( "job_duncer" ) );
 		end;
 }
 
@@ -179,23 +182,7 @@ job_duncer,72,110,3	duplicate(Meio#0)	Direita#4	723,1,1
 job_duncer,70,50,4	script	Aile#IN1	647,{
 
 	if( 'PIANO == 10 )
-	{
-		npctalk "Muito obrigado " + strcharinfo(0) + "!";
-
-		.@rand = rand( 7, 60 );
-
-		#EVENT_POINTS += .@rand;
-		dispbottom "--------------------------------------------------";
-		dispbottom "Você recebeu " + .@rand + " pontos de evento!";
-		dispbottom "Total de pontos: " + #EVENT_POINTS;
-		dispbottom "--------------------------------------------------";
-
-		if( getmapusers( instance_mapname( "job_duncer" ) ) == 1 )
-			instance_destroy();
-		
-		warp "Save",0,0;
 		end;
-	}
 	
 	if( 'AILE > 0 )
 		end;

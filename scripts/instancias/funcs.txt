@@ -72,7 +72,29 @@ function	script	inst	{
 		$delay = 0;
 		$IID$ = "";
 
-		close;
+		end;
+	}
+	
+	if( .@func$ == "REWARD" )
+	{
+		.@min = getarg(0);
+		.@max = getarg(1);
+		.@map$ = getarg(2);
+		
+		$INSTANCE_REWARD = rand( .@min, .@max );
+		
+		addrid( 5, 0, instance_mapname( .@map$ ) );
+		
+		.@rand = $INSTANCE_REWARD;
+
+		#EVENT_POINTS += .@rand;
+		dispbottom "--------------------------------------------------";
+		dispbottom "Você recebeu " + .@rand + " pontos de evento!";
+		dispbottom "Total de pontos: " + #EVENT_POINTS;
+		dispbottom "--------------------------------------------------";
+
+		party_destroy( getcharid(0) );
+		end;
 	}
 
 	if( .@func$ == "DEPLOY_BARRICADE" || .@func$ == "DESTROY_BARRICADE" )

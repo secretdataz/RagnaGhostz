@@ -8,23 +8,7 @@ phtownall,338,203,5	Script	Memória do Rei Arthur	628 ,{
 2@mir,101,51,3	Script	Lancelot#IN1	628,{
 
 	if( 'LANCELOT == 2 )
-	{
-		npctalk "Muito obrigado " + strcharinfo(0) + "!";
-
-		.@rand = rand( 5, 30 );
-
-		#EVENT_POINTS += .@rand;
-		dispbottom "--------------------------------------------------";
-		dispbottom "Você recebeu " + .@rand + " pontos de evento!";
-		dispbottom "Total de pontos: " + #EVENT_POINTS;
-		dispbottom "--------------------------------------------------";
-
-		if( getmapusers( instance_mapname( "2@mir" ) ) == 1 )
-			instance_destroy();
-
-		warp "Save",0,0;
 		end;
-	}
 
 	if( getpartyleader( getcharid(1), 2 ) != getcharid(0) )
 	{
@@ -70,6 +54,9 @@ phtownall,338,203,5	Script	Memória do Rei Arthur	628 ,{
 	OnKillBoss:
 		mapannounce instance_mapname( "2@mir" ),"A Memória do Rei Arthur foi derrotado!",bc_map,"0x00CED1";
 		'LANCELOT = 2;
+		dispbottom "Desfazendo Grupo em 7 segundos...";
+		sleep 7000;
+		inst( "REWARD", 1, 35, instance_mapname( "2@mir" ) );
 		end;
 
 	OnInstanceInit:

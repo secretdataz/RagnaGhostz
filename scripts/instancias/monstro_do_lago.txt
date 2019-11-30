@@ -80,30 +80,17 @@ gld_dun02,107,140,3	Script	Colocar Isca#Laguna	111,{
 		mapannounce instance_mapname( "gld_dun02" ),"O Monstro do Lago foi derrotado!",bc_map,"0x00CED1";
 
 		'LAGUNA = 6;
+		
+		dispbottom "Desfazendo Grupo em 7 segundos...";
+		sleep 7000;
+		inst( "REWARD", 10, 50, instance_mapname( "gld_dun02" ) );
 		end;
 }
 
 gld_dun02,29,160,3	Script	Laguna#IN1	537,{
 
 	if( 'LAGUNA == 6 )
-	{
-		npctalk "Muito obrigada " + strcharinfo(0) + "!";
-
-		.@rand = rand( 5, 50 );
-
-		#EVENT_POINTS += .@rand;
-		dispbottom "--------------------------------------------------";
-		dispbottom "Você recebeu " + .@rand + " pontos de evento!";
-		dispbottom "Total de pontos: " + #EVENT_POINTS;
-		dispbottom "--------------------------------------------------";
-
-		if( getmapusers( instance_mapname( "gld_dun02" ) ) == 1 )
-			instance_destroy();
-			
-		
-		warp "Save",0,0;
 		end;
-	}
 
 	if( 'LAGUNA == 5 )
 		end;

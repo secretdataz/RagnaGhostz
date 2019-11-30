@@ -344,8 +344,10 @@ gef_tower,111,123,5	script	Estagiário Comunista	429,{
 		{
 			mapannounce instance_mapname( "gef_tower" ),"Todos os Guardas Comunistas Foram Derrotados!",bc_map,"0x00CED1";
 			'GUARDA = 10;
-			sleep2 5000;
-			mapwarp instance_mapname( "gef_tower" ),instance_mapname( "gef_tower" ),52,179;
+			
+			dispbottom "Desfazendo Grupo em 7 segundos...";
+			sleep 7000;
+			inst( "REWARD", 30, 90, instance_mapname( "gld_dun02" ) );		
 		}
 		end;
 }
@@ -353,23 +355,7 @@ gef_tower,111,123,5	script	Estagiário Comunista	429,{
 gef_tower,52,174,1	script	Guarda#geft1	418,{
 
 	if( 'GUARDA == 10 )
-	{
-		npctalk "Muito obrigado " + strcharinfo(0) + "!";
-
-		.@rand = rand( 5, 50 );
-
-		#EVENT_POINTS += .@rand;
-		dispbottom "--------------------------------------------------";
-		dispbottom "Você recebeu " + .@rand + " pontos de evento!";
-		dispbottom "Total de pontos: " + #EVENT_POINTS;
-		dispbottom "--------------------------------------------------";
-
-		if( getmapusers( instance_mapname( "gef_tower" ) ) == 1 )
-			instance_destroy();
-
-		warp "Save",0,0;
 		end;
-	}
 
 	if( 'GUARDA > 0 ) end;
 	
