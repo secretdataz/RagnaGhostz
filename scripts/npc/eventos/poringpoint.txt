@@ -145,7 +145,7 @@ morocc,160,138,5	script	Saída do Evento#zp	501,{
 			$EVENT_STATE[EVENTID_PORINGPOINT] = 0;
 			
 			bot_announce( "Que pena! Não tivemos nenhum vencedor na **Moeda Poring**!", CHANNEL_GERAL );
-			announce "[Moeda Poring]: "Que pena! Não tivemos nenhum vencedor!",0;
+			announce "[Moeda Poring]: Que pena! Não tivemos nenhum vencedor!",0;
 		}
 		
 		killmonster "morocc","Saída do Evento#zp::OnPoring";
