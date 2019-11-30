@@ -416,7 +416,8 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 	OnMinute30:
 	OnMinute40:
 	OnMinute50:
-	
+		freeloop(1);
+		
 		query_sql( "UPDATE `pvp_player`  " +
 		           "   SET `ranking` = -1 " );
 
@@ -517,7 +518,7 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 		               "       `recabates` = 0, " +
 		               "       `recmortes` = 0  " );
 		
-		debugmes "Ranking PVP","O Ranking foi atualizado para (" + .@total_players + ") jogadores.";
+		debugmes "Ranking PVP","O Ranking foi atualizado para (" + .@total_players / getarraysize( .rank_name$ ) + ") jogadores.";
 	end;
 	
 	OnInit:

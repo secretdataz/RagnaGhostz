@@ -39,7 +39,7 @@ phtownall,50,50,5	Script	Jokenpo	90,{
 		case 2:
 			next;
 			mes .@n$;
-			mes "As regras são a mesma do pedra, papel e tesoura tradicional.";
+			mes "As regras são a mesma do pedra, papel e tesoura tradicional. Entretanto, se dois jogadores empatam, eles perdem!";
 			next;
 			mes .@n$;
 			mes "A cada fim de partida 2 jogadores serão sorteados para se enfrentarem no pedra, papel e tesoura.";
@@ -78,10 +78,12 @@ xyz,0,0,5	Script	Gerente do Jokenpo	90,10,10,{
 	
 	if( $EVENT_STATE[EVENTID_JOKENPO] >= 2 ) end;
 	
-	if( .final_winner == getcharid(0) )
+	if( getmapusers( ¨¨map ) == 1 )
 	{
 		.@rand = 80;
 		
+		bot_announce( "O vencedor do **Jokenpo** foi **" + strcharinfo(0) + "**", CHANNEL_GERAL );
+
 		if(getmasterylevel( 200, getcharid(0) ) >= 100)
 			.@rand += (.@rand * 20) / 100;
 			
@@ -105,7 +107,7 @@ xyz,0,0,5	Script	Gerente do Jokenpo	90,10,10,{
 		{
 			L_noplayers:
 			npctalk "Sinto muito, mas não podemos começar o evento com essa quantidade de jogadores.";
-			bot_announce( "O vencedor do **Jokenpo** foi cancelado por falta de participantes.", CHANNEL_GERAL );
+			bot_announce( "O **Jokenpo** foi cancelado por falta de participantes.", CHANNEL_GERAL );
 			$EVENT_STATE[EVENTID_JOKENPO] = 0;
 			end;
 		}
@@ -119,6 +121,9 @@ xyz,0,0,5	Script	Gerente do Jokenpo	90,10,10,{
 
 		while( getmapusers( .@map$ ) > 1 )
 		{
+			npctalk "Vamos sortear os participantes!";
+			sleep 3000;
+			
 			.player_1$ = "";
 			.player_2$ = "";
 			
@@ -160,9 +165,85 @@ xyz,0,0,5	Script	Gerente do Jokenpo	90,10,10,{
 			
 			if( .p2opt$ == "" )
 			{
-				npctalk "Que pena, parece que o jogador " + .player_1$ + " não quis escolher! Tchau!";
-				warp "Save",0,0,getcharid(0,.player_1$);
+				npctalk "Que pena, parece que o jogador " + .player_2$ + " não quis escolher! Tchau!";
+				warp "Save",0,0,getcharid(0,.player_2$);
 				.@p2ok = 0;
+			}
+			
+			sleep 3000;
+			
+			if( .@p1ok == 1 && .@p2ok == 0 )
+			{
+				npctalk "O vencedor desta partida foi " + .player_1$ + " !";
+				sleep 4000;
+			}
+			else if( .@p2ok == 1 && .@p1ok == 0 )
+			{
+				npctalk "O vencedor desta partida foi " + .player_2$ + " !";
+				sleep 4000;		
+			}
+			else if( .@p1ok == 0 && .@p2ok == 0 )
+			{
+				npctalk sprintf( "Então %s e %s foram desclassificados!", .player_1$, .player_2$ );
+				sleep 4000;
+			}
+			else
+			{
+				unittalk getcharid(3, .player_1$),.p1opt$;
+				unittalk getcharid(3, .player_2$),.p2opt$;
+				
+				sleep 1500;
+				
+				if( .p1opt$ == .p2opt$ )
+				{
+					npctalk "Os dois escolheram " + .p1opt$ + ", os dois perderam!";
+					warp "Save",0,0,getcharid(0,.player_1$);
+					warp "Save",0,0,getcharid(0,.player_2$);
+				}
+				else if( .p1opt$ == "Pedra" )
+				{
+					if( .p2opt$ == "Papel" )
+					{
+						npctalk "Papel vence Pedra!";
+						sleep 2000;
+						warp "Save",0,0,getcharid(0,.player_1$);
+					}
+					else
+					{
+						npctalk "Pedra vence Tesoura!";
+						warp "Save",0,0,getcharid(0,.player_2$);
+					}
+				}
+				else if( .p1opt$ == "Papel" )
+				{
+					if( .p2opt$ == "Pedra" )
+					{
+						npctalk "Papel vence Pedra!";
+						sleep 2000;
+						warp "Save",0,0,getcharid(0,.player_2$);
+					}
+					else
+					{
+						npctalk "Tesoura vence Papel!";
+						sleep 2000;
+						warp "Save",0,0,getcharid(0,.player_1$);			
+					}
+				}
+				else if( .p1opt$ == "Tesoura" )
+				{
+					if( .p2opt$ == "Pedra" )
+					{
+						npctalk "Pedra vence Tesoura!";
+						sleep 2000;
+						warp "Save",0,0,getcharid(0,.player_1$);
+					}
+					else
+					{
+						npctalk "Tesoura vence Papel!";
+						sleep 2000;
+						warp "Save",0,0,getcharid(0,.player_2$);
+					}
+				}
 			}
 		}
 		
@@ -171,12 +252,8 @@ xyz,0,0,5	Script	Gerente do Jokenpo	90,10,10,{
 		$EVENT_STATE[EVENTID_JOKENPO] = 0;
 
 		if( getmapusers( .@map$ ) == 0 )
-		{
+			goto L_noplayers;
 		
-		}
-		getmapunits( 
+		npctalk "Parabéns a você que sobreviveu por último! Venha falar comigo para recolher seu prêmio!";
 		end;
-	
-	OnInit:
-	
 }
