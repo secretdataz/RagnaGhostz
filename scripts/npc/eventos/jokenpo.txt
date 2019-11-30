@@ -1,0 +1,182 @@
+
+phtownall,50,50,5	Script	Jokenpo	90,{
+
+	.@n$ = "[^FFA500Jokenpo^000000]";
+	
+	if( !$EVENT_STATE[EVENTID_JOKENPO] )
+	{
+		mes "Olá, o evento não está aberto, mas posso lhe passar informações sobre o mesmo.";
+	}
+	else
+		mes "Olá, veio participar do meu evento?";
+		
+	.@menu$ = ( $EVENT_STATE[EVENTID_JOKENPO] ? "^FF8C00Participar^000000" : "^FF0000Participar^000000" ) + ":Informações";
+	
+	switch( select( .@menu$ ) )
+	{
+		case 1:
+			close2;
+			if( !$EVENT_STATE[EVENTID_JOKENPO] )
+			{
+				mes .@n$;
+				mes "Como eu disse, o evento não está liberado.";
+				close;
+			}
+
+			if( $EVENT_STATE[EVENTID_JOKENPO] >= 2 )
+			{
+				mes .@n$;
+				mes "No momento está ocorrendo o evento.";
+				close;
+			}
+			
+			warp map,50,50;
+			npctalk strcharinfo(0) + " entrou no evento!";
+			
+			
+			end;
+
+		case 2:
+			next;
+			mes .@n$;
+			mes "As regras são a mesma do pedra, papel e tesoura tradicional.";
+			next;
+			mes .@n$;
+			mes "A cada fim de partida 2 jogadores serão sorteados para se enfrentarem no pedra, papel e tesoura.";
+			next;
+			mes .@n$;
+			mes "Jogadores que perderem são removidos do evento, o último a sobrar leva 80 pontos de evento!";
+			close;
+	}
+	end;
+}
+
+xyz,0,0,5	Script	Gerente do Jokenpo	90,10,10,{
+
+	if( .player_1$ == strcharinfo(0) || .player_2$ == strcharinfo(0) )
+	{
+		if( .player_1$ == strcharinfo(0) && .p1opt$ != "" )
+			dispbottom "Você já escolheu uma opção!";
+			
+		if( .player_2$ == strcharinfo(0) && .p2opt$ != "" )
+			dispbottom "Você já escolheu uma opção!";
+			
+		.@option = select( "Pedra", "Papel", "Tesoura" );
+		
+		.@opt$[1] = "Pedra";
+		.@opt$[2] = "Papel";
+		.@opt$[3] = "Tesoura";
+		
+		if( .player_1$ == strcharinfo(0) )
+			.p1opt$ = "Pedra";
+		else
+			.p2opt$ = "Pedra;
+		
+		npctalk strcharinfo(0) + " fez sua escolha!";
+		end;
+	}
+	
+	if( $EVENT_STATE[EVENTID_JOKENPO] >= 2 ) end;
+	
+	if( .final_winner == getcharid(0) )
+	{
+		.@rand = 80;
+		
+		if(getmasterylevel( 200, getcharid(0) ) >= 100)
+			.@rand += (.@rand * 20) / 100;
+			
+		#EVENT_POINTS += .@rand;
+		dispbottom "--------------------------------------------------";
+		dispbottom "Você recebeu " + .@rand + " pontos de evento!";
+		dispbottom "Total de pontos: " + #EVENT_POINTS;
+		dispbottom "--------------------------------------------------";
+	}
+	
+	warp "Save",0,0;
+	end;
+		
+	OnStartEvent:
+		.final_winner = 0;
+		.@map$ = erro;
+		
+		cleararray .players$,0,getarraysize(.players$);
+
+		if( getmapusers( .@map$ ) <= 1 )
+		{
+			L_noplayers:
+			npctalk "Sinto muito, mas não podemos começar o evento com essa quantidade de jogadores.";
+			bot_announce( "O vencedor do **Jokenpo** foi cancelado por falta de participantes.", CHANNEL_GERAL );
+			$EVENT_STATE[EVENTID_JOKENPO] = 0;
+			end;
+		}
+		
+		$EVENT_STATE[EVENTID_JOKENPO] = 2;
+		
+		npctalk "Muito bem, então iremos prosseguir o evento com " + getmapusers( .@map$ ) + " jogadores.";
+		sleep 6000;
+		
+		freeloop(1);
+
+		while( getmapusers( .@map$ ) > 1 )
+		{
+			.player_1$ = "";
+			.player_2$ = "";
+			
+			.p1opt$ = "";
+			.p2opt$ = "";
+			
+			.@ok = 0;
+			
+			.@num = getmapunits( BL_PC, .@map$, .players$ );
+			
+			.@player_1$ = .players$[rand( 0, getarraysize( .players$ ) )];
+			
+			do
+			{
+				if( getmapusers( .@map$ ) <= 1 )
+					goto L_noplayers;
+					
+				.@player_2$ = .players$[rand( 0, getarraysize( .players$ ) )];
+
+				.@ok = .@player_1$ == .@player_2$ ? 0 : 1;
+				
+			} while ( !.@ok );
+			
+			npctalk sprintf( "A partida será entre %s e %s!", .player_1$, .player_2$ );
+			sleep 5000;
+			
+			npctalk sprintf( "Falem comigo o que vocês vão escolher! Vocês tem 10 segundos para decidir!";
+			sleep 10000;
+			
+			.@p1ok = 1;
+			.@p2ok = 1;
+			
+			if( .p1opt$ == "" )
+			{
+				npctalk "Que pena, parece que o jogador " + .player_1$ + " não quis escolher! Tchau!";
+				warp "Save",0,0,getcharid(0,.player_1$);
+				.@p1ok = 0;
+			}
+			
+			if( .p2opt$ == "" )
+			{
+				npctalk "Que pena, parece que o jogador " + .player_1$ + " não quis escolher! Tchau!";
+				warp "Save",0,0,getcharid(0,.player_1$);
+				.@p2ok = 0;
+			}
+		}
+		
+		freeloop(0);
+		
+		$EVENT_STATE[EVENTID_JOKENPO] = 0;
+
+		if( getmapusers( .@map$ ) == 0 )
+		{
+		
+		}
+		getmapunits( 
+		end;
+	
+	OnInit:
+	
+}

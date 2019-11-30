@@ -728,7 +728,7 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 
 		@query$ = "UPDATE `pvp_player`          " +
 				   "   SET `pontos` = `pontos` - " + .@points + ", " +
-				   "       `mortes` = `mortes` - 1" +
+				   "       `mortes` = `mortes` + 1" +
 				   " WHERE `char_id`= " + .@victim;
 		
 		message strcharinfo(0, .@victim),"Perdeu (" + .@points + ") pontos";

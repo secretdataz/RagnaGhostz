@@ -46,7 +46,7 @@ void map_msg_reload(void);
 #define LOOTITEM_SIZE 10
 #define MAX_MOBSKILL 50		//Max 128, see mob skill_idx type if need this higher
 #define MAX_MOB_LIST_PER_MAP 128
-#define MAX_EVENTQUEUE 30
+#define MAX_EVENTQUEUE 50
 #define MAX_EVENTTIMER 50
 #define NATURAL_HEAL_INTERVAL 500
 #define MIN_FLOORITEM 2
