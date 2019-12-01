@@ -14703,10 +14703,7 @@ BUILDIN_FUNC(dispbottom)
 		color = script_getnum(st,3); // <color>
 
 	if(sd) {
-		if (script_hasdata(st,3))
-			clif_messagecolor(&sd->bl, color, message, true, SELF);		// [Napster]
-		else
-			clif_messagecolor(&sd->bl, color_table[COLOR_LIGHT_GREEN], message, false, SELF);
+		clifmeg_dispbottom(sd->status.account_id, std::string("#GREEN#").append(message));
 	}
 	return SCRIPT_CMD_SUCCESS;
 }
@@ -24669,6 +24666,18 @@ BUILDIN_FUNC(requestmac)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+BUILDIN_FUNC(megdisp)
+{
+	TBL_PC *sd = map_charid2sd(script_getnum(st, 2));
+
+	if (sd == NULL)
+		return SCRIPT_CMD_SUCCESS;
+
+	clifmeg_dispbottom(sd->status.account_id, script_getstr(st, 3));
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
 BUILDIN_FUNC(countplayerson)
 {
 	struct map_session_data *sd;
@@ -25002,6 +25011,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(isselling, "isi"),
 	BUILDIN_DEF(unitmove,"iii"),
 	BUILDIN_DEF(changedir,"ii"),
+	BUILDIN_DEF(megdisp,"is"),
 	// NPC interaction
 	BUILDIN_DEF(mes,"s*"),
 	BUILDIN_DEF(next,""),

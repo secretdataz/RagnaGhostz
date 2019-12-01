@@ -17,6 +17,7 @@ phtownall,71,338,5	Script	Gerenciador de Eventos	531 ,{
 	if(select("Não:Sim") == 1) close;
 	.@sleep = 5000;
 	input .@rand;
+	.@force_start = 1;
 	close2;
 	goto L_Start;
 
@@ -47,6 +48,11 @@ phtownall,71,338,5	Script	Gerenciador de Eventos	531 ,{
 		.npc_name$[EVENTID_MATAMATA] = "Mata-Mata";
 		.event_map$[EVENTID_MATAMATA] = "guild_vs2";
 
+		.event_name$[EVENTID_JOKENPO] = "Jokenpo";
+		.npc_event$[EVENTID_JOKENPO] = "Gerente do Jokenpo::OnStartEvent";
+		.npc_name$[EVENTID_JOKENPO] = "Jokenpo";
+		.event_map$[EVENTID_JOKENPO] = "quiz_02";
+
 		for( .@i = 0; .@i < getarraysize( .event_map$ ); .@i++ )
 		{
 			if(.event_map$[.@i] == "") continue;
@@ -54,13 +60,11 @@ phtownall,71,338,5	Script	Gerenciador de Eventos	531 ,{
 			//setmapflag .event_map$[.@i],MF_PVP_NOPARTY;
 			//setmapflag .event_map$[.@i],MF_PVP_NOPARTY;
 			//setmapflag .event_map$[.@i],MF_PVP_NOGUILD;
-			setmapflag .event_map$[.@i],MF_NOWARP;
 			setmapflag .event_map$[.@i],MF_NOSAVE;
 			setmapflag .event_map$[.@i],MF_NOSKILL;
 			setmapflag .event_map$[.@i],MF_NOTELEPORT;
-			setmapflag .event_map$[.@i],MF_NOTELEPORT;
 
-			$@EVENT_STATE[.@i] = 0;
+			$EVENT_STATE[.@i] = 0;
 		}
 
 		end;
@@ -103,12 +107,18 @@ phtownall,71,338,5	Script	Gerenciador de Eventos	531 ,{
 	OnClock2230:
 	OnClock2300:
 	OnClock2400:
+	L_restart:
 		.@rand = rand( 1, getarraysize( .event_name$ ) ) - 1;
 		.@sleep = 60000;
 	L_Start:
 		if(.@i == 0) .@i = 3;
 
-		$@EVENT_STATE[.@rand] = 1;
+		if( .@force_start == 0 && ( $EVENT_STATE[.@rand] > 0 || $LAST_EVENT == .@rand ) )
+			goto L_restart;
+
+		$EVENT_STATE[.@rand] = 1;
+
+		$LAST_EVENT = .@rand;
 
 		while(.@i != 0)
 		{

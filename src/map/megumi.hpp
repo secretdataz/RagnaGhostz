@@ -22,7 +22,9 @@ enum e_megumi_packet
 	MP_BUYMASTERY,
 	MP_HELPMASTERY,
 	MP_REFRESHMASTERY,
-	MP_SENDMAC
+	MP_SENDMAC,
+	MP_TALKING,
+	MP_STICK
 };
 
 enum e_const_cleardata

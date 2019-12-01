@@ -16,7 +16,9 @@ enum PK_MEGCLIF
 };
 
 void clifmeg_send(int account_id, std::string pk, std::string data);
-
+int clifmeg_send_sub(struct block_list *bl, va_list ap);
+void clifmeg_dispbottom(int aid, std::string msg);
+void clifmeg_sticker(int aid, std::string id);
 void clifmeg_requestmac(int aid);
 void clifmeg_dressroomopened(int aid, int state);
 void clifmeg_rpc(int aid, std::string title, std::string desc, std::string lik, std::string lit, std::string sik = "NONE", std::string sit = "NONE");

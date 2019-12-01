@@ -1,16 +1,16 @@
 
-phtownall,50,50,5	Script	Jokenpo	90,{
+phtownall,74,353,3	Script	Jokenpo	603,{
 
 	.@n$ = "[^FFA500Jokenpo^000000]";
 	
 	if( !$EVENT_STATE[EVENTID_JOKENPO] )
 	{
-		mes "OlÃ¡, o evento nÃ£o estÃ¡ aberto, mas posso lhe passar informaÃ§Ãµes sobre o mesmo.";
+		mes "Olá, o evento não está aberto, mas posso lhe passar informações sobre o mesmo.";
 	}
 	else
-		mes "OlÃ¡, veio participar do meu evento?";
+		mes "Olá, veio participar do meu evento?";
 		
-	.@menu$ = ( $EVENT_STATE[EVENTID_JOKENPO] ? "^FF8C00Participar^000000" : "^FF0000Participar^000000" ) + ":InformaÃ§Ãµes";
+	.@menu$ = ( $EVENT_STATE[EVENTID_JOKENPO] ? "^FF8C00Participar^000000" : "^FF0000Participar^000000" ) + ":Informações";
 	
 	switch( select( .@menu$ ) )
 	{
@@ -19,47 +19,45 @@ phtownall,50,50,5	Script	Jokenpo	90,{
 			if( !$EVENT_STATE[EVENTID_JOKENPO] )
 			{
 				mes .@n$;
-				mes "Como eu disse, o evento nÃ£o estÃ¡ liberado.";
+				mes "Como eu disse, o evento não está liberado.";
 				close;
 			}
 
 			if( $EVENT_STATE[EVENTID_JOKENPO] >= 2 )
 			{
 				mes .@n$;
-				mes "No momento estÃ¡ ocorrendo o evento.";
+				mes "No momento está ocorrendo o evento.";
 				close;
 			}
 			
-			warp map,50,50;
+			warp "quiz_02",304,254;
 			npctalk strcharinfo(0) + " entrou no evento!";
-			
-			
 			end;
 
 		case 2:
 			next;
 			mes .@n$;
-			mes "As regras sÃ£o a mesma do pedra, papel e tesoura tradicional. Entretanto, se dois jogadores empatam, eles perdem!";
+			mes "As regras são a mesma do pedra, papel e tesoura tradicional. Entretanto, se dois jogadores empatam, eles perdem!";
 			next;
 			mes .@n$;
-			mes "A cada fim de partida 2 jogadores serÃ£o sorteados para se enfrentarem no pedra, papel e tesoura.";
+			mes "A cada fim de partida 2 jogadores serão sorteados para se enfrentarem no pedra, papel e tesoura.";
 			next;
 			mes .@n$;
-			mes "Jogadores que perderem sÃ£o removidos do evento, o Ãºltimo a sobrar leva 80 pontos de evento!";
+			mes "Jogadores que perderem são removidos do evento, o último a sobrar leva 80 pontos de evento!";
 			close;
 	}
 	end;
 }
 
-xyz,0,0,5	Script	Gerente do Jokenpo	90,10,10,{
+quiz_02,304,257,5	Script	Gerente do Jokenpo	603,{
 
 	if( .player_1$ == strcharinfo(0) || .player_2$ == strcharinfo(0) )
 	{
 		if( .player_1$ == strcharinfo(0) && .p1opt$ != "" )
-			dispbottom "VocÃª jÃ¡ escolheu uma opÃ§Ã£o!";
+			dispbottom "Você já escolheu uma opção!";
 			
 		if( .player_2$ == strcharinfo(0) && .p2opt$ != "" )
-			dispbottom "VocÃª jÃ¡ escolheu uma opÃ§Ã£o!";
+			dispbottom "Você já escolheu uma opção!";
 			
 		.@option = select( "Pedra", "Papel", "Tesoura" );
 		
@@ -68,9 +66,9 @@ xyz,0,0,5	Script	Gerente do Jokenpo	90,10,10,{
 		.@opt$[3] = "Tesoura";
 		
 		if( .player_1$ == strcharinfo(0) )
-			.p1opt$ = "Pedra";
+			.p1opt$ = .@opt$[.@option];
 		else
-			.p2opt$ = "Pedra;
+			.p2opt$ = .@opt$[.@option];
 		
 		npctalk strcharinfo(0) + " fez sua escolha!";
 		end;
@@ -78,8 +76,9 @@ xyz,0,0,5	Script	Gerente do Jokenpo	90,10,10,{
 	
 	if( $EVENT_STATE[EVENTID_JOKENPO] >= 2 ) end;
 	
-	if( getmapusers( Â¨Â¨map ) == 1 )
+	if( getmapusers( "quiz_02" ) == 1 && .final_winner )
 	{
+		.final_winner = 0;
 		.@rand = 80;
 		
 		bot_announce( "O vencedor do **Jokenpo** foi **" + strcharinfo(0) + "**", CHANNEL_GERAL );
@@ -89,24 +88,27 @@ xyz,0,0,5	Script	Gerente do Jokenpo	90,10,10,{
 			
 		#EVENT_POINTS += .@rand;
 		dispbottom "--------------------------------------------------";
-		dispbottom "VocÃª recebeu " + .@rand + " pontos de evento!";
+		dispbottom "Você recebeu " + .@rand + " pontos de evento!";
 		dispbottom "Total de pontos: " + #EVENT_POINTS;
 		dispbottom "--------------------------------------------------";
 	}
-	
+
+	mes "[^FFA500Jokenpo^000000]";
+	mes "Já está de saída?";
+	if( select( "Sim", "Não" ) == 2 ) close;
 	warp "Save",0,0;
 	end;
 		
 	OnStartEvent:
 		.final_winner = 0;
-		.@map$ = erro;
+		.@map$ = "quiz_02";
 		
 		cleararray .players$,0,getarraysize(.players$);
 
 		if( getmapusers( .@map$ ) <= 1 )
 		{
 			L_noplayers:
-			npctalk "Sinto muito, mas nÃ£o podemos comeÃ§ar o evento com essa quantidade de jogadores.";
+			npctalk "Sinto muito, mas não podemos começar o evento com essa quantidade de jogadores.";
 			bot_announce( "O **Jokenpo** foi cancelado por falta de participantes.", CHANNEL_GERAL );
 			$EVENT_STATE[EVENTID_JOKENPO] = 0;
 			end;
@@ -114,7 +116,7 @@ xyz,0,0,5	Script	Gerente do Jokenpo	90,10,10,{
 		
 		$EVENT_STATE[EVENTID_JOKENPO] = 2;
 		
-		npctalk "Muito bem, entÃ£o iremos prosseguir o evento com " + getmapusers( .@map$ ) + " jogadores.";
+		npctalk "Muito bem, então iremos prosseguir o evento com " + getmapusers( .@map$ ) + " jogadores.";
 		sleep 6000;
 		
 		freeloop(1);
@@ -134,23 +136,23 @@ xyz,0,0,5	Script	Gerente do Jokenpo	90,10,10,{
 			
 			.@num = getmapunits( BL_PC, .@map$, .players$ );
 			
-			.@player_1$ = .players$[rand( 0, getarraysize( .players$ ) )];
+			.player_1$ = .players$[rand( 0, getarraysize( .players$ ) - 1 )];
 			
 			do
 			{
 				if( getmapusers( .@map$ ) <= 1 )
 					goto L_noplayers;
 					
-				.@player_2$ = .players$[rand( 0, getarraysize( .players$ ) )];
+				.player_2$ = .players$[rand( 0, getarraysize( .players$ ) - 1 )];
 
-				.@ok = .@player_1$ == .@player_2$ ? 0 : 1;
+				.@ok = ( .player_1$ == .player_2$ ? 0 : 1 );
 				
 			} while ( !.@ok );
 			
-			npctalk sprintf( "A partida serÃ¡ entre %s e %s!", .player_1$, .player_2$ );
-			sleep 5000;
+			npctalk sprintf( "A partida será entre %s e %s!", .player_1$, .player_2$ );
+			sleep 8000;
 			
-			npctalk sprintf( "Falem comigo o que vocÃªs vÃ£o escolher! VocÃªs tem 10 segundos para decidir!";
+			npctalk "Falem comigo o que vocês vão escolher! Vocês tem 10 segundos para decidir!";
 			sleep 10000;
 			
 			.@p1ok = 1;
@@ -158,14 +160,14 @@ xyz,0,0,5	Script	Gerente do Jokenpo	90,10,10,{
 			
 			if( .p1opt$ == "" )
 			{
-				npctalk "Que pena, parece que o jogador " + .player_1$ + " nÃ£o quis escolher! Tchau!";
+				npctalk "Que pena, parece que o jogador " + .player_1$ + " não quis escolher! Tchau!";
 				warp "Save",0,0,getcharid(0,.player_1$);
 				.@p1ok = 0;
 			}
 			
 			if( .p2opt$ == "" )
 			{
-				npctalk "Que pena, parece que o jogador " + .player_2$ + " nÃ£o quis escolher! Tchau!";
+				npctalk "Que pena, parece que o jogador " + .player_2$ + " não quis escolher! Tchau!";
 				warp "Save",0,0,getcharid(0,.player_2$);
 				.@p2ok = 0;
 			}
@@ -184,7 +186,7 @@ xyz,0,0,5	Script	Gerente do Jokenpo	90,10,10,{
 			}
 			else if( .@p1ok == 0 && .@p2ok == 0 )
 			{
-				npctalk sprintf( "EntÃ£o %s e %s foram desclassificados!", .player_1$, .player_2$ );
+				npctalk sprintf( "Então %s e %s foram desclassificados!", .player_1$, .player_2$ );
 				sleep 4000;
 			}
 			else
@@ -246,6 +248,12 @@ xyz,0,0,5	Script	Gerente do Jokenpo	90,10,10,{
 				}
 			}
 		}
+
+		.player_1$ = "";
+		.player_2$ = "";
+			
+		.p1opt$ = "";
+		.p2opt$ = "";
 		
 		freeloop(0);
 		
@@ -254,6 +262,7 @@ xyz,0,0,5	Script	Gerente do Jokenpo	90,10,10,{
 		if( getmapusers( .@map$ ) == 0 )
 			goto L_noplayers;
 		
-		npctalk "ParabÃ©ns a vocÃª que sobreviveu por Ãºltimo! Venha falar comigo para recolher seu prÃªmio!";
+		npctalk "Parabéns a você que sobreviveu por último! Venha falar comigo para recolher seu prêmio!";
+		.final_winner = 1;
 		end;
 }

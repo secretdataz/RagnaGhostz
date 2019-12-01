@@ -62,6 +62,38 @@ void clifmeg_send(int account_id, std::string pk, std::string data) {
 	WFIFOSET(meg.fd, data_len);
 }
 
+int clifmeg_send_sub(struct block_list *bl, va_list ap)
+{
+	struct block_list *src_bl;
+
+	nullpo_ret(src_bl = va_arg(ap, struct block_list*));
+
+	std::string pk = va_arg(ap, std::string);
+	std::string data = va_arg(ap, std::string);
+
+	clifmeg_send(bl->id, pk, data);
+
+	return 1;
+}
+
+// Envia mensagem para o chat
+// CMD:DISP:COLOR:MSG
+void clifmeg_dispbottom(int aid, std::string msg)
+{
+	std::string pk = msg;
+
+	clifmeg_send(aid, "DISP", pk);
+}
+
+// Mostra um Sticker no chat
+// CMD:STICKER:ID
+void clifmeg_sticker(int aid, std::string id)
+{
+	std::string pk = id;
+
+	clifmeg_send(aid, "STICKER", pk);
+}
+
 // Pede o MAC
 void clifmeg_requestmac(int aid)
 {

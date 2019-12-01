@@ -77,13 +77,14 @@ function	script	inst	{
 	
 	if( .@func$ == "REWARD" )
 	{
-		.@min = getarg(0);
-		.@max = getarg(1);
-		.@map$ = getarg(2);
+		.@min = getarg(1);
+		.@max = getarg(2);
+		.@map$ = getarg(3);
 		
 		$INSTANCE_REWARD = rand( .@min, .@max );
 		
-		addrid( 5, 0, instance_mapname( .@map$ ) );
+		//announce "oi" + .@map$,0;
+		addrid( 5, 0, .@map$ );
 		
 		.@rand = $INSTANCE_REWARD;
 
@@ -93,7 +94,7 @@ function	script	inst	{
 		dispbottom "Total de pontos: " + #EVENT_POINTS;
 		dispbottom "--------------------------------------------------";
 
-		party_destroy( getcharid(0) );
+		party_destroy( getcharid(1) );
 		end;
 	}
 

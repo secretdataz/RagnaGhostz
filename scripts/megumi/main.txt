@@ -52,6 +52,8 @@
 		if( FIRST_MASTERY_RECEIVED )
 			mastery( "LoadPlayerData", getcharid(0) );
 
+		megdisp getcharid(0),"#GREEN#Sincronização Completa";
+
 		dispbottom "[MEGUMI] Sincronização completa.";
 		
 		// Discord RPC
@@ -76,13 +78,14 @@
 			
 			#EVENT_POINTS += .@randeve;
 			#ONLINE_POINTS += .@rand;
-			dispbottom "--------------------------------------------------";
-			dispbottom "Você recebeu " + .@randeve + " pontos de evento!";
-			dispbottom "Total de pontos: " + #EVENT_POINTS;
-			dispbottom "--------------------------------------------------";
-			dispbottom "Você recebeu " + .@rand + " pontos de fidelidade!";
-			dispbottom "Total de pontos: " + #ONLINE_POINTS;
-			dispbottom "--------------------------------------------------";
+
+			megdisp getcharid(0),"#GREEN#--------------------------------------------------";
+			megdisp getcharid(0),"#GREEN#Você recebeu " + .@randeve + " pontos de evento!";
+			megdisp getcharid(0),"#GREEN#Total de pontos: " + #EVENT_POINTS;
+			megdisp getcharid(0),"#GREEN#--------------------------------------------------";
+			megdisp getcharid(0),"#GREEN#Você recebeu " + .@rand + " pontos de fidelidade!";
+			megdisp getcharid(0),"#GREEN#Total de pontos: " + #ONLINE_POINTS;
+			megdisp getcharid(0),"#GREEN#--------------------------------------------------";
 		}
 		end;
 }

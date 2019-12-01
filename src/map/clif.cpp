@@ -57,6 +57,7 @@
 #include "unit.hpp"
 #include "vending.hpp"
 #include "megumi.hpp"
+#include "clifmeg.hpp"
 
 static inline uint32 client_tick( t_tick tick ){
 	return (uint32)tick;
@@ -9846,12 +9847,45 @@ void clif_disp_overhead_(struct block_list *bl, const char* mes, enum send_targe
 		clif_send(buf, WBUFW(buf,2), bl, AREA_CHAT_WOC);
 	}
 
+	map_foreachinallarea(clifmeg_send_sub, bl->m, bl->x - (AREA_SIZE - 5), bl->y - (AREA_SIZE - 5),
+		bl->x + (AREA_SIZE - 5), bl->y + (AREA_SIZE - 5), BL_PC, bl, std::string("DISP"), std::string(mes));
+
 	// send back message to the speaker
 	if( bl->type == BL_PC ) {
 		WBUFW(buf,0) = 0x8e;
 		WBUFW(buf, 2) = len_mes + 4;
 		safestrncpy(WBUFCP(buf,4), mes, len_mes);
 		clif_send(buf, WBUFW(buf,2), bl, SELF);
+	}
+}
+
+/// Public chat message (ZC_NOTIFY_CHAT). lordalfa/Skotlex - used by @me as well
+/// 008d <packet len>.W <id>.L <message>.?B
+void clif_disp_overhead_sticker(struct block_list *bl, const char* mes, enum send_target flag)
+{
+	unsigned char buf[256]; //This should be more than sufficient, the theorical max is CHAT_SIZE + 8 (pads and extra inserted crap)
+	int len_mes = strlen(mes) + 1; //Account for \0
+
+	if (len_mes > sizeof(buf) - 8) {
+		ShowError("clif_disp_overhead: Message too long (length %d)\n", len_mes);
+		len_mes = sizeof(buf) - 8; //Trunk it to avoid problems.
+	}
+
+	// send message to others
+	if (flag == AREA) {
+		WBUFW(buf, 0) = 0x8d;
+		WBUFW(buf, 2) = len_mes + 8; // len of message + 8 (command+len+id)
+		WBUFL(buf, 4) = bl->id;
+		safestrncpy(WBUFCP(buf, 8), mes, len_mes);
+		clif_send(buf, WBUFW(buf, 2), bl, AREA_CHAT_WOC);
+	}
+
+	// send back message to the speaker
+	if (bl->type == BL_PC) {
+		WBUFW(buf, 0) = 0x8e;
+		WBUFW(buf, 2) = len_mes + 4;
+		safestrncpy(WBUFCP(buf, 4), mes, len_mes);
+		clif_send(buf, WBUFW(buf, 2), bl, SELF);
 	}
 }
 
