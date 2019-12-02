@@ -7,19 +7,19 @@ function	script	inst	{
 	// Monstro do Lago
 	.@nome_inst$[INSTANCIA_MONSTRO_DO_LAGO] = "Monstro do Lago";
 	.@desc$[INSTANCIA_MONSTRO_DO_LAGO] = "Enfrente o Monstro do Lago para ter chances de receber a Maestria [%s] e outros itens especiais!";
-	.@delay[INSTANCIA_MONSTRO_DO_LAGO] = 35;
+	.@delay[INSTANCIA_MONSTRO_DO_LAGO] = 60;
 	.@item[INSTANCIA_MONSTRO_DO_LAGO] = 29558;
 
 	// Rei Arthur
 	.@nome_inst$[INSTANCIA_MEMORIA_DE_REI_ARTHUR] = "Memoria do Rei Arthur";
 	.@desc$[INSTANCIA_MEMORIA_DE_REI_ARTHUR] = "Enfrente a Memória de Rei Arthur para ter chances de receber a Maestria [%s] e outros itens especiais!";
-	.@delay[INSTANCIA_MEMORIA_DE_REI_ARTHUR] = 55;
+	.@delay[INSTANCIA_MEMORIA_DE_REI_ARTHUR] = 100;
 	.@item[INSTANCIA_MEMORIA_DE_REI_ARTHUR] = 29559;
 	
 	// Pesadelo Musical
 	.@nome_inst$[INSTANCIA_PESADELO_MUSICAL] = "Pesadelo Musical";
 	.@desc$[INSTANCIA_PESADELO_MUSICAL] = "Passe pelo teste do Piano Amaldiçoado e então o enfrente para ter chances de receber a Maestria [%s] e outros itens especiais!";
-	.@delay[INSTANCIA_PESADELO_MUSICAL] = 90;
+	.@delay[INSTANCIA_PESADELO_MUSICAL] = 110;
 	.@item[INSTANCIA_PESADELO_MUSICAL] = 29561;
 
 	// Vida de Espião
@@ -27,6 +27,12 @@ function	script	inst	{
 	.@desc$[INSTANCIA_VIDA_DE_ESPIAO] = "Passe pelos guardas e enfrente a horda dos monstros para ter chances de receber a Maestria [%s] e outros itens especiais!";
 	.@delay[INSTANCIA_VIDA_DE_ESPIAO] = 120;
 	.@item[INSTANCIA_VIDA_DE_ESPIAO] = 29564;
+	
+	// Labirinto das Fadas
+	.@nome_inst$[INSTANCIA_LABIRINTO_DAS_FADAS] = "Labirinto das Fadas";
+	.@desc#[INSTANCIA_LABIRINTO_DAS_FADAS] = "Descubra como passar pelo Labirinto das Fadas e enfrente o Dragão Ztsohg para ter chances de receber a Maestria [%s] e outros itens especiais!";
+	.@delay[INSTANCIA_LABIRINTO_DAS_FADAS] = 150;
+	.@item[INSTANCIA_LABIRINTO_DAS_FADAS] = 29564;
 	
 	if( .@func$ == "INICIO" )
 	{

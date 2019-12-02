@@ -1,0 +1,252 @@
+
+// Maestria: Pele de Dragão
+//           No nível máximo, enquanto você estiver com mais de 80% de vida não pode receber dano maior que 90% da sua vida máxima.
+//           Nivel Máximo: 3
+
+// Carta: Dragão Ztsohg
+//        -10% de HP Máximo, +7 de DEF
+//        Ao receber dano físico concede 1% de chance de auto conjurar [Corpo Fechado]
+// Equipa em: Capa
+
+phtownall,338,203,5	Script	Labirinto dos Elfos	624,{
+	
+	inst( "INICIO", getcharid(0), INSTANCIA_LABIRINTO_DAS_FADAS );
+	end;
+
+}
+
+e_woods2,102,71,5	Script	Ztsohg	2131,{
+
+	if( getpartyleader( getcharid(1), 2 ) != getcharid(0) )
+	{
+		npctalk "Onde está seu líder?";
+		end;
+	}
+	
+	if( 'BOSS > 0 ) end;
+	
+	'BOSS = 1;
+	
+	.@talk$[0] = "Fadas tolas. Acham que o grupo " + strcharinfo(1) + " é capaz de me derrotar?";
+	.@sleep[0] = 5500;
+	
+	.@talk$[1] = "Irei mostrar minha Ira!";
+	.@sleep[1] = 5000;
+		
+	for( ; .@i < getarraysize( .@talk$ ); .@i++ )
+	{
+		npctalk .@talk$[.@i],"",BC_AREA,0xFF8C00;
+		sleep2 .@sleep[.@i];
+	}
+	
+	sleep2 3000;
+	
+	unittalk getcharid(3),sprintf( "Atenção [%s], preparem-se para a batalha!", strcharinfo(1) );
+
+	sleep 5000;
+	
+	setnpcdisplay( instance_npcname( "Ztsohg" ), -1 );
+	
+	sleep2 1000;
+	
+	monster instance_mapname( strcharinfo(3) ),63,104,"Dragão Ztsohg",2131,1,instance_npcname("Navi#IN1") + "::OnKillBoss";
+	end;
+}
+
+//Boss Dragão Ztsohg
+e_woods3,102,71,5	duplicate(Ztsohg)	Ztsohg#3	3637
+e_woods4,102,71,5	duplicate(Ztsohg)	Ztsohg#4	3637
+e_woods5,102,71,5	duplicate(Ztsohg)	Ztsohg#5	3637
+
+e_woods,142,65,5	duplicate( #e_woodsYCima)	 #e_woodsYDireita	-1,15,15
+e_woods,61,74,5	duplicate( #e_woodsYCima)	 #e_woodsYEsquerda	-1,15,15
+e_woods,101,34,5	duplicate( #e_woodsYCima)	 #e_woodsYBaixo	-1,15,15
+
+//Dicas
+e_woods,101,109,5	Script	 #e_woodsYCima	-1,15,15,{
+
+	end;
+	
+	OnTouch:
+		if( mobcount(instance_mapname(strnpcinfo(4)),instance_npcname(strnpcinfo(0)) + "::OnGuardKilled") > 0 )
+			end;
+
+		setarray .@portais$[1],"Cima","Direita","Esquerda","Baixo";
+
+		explode(.@portal$, strnpcinfo(2), "Y");
+
+		if( countitem( 'ItemID ) > 0 && .@portais$['portal_certo] == .@portal$[1])
+		{
+			playBGM "107";
+			end;
+		}
+		
+		playBGM "106";
+		end;
+}
+
+//Portais
+e_woods,101,109,5	Script	 #e_woodsPCima	45,1,1,{
+
+	end;
+	
+	OnTouch:
+		if(getpartyleader(getcharid(1),2)!=getcharid(0)) end;
+
+		setarray .@portais$[1],"Cima","Direita","Esquerda","Baixo";
+
+		explode(.@portal$, strnpcinfo(2), "P");
+		
+		if(.@portais$['portal_certo] == .@portal$[1])
+		{
+			playBGMall "106",instance_mapname(strcharinfo(3));
+			'right_gates--;
+			
+			.@temp = 'portal_certo;
+			
+			if(.@temp == 1) .@temp = 4;
+			else if(.@temp == 2) .@temp = 3;
+			else if(.@temp == 3) .@temp = 2;
+			else if(.@temp == 4) .@temp = 1;
+			
+			.@rand = rand(1,4);
+			
+			while(.@rand==.@temp)
+				.@rand = rand(1,4);
+				
+			'portal_certo = .@rand;
+
+			setnpcdisplay( instance_npcname(" #e_woodsYCima"), -1 );
+			setnpcdisplay( instance_npcname(" #e_woodsYDireita"), -1 );
+			setnpcdisplay( instance_npcname(" #e_woodsYEsquerda"), -1 );
+			setnpcdisplay( instance_npcname(" #e_woodsYBaixo"), -1 );
+			
+			setnpcdisplay( instance_npcname(" #e_woodsPCima"), -1 );
+			setnpcdisplay( instance_npcname(" #e_woodsPDireita"), -1 );
+			setnpcdisplay( instance_npcname(" #e_woodsPEsquerda"), -1 );
+			setnpcdisplay( instance_npcname(" #e_woodsPBaixo"), -1 );
+			
+			monster instance_mapname(strnpcinfo(4)),0,0,"Guardião da Floresta",1277,rand(7,25),instance_npcname("Navi#IN1") + "::OnGuardKilled";	
+		}
+		else
+		{
+			'right_gates += rand(5,10);
+		}
+		
+		if( getgroupid() == 99 )
+			dispbottom "'right_gates: " 'right_gates;
+		
+		.@m$ = instance_mapname(strcharinfo(3));
+		
+		if('right_gates <= 0)
+		{
+			if(.@portal$[1]=="Cima") mapwarp .@m$,instance_mapname("e_woods5"),101,40;
+			else if(.@portal$[1]=="Direita") mapwarp .@m$,instance_mapname("e_woods3"),66,75;
+			else if(.@portal$[1]=="Esquerda") mapwarp .@m$,instance_mapname("e_woods4"),138,65;
+			else if(.@portal$[1]=="Baixo") mapwarp .@m$,instance_mapname("e_woods2"),101,106;		
+			playBGMall "107",.@m$;
+			end;
+		}
+		
+		if(.@portal$[1]=="Cima") mapwarp .@m$,.@m$,101,40;
+		else if(.@portal$[1]=="Direita") mapwarp .@m$,.@m$,66,75;
+		else if(.@portal$[1]=="Esquerda") mapwarp .@m$,.@m$,138,65;
+		else if(.@portal$[1]=="Baixo") mapwarp .@m$,.@m$,101,106;
+		
+		playBGMall "106",.@m$;
+		
+		cleanmap instance_mapname( "e_woods" );
+		end;
+}
+
+e_woods,142,65,5	duplicate( #e_woodsPCima)	 #e_woodsPDireita	45,1,1
+e_woods,61,74,5	duplicate( #e_woodsPCima)	 #e_woodsPEsquerda	45,1,1
+e_woods,101,34,5	duplicate( #e_woodsPCima)	 #e_woodsPBaixo	45,1,1
+
+e_woods,1,1,5	Script	Navi#IN1	624,{
+
+	if( getpartyleader( getcharid(1), 2 ) != getcharid(0) )
+	{
+		npctalk "Onde está seu líder?";
+		end;
+	}
+	
+	if( 'NAVI > 0 ) end;
+	
+	'NAVI = 1;
+	
+	.@talk$[0] = "Obrigado por atender meu chamado!";
+	.@sleep[0] = 1500;
+
+	.@talk$[1] = "Estamos com sérios problemas, o Dragão Ztsohg acordou e está nos atacando!";
+	.@sleep[1] = 5000;
+
+	.@talk$[2] = "Eu estou muito ferida para lhe guiar pela floresta até ele... mas eu sei que vocês são são capazes de decifrar o segredo do labirinto!";
+	.@sleep[2] = 7500;
+
+	.@talk$[3] = "Por favor, o derrotem!";
+	.@sleep[3] = 3000;
+
+	for( ; .@i < getarraysize( .@talk$ ); .@i++ )
+	{
+		npctalk .@talk$[.@i],"",BC_AREA,0xFF8C00;
+		sleep2 .@sleep[.@i];
+	}
+	
+	inst( "DESTROY_BARRICADE", instance_mapname( "e_woods" ), 86, 54, 117, 54, instance_npcname( strnpcinfo(0) ) + "::OnBarricade" );
+	
+	sleep 3000;
+	setnpcdisplay( instance_npcname( strnpcinfo(0) ), -1 );
+	monster instance_mapname(strnpcinfo(4)),0,0,"Guardião da Floresta",1277,rand(7,25),instance_npcname("Navi#IN1") + "::OnGuardKilled";	
+	end;
+	
+	OnGuardKilled:
+		if(mobcount(instance_mapname(strnpcinfo(4)),instance_npcname(strnpcinfo(0)) + "::OnGuardKilled")==0)
+		{
+			soundeffectall "learnSkill.wav",0;
+			sleep 3000;
+			setnpcdisplay( instance_npcname(" #e_woodsYCima"), -1 );
+			setnpcdisplay( instance_npcname(" #e_woodsYDireita"), -1 );
+			setnpcdisplay( instance_npcname(" #e_woodsYEsquerda"), -1 );
+			setnpcdisplay( instance_npcname(" #e_woodsYBaixo"), -1 );
+			
+			setnpcdisplay( instance_npcname(" #e_woodsPCima"), 45 );
+			setnpcdisplay( instance_npcname(" #e_woodsPDireita"), 45 );
+			setnpcdisplay( instance_npcname(" #e_woodsPEsquerda"), 45 );
+			setnpcdisplay( instance_npcname(" #e_woodsPBaixo"), 45 );
+		}	
+		end;
+		
+	OnKillBoss:
+		mapannounce instance_mapname( strcharinfo(3) ),"O Dragão Ztsohg foi derrotado!",bc_map,"0x00CED1";
+		dispbottom "Desfazendo Grupo em 7 segundos...";
+		sleep 7000;
+		inst( "REWARD", 15, 60, instance_mapname( "2@mir" ) );
+		end;
+	
+	OnInstanceInit:
+		setnpcdisplay( instance_npcname( strnpcinfo(0) ), 624 );
+		'ItemID = 0;
+		'NAVI = 0;
+		'pTotal = 0;
+		'BOSS = 0;
+		
+		inst( "DESTROY_BARRICADE", instance_mapname( "e_woods" ), 86, 54, 117, 54, instance_npcname( strnpcinfo(0) ) + "::OnBarricade" );
+		inst( "DEPLOY_BARRICADE", instance_mapname( "e_woods" ), 86, 54, 117, 54, instance_npcname( strnpcinfo(0) ) + "::OnBarricade" );
+		
+		setnpcdisplay( instance_npcname(" #e_woodsYCima"), -1 );
+		setnpcdisplay( instance_npcname(" #e_woodsYDireita"), -1 );
+		setnpcdisplay( instance_npcname(" #e_woodsYEsquerda"), -1 );
+		setnpcdisplay( instance_npcname(" #e_woodsYBaixo"), -1 );
+		
+		setnpcdisplay( instance_npcname(" #e_woodsPCima"), -1 );
+		setnpcdisplay( instance_npcname(" #e_woodsPDireita"), -1 );
+		setnpcdisplay( instance_npcname(" #e_woodsPEsquerda"), -1 );
+		setnpcdisplay( instance_npcname(" #e_woodsPBaixo"), -1 );
+		
+		'right_gates = rand(7,15);
+		
+		setarray .@portais$[1],"Cima","Direita","Esquerda","Baixo";
+		'portal_certo = rand(1,4);
+		end;
+}

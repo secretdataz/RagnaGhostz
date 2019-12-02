@@ -346,7 +346,7 @@ function	script	F_Torre_Monstros	{
 				
 			case 9: // 53 ~~ 58
 				setarray .@ms$[0],"Eggyra|1116|10",
-				                  "Pau|1277|5",
+				                  "Mumiã|1593|5",
 								  "Mimíco|1191|5",
 								  "Jacaré|1271|7",
 								  "Frilldora|1119|5",
