@@ -811,6 +811,9 @@ struct map_session_data {
 	std::vector<int> copycatme;
 
 	uint32 megHash;
+
+	//Chat
+	std::string chat_icon;
 };
 
 extern struct eri *pc_sc_display_ers; /// Player's SC display table

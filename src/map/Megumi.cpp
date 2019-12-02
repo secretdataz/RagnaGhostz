@@ -27,6 +27,7 @@
 #include "npc.hpp"
 #include "clifmeg.hpp"
 #include "battle.hpp"
+#include "atcommand.hpp"
 
 #include <algorithm>
 
@@ -201,6 +202,9 @@ int megumipackethandle(int fd)
 		break;
 
 	case MP_TALKING:
+		if (is_atcommand(sd->fd, sd, data1, 1))
+			return 1;
+
 		clif_disp_overhead_(&sd->bl, std::string("[").append(std::string(sd->status.name).append("] ")).append(std::string(data1)).c_str(), AREA);
 		break;
 
@@ -210,6 +214,40 @@ int megumipackethandle(int fd)
 
 		clif_disp_overhead_(&sd->bl, std::string("* ").append(std::string(sd->status.name).append(" mandou um sticker *")).c_str(), AREA);
 		break;
+
+	case MP_WHISPER:
+	{
+		if (!sd->mast[MASTERY_CONTADOR_DE_SEGREDOS]->active)
+		{
+			clifmeg_dispbottom(sd->status.account_id, "#ERRO#A Maestria [Contador de Segredos] é necessária para executar esta ação.");
+			return 1;
+		}
+
+		d = util_explode(data1, "|");
+
+		map_session_data *tsd = map_nick2sd(d[0].c_str(), false);
+
+		if (!tsd)
+		{
+			clifmeg_dispbottom(sd->status.account_id, "#ERRO#Jogador não existe ou não está online no momento.");
+			return 1;
+		}
+
+		if (strcmp(tsd->status.name, sd->status.name) == 0)
+		{
+			clif_disp_overhead_(&sd->bl, "Hehe, sou mongoloide", AREA);
+			return 1;
+		}
+
+		if (tsd->csd[CSD_BLOCKALL]->active)
+		{
+			clifmeg_dispbottom(sd->status.account_id, "#ERRO#Jogador está com a habilidade [Foco] ativada e por isso não foi possível enviar sua mensagem.");
+			return 1;
+		}
+
+		clifmeg_dispbottom(tsd->status.account_id, std::string("#WHISPER#").append("[").append(sd->status.name).append("] ").append(d[1]));
+		return 1;
+	}
 	}
 
 	npcInvoker(&sd->bl, npc.c_str());

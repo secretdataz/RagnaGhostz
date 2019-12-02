@@ -101,6 +101,7 @@ phtownall,339,324,3	Script	Senhora das Maestrias	10168,{
 
 	cutin "jp_dux_thia01",255;
 
+	npcicon( "MASTERY" );
 	npctalk "Sei que você irá ficar cada vez mais forte, " + strcharinfo(0) + "!";
 	end;
 }

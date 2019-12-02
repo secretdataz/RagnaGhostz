@@ -110,6 +110,7 @@ struct npc_data {
 	} viewrequire;
 
 	int invokerid;
+	std::string chat_icon;
 };
 
 struct eri;

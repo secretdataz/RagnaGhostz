@@ -24,7 +24,8 @@ enum e_megumi_packet
 	MP_REFRESHMASTERY,
 	MP_SENDMAC,
 	MP_TALKING,
-	MP_STICK
+	MP_STICK,
+	MP_WHISPER,
 };
 
 enum e_const_cleardata

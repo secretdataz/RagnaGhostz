@@ -87,7 +87,7 @@ job_duncer,63,104,4	script	Piano Maldito	3073,{
 	
 	end;
 	
-	OnBossKill:
+	OnKillBoss:
 		mapannounce instance_mapname( "job_duncer" ),"O Piano Maldito foi derrotado!",bc_map,"0x00CED1";
 		'PIANO = 10;
 		dispbottom "Desfazendo Grupo em 7 segundos...";
@@ -168,7 +168,7 @@ job_duncer,69,110,4	script	Meio#0	723,1,1,{
 		setnpcdisplay( instance_npcname( "Direita#4" ), -1 );
 
 		sleep2 1000;
-		monster instance_mapname( strcharinfo(3) ),63,104,"Piano Maldito",3073,1,instance_npcname( "Aile#IN1" ) + "::OnKillBoss";
+		monster instance_mapname( strcharinfo(3) ),63,104,"Piano Maldito",3073,1,instance_npcname( "Piano Maldito" ) + "::OnKillBoss";
 	}
 	
 	end;

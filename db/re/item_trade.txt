@@ -754,8 +754,8 @@
 6208,499,100	// I_Respect_You
 6218,507,100	// Disin_Delivery_Box
 6219,507,100	// Para_Team_Mark
-6225,475,100	// HD_Carnium
-6226,475,100	// HD_Bradium
+6225,466,100	// HD_Carnium
+6226,466,100	// HD_Bradium
 6228,475,100	// Guarantee_Weapon_9Up
 6229,475,100	// Guarantee_Weapon_8Up
 6230,475,100	// Guarantee_Weapon_7Up
@@ -3936,7 +3936,7 @@
 18100,507,100	// Shooting_Star_C
 18106,499,100	// P_Bow3
 18107,507,100	// Malang_Snow_Crab
-18108,505,100	// Brindle_Eel
+18108,496,100	// Brindle_Eel
 18112,1,100	// Upg_Bow
 18116,499,100	// Metal_Bow
 18118,499,100	// TE_Woe_Bow

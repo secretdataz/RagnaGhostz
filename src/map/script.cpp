@@ -24939,6 +24939,22 @@ BUILDIN_FUNC(changedir)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+// chaticon( "ICON", { NPC_NAME } )
+BUILDIN_FUNC(npcicon)
+{
+	struct npc_data* nd = NULL;
+
+	if (script_hasdata(st, 3) && strlen(script_getstr(st, 3)) > 0)
+		nd = npc_name2id(script_getstr(st, 3));
+	else
+		nd = (struct npc_data *)map_id2bl(st->oid);
+
+	if (nd != NULL)
+		nd->chat_icon = script_getstr(st, 2);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
 
 #include "../custom/script.inc"
 
@@ -25012,6 +25028,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(unitmove,"iii"),
 	BUILDIN_DEF(changedir,"ii"),
 	BUILDIN_DEF(megdisp,"is"),
+	BUILDIN_DEF(npcicon,"s?"),
 	// NPC interaction
 	BUILDIN_DEF(mes,"s*"),
 	BUILDIN_DEF(next,""),

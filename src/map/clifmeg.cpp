@@ -18,7 +18,8 @@
 #include "../common/strlib.hpp"
 #include "../common/timer.hpp"
 #include "../common/utils.hpp"
-
+#include "battle.hpp"
+#include "party.hpp"
 #include "pc.hpp"
 #include "megumi.hpp"
 
@@ -74,6 +75,142 @@ int clifmeg_send_sub(struct block_list *bl, va_list ap)
 	clifmeg_send(bl->id, pk, data);
 
 	return 1;
+}
+
+int clifmeg_broadcast(struct block_list *bl, std::string pk, std::string data, int target)
+{
+	if (target != ALL_CLIENT)
+		nullpo_ret(bl);
+
+	struct map_session_data *sd = BL_CAST(BL_PC, bl);
+	struct map_session_data *tsd;
+	struct party_data *p = NULL;
+	struct guild *g = NULL;
+
+	int x0 = 0, x1 = 0, y0 = 0, y1 = 0, fd, i;
+	struct s_mapiterator* iter;
+
+	switch (target)
+	{
+	case ALL_CLIENT:
+		iter = mapit_getallusers();
+		while ((tsd = (TBL_PC*)mapit_next(iter)) != NULL) {
+			clifmeg_send(tsd->status.account_id, pk, data);
+		}
+		mapit_free(iter);
+		break;
+
+	case ALL_SAMEMAP:
+		iter = mapit_getallusers();
+		while ((tsd = (TBL_PC*)mapit_next(iter)) != NULL)
+		{
+			if (bl->m == tsd->bl.m) {
+				clifmeg_send(tsd->status.account_id, pk, data);
+			}
+		}
+		mapit_free(iter);
+		break;
+
+	case AREA:
+	case AREA_WOSC:
+		if (sd && bl->prev == NULL) //Otherwise source misses the packet.[Skotlex]
+			clifmeg_send(sd->status.account_id, pk, data);
+	case AREA_WOC:
+	case AREA_WOS:
+		map_foreachinallarea(clifmeg_send_sub, bl->m, bl->x - AREA_SIZE, bl->y - AREA_SIZE, bl->x + AREA_SIZE, bl->y + AREA_SIZE,
+			BL_PC, bl, pk, data);
+		break;
+	case AREA_CHAT_WOC:
+		map_foreachinallarea(clifmeg_send_sub, bl->m, bl->x - (AREA_SIZE - 5), bl->y - (AREA_SIZE - 5),
+			bl->x + (AREA_SIZE - 5), bl->y + (AREA_SIZE - 5), BL_PC, bl, pk, data);
+		break;
+
+	case PARTY_AREA:
+	case PARTY_AREA_WOS:
+		x0 = bl->x - AREA_SIZE;
+		y0 = bl->y - AREA_SIZE;
+		x1 = bl->x + AREA_SIZE;
+		y1 = bl->y + AREA_SIZE;
+	case PARTY:
+	case PARTY_WOS:
+	case PARTY_SAMEMAP:
+	case PARTY_SAMEMAP_WOS:
+		if (sd && sd->status.party_id)
+			p = party_search(sd->status.party_id);
+
+		if (p) {
+			for (i = 0; i < MAX_PARTY; i++) {
+				if ((sd = p->data[i].sd) == NULL)
+					continue;
+
+				if (!(fd = sd->fd))
+					continue;
+
+				if (sd->bl.id == bl->id && (target == PARTY_WOS || target == PARTY_SAMEMAP_WOS || target == PARTY_AREA_WOS))
+					continue;
+
+				if (target != PARTY && target != PARTY_WOS && bl->m != sd->bl.m)
+					continue;
+
+				if ((target == PARTY_AREA || target == PARTY_AREA_WOS) && (sd->bl.x < x0 || sd->bl.y < y0 || sd->bl.x > x1 || sd->bl.y > y1))
+					continue;
+
+				clifmeg_send(sd->status.account_id, pk, data);
+			}
+		}
+		break;
+
+	case SELF:
+		if (sd && (fd = sd->fd)) {
+			clifmeg_send(sd->status.account_id, pk, data);
+		}
+		break;
+
+	case GUILD_AREA:
+	case GUILD_AREA_WOS:
+		x0 = bl->x - AREA_SIZE;
+		y0 = bl->y - AREA_SIZE;
+		x1 = bl->x + AREA_SIZE;
+		y1 = bl->y + AREA_SIZE;
+	case GUILD_SAMEMAP:
+	case GUILD_SAMEMAP_WOS:
+	case GUILD:
+	case GUILD_WOS:
+	case GUILD_NOBG:
+		if (sd && sd->status.guild_id)
+			g = sd->guild;
+
+		if (g) {
+			for (i = 0; i < g->max_member; i++) {
+				if ((sd = g->member[i].sd) != NULL)
+				{
+					if (!(fd = sd->fd))
+						continue;
+
+					if (target == GUILD_NOBG && sd->bg_id)
+						continue;
+
+					if (sd->bl.id == bl->id && (target == GUILD_WOS || target == GUILD_SAMEMAP_WOS || target == GUILD_AREA_WOS))
+						continue;
+
+					if (target != GUILD && target != GUILD_NOBG && target != GUILD_WOS && sd->bl.m != bl->m)
+						continue;
+
+					if ((target == GUILD_AREA || target == GUILD_AREA_WOS) && (sd->bl.x < x0 || sd->bl.y < y0 || sd->bl.x > x1 || sd->bl.y > y1))
+						continue;
+
+					clifmeg_send(sd->status.account_id, pk, data);
+				}
+			}
+		}
+		break;
+
+	default:
+		ShowError("clif_megsend: Unrecognized target %d\n", target);
+		return -1;
+	}
+
+	return 0;
 }
 
 // Envia mensagem para o chat

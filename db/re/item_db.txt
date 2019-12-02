@@ -1719,7 +1719,7 @@
 2894,Glove_Of_Shura,Luva de Shura,4,20,,400,,1,,0,0x00008000,63,2,136,,130,0,0,{ bonus bStr,5; bonus bMaxSPrate,6; bonus bMaxHPrate,-6; if(readparam(bStr)>=120){ bonus bBaseAtk,30; } },{},{}
 2898,Black_Rosary,Rosário Preto,4,20,,100,,0,,1,0xFFFFFFFF,63,2,136,,90,0,0,{ bonus bMdef,15; },{},{}
 2899,Sound_Amplifier,Amplificador de Som,4,20,,100,,0,,1,0x00080800,63,2,136,,90,0,0,{ bonus2 bSkillAtk,"WM_METALICSOUND",150; bonus2 bSkillUseSP,"WM_METALICSOUND",-60; bonus bVariableCastrate,-50; },{},{}
-2904,Naqsh,Naqsh,4,0,,0,,0,,0,0xFFFFFFFF,63,2,136,,0,0,0,{ skill "BS_MAXIMIZE",5; skill "BS_WEAPONPERFECT",5; skill "WL_RECOGNIZEDSPELL",5; skill "ECL_SNOWFLIP",1; skill "ECL_PEONYMAMY",1; skill "ECL_SADAGUI",1; skill "ECL_SEQUOIADUST",1; bonus2 bSkillCooldown,"WL_RECOGNIZEDSPELL",-180000; bonus bDelayRate,-100; },{},{}
+2904,Naqsh,Naqsh,4,0,,0,,0,,0,0xFFFFFFFF,63,2,136,,0,0,0,{},{},{}
 2906,Happy_Gauntlet,Manopla do Mineiro Sortudo,4,20,,1000,,3,,1,0xFFFFFFFF,63,2,136,,70,0,0,{ bonus bMdef,3; },{},{}
 2907,Buwaya_Tattoo,Tatuagem Amuleto de Buwaya,4,20,,100,,0,,0,0xFFFFFFFF,63,2,136,,1,0,0,{ bonus bMatkRate,7; bonus bFixedCastrate,-7; },{},{}
 2910,Bakonawa_Tattoo,Tatuagem Amuleto de Bakonawa,4,20,,100,,0,,0,0xFFFFFFFF,63,2,136,,1,0,0,{ bonus2 bAddClass,Class_All,7; bonus bAspdRate,10; },{},{}

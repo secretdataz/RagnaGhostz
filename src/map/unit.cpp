@@ -1024,6 +1024,20 @@ void unit_attacheffect(struct block_list *bl, int effect, bool enable, bool igno
 	clif_hat_effect_single(bl, effect, enable);
 }
 
+std::string unit_getchaticon(struct block_list* bl)
+{
+	switch (bl->type)
+	{
+	case BL_PC:
+		return BL_CAST(BL_PC, bl)->chat_icon;
+
+	case BL_NPC:
+		return BL_CAST(BL_NPC, bl)->chat_icon;
+	}
+
+	return "";
+}
+
 /**
  * Sets direction of a unit
  * @param bl: Object to set direction

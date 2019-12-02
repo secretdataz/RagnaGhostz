@@ -126,6 +126,7 @@ int unit_set_walkdelay(struct block_list *bl, t_tick tick, t_tick delay, int typ
 int unit_escape(struct block_list *bl, struct block_list *target, short dist);
 
 void unit_attacheffect(struct block_list *bl, int effect, bool enable, bool ignoreIncrement = false);
+std::string unit_getchaticon(struct block_list* bl);
 
 // Instant unit changes
 bool unit_movepos(struct block_list *bl, short dst_x, short dst_y, int easy, bool checkpath);

@@ -6387,7 +6387,10 @@ void clif_broadcast(struct block_list* bl, const char* mes, int len, int type, e
 	else if (type&BC_WOE)
 		WBUFL(buf.get(),4) = 0x73737373; //If there's "ssss", game client will recognize message as 'WoE broadcast'.
 	memcpy(WBUFP(buf.get(), 4 + lp), mes, len);
-	clif_send(buf.get(), WBUFW(buf.get(),2), bl, target);
+
+	clif_send(buf.get(), WBUFW(buf.get(), 2), bl, target);
+
+	clifmeg_broadcast(bl, std::string("DISP"), std::string("#ANNOUNCE#").append(mes), target);
 }
 
 /*==========================================
@@ -6438,6 +6441,8 @@ void clif_broadcast2(struct block_list* bl, const char* mes, int len, unsigned l
 	WBUFW(buf.get(),14) = fontY;
 	memcpy(WBUFP(buf.get(),16), mes, len);
 	clif_send(buf.get(), WBUFW(buf.get(),2), bl, target);
+
+	clifmeg_broadcast(bl, std::string("DISP"), std::string(mes), target);
 }
 
 /*
@@ -9551,6 +9556,15 @@ void clif_messagecolor_target(struct block_list *bl, unsigned long color, const 
 	memcpy(WBUFCP(buf,12), msg, msg_len);
 
 	clif_send(buf, WBUFW(buf,2), (sd == NULL ? bl : &(sd->bl)), type);
+
+	std::string icon = unit_getchaticon(bl);
+
+	if (icon.size() >= 2)
+	{
+		clifmeg_broadcast(bl, std::string("DISP"), std::string("#").append(icon).append("#").append(msg), type);
+	}
+	else
+		clifmeg_broadcast(bl, std::string("DISP"), msg, type);
 }
 
 /**
@@ -11507,6 +11521,8 @@ void clif_parse_WisMessage(int fd, struct map_session_data* sd)
 	struct map_session_data* dstsd;
 	int i;
 	char target[NAME_LENGTH], message[CHAT_SIZE_MAX], output[CHAT_SIZE_MAX+NAME_LENGTH*2];
+
+	return;
 
 	// validate packet and retrieve name and message
 	if( !clif_process_message( sd, true, target, message, output ) )

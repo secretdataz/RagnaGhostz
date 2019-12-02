@@ -320,7 +320,7 @@ gef_tower,56,85,2	script	Espião#geft2	899,11,0,{
 
 gef_tower,111,123,5	script	Estagiário Comunista	429,{
 
-	if( 'GUARDA == 3) end;
+	if( 'GUARDA >= 3) end;
 
 	.@n$ = "[^DAA520Estagiário Comunista^000000]";
 	
@@ -347,7 +347,7 @@ gef_tower,111,123,5	script	Estagiário Comunista	429,{
 			
 			dispbottom "Desfazendo Grupo em 7 segundos...";
 			sleep 7000;
-			inst( "REWARD", 30, 90, instance_mapname( "gld_dun02" ) );		
+			inst( "REWARD", 30, 90, instance_mapname( "gef_tower" ) );		
 		}
 		end;
 }

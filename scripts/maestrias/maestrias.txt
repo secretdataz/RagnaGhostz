@@ -201,7 +201,7 @@ function	script	mastery	{
 			       " WHERE `bound` = " + .@refid +
 			       "   AND `mastery_id` = " + .@mastery_id );
 
-		dispbottom "A maestria [" + .@nome$ + "] agora está no nível (" + .@mastery_newlevel + ").";
+		megdisp getcharid(0), "#MAST_" + .@mastery_id + "#A maestria [" + .@nome$ + "] agora está no nível (" + .@mastery_newlevel + ").";
 
 		apply_mastery( .@mastery_id, .@mastery_newlevel, .@cid, 1 );
 		return;
