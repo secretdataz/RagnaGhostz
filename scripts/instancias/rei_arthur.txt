@@ -40,7 +40,7 @@ phtownall,338,203,5	Script	Memória do Rei Arthur	628 ,{
 
 	unittalk getcharid(3),sprintf( "Atenção [%s], preparem-se para a batalha!", strcharinfo(1) );
 
-	sleep 5000;
+	sleep2 5000;
 
 	monster instance_mapname( strcharinfo(3) ),101,95,"Memória do Rei Arthur",3599,1,instance_npcname( "Lancelot#IN1" ) + "::OnKillBoss";
 
