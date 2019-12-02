@@ -502,7 +502,7 @@ turbo_e_4,63,350,5	script	StartCheck#corrida	-1,1,30,{
 	end;
 	
 	OnInit:
-		for(.@i = 0; .@i < getarraysize($PRIMEIRO_LUGA$); .@i++)
+		for(.@i = 0; .@i < getarraysize($PRIMEIRO_LUGAR$); .@i++)
 			$PRIMEIRO_LUGAR$[.@i] = "";
 		
 		for(.@i = 0; .@i < getarraysize($SEGUNDO_LUGAR$); .@i++)
@@ -529,11 +529,20 @@ turbo_e_4,297,154,3	Script	CORRIDA_NPC	-1,{
 			.rand = 0;
 			announce "[Corrida RagnaGhostz]: Tivemos uma ótima corrida!",0;
 			sleep 3000;
-			announce "[Corrida RagnaGhostz]: O primeiro lugar foi de "+$PRIMEIRO_LUGAR$[7]+"!",0;
+			
+			if( $PRIMEIRO_LUGAR$[7] != "" )
+				announce "[Corrida RagnaGhostz]: O primeiro lugar foi de "+$PRIMEIRO_LUGAR$[7]+"!",0;
+
 			sleep 3000;
-			announce "[Corrida RagnaGhostz]: O segundo lugar foi de "+$SEGUNDO_LUGAR$[7]+"!",0;
+			
+			if( $SEGUNDO_LUGAR$[7] != "" )
+				announce "[Corrida RagnaGhostz]: O segundo lugar foi de "+$SEGUNDO_LUGAR$[7]+"!",0;
+				
 			sleep 3000;
-			announce "[Corrida RagnaGhostz]: O terceiro lugar foi de "+$TERCEIRO_LUGAR$[7]+"!",0;
+			
+			if( $TERCEIRO_LUGAR$[7] != "" )			
+				announce "[Corrida RagnaGhostz]: O terceiro lugar foi de "+$TERCEIRO_LUGAR$[7]+"!",0;
+
 			$RACE_START = 0;
 			$EVENT_STATE[EVENTID_CORRIDAMALUCA] = 0;
 			setcell strnpcinfo(4),62,379,62,350,cell_walkable,0;
@@ -544,11 +553,11 @@ turbo_e_4,297,154,3	Script	CORRIDA_NPC	-1,{
 	OnStart:
 		$CORRIDA_PORTAL = 0;
 
-		for(.@i = 0; .@i < getarraysize( $PRIMEIRO_LUGAR ); .@i++)
+		for(.@i = 0; .@i < getarraysize( $PRIMEIRO_LUGAR$ ); .@i++)
 		{
-			$PRIMEIRO_LUGAR[.@i] = "";
-			$SEGUNDO_LUGAR[.@i] = "";
-			$TERCEIRO_LUGAR[.@i] = "";
+			$PRIMEIRO_LUGAR$[.@i] = "";
+			$SEGUNDO_LUGAR$[.@i] = "";
+			$TERCEIRO_LUGAR$[.@i] = "";
 		}
 		
 		mapwarp strnpcinfo(4),strnpcinfo(4),59,364,0;
@@ -781,6 +790,8 @@ phtownall,61,360,5	Script	Corrida RagnaGhostz	497,{
 		end;
 		
 	OnIniciarEvento:
+		mapwarp "turbo_e_4","phtownall",200,190;
+
 		.@i = 1;
 		//removemapflag "flag_event",mf_pvp;
 		$RACE_START = 0;
