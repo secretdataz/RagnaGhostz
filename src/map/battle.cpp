@@ -1108,8 +1108,14 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 
 	if( sc && sc->count ) { // SC_* that reduce damage to 0.
 		if( sc->data[SC_BASILICA] && !status_bl_has_mode(src,MD_STATUS_IMMUNE) ) {
-			d->dmg_lv = ATK_BLOCK;
-			return 0;
+
+			if (src->type == BL_PC && BL_CAST(BL_PC, src)->mast[MASTERY_OLHOS_DE_SERPENTE_EX]->level == 75)
+				d->damage = d->damage / 2;
+			else
+			{
+				d->dmg_lv = ATK_BLOCK;
+				return 0;
+			}
 		}
 		if( sc->data[SC_WHITEIMPRISON] ) { // Gravitation and Pressure do damage without removing the effect
 			if( skill_id == MG_NAPALMBEAT ||
@@ -1133,7 +1139,15 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 		}
 
 		if (!battle_check_sc(src, bl, sc, d, damage, skill_id, skill_lv))
-			return 0;
+		{
+			if (src->type == BL_PC && BL_CAST(BL_PC, src)->mast[MASTERY_OLHOS_DE_SERPENTE_EX]->level == 75)
+			{
+				d->damage = d->damage / 2;
+				d->dmg_lv = ATK_DEF;
+			}
+			else
+				return 0;
+		}
 
 		if (sc->data[SC__MANHOLE] || (src->type == BL_PC && sc->data[SC_KINGS_GRACE])) {
 			d->dmg_lv = ATK_BLOCK;
@@ -1204,29 +1218,45 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 		}
 
 		if (sc->data[SC_DODGE] && (flag&BF_LONG || sc->data[SC_SPURT]) && rnd() % 100 < ( 20 + ((sd && sd->mast[MASTERY_CAMBALHOTA_EX]->active) ? sd->mast[MASTERY_CAMBALHOTA_EX]->level / 10 : 0))) {
-			if (sd && pc_issit(sd))
-				pc_setstand(sd, true); //Stand it to dodge.
-			clif_skill_nodamage(bl, bl, TK_DODGE, 1, 1);
-			sc_start4(src, bl, SC_COMBO, 100, TK_JUMPKICK, src->id, 1, 0, 2000);
-			return 0;
+
+			if (src->type == BL_PC && BL_CAST(BL_PC, src)->mast[MASTERY_OLHOS_DE_SERPENTE_EX]->level == 75)
+				d->damage = d->damage / 2;
+			else
+			{
+				if (sd && pc_issit(sd))
+					pc_setstand(sd, true); //Stand it to dodge.
+				clif_skill_nodamage(bl, bl, TK_DODGE, 1, 1);
+				sc_start4(src, bl, SC_COMBO, 100, TK_JUMPKICK, src->id, 1, 0, 2000);
+				return 0;
+			}
 		}
 
 		if(sc->data[SC_HERMODE] && flag&BF_MAGIC)
 			return 0;
 
-		if(sc->data[SC_TATAMIGAESHI] && (flag&(BF_MAGIC|BF_LONG)) == BF_LONG)
-			return 0;
+		if (sc->data[SC_TATAMIGAESHI] && (flag&(BF_MAGIC | BF_LONG)) == BF_LONG)
+		{
+			if (src->type == BL_PC && BL_CAST(BL_PC, src)->mast[MASTERY_OLHOS_DE_SERPENTE_EX]->level == 75)
+				d->damage = d->damage / 2;
+			else
+				return 0;
+		}
 
 		//Kaupe blocks damage (skill or otherwise) from players, mobs, homuns, mercenaries.
 		if ((sce = sc->data[SC_KAUPE]) && rnd()%100 < sce->val2) {
-			clif_specialeffect(bl, EF_STORMKICK4, AREA);
-			//Shouldn't end until Breaker's non-weapon part connects.
+			if (src->type == BL_PC && BL_CAST(BL_PC, src)->mast[MASTERY_OLHOS_DE_SERPENTE_EX]->level == 75)
+				d->damage = d->damage / 2;
+			else
+			{
+				clif_specialeffect(bl, EF_STORMKICK4, AREA);
+				//Shouldn't end until Breaker's non-weapon part connects.
 #ifndef RENEWAL
-			if (skill_id != ASC_BREAKER || !(flag&BF_WEAPON))
+				if (skill_id != ASC_BREAKER || !(flag&BF_WEAPON))
 #endif
-				if (--(sce->val3) <= 0) //We make it work like Safety Wall, even though it only blocks 1 time.
-					status_change_end(bl, SC_KAUPE, INVALID_TIMER);
-			return 0;
+					if (--(sce->val3) <= 0) //We make it work like Safety Wall, even though it only blocks 1 time.
+						status_change_end(bl, SC_KAUPE, INVALID_TIMER);
+				return 0;
+			}
 		}
 
 #ifdef RENEWAL // Flat +400% damage from melee
