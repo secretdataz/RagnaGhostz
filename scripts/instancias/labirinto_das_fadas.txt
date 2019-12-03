@@ -134,9 +134,7 @@ e_woods,101,109,5	Script	 #e_woodsPCima	45,1,1,{
 			setnpcdisplay( instance_npcname(" #e_woodsPEsquerda"), -1 );
 			setnpcdisplay( instance_npcname(" #e_woodsPBaixo"), -1 );
 			
-			monster instance_mapname(strnpcinfo(4)),0,0,"Guardião da Floresta",1277,rand(7,25),instance_npcname("Navi#IN1") + "::OnGuardKilled";
-
-			getmapunits( BL_PC, instance_mapname(strnpcinfo(4)), .@players$ );
+			getmapunits( BL_PC, instance_mapname("e_woods"), .@players$ );
 
 			for( .@i = 0; .@i < getarraysize( .@players$ ); .@i++ )
 				stopsound getcharid(0, .@players$[.@i] );
@@ -160,6 +158,10 @@ e_woods,101,109,5	Script	 #e_woodsPCima	45,1,1,{
 			for( .@i = 0; .@i < getarraysize( .@players$ ); .@i++ )
 				stopsound getcharid(0, .@players$[.@i] );
 			end;
+		}
+		else
+		{
+			monster instance_mapname("e_woods"),0,0,"Guardião da Floresta",1277,rand(7,25),instance_npcname("Navi#IN1") + "::OnGuardKilled";
 		}
 		
 		if(.@portal$[1]=="Cima") mapwarp .@m$,.@m$,101,40;
