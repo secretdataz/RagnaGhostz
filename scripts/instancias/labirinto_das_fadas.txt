@@ -8,7 +8,7 @@
 //        Ao receber dano físico concede 1% de chance de auto conjurar [Corpo Fechado]
 // Equipa em: Capa
 
-phtownall,337,197,5	Script	Labirinto dos Elfos	624,{
+phtownall,337,197,5	Script	Labirinto das Fadas	624,{
 	
 	inst( "INICIO", getcharid(0), INSTANCIA_LABIRINTO_DAS_FADAS );
 	end;
@@ -75,7 +75,7 @@ e_woods,101,109,5	Script	 #e_woodsYCima	-1,15,15,{
 			end;
 		}
 
-		if( countitem( 29566 ) > 0 && .@portais$['portal_certo] == .@portal$[1])
+		if( countitem( 29565 ) > 0 && .@portais$['portal_certo] == .@portal$[1])
 		{
 			playsound getcharid(0),"labirinto_dica.mp3";
 			end;
