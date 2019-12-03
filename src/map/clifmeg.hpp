@@ -19,6 +19,8 @@ void clifmeg_send(int account_id, std::string pk, std::string data);
 int clifmeg_send_sub(struct block_list *bl, va_list ap);
 int clifmeg_broadcast(struct block_list *bl, std::string pk, std::string data, int target);
 void clifmeg_dispbottom(int aid, std::string msg);
+void clifmeg_playsound(int aid, std::string sound);
+void clifmeg_stopsound(int aid);
 void clifmeg_sticker(int aid, std::string id);
 void clifmeg_requestmac(int aid);
 void clifmeg_dressroomopened(int aid, int state);

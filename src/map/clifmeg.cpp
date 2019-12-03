@@ -65,10 +65,6 @@ void clifmeg_send(int account_id, std::string pk, std::string data) {
 
 int clifmeg_send_sub(struct block_list *bl, va_list ap)
 {
-	struct block_list *src_bl;
-
-	nullpo_ret(src_bl = va_arg(ap, struct block_list*));
-
 	std::string pk = va_arg(ap, std::string);
 	std::string data = va_arg(ap, std::string);
 
@@ -118,11 +114,11 @@ int clifmeg_broadcast(struct block_list *bl, std::string pk, std::string data, i
 	case AREA_WOC:
 	case AREA_WOS:
 		map_foreachinallarea(clifmeg_send_sub, bl->m, bl->x - AREA_SIZE, bl->y - AREA_SIZE, bl->x + AREA_SIZE, bl->y + AREA_SIZE,
-			BL_PC, bl, pk, data);
+			BL_PC, pk, data);
 		break;
 	case AREA_CHAT_WOC:
 		map_foreachinallarea(clifmeg_send_sub, bl->m, bl->x - (AREA_SIZE - 5), bl->y - (AREA_SIZE - 5),
-			bl->x + (AREA_SIZE - 5), bl->y + (AREA_SIZE - 5), BL_PC, bl, pk, data);
+			bl->x + (AREA_SIZE - 5), bl->y + (AREA_SIZE - 5), BL_PC, pk, data);
 		break;
 
 	case PARTY_AREA:
@@ -211,6 +207,20 @@ int clifmeg_broadcast(struct block_list *bl, std::string pk, std::string data, i
 	}
 
 	return 0;
+}
+
+void clifmeg_stopsound(int aid)
+{
+	std::string pk = std::to_string(aid);
+
+	clifmeg_send(aid, "STOPSOUND", pk);
+}
+
+void clifmeg_playsound(int aid, std::string sound)
+{
+	std::string pk = sound;
+
+	clifmeg_send(aid, "PLAYSOUND", pk);
 }
 
 // Envia mensagem para o chat

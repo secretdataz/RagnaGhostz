@@ -1833,6 +1833,9 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 
 		if (bl->type == BL_PC && BL_CAST(BL_PC, bl)->csd[CSD_ITEM_TIARA_POPSTAR]->active && getRandomValue(1, 100) <= 3)
 			damage -= (damage * 50) / 100;
+
+		if (sd->mast[MASTERY_PELE_DE_DRAGAO]->active && sd->mast[MASTERY_PELE_DE_DRAGAO]->level == 3 && get_percentage(sd->status.hp, sd->status.max_hp) >= 80 && get_percentage(damage, sd->status.max_hp) >= 90)
+			damage = 1;
 	}
 
 	if (src->type == BL_HOM && BL_CAST(BL_HOM,bl)->master)

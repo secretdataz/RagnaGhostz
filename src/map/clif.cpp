@@ -6660,6 +6660,8 @@ void clif_upgrademessage(int fd, int result, unsigned short item_id)
 void clif_wis_message(struct map_session_data* sd, const char* nick, const char* mes, int mes_len, int gmlvl){
 	int fd;
 
+	return;
+
 	nullpo_retv(sd);
 
 	fd = sd->fd;
@@ -9862,7 +9864,7 @@ void clif_disp_overhead_(struct block_list *bl, const char* mes, enum send_targe
 	}
 
 	map_foreachinallarea(clifmeg_send_sub, bl->m, bl->x - (AREA_SIZE - 5), bl->y - (AREA_SIZE - 5),
-		bl->x + (AREA_SIZE - 5), bl->y + (AREA_SIZE - 5), BL_PC, bl, std::string("DISP"), std::string(mes));
+		bl->x + (AREA_SIZE - 5), bl->y + (AREA_SIZE - 5), BL_PC, std::string("DISP"), std::string(mes));
 
 	// send back message to the speaker
 	if( bl->type == BL_PC ) {
@@ -11195,12 +11197,15 @@ void clif_parse_GetCharNameRequest(int fd, struct map_session_data *sd)
 /// There are various variants of this packet.
 void clif_parse_GlobalMessage(int fd, struct map_session_data* sd)
 {
+
 	char name[NAME_LENGTH], message[CHAT_SIZE_MAX], output[CHAT_SIZE_MAX+NAME_LENGTH*2];
 	size_t length;
 
 	// validate packet and retrieve name and message
 	if( !clif_process_message(sd, false, name, message, output ) )
 		return;
+
+	return;
 
 	if( sd->gcbind && ((sd->gcbind->opt&CHAN_OPT_CAN_CHAT) || pc_has_permission(sd, PC_PERM_CHANNEL_ADMIN)) ) {
 		channel_send(sd->gcbind,sd,message);

@@ -55,7 +55,7 @@ phtownall,338,203,5	Script	Memória do Rei Arthur	628 ,{
 		mapannounce instance_mapname( "2@mir" ),"A Memória do Rei Arthur foi derrotado!",bc_map,"0x00CED1";
 		'LANCELOT = 2;
 		dispbottom "Desfazendo Grupo em 7 segundos...";
-		sleep 7000;
+		sleep2 7000;
 		inst( "REWARD", 1, 35, instance_mapname( "2@mir" ) );
 		end;
 

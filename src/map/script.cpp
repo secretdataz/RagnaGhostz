@@ -24678,6 +24678,53 @@ BUILDIN_FUNC(megdisp)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+// playsoundall( map
+BUILDIN_FUNC(playsoundall)
+{
+	const char* name;
+	name = script_getstr(st, 2);
+
+	if (script_hasdata(st, 7)) {// specified part of map
+		const char* mapname = script_getstr(st, 3);
+		int x0 = script_getnum(st, 4);
+		int y0 = script_getnum(st, 5);
+		int x1 = script_getnum(st, 6);
+		int y1 = script_getnum(st, 7);
+
+		map_foreachinallarea(clifmeg_send_sub, map_mapname2mapid(mapname), x0, y0, x1, y1, BL_PC, std::string("PLAYSOUND"), std::string(name));
+	}
+	else if (script_hasdata(st, 3)) {// entire map
+		const char* mapname = script_getstr(st, 3);
+
+		map_foreachinmap(clifmeg_send_sub, map_mapname2mapid(mapname), BL_PC, std::string("PLAYSOUND"), std::string(name));
+	}
+	else {// entire server
+		map_foreachpc(&playBGM_foreachpc_sub, name);
+	}
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
+BUILDIN_FUNC(playsound)
+{
+	struct map_session_data *sd = map_charid2sd(script_getnum(st, 2));
+
+	if(sd)
+		clifmeg_playsound(sd->status.account_id, std::string(script_getstr(st, 3)));
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
+BUILDIN_FUNC(stopsound)
+{
+	struct map_session_data *sd = map_charid2sd(script_getnum(st, 2));
+
+	if (sd)
+		clifmeg_stopsound(sd->status.account_id);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
 BUILDIN_FUNC(countplayerson)
 {
 	struct map_session_data *sd;
@@ -25029,6 +25076,9 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(changedir,"ii"),
 	BUILDIN_DEF(megdisp,"is"),
 	BUILDIN_DEF(npcicon,"s?"),
+	BUILDIN_DEF(playsound,"is"),
+	BUILDIN_DEF(stopsound,"i"),
+	BUILDIN_DEF(playsoundall,"s?????"),
 	// NPC interaction
 	BUILDIN_DEF(mes,"s*"),
 	BUILDIN_DEF(next,""),

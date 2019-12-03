@@ -19,6 +19,7 @@
 
 	OnPCLogoutEvent:
 		//sql_mac("reset", getcharid(0) );
+		stopsound getcharid(0);
 		end;
 
 	OnPcLoginEvent:

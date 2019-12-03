@@ -30,9 +30,9 @@ function	script	inst	{
 	
 	// Labirinto das Fadas
 	.@nome_inst$[INSTANCIA_LABIRINTO_DAS_FADAS] = "Labirinto das Fadas";
-	.@desc#[INSTANCIA_LABIRINTO_DAS_FADAS] = "Descubra como passar pelo Labirinto das Fadas e enfrente o Dragão Ztsohg para ter chances de receber a Maestria [%s] e outros itens especiais!";
+	.@desc$[INSTANCIA_LABIRINTO_DAS_FADAS] = "Descubra como passar pelo Labirinto das Fadas e enfrente o Dragão Ztsohg para ter chances de receber a Maestria [%s] e outros itens especiais!";
 	.@delay[INSTANCIA_LABIRINTO_DAS_FADAS] = 150;
-	.@item[INSTANCIA_LABIRINTO_DAS_FADAS] = 29564;
+	.@item[INSTANCIA_LABIRINTO_DAS_FADAS] = 29566;
 	
 	if( .@func$ == "INICIO" )
 	{

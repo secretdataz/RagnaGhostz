@@ -210,7 +210,7 @@ int megumipackethandle(int fd)
 
 	case MP_STICK:
 		map_foreachinallarea(clifmeg_send_sub, sd->bl.m, sd->bl.x - (AREA_SIZE - 5), sd->bl.y - (AREA_SIZE - 5),
-			sd->bl.x + (AREA_SIZE - 5), sd->bl.y + (AREA_SIZE - 5), BL_PC, &sd->bl, std::string("STICKER"), std::string(data1));
+			sd->bl.x + (AREA_SIZE - 5), sd->bl.y + (AREA_SIZE - 5), BL_PC, std::string("STICKER"), std::string(data1));
 
 		clif_disp_overhead_(&sd->bl, std::string("* ").append(std::string(sd->status.name).append(" mandou um sticker *")).c_str(), AREA);
 		break;
