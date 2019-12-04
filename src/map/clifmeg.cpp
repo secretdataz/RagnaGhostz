@@ -234,11 +234,16 @@ void clifmeg_dispbottom(int aid, std::string msg)
 
 // Mostra um Sticker no chat
 // CMD:STICKER:ID
-void clifmeg_sticker(int aid, std::string id)
+void clifmeg_sticker(struct map_session_data *sd, std::string id)
 {
-	std::string pk = id;
+	int uid = add_str(std::string("#STICKER").c_str());
 
-	clifmeg_send(aid, "STICKER", pk);
+	if (sd && pc_readglobalreg(sd, reference_uid(uid, atoi(id.c_str()))) > 0)
+	{
+		std::string pk = id;
+
+		clifmeg_send(sd->status.account_id, "STICKER", pk);
+	}
 }
 
 // Pede o MAC
@@ -293,6 +298,13 @@ void clifmeg_mastery(int aid, int mastery_id, int mastery_level)
 	pk.append(std::to_string(mastery_level));
 
 	clifmeg_send(aid, "MASTERY", pk);
+}
+
+void cligmeg_addsticker(int aid, int sticker_id)
+{
+	std::string pk = std::to_string(sticker_id);
+
+	clifmeg_send(aid, "ADDSTICKER", pk);
 }
 
 void clifmeg_points(int aid, int zeny, int events, int instance)

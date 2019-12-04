@@ -209,17 +209,34 @@ int megumipackethandle(int fd)
 		break;
 
 	case MP_STICK:
-		map_foreachinallarea(clifmeg_send_sub, sd->bl.m, sd->bl.x - (AREA_SIZE - 5), sd->bl.y - (AREA_SIZE - 5),
-			sd->bl.x + (AREA_SIZE - 5), sd->bl.y + (AREA_SIZE - 5), BL_PC, std::string("STICKER"), std::string(data1));
+	{
+		int uid = add_str(std::string("#STICKER").c_str());
 
-		clif_disp_overhead_(&sd->bl, std::string("* ").append(std::string(sd->status.name).append(" mandou um sticker *")).c_str(), AREA);
+		if (pc_readglobalreg(sd, reference_uid(uid, atoi(std::string(data1).c_str()))) > 0)
+		{
+			bool wait = ((int)time(NULL) - (pc_readglobalreg(sd, add_str("#STICKERTIMER"))) < 10);
+
+			if (wait)
+			{
+				clifmeg_dispbottom(sd->status.account_id, "#ERRO#Aguarde 10 segundos para enviar um Sticker novamente.");
+				return 1;
+			}
+
+			pc_setglobalreg(sd, add_str("#STICKERTIMER"), (int)time(NULL));
+
+			map_foreachinallarea(clifmeg_send_sub, sd->bl.m, sd->bl.x - (AREA_SIZE - 5), sd->bl.y - (AREA_SIZE - 5),
+				sd->bl.x + (AREA_SIZE - 5), sd->bl.y + (AREA_SIZE - 5), BL_PC, std::string("STICKER"), std::string(data1));
+
+			clif_disp_overhead_(&sd->bl, std::string("* ").append(std::string(sd->status.name).append(" mandou um sticker *")).c_str(), AREA);
+		}
+	}
 		break;
 
 	case MP_WHISPER:
 	{
 		if (!sd->mast[MASTERY_CONTADOR_DE_SEGREDOS]->active)
 		{
-			clifmeg_dispbottom(sd->status.account_id, "#ERRO#A Maestria [Contador de Segredos] È necess·ria para executar esta aÁ„o.");
+			clifmeg_dispbottom(sd->status.account_id, "#ERRO#A Maestria [Contador de Segredos] √© necess√°ria para executar esta a√ß√£o.");
 			return 1;
 		}
 
@@ -229,7 +246,7 @@ int megumipackethandle(int fd)
 
 		if (!tsd)
 		{
-			clifmeg_dispbottom(sd->status.account_id, "#ERRO#Jogador n„o existe ou n„o est· online no momento.");
+			clifmeg_dispbottom(sd->status.account_id, "#ERRO#Jogador n√£o existe ou n√£o est√° online no momento.");
 			return 1;
 		}
 
@@ -241,7 +258,7 @@ int megumipackethandle(int fd)
 
 		if (tsd->csd[CSD_BLOCKALL]->active)
 		{
-			clifmeg_dispbottom(sd->status.account_id, "#ERRO#Jogador est· com a habilidade [Foco] ativada e por isso n„o foi possÌvel enviar sua mensagem.");
+			clifmeg_dispbottom(sd->status.account_id, "#ERRO#Jogador est√° com a habilidade [Foco] ativada e por isso n√£o foi poss√≠vel enviar sua mensagem.");
 			return 1;
 		}
 

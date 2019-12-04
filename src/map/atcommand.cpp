@@ -49,6 +49,7 @@
 #include "script.hpp"
 #include "storage.hpp"
 #include "trade.hpp"
+#include "clifmeg.hpp"
 
 #define ATCOMMAND_LENGTH 50
 #define ACMD_FUNC(x) static int atcommand_ ## x (const int fd, struct map_session_data* sd, const char* command, const char* message)
@@ -3441,6 +3442,16 @@ ACMD_FUNC(guild)
 
 	if (!message || !*message || sscanf(message, "%23[^\n]", guild) < 1) {
 		clif_displaymessage(fd, msg_txt(sd,1030)); // Please enter a guild name (usage: @guild <guild_name>).
+		return -1;
+	}
+
+
+	int j = 0;
+
+	j = pc_search_inventory(sd, 714);
+
+	if (j < 0) {
+		clifmeg_dispbottom(sd->status.account_id, "#ERRO#Precisa do item Emperium para fazer isto");
 		return -1;
 	}
 

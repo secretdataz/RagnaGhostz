@@ -24566,6 +24566,35 @@ BUILDIN_FUNC(getmasterylevel)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+// add_stickertomeg( .@cid, sticker_id )
+BUILDIN_FUNC(add_stickertomeg)
+{
+	TBL_PC *sd = map_charid2sd(script_getnum(st, 2));
+	int sticker_id = script_getnum(st, 3);
+
+	if (sd && sticker_id >= 0)
+		cligmeg_addsticker(sd->status.account_id, sticker_id);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
+
+BUILDIN_FUNC(getitemid)
+{
+	TBL_PC *sd;
+	if (script_rid2sd(sd)) {
+		if (current_equip_item_index == -1) {
+			script_pushint(st, 0);
+			return SCRIPT_CMD_FAILURE;
+		}
+
+		script_pushint(st, sd->inventory.u.items_inventory[current_equip_item_index].nameid);
+	}
+	else
+		script_pushint(st, 0);
+	return SCRIPT_CMD_SUCCESS;
+}
+
 // apply_mastery( .@mastery_id[.@i], .@level[.@i], .@cid, send data? );
 BUILDIN_FUNC(apply_mastery)
 {
@@ -25079,6 +25108,8 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(playsound,"is"),
 	BUILDIN_DEF(stopsound,"i"),
 	BUILDIN_DEF(playsoundall,"s?????"),
+	BUILDIN_DEF(add_stickertomeg,"ii"),
+	BUILDIN_DEF(getitemid,""),
 	// NPC interaction
 	BUILDIN_DEF(mes,"s*"),
 	BUILDIN_DEF(next,""),

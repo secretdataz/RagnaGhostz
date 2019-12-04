@@ -27,6 +27,7 @@ void clifmeg_dressroomopened(int aid, int state);
 void clifmeg_rpc(int aid, std::string title, std::string desc, std::string lik, std::string lit, std::string sik = "NONE", std::string sit = "NONE");
 void clifmeg_openmastery(int aid, int zeny, int events, int instance);
 void clifmeg_mastery(int aid, int mastery_id, int mastery_level);
+void cligmeg_addsticker(int aid, int sticker_id);
 void clifmeg_points(int aid, int zeny, int events, int instance);
 void clifmeg_clearplayerdata(int aid, int data);
 

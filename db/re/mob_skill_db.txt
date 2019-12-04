@@ -6362,6 +6362,7 @@
 2131,Lost Dragon@NPC_HELLJUDGEMENT,chase,662,5,10000,7000,25000,no,self,myhpltmaxrate,50,,,,,,,32
 2131,Lost Dragon@NPC_HELLJUDGEMENT,attack,662,5,10000,7000,25000,no,self,myhpltmaxrate,50,,,,,,,32
 2131,Lost Dragon@NPC_DARKNESSBREATH,attack,658,8,10000,800,35000,no,target,myhpltmaxrate,50,,,,,,32,
+2131,Dragão Ztsohg@SM_ENDURE,attack,8,5,10000,10000,40000,no,self,onspawn,0,,,,,,,31
 2131,Lost Dragon@NPC_SLOWCAST,attack,672,5,10000,0,60000,yes,self,myhpltmaxrate,70,,,,,,,
 2131,Lost Dragon@NPC_CRITICALWOUND,attack,673,5,2000,0,30000,yes,target,myhpltmaxrate,70,,,,,,,
 2131,Lost Dragon@NPC_WIDECURSE,chase,677,1,10000,1000,25000,no,self,myhpltmaxrate,75,,,,,,32,

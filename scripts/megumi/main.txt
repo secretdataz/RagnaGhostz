@@ -11,6 +11,8 @@
 		query_sql( "DELETE FROM `char_reg_num` WHERE `key`='SABE_TUDO' " );
 		
 		bot_announce( "Desculpa o transtorno, o servidor está online novamente!", CHANNEL_REALGERAL );
+
+		.MAX_STICKERS = 70;
 		end;
 
 	OnMacCommand:
@@ -53,9 +55,18 @@
 		if( FIRST_MASTERY_RECEIVED )
 			mastery( "LoadPlayerData", getcharid(0) );
 
-		megdisp getcharid(0),"#GREEN#Sincronização Completa";
+		#STICKER[0] = 1;
 
-		dispbottom "[MEGUMI] Sincronização completa.";
+		// Carrega os Stickers
+		for( .@i = 0; .@i < .MAX_STICKERS; .@i++ )
+		{
+			if( #STICKER[.@i] > 0 )
+			{
+				add_stickertomeg( getcharid(0), .@i );
+			}
+		}
+
+		megdisp getcharid(0),"#GREEN#Sincronização Completa";
 		
 		// Discord RPC
 		@RPC_DOING$ = "Vou ser " + ( Sex ? "o" : "a" ) + " mais forte!";
