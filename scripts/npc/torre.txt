@@ -45,17 +45,9 @@
 		mes .@n$;
 		mes "Alguns aventureiros quando alcançam o nível máximo, também gostam de fazer as Torres da Fortuna.";
 		
-		switch( select( "Existem recompensas?", "Torre da Fortuna?" ) )
+		switch( select( "Torre da Fortuna?" ) )
 		{
 			case 1:
-				next;
-				mes .@n$;
-				mes "Além do nível e de poder obter cartas de MVP, completar a torre do diamante concede por 5 horas VIP e 2000 pontos de Cash. Após receber as recompensas você só irá receber novamente os prêmios após 5 horas, porém pode repetir quantas vezes a Torre da Jornada";
-				close2;
-				cutin "torre_jornada",255;
-				end;
-				
-			case 2:
 				next;
 				mes .@n$;
 				mes "O Guardião da Torre da Fortuna pode lhe dizer melhor sobre isso. Irei lhe indicar no mapa onde é o posto dele.";

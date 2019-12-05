@@ -46,6 +46,7 @@
 		//requestmac( getcharid(0) );
 
 		// Vamos pedir para a Megumi limpar qualquer data de jogador que possuía antes
+		clearplayerdata( CLEARDATA_CHAT, getcharid(0) );
 		clearplayerdata( CLEARDATA_MASTERY, getcharid(0) );
 
 		// Carrega dados do PVP
@@ -67,7 +68,11 @@
 		}
 
 		megdisp getcharid(0),"#GREEN#Sincronização Completa";
-		
+		megdisp getcharid(0),"Comandos de Chat:";
+		megdisp getcharid(0),"/p Mensagem -> Envia mensagens para a aba de grupo para membros do seu grupo.";
+		megdisp getcharid(0),"/g Mensagem -> Envia mensagens para a aba de clã para membros do seu clã.";
+		megdisp getcharid(0),"/a Mensagem -> Envia mensagens para a aba Global para todos do servido.";
+
 		// Discord RPC
 		@RPC_DOING$ = "Vou ser " + ( Sex ? "o" : "a" ) + " mais forte!";
 		rpc( getcharid(0) );

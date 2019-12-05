@@ -1725,7 +1725,7 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 		if (sd->mast[MASTERY_LICAO_DE_CASA]->active && bl->type == BL_PC && (BL_CAST(BL_PC, bl)->status.class_ == JOB_STALKER || BL_CAST(BL_PC, bl)->status.class_ == JOB_BABY_ROGUE))
 			damage += (damage * (sd->mast[MASTERY_LICAO_DE_CASA]->level / 10)) / 100;
 
-		if (sd->mast[MASTERY_FLAGELO_DAS_FERAS]->active && bl->type == BL_MOB && status_get_class_(bl) == CLASS_BOSS)
+		if (sd->mast[MASTERY_FLAGELO_DAS_FERAS]->active && bl->type == BL_MOB && BL_CAST(BL_MOB, bl)->db->mexp > 0)
 			damage += (damage * (sd->mast[MASTERY_FLAGELO_DAS_FERAS]->level / 10)) / 100;
 
 		if (sd->mast[MASTERY_PERICIA_DE_ASSASSINO_EX]->active && bl->type == BL_PC)

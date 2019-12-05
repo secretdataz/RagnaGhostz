@@ -263,6 +263,7 @@ int megumipackethandle(int fd)
 		}
 
 		clifmeg_dispbottom(tsd->status.account_id, std::string("#WHISPER#").append("[").append(sd->status.name).append("] ").append(d[1]));
+		clifmeg_dispbottom(sd->status.account_id, std::string("#WHISPER#").append("[").append(sd->status.name).append("] ").append(d[1]));
 		return 1;
 	}
 	}

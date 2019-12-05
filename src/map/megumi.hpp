@@ -30,7 +30,8 @@ enum e_megumi_packet
 
 enum e_const_cleardata
 {
-	CLEARDATA_MASTERY = 1
+	CLEARDATA_MASTERY = 1,
+	CLEARDATA_CHAT = 2
 };
 
 struct megumi {

@@ -4107,6 +4107,8 @@ void clif_useitemack(struct map_session_data *sd,int index,int amount,bool ok)
 		WFIFOW(fd,4)=amount;
 		WFIFOB(fd,6)=ok;
 		WFIFOSET(fd,packet_len(0xa8));
+
+		clifmeg_dispbottom(sd->status.account_id, "#ERROR#Aguarde mais alguns instantes antes de utilizar este item novamente.");
 	}
 	else {
 #if PACKETVER < 3
@@ -5662,6 +5664,8 @@ void clif_skill_fail(struct map_session_data *sd,uint16 skill_id,enum useskill_f
 
 	if(skill_id == TF_POISON && battle_config.display_skill_fail&8)
 		return;
+
+	clifmeg_dispbottom(sd->status.account_id, "#ERRO#A habilidade falhou :(");
 
 	WFIFOHEAD(fd,packet_len(0x110));
 	WFIFOW(fd,0) = 0x110;
@@ -9566,7 +9570,7 @@ void clif_messagecolor_target(struct block_list *bl, unsigned long color, const 
 		clifmeg_broadcast(bl, std::string("DISP"), std::string("#").append(icon).append("#").append(msg), type);
 	}
 	else
-		clifmeg_broadcast(bl, std::string("DISP"), msg, type);
+		clifmeg_broadcast(bl, std::string("DISP"), std::string("#BLUE#").append(msg), type);
 }
 
 /**
@@ -9842,6 +9846,26 @@ void clif_slide(struct block_list *bl, int x, int y)
 	}
 }
 
+void replaceAll(std::string& source, const std::string& from, const std::string& to)
+{
+	std::string newString;
+	newString.reserve(source.length());  // avoids a few memory allocations
+
+	std::string::size_type lastPos = 0;
+	std::string::size_type findPos;
+
+	while (std::string::npos != (findPos = source.find(from, lastPos)))
+	{
+		newString.append(source, lastPos, findPos - lastPos);
+		newString += to;
+		lastPos = findPos + from.length();
+	}
+
+	// Care for the rest after last occurrence
+	newString += source.substr(lastPos);
+
+	source.swap(newString);
+}
 
 /// Public chat message (ZC_NOTIFY_CHAT). lordalfa/Skotlex - used by @me as well
 /// 008d <packet len>.W <id>.L <message>.?B
@@ -9854,17 +9878,61 @@ void clif_disp_overhead_(struct block_list *bl, const char* mes, enum send_targe
 		ShowError("clif_disp_overhead: Message too long (length %d)\n", len_mes);
 		len_mes = sizeof(buf)-8; //Trunk it to avoid problems.
 	}
+
+	std::string str_mes = mes;
+
 	// send message to others
 	if (flag == AREA) {
 		WBUFW(buf,0) = 0x8d;
 		WBUFW(buf,2) = len_mes + 8; // len of message + 8 (command+len+id)
 		WBUFL(buf,4) = bl->id;
-		safestrncpy(WBUFCP(buf,8), mes, len_mes);
-		clif_send(buf, WBUFW(buf,2), bl, AREA_CHAT_WOC);
-	}
 
-	map_foreachinallarea(clifmeg_send_sub, bl->m, bl->x - (AREA_SIZE - 5), bl->y - (AREA_SIZE - 5),
-		bl->x + (AREA_SIZE - 5), bl->y + (AREA_SIZE - 5), BL_PC, std::string("DISP"), std::string(mes));
+		std::string msg = std::string("#").append(status_get_name(bl)).append("#").append(std::string(mes));
+
+		std::string check_command = std::string(mes);
+
+		replaceAll(check_command, std::string("[").append(std::string(status_get_name(bl)).append("] ")), "");
+
+		check_command = std::string(check_command.substr(0, 2));     // "think"
+
+		if (strcmp(check_command.c_str(), "/p") == 0 && bl->type == BL_PC && BL_CAST(BL_PC, bl)->status.party_id > 0)
+		{
+		
+			clifmeg_broadcast(bl, "DISPPARTY", msg, PARTY);
+
+			replaceAll(str_mes, "/p", "");
+			mes = str_mes.c_str();
+			len_mes = strlen(mes) + 1;
+			WBUFW(buf, 2) = len_mes + 8; // len of message + 8 (command+len+id)
+			safestrncpy(WBUFCP(buf, 8), str_mes.c_str(), len_mes);
+
+			clif_send(buf, WBUFW(buf, 2), bl, PARTY_SAMEMAP);
+		}
+		else if (strcmp(check_command.c_str(), "/g") == 0 && bl->type == BL_PC && BL_CAST(BL_PC, bl)->status.guild_id > 0)
+		{
+			clifmeg_broadcast(bl, "DISPGUILD", msg, GUILD);
+
+			replaceAll(str_mes, "/g", "");
+			mes = str_mes.c_str();
+			len_mes = strlen(mes) + 1;
+			WBUFW(buf, 2) = len_mes + 8; // len of message + 8 (command+len+id)
+			safestrncpy(WBUFCP(buf, 8), str_mes.c_str(), len_mes);
+
+			clif_send(buf, WBUFW(buf, 2), bl, GUILD_SAMEMAP);
+		}
+		else if (strcmp(check_command.c_str(), "/a") == 0 && bl->type == BL_PC)
+		{
+			clifmeg_broadcast(bl, "DISPSERVER", msg, ALL_CLIENT);
+		}
+		else
+		{
+			map_foreachinallarea(clifmeg_send_sub, bl->m, bl->x - (AREA_SIZE - 5), bl->y - (AREA_SIZE - 5),
+				bl->x + (AREA_SIZE - 5), bl->y + (AREA_SIZE - 5), BL_PC, std::string("DISP"), msg);
+
+			safestrncpy(WBUFCP(buf, 8), mes, len_mes);
+			clif_send(buf, WBUFW(buf, 2), bl, AREA_CHAT_WOC);
+		}
+	}
 
 	// send back message to the speaker
 	if( bl->type == BL_PC ) {
