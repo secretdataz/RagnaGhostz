@@ -1,0 +1,80 @@
+
+// Habilidade da Ruptura
+// Só pode ser usado em mapas de guerra do emperium.
+// Permite teleportar todos os membros do clã para um castelo inimigo aleatório na área do emperium.";
+// Só irá funcionar se o seu cargo no clã for igual ou superior a quinta colocação.
+// Jogadores com o Cargo [10] não serão puxados, podendo assim defender o castelo que estiverem.";
+// Tempo de Recarga: 30 minutos.
+
+-	Script	Ruptura do RagnaGhostz	45,{
+
+	.@n$ = "[Gerente do Portal]";
+	
+	mes .@n$;
+	
+	if( !.ds_open )
+	{
+		mes "Parece que a ruptura está fechada.";
+		
+		if( select( "O que é a Ruptura?", "Horários de Ruptura", "Forçar Abertura" ) )
+		{
+			case 1:
+				mes "A Ruptura é um evento que ocorre sempre em horários fixos.";
+				next;
+				mes .@n$;
+				mes "A Área da Ruptura é uma terra sem lei, onde todos os MVP's das Intâncias de Yuno se juntam para tentar acabar com a humanidade!";
+				next;
+				mes .@n$;
+				mes "Hordas dos monstros serão invocados de tempo em tempos. Ao morrer lá, você será teleportado de volta para cá e terá que esperar eu autorizar a entrada novamente.";
+				next;
+				mes .@n$;
+				mes "E isso não é tudo, no fim de todas as hordas o PvP é ligado durante 45 segundos até a próxima horda!";
+				next;
+				mes .@n$;
+				mes "No fim do evento 5 baús nascem que podem dar um dos seguintes prêmios a quem der o último dano:"
+				mes "[50% de Chance] -> 1 a 1500 pontos de Cash.";
+				mes "[30% de Chance] -> 1 a 300 pontos de Evento."; 
+				mes "[20% de Chance] -> 20 pontos em uma maestria de classe aleatória (não ultrapassando o nível máximo).";
+				mes "[7% de Chance] -> +1% de dano (Máximo 15).";
+				mes "[3% de chance] -> Recebe o item [Ruptura de Emperium].";
+				next;
+				mes .@n$;
+				mes "Existem também duas premiações extras para quem matar mais jogadores ou monstros durante o evento.";
+				next;
+				mes .@n$;
+				mes "Aquele que matar mais jogadores, recebe 500 pontos no ranking PvP.";
+				mes "Quando morrer, você perde seus pontos!";
+				mes "Quando deslogar, você perde seus pontos!";
+				next;
+				mes "Aquele que matar mais monstros, recebe +300% de dano contra os baús.";
+				mes "Quando morrer, você não perde seus pontos";
+				mes "Quando deslogar, você perde seus pontos!";
+				next;
+				
+			
+		}
+	}
+	
+	if( .ds_open == 2 )
+	{
+		mes "Aguarde um pouco, ainda está perigoso lá dentro. Irei avisar assim que estiver seguro a entrada.";
+	}
+	
+	
+	OnInit:
+		.ds_open = 0;
+		.map$ = "";
+		
+		// Em cada turno invocar +1 ID de Monstro * ( Jogadores no Mapa )
+		.monsters
+		end;
+		
+	OnDSMOBKill:
+		if( strcharinfo(3) != .map$ ) end;
+		
+	OnPcDieEvent:
+		if( strcharinfo(3) != .map$ ) end;
+		@ds_pvp_points = 0;
+		end;
+}
+
