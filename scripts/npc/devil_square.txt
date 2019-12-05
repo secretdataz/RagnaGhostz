@@ -1,9 +1,9 @@
 
 // Habilidade da Ruptura
-// SÃ³ pode ser usado em mapas de guerra do emperium.
-// Permite teleportar todos os membros do clÃ£ para um castelo inimigo aleatÃ³rio na Ã¡rea do emperium.";
-// SÃ³ irÃ¡ funcionar se o seu cargo no clÃ£ for igual ou superior a quinta colocaÃ§Ã£o.
-// Jogadores com o Cargo [10] nÃ£o serÃ£o puxados, podendo assim defender o castelo que estiverem.";
+// Só pode ser usado em mapas de guerra do emperium.
+// Permite teleportar todos os membros do clã para um castelo inimigo aleatório na área do emperium.";
+// Só irá funcionar se o seu cargo no clã for igual ou superior a quinta colocação.
+// Jogadores com o Cargo [10] não serão puxados, podendo assim defender o castelo que estiverem.";
 // Tempo de Recarga: 30 minutos.
 
 -	Script	Ruptura do RagnaGhostz	45,{
@@ -14,59 +14,135 @@
 	
 	if( !.ds_open )
 	{
-		mes "Parece que a ruptura estÃ¡ fechada.";
+		mes "Parece que a ruptura está fechada.";
 		
-		if( select( "O que Ã© a Ruptura?", "HorÃ¡rios de Ruptura", "ForÃ§ar Abertura" ) )
+		if( select( "O que é a Ruptura?", "Horários de Ruptura", "Forçar Ruptura" ) )
 		{
 			case 1:
-				mes "A Ruptura Ã© um evento que ocorre sempre em horÃ¡rios fixos.";
+				mes "A Ruptura é um evento que ocorre sempre em horários fixos.";
 				next;
 				mes .@n$;
-				mes "A Ãrea da Ruptura Ã© uma terra sem lei, onde todos os MVP's das IntÃ¢ncias de Yuno se juntam para tentar acabar com a humanidade!";
+				mes "A Área da Ruptura é uma terra sem lei, onde todos os monstros do servidor se juntam para tentar acabar com a humanidade!";
 				next;
 				mes .@n$;
-				mes "Hordas dos monstros serÃ£o invocados de tempo em tempos. Ao morrer lÃ¡, vocÃª serÃ¡ teleportado de volta para cÃ¡ e terÃ¡ que esperar eu autorizar a entrada novamente.";
+				mes "Hordas dos monstros serão invocados de tempo em tempos. Ao morrer lá, você será teleportado de volta para cá e terá que esperar eu autorizar a entrada novamente.";
 				next;
 				mes .@n$;
-				mes "E isso nÃ£o Ã© tudo, no fim de todas as hordas o PvP Ã© ligado durante 45 segundos atÃ© a prÃ³xima horda!";
+				mes "E isso não é tudo, no fim de todas as hordas o PvP é ligado durante 45 segundos até a próxima horda!";
 				next;
 				mes .@n$;
-				mes "No fim do evento 5 baÃºs nascem que podem dar um dos seguintes prÃªmios a quem der o Ãºltimo dano:"
+				mes "No fim do evento 5 baús nascem que podem dar um dos seguintes prêmios a quem der o último dano:"
 				mes "[50% de Chance] -> 1 a 1500 pontos de Cash.";
 				mes "[30% de Chance] -> 1 a 300 pontos de Evento."; 
-				mes "[20% de Chance] -> 20 pontos em uma maestria de classe aleatÃ³ria (nÃ£o ultrapassando o nÃ­vel mÃ¡ximo).";
-				mes "[7% de Chance] -> +1% de dano (MÃ¡ximo 15).";
+				mes "[20% de Chance] -> 20 pontos em uma maestria de classe aleatória (não ultrapassando o nível máximo).";
+				mes "[7% de Chance] -> +1% de dano (Máximo 15).";
 				mes "[3% de chance] -> Recebe o item [Ruptura de Emperium].";
 				next;
 				mes .@n$;
-				mes "Existem tambÃ©m duas premiaÃ§Ãµes extras para quem matar mais jogadores ou monstros durante o evento.";
+				mes "Existem também duas premiações extras para quem matar mais jogadores ou monstros durante o evento.";
 				next;
 				mes .@n$;
 				mes "Aquele que matar mais jogadores, recebe 500 pontos no ranking PvP.";
-				mes "Quando morrer, vocÃª perde seus pontos!";
-				mes "Quando deslogar, vocÃª perde seus pontos!";
+				mes "Quando morrer, você perde seus pontos!";
+				mes "Quando deslogar, você perde seus pontos!";
 				next;
-				mes "Aquele que matar mais monstros, recebe +300% de dano contra os baÃºs.";
-				mes "Quando morrer, vocÃª nÃ£o perde seus pontos";
-				mes "Quando deslogar, vocÃª perde seus pontos!";
-				next;
+				mes "Aquele que matar mais monstros, recebe +300% de dano contra os baús.";
+				mes "Quando morrer, você não perde seus pontos";
+				mes "Quando deslogar, você perde seus pontos!";
+				close;
 				
-			
+			case 2:
+				mes .@n$;
+				mes "A Ruptura abre sempre ao 12:00 e às 22:00.";
+				close;
+				
+			case 3:
+				next;
+				mes .@n$;
+				mes "É possível forçar a abertura da ruptura pagando 5000 pontos de cash.";
+				mes "Seus pontos atuais: " + #CASHPOINTS;
+				
+				if( select( "Ok","Forçar Ruptura" ) == 2 )
+				{
+					if( .ds_open > 0 )
+					{
+						next;
+						mes .@n$;
+						mes "Uma Ruptura já está aberta no momento. Tentou ser engraçado?";
+						close;
+					}
+					
+					if( #CASHPOINTS < 5000 )
+					{
+						next;
+						mes .@n$;
+						mes "Desculpa, mas você não possui a quantidade de Cash necessária para forçar uma ruptura.";
+						close;
+					}
+
+					#CASHPOINTS -= 5000;
+					.forced = 1;
+					end;
+				}
 		}
 	}
 	
 	if( .ds_open == 2 )
 	{
-		mes "Aguarde um pouco, ainda estÃ¡ perigoso lÃ¡ dentro. Irei avisar assim que estiver seguro a entrada.";
+		mes "Aguarde um pouco, ainda está perigoso lá dentro. Irei avisar assim que estiver seguro a entrada.";
+		close;
 	}
 	
+	if( BaseLevel < 300 )
+	{
+		mes "Desculpa, mas você ainda não tem nível para enfrentar os monstros de lá.";
+		close;
+	}
 	
 	OnInit:
 		.ds_open = 0;
 		.map$ = "";
+		.forced = 0;
 		
-		// Em cada turno invocar +1 ID de Monstro * ( Jogadores no Mapa )
-		.monsters
+		// Primeiro Round: Todos os Monstros da Torre Bronze * rand(1, 3)
+		// Segundo Round: Todos os Monstros da Torre Prata
+		// Terceiro Round: Todos os Monstros da Torre Ouro
+		// Quarto Round: Todos os Monstros da Torre Platina
+		// Quinto Round: Todos os Monstros da Torre Diamante
+		// Sexto Round: Todos os Monstros das Instâncias da Torre Diamante * rand( 5, 20 )
+		// Sétimo Round: Todos os monstros da Torre Diamante + Monstros da Instâncias * rand( 1, 5 )
+		// Oitavo Round: 500 Plantas
+		// Nono Round: Todos os MVPs do Pesadelo e atacar faz com que receba 5% do dano de volta.
+		// Decimo Round: Todos os MVP do biolab 3 e atacar faz com que receba 10% do dano de volta.
+		.round$ [1] = "MOBID";
+		.randmin[1] = 1;
+		.randmax[1] = 3;
+		
+		end;
+		
+	L_ForceStart:
+		.@forced = 1;
+	OnHour1200:
+	OnHour2200:
+	OnRupturaStart:
+		if( .forced && !.@forced ) end;
+		
+		.ds_open = 1;
+		
+		if( !.@forced )
+		{
+			announce "[Ruptura do RagnaGhostz]: A Ruptura do RagnaGhostz foi aberta! 3 minutos para começar o primeiro round!",0;
+			
+			bot_announce( "A **Ruptura do RagnaGhostz** acaba de abrir!", strcharinfo(0) ), CHANNEL_REALGERAL );
+			bot_announce( "3 minutos para iniciar o primeiro round!", strcharinfo(0) ), CHANNEL_REALGERAL );
+		}
+		else
+		{
+			bot_announce( sprintf( "**%s** acaba de forçar a abertura da ruptura!", strcharinfo(0) ), CHANNEL_REALGERAL );
+			announce "[Ruptura do RagnaGhostz]: " + sprintf( "%s acaba de forçar a abertura da ruptura!", strcharinfo(0) ),0;
+			sleep 8000;
+			announce "[Ruptura do RagnaGhostz]: A Ruptura do RagnaGhostz foi aberta! 3 minutos para começar o primeiro round!",0;
+		}
 		end;
 		
 	OnDSMOBKill:
