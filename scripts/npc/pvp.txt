@@ -424,6 +424,10 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 		for( .@i = getarraysize( .rank_name$ ) - 1; .@i > -1; .@i-- )
 		{
 			//announce "Ranking " + .@i,0;
+			cleararray .@cid[0],0,getarraysize(.@cid);
+			cleararray .@ranking[0],0,getarraysize(.@ranking);
+			cleararray .@pontos[0],0,getarraysize(.@pontos);
+			cleararray .@abates[0],0,getarraysize(.@abates);
 			
 			.@total = query_sql(
 			          "SELECT pp.char_id,              " +

@@ -156,7 +156,8 @@ function	script	mastery	{
 		if( ( .@level + .@increasing ) > .@max_level )
 		{
 			debugmes "Mastery","Tentativa de compra de maestria em nível superior com CID " + .@cid;
-			end;
+			
+			.@increasing = .@max_level - .@level;
 		}
 
 		// 150 -> 50

@@ -43,6 +43,9 @@
 			}
 		}
 
+		receivemobdamage( getcharid(0), 0 );
+		dmginplayers( getcharid(0), #DMG_INPLAYERS );
+
 		//requestmac( getcharid(0) );
 
 		// Vamos pedir para a Megumi limpar qualquer data de jogador que possuía antes

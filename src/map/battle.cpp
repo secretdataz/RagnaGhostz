@@ -1711,6 +1711,9 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 			damage -= (damage * 5) / 100;
 	}
 
+	if (src->type == BL_MOB && bl->type == BL_PC && BL_CAST(BL_PC, bl)->event.percent_dmg_from_mob > 0)
+		damage += (damage * BL_CAST(BL_PC, bl)->event.percent_dmg_from_mob) / 100;
+
 	// Modificadores de Dano Final Maestrias
 	if (src->type == BL_PC)
 	{
@@ -1814,6 +1817,9 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 
 		if (sd->mast[MASTERY_IMPOSTO]->active && bl->type == BL_PC && sd->status.zeny > BL_CAST(BL_PC, bl)->status.zeny)
 			damage += (damage * 5) / 100;
+
+		if (sd->event.percent_dmg_in_players > 0)
+			damage += (damage * sd->event.percent_dmg_in_players) / 100;
 
 		// Reduções Finais
 		if (bl->type == BL_PC && BL_CAST(BL_PC,bl)->mast[MASTERY_BELEZA_ATORDOANTE]->active)

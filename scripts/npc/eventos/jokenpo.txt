@@ -133,6 +133,8 @@ quiz_02,304,257,5	Script	Gerente do Jokenpo	603,{
 			.p2opt$ = "";
 			
 			.@ok = 0;
+
+			cleararray .players$,0,getarraysize(.players$);
 			
 			.@num = getmapunits( BL_PC, .@map$, .players$ );
 			

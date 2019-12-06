@@ -6,9 +6,9 @@
 // Jogadores com o Cargo [10] não serão puxados, podendo assim defender o castelo que estiverem.";
 // Tempo de Recarga: 30 minutos.
 
--	Script	Ruptura do RagnaGhostz	45,{
+phtownall,189,200,3	Script	Ruptura do RagnaGhostz	951,{
 
-	.@n$ = "[Gerente do Portal]";
+	.@n$ = "[^8A2BE2Gerente do Portal^000000]";
 	
 	mes .@n$;
 	
@@ -16,42 +16,46 @@
 	{
 		mes "Parece que a ruptura está fechada.";
 		
-		if( select( "O que é a Ruptura?", "Horários de Ruptura", "Forçar Ruptura" ) )
+		switch( select( "O que é a Ruptura?", "Horários de Ruptura", "Forçar Ruptura" ) )
 		{
 			case 1:
+				next;
 				mes "A Ruptura é um evento que ocorre sempre em horários fixos.";
 				next;
 				mes .@n$;
 				mes "A Área da Ruptura é uma terra sem lei, onde todos os monstros do servidor se juntam para tentar acabar com a humanidade!";
 				next;
 				mes .@n$;
-				mes "Hordas dos monstros serão invocados de tempo em tempos. Ao morrer lá, você será teleportado de volta para cá e terá que esperar eu autorizar a entrada novamente.";
+				mes "Hordas dos monstros serão invocados de tempo em tempos.";
+				mes "Jogadores recebem 30% a mais de dano de monstros enquanto dentro do mapa da ruptura.";
 				next;
 				mes .@n$;
-				mes "E isso não é tudo, no fim de todas as hordas o PvP é ligado durante 45 segundos até a próxima horda!";
+				mes "E isso não é tudo, no fim de todas as hordas o PvP é ligado durante 30 segundos até a próxima horda!";
 				next;
 				mes .@n$;
-				mes "No fim do evento 5 baús nascem que podem dar um dos seguintes prêmios a quem der o último dano:"
-				mes "[50% de Chance] -> 1 a 1500 pontos de Cash.";
+				mes "No fim do evento, baús nascem e podem dar um dos seguintes prêmios a quem der o último hit:";
+				mes "[40% de Chance] -> 1 a 1500 pontos de Cash.";
 				mes "[30% de Chance] -> 1 a 300 pontos de Evento."; 
 				mes "[20% de Chance] -> 20 pontos em uma maestria de classe aleatória (não ultrapassando o nível máximo).";
 				mes "[7% de Chance] -> +1% de dano (Máximo 15).";
-				mes "[3% de chance] -> Recebe o item [Ruptura de Emperium].";
+				mes "[3% de chance] -> 1 mês VIP.";
 				next;
 				mes .@n$;
 				mes "Existem também duas premiações extras para quem matar mais jogadores ou monstros durante o evento.";
 				next;
 				mes .@n$;
-				mes "Aquele que matar mais jogadores, recebe 500 pontos no ranking PvP.";
+				mes "Aquele que matar mais jogadores, no fim do evento recebe 1000 pontos de cash e 200 pontos de evento.";
 				mes "Quando morrer, você perde seus pontos!";
 				mes "Quando deslogar, você perde seus pontos!";
 				next;
-				mes "Aquele que matar mais monstros, recebe +300% de dano contra os baús.";
+				mes .@n$;
+				mes "Aquele que matar mais monstros, no fim do evento recebe 300 pontos de evento.";
 				mes "Quando morrer, você não perde seus pontos";
 				mes "Quando deslogar, você perde seus pontos!";
 				close;
 				
 			case 2:
+				next;
 				mes .@n$;
 				mes "A Ruptura abre sempre ao 12:00 e às 22:00.";
 				close;
@@ -80,16 +84,32 @@
 						close;
 					}
 
+					close2;
+
+					if( .ds_open > 0 )
+					{
+						next;
+						mes .@n$;
+						mes "Uma Ruptura já está aberta no momento. Tentou ser engraçado?";
+						close;
+					}
+
 					#CASHPOINTS -= 5000;
+
+					if( getgroupid() == 99 )
+						.debug = 1;
+
 					.forced = 1;
+					goto L_ForceStart;
 					end;
 				}
+				close;
 		}
 	}
 	
-	if( .ds_open == 2 )
+	if( .ds_open > 1 )
 	{
-		mes "Aguarde um pouco, ainda está perigoso lá dentro. Irei avisar assim que estiver seguro a entrada.";
+		mes "Está acontecendo uma Ruptura neste momento.";
 		close;
 	}
 	
@@ -98,10 +118,31 @@
 		mes "Desculpa, mas você ainda não tem nível para enfrentar os monstros de lá.";
 		close;
 	}
+
+	mes "Deseja entrar na Ruptura?";
+
+	if(select("Não","Sim") == 0) close;
+
+	close2;
+
+	if( .ds_open > 1 )
+	{
+		mes "Que pena, você demorou muito :(";
+		close;
+	}
+
+	@ds_pvp_points = 0;
+	@ds_mvp_points = 0;
+
+	receivemobdamage( getcharid(0), 30 );
+
+	warp .map$,150,150;
+	npctalk "Boa sorte, " + strcharinfo(0) + "!";
+	end;
 	
 	OnInit:
 		.ds_open = 0;
-		.map$ = "";
+		.map$ = "ordeal_1-1";
 		.forced = 0;
 		
 		// Primeiro Round: Todos os Monstros da Torre Bronze
@@ -110,16 +151,30 @@
 		// Quarto Round: Todos os Monstros da Torre Platina
 		// Quinto Round: Todos os Monstros da Torre Diamante
 		// Sexto Round: Todos os Monstros das Instâncias da Torre Diamante * rand( 5, 20 )
-		// Sétimo Round: Todos os monstros da Torre Diamante + Monstros da Instâncias * rand( 1, 5 )
-		// Oitavo Round: 500 Plantas
-		// Nono Round: Todos os MVPs do Pesadelo e atacar faz com que receba 5% do dano de volta.
-		// Decimo Round: Todos os MVP do biolab 3 e atacar faz com que receba 10% do dano de volta.
+		// Sétimo Round: Todos os Monstros Nightmare
 		.randmin[1] = 5;
-		.randmax[1] = 7;
+		.randmax[1] = 10;
 		
-		.round$ [2] = "";
-		.randmin[2] = 5;
-		.randmax[2] = 7;
+		.randmin[2] = 10;
+		.randmax[2] = 15;
+
+		.randmin[3] = 5;
+		.randmax[3] = 10;
+
+		.randmin[4] = 3;
+		.randmax[4] = 10;
+
+		.randmin[5] = 2;
+		.randmax[5] = 8;
+
+		.randmin[6] = 2;
+		.randmax[6] = 7;
+
+		.randmin[7] = 10;
+		.randmax[7] = 35;
+
+		.maxrounds = 7;
+		.debug = 0;
 		end;
 		
 	L_ForceStart:
@@ -128,15 +183,20 @@
 	OnHour2200:
 	OnRupturaStart:
 		if( .forced && !.@forced ) end;
-		
+		if( .ds_open ) end;
+
+		killmonster .map$,"Ruptura do RagnaGhostz::OnDSMOBKill";
+
 		.ds_open = 1;
-		
+		removemapflag .map$,mf_pvp;
+		removemapflag .map$,mf_pvp_noparty;
+
 		if( !.@forced )
 		{
 			announce "[Ruptura do RagnaGhostz]: A Ruptura do RagnaGhostz foi aberta! 3 minutos para começar o primeiro round!",0;
 			
-			bot_announce( "A **Ruptura do RagnaGhostz** acaba de abrir!", strcharinfo(0) ), CHANNEL_REALGERAL );
-			bot_announce( "3 minutos para iniciar o primeiro round!", strcharinfo(0) ), CHANNEL_REALGERAL );
+			bot_announce( "A **Ruptura do RagnaGhostz** acaba de abrir!", CHANNEL_REALGERAL );
+			bot_announce( "3 minutos para iniciar o primeiro round!", CHANNEL_REALGERAL );
 		}
 		else
 		{
@@ -145,170 +205,281 @@
 			sleep 8000;
 			announce "[Ruptura do RagnaGhostz]: A Ruptura do RagnaGhostz foi aberta! 3 minutos para começar o primeiro round!",0;
 		}
+
+		sleep .debug ? 5000 : 60000;
+		announce "[Ruptura do RagnaGhostz]: 2 minutos para começar o primeiro round!",0;
+		bot_announce( "2 minutos para iniciar o primeiro round da **Ruptura do RagnaGhostz**!", CHANNEL_REALGERAL );
+		sleep .debug ? 5000 : 60000;
+		announce "[Ruptura do RagnaGhostz]: 1 minuto para começar o primeiro round!",0;
+		bot_announce( "1 minuto para iniciar o primeiro round da **Ruptura do RagnaGhostz**!", CHANNEL_REALGERAL );
+		sleep .debug ? 5000 : 60000;
+
+		.debug = 0;
+		.ds_open = 2;
+		mapannounce .map$,"Começou o Primeiro Round!",bc_map;
+		.high_pkiller = 0;
+		.pkiller_record = 0;
+		.high_mkiller = 0;
+		.mkiller_record = 0;
+
+		.actual_round = 1;
+
+		setarray .rounds$[1],"Primeiro","Segundo","Terceiro","Quarto","Quinto","Sexto","Último";
+
+		while( getmapusers( .map$ ) >= 1 )
+		{
+			removemapflag .map$,mf_pvp;
+			removemapflag .map$,mf_pvp_noparty;
+
+			if( .actual_round > 1 )
+			{
+				.@mplayer_name$ = strcharinfo( 0, .high_mkiller );
+
+				if( .@mplayer_name$ != "" )
+				{
+					mapannounce .map$,sprintf( "%s está na liderança de mais monstros abatidos!", .@mplayer_name$ ),bc_map;
+					sleep 3000;
+				}
+
+				sleep 5000;
+
+				mapannounce .map$,"O PVP será ligado daqui a 5 segundos durante 30 segundos!",bc_map;
+				sleep 1000;
+				mapannounce .map$,"O PVP será ligado daqui a 4 segundos durante 30 segundos!",bc_map;
+				sleep 1000;
+				mapannounce .map$,"O PVP será ligado daqui a 3 segundos durante 30 segundos!",bc_map;
+				sleep 1000;
+				mapannounce .map$,"O PVP será ligado daqui a 2 segundos durante 30 segundos!",bc_map;
+				sleep 1000;
+				mapannounce .map$,"O PVP será ligado daqui a 1 segundos durante 30 segundos!",bc_map;
+				sleep 1000;
+				mapannounce .map$,"O PVP está ligado durante 30 segundos!",bc_map;
+				setmapflag .map$,mf_pvp;
+				setmapflag .map$,mf_pvp_noparty;
+
+				sleep 30000;
+
+				mapannounce .map$,"O PvP foi desligado!",bc_map;
+				removemapflag .map$,mf_pvp;
+				removemapflag .map$,mf_pvp_noparty;
+				sleep 5000;
+
+				.@pplayer_name$ = strcharinfo( 0, .high_pkiller );
+
+				if( .@pplayer_name$ != "" )
+				{
+					mapannounce .map$,sprintf( "%s está na liderança de mais jogadores abatidos!", .@pplayer_name$ ),bc_map;
+					sleep 5000;
+				}
+
+				.actual_round++;
+
+				if( .actual_round == .maxrounds )
+				{
+					mapannounce .map$,"Obrigado a todos por nos salvarem da Ruptura! Em 30 segundos iremos liberar os baús de recompensas!",bc_map;
+					sleep 30000;
+
+					if( ischaronline( .high_pkiller ) )
+					{
+						set( #CASHPOINTS, 1000, .high_pkiller );
+						set( #EVENT_POINTS, 200, .high_pkiller );
+
+						megdisp .high_pkiller,"#GREEN#Você recebeu 200 pontos de evento!";
+						megdisp .high_pkiller,"#GREEN#Você recebeu 1000 pontos de cash!";
+					}
+
+					if( ischaronline( .high_mkiller ) )
+					{
+						set( #EVENT_POINTS, 300, .high_mkiller );
+
+						megdisp .high_mkiller,"#GREEN#Você recebeu 300 pontos de evento!";
+					}
+
+					monster .map$,150,150,"Baú da Ruptura",1324,1,"Ruptura do RagnaGhostz::OnDSMOBKill";
+					monster .map$,54,246,"Baú da Ruptura",.1324,1,"Ruptura do RagnaGhostz::OnDSMOBKill";
+					monster .map$,149,273,"Baú da Ruptura",1324,1,"Ruptura do RagnaGhostz::OnDSMOBKill";
+					monster .map$,246,246,"Baú da Ruptura",1324,1,"Ruptura do RagnaGhostz::OnDSMOBKill";
+					monster .map$,274,149,"Baú da Ruptura",1324,1,"Ruptura do RagnaGhostz::OnDSMOBKill";
+					monster .map$,246,52,"Baú da Ruptura",1324,1,"Ruptura do RagnaGhostz::OnDSMOBKill";
+					monster .map$,149,25,"Baú da Ruptura",1324,1,"Ruptura do RagnaGhostz::OnDSMOBKill";
+					monster .map$,53,54,"Baú da Ruptura",1324,1,"Ruptura do RagnaGhostz::OnDSMOBKill";
+					monster .map$,27,150,"Baú da Ruptura",1324,1,"Ruptura do RagnaGhostz::OnDSMOBKill";
+
+					while( mobcount( .map$,"Ruptura do RagnaGhostz::OnDSMOBKill") && getmapusers( .map$ ) > 0 )
+					{
+						mapannounce .map$,"Restam " + mobcount( .map$,"Ruptura do RagnaGhostz::OnDSMOBKill") + " Baús da Ruptura!",bc_map;
+						sleep 15000;
+					}
+
+					.ds_open = 0;
+					killmonster .map$,"Ruptura do RagnaGhostz::OnDSMOBKill";
+					bot_announce( "A **Ruptura de RagnaGhostz** foi fechada! Obrigada a todos que participaram!", CHANNEL_CONQUISTAS );
+					announce "[Ruptura do RagnaGhostz]: A Ruptura foi fechada! Obrigada a todos que participaram!",0;
+					end;
+				}
+
+				mapannounce .map$,"Fim do " + .rounds$[.actual_round - 1] + " round!",bc_map;
+				sleep 6000;
+				mapannounce .map$,"5 segundos para começar o próximo round!",bc_map;
+				sleep 5000;
+				mapannounce .map$,"Começou o " + .rounds$[.actual_round] + " round!",bc_map;
+			}
+
+			cleararray .@mob_ids[0],0,getarraysize(.@mob_ids);
+
+			.@q = query_sql( "SELECT `mob_id`       " + 
+				             "  FROM `ruptura_mobs` " + 
+				             " WHERE `round` = " + .actual_round, .@mob_ids );
+
+			for( .@i = 0; .@i < .@q; .@i++ )
+				monster .map$,0,0,"Monstro da Ruptura",.@mob_ids[.@i],rand(.randmin[.actual_round],.@randmax[.actual_round]),"Ruptura do RagnaGhostz::OnDSMOBKill";
+
+			while( mobcount( .map$,"Ruptura do RagnaGhostz::OnDSMOBKill") )
+			{
+				mapannounce .map$,"Restam " + mobcount( .map$,"Ruptura do RagnaGhostz::OnDSMOBKill") + " Monstros da Ruptura!",bc_map;
+				sleep 15000;
+
+				if( getmapusers( .map$ ) == 0 )
+					goto L_ForceEnd;
+			}
+
+			mapannounce .map$, .lastkiller$ + " matou o último monstro do round!",bc_map;
+			sleep 5000;
+
+			if(.actual_round == 1)
+				.actual_round++;
+		}
+
+		L_ForceEnd:
+			announce "[Ruptura do RagnaGhostz]: A Ruptura foi desfeita por falta de jogadores corajosos!",0;
+			.ds_open = 0;
+			killmonster .map$,"Ruptura do RagnaGhostz::OnDSMOBKill";
 		end;
 		
 	OnDSMOBKill:
 		if( strcharinfo(3) != .map$ ) end;
+
+		if( .actual_round == .maxrounds )
+		{
+			announce "[Ruptura do RagnaGhostz]: " + strcharinfo(0) + " destruiu um baú!",0;
+
+			.@rand = rand(1, 100);
+
+			if( .@rand <= 40 )
+			{
+				.@rcash = rand( 1, 1500 );
+
+				#CASHPOINTS += .@rcash;
+				megdisp getcharid(0),"#YELLOW#Recebeu " + .@rcash + " pontos de cash!";
+			}
+			else if( .@rand > 40 && .@rand <= 70 )
+			{
+				.@revent = rand( 1, 300 );
+
+				#EVENT_POINTS += .@revent;
+				megdisp getcharid(0),"#YELLOW#Recebeu " + .@revent + " pontos de evento!";
+			}
+			else if( .@rand > 70 && .@rand <= 90 )
+			{
+				.@t = query_sql( "SELECT `mastery_id` " +
+					             "  FROM `mastery_player` " +
+					             " WHERE `bound` = '" + getcharid(3) + "'", .@mastery_id, .@nome$ );
+
+				if( .@t > 0 )
+				{
+					.@mid = .@mastery_id[rand(0, getarraysize(.@mastery_id))];
+
+					mastery( "UpMastery", getcharid(0), .@mid, 20 );
+				}
+				else
+				{
+					.@revent = rand( 1, 300 );
+
+					#EVENT_POINTS += .@revent;
+					megdisp getcharid(0),"#YELLOW#Recebeu " + .@revent + " pontos de evento!";
+				}
+			}
+			else if( .@rand > 90 && .@rand <= 97 )
+			{
+				 #DMG_INPLAYERS++;
+
+				 if( #DMG_INPLAYERS >= 15 )
+				 	#DMG_INPLAYERS = 15;
+
+				 megdisp getcharid(0),"#YELLOW#Agora você dá " + #DMG_INPLAYERS + "% de dano!";
+				 dmginplayers( getcharid(0), #DMG_INPLAYERS );
+			}
+			else
+			{
+				megdisp getcharid(0),"#YELLOW#Recebeu 1 mês VIP";
+				vip_time 43800;
+			}
+
+			warp "Save",0,0;
+			bot_announce( sprintf( "**%s** acaba de destruír um **baú da ruptura**!", strcharinfo(0) ), CHANNEL_CONQUISTAS );
+			end;
+		}
+
+		@ds_mvp_points++;
+
+		if( @ds_mvp_points > .mkiller_record )
+		{
+			.high_mkiller = getcharid(0);
+			.mkiller_record = @ds_mvp_points;
+		}
+
+		.lastkiller$ = strcharinfo(0);
+		end;
 		
 	OnPcDieEvent:
 		if( strcharinfo(3) != .map$ ) end;
+
 		@ds_pvp_points = 0;
+
+		if( high_mkiller == getcharid(0) )
+		{
+			.high_mkiller = 0;
+			.mkiller_record = 0;
+		}
+		end;
+
+	OnPcKillEvent:
+		if( strcharinfo(3) != .map$ ) end;
+
+		@ds_pvp_points++;
+
+		if( @ds_pvp_points > .pkiller_record )
+		{
+			.high_pkiller = getcharid(0);
+			.pkiller_record = @ds_pvp_points;
+		}
 		end;
 }
 
-/*
-ROUND 1:
+ordeal_1-1	mapflag	noteleport	
+ordeal_1-1	mapflag	nosave	
 
-INSERT INTO `ruptura_mobs` ( `mob_id`, `round` )
-	 VALUES ( 1002, 1 ),
-            ( 1007, 1 ),
-            ( 1008, 1 ),
-            ( 1002, 1 ),
-            ( 1063, 1 ),
-            ( 1002, 1 ),
-            ( 1010, 1 ),
-            ( 1011, 1 ),
-            ( 1011, 1 ),
-            ( 1063, 1 ),
-            ( 1002, 1 ),
-            ( 1014, 1 ),
-            ( 1010, 1 ),
-            ( 1011, 1 ),
-            ( 1107, 1 ),
-            ( 1011, 1 ),
-            ( 1063, 1 );
-			
-ROUND 2:
-
-
-INSERT INTO `ruptura_mobs` ( `mob_id`, `round` )
-VALUES ( 1052, 2 ), 
-       ( 1841, 2 ), 
-       ( 1238, 2 ), 
-       ( 1860, 2 ), 
-       ( 1811, 2 ), 
-       ( 1014, 2 ), 
-       ( 1238, 2 ), 
-       ( 1239, 2 ), 
-       ( 1234, 2 ), 
-       ( 1018, 2 ), 
-       ( 1055, 2 ), 
-       ( 1235, 2 ), 
-       ( 1235, 2 ), 
-       ( 1005, 2 ), 
-       ( 1019, 2 ), 
-       ( 1856, 2 ), 
-       ( 1076, 2 ), 
-       ( 1031, 2 ), 
-       ( 1031, 2 ), 
-       ( 1128, 2 ), 
-       ( 2840, 2 ), 
-       ( 1015, 2 ), 
-       ( 1579, 2 ), 
-       ( 1265, 2 ), 
-       ( 1741, 2 ), 
-       ( 1965, 2 ), 
-       ( 1743, 2 ), 
-       ( 1034, 2 ), 
-       ( 1014, 2 ), 
-       ( 1250, 2 ), 
-       ( 1250, 2 ), 
-       ( 1686, 2 ), 
-       ( 1023, 2 ), 
-       ( 1169, 2 ), 
-       ( 1452, 2 ), 
-       ( 1391, 2 ), 
-       ( 1013, 2 ), 
-       ( 1100, 2 ), 
-       ( 1968, 2 ), 
-       ( 1519, 2 ), 
-       ( 1074, 2 ), 
-       ( 1729, 2 ), 
-       ( 1729, 2 ), 
-       ( 1016, 2 ), 
-       ( 1420, 2 ), 
-       ( 1463, 2 ), 
-       ( 1593, 2 ), 
-       ( 1032, 2 ), 
-       ( 1116, 2 ), 
-       ( 1116, 2 ), 
-       ( 1593, 2 ), 
-       ( 1191, 2 ), 
-       ( 1271, 2 ), 
-       ( 1119, 2 ), 
-       ( 1026, 2 ), 
-       ( 1026, 2 ), 
-       ( 1611, 2 ), 
-       ( 1118, 2 ), 
-       ( 1108, 2 ), 
-       ( 1451, 2 ), 
-       ( 1002, 2 );
-
-Round 3:
-
-INSERT INTO `ruptura_mobs` ( `mob_id`, `round` )
-VALUES ( 1052, 3 ),
-       ( 1841, 3 ),
-       ( 1238, 3 ),
-       ( 1860, 3 ),
-       ( 1811, 3 ),
-       ( 1014, 3 ),
-       ( 1238, 3 ),
-       ( 1239, 3 ),
-       ( 1234, 3 ),
-       ( 1018, 3 ),
-       ( 1055, 3 ),
-       ( 1235, 3 ),
-       ( 1235, 3 ),
-       ( 1005, 3 ),
-       ( 1019, 3 ),
-       ( 1856, 3 ),
-       ( 1076, 3 ),
-       ( 1031, 3 ),
-       ( 1031, 3 ),
-       ( 1128, 3 ),
-       ( 2840, 3 ),
-       ( 1015, 3 ),
-       ( 1579, 3 ),
-       ( 1265, 3 ),
-       ( 1741, 3 ),
-       ( 1965, 3 ),
-       ( 1743, 3 ),
-       ( 1034, 3 ),
-       ( 1014, 3 ),
-       ( 1250, 3 ),
-       ( 1250, 3 ),
-       ( 1686, 3 ),
-       ( 1023, 3 ),
-       ( 1169, 3 ),
-       ( 1452, 3 ),
-       ( 1391, 3 ),
-       ( 1013, 3 ),
-       ( 1100, 3 ),
-       ( 1968, 3 ),
-       ( 1519, 3 ),
-       ( 1074, 3 ),
-       ( 1729, 3 ),
-       ( 1729, 3 ),
-       ( 1016, 3 ),
-       ( 1420, 3 ),
-       ( 1463, 3 ),
-       ( 1593, 3 ),
-       ( 1032, 3 ),
-       ( 1116, 3 ),
-       ( 1116, 3 ),
-       ( 1593, 3 ),
-       ( 1191, 3 ),
-       ( 1271, 3 ),
-       ( 1119, 3 ),
-       ( 1026, 3 ),
-       ( 1026, 3 ),
-       ( 1611, 3 ),
-       ( 1118, 3 ),
-       ( 1108, 3 ),
-       ( 1451, 3 ),
-       ( 1002, 3 );
-
-
-*/
-
+ordeal_1-1,100,150,0	warp	ord11-1	1,1,ordeal_1-1,128,150
+ordeal_1-1,123,150,0	warp	ord11-2	1,1,ordeal_1-1,95,150
+ordeal_1-1,114,183,0	warp	ord11-3	1,1,ordeal_1-1,135,163
+ordeal_1-1,130,168,0	warp	ord11-4	1,1,ordeal_1-1,109,188
+ordeal_1-1,115,115,0	warp	ord11-5	1,1,ordeal_1-1,136,136
+ordeal_1-1,131,131,0	warp	ord11-6	1,1,ordeal_1-1,110,110
+ordeal_1-1,148,176,0	warp	ord11-7	1,1,ordeal_1-1,149,204
+ordeal_1-1,149,199,0	warp	ord11-8	1,1,ordeal_1-1,148,171
+ordeal_1-1,149,99,0	warp	ord11-9	1,1,ordeal_1-1,151,129
+ordeal_1-1,151,124,0	warp	ord11-10	1,1,ordeal_1-1,151,94
+ordeal_1-1,168,168,0	warp	ord11-11	1,1,ordeal_1-1,189,189
+ordeal_1-1,184,184,0	warp	ord11-12	1,1,ordeal_1-1,163,163
+ordeal_1-1,169,131,0	warp	ord11-13	1,1,ordeal_1-1,188,111
+ordeal_1-1,183,116,0	warp	ord11-14	1,1,ordeal_1-1,164,136
+ordeal_1-1,176,150,0	warp	ord11-15	1,1,ordeal_1-1,204,150
+ordeal_1-1,199,150,0	warp	ord11-16	1,1,ordeal_1-1,171,150
+ordeal_1-2,128,154,0	warp	ord12-1	1,1,ordeal_1-2,24,154
+ordeal_1-2,136,136,0	warp	ord12-2	1,1,ordeal_1-2,24,24
+ordeal_1-2,136,172,0	warp	ord12-3	1,1,ordeal_1-2,24,284
+ordeal_1-2,153,128,0	warp	ord12-4	1,1,ordeal_1-2,153,23
+ordeal_1-2,153,180,0	warp	ord12-5	1,1,ordeal_1-2,144,284
+ordeal_1-2,172,135,0	warp	ord12-6	1,1,ordeal_1-2,284,24
+ordeal_1-2,172,172,0	warp	ord12-7	1,1,ordeal_1-2,284,284
+ordeal_1-2,180,154,0	warp	ord12-8	1,1,ordeal_1-2,284,164

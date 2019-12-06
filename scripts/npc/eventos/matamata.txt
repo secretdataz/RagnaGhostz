@@ -48,6 +48,10 @@ phtownall,51,335,5	Script	Mata-Mata	827,{
 	end;
 
 	OnStartEvent:
+		removemapflag "guild_vs2",mf_pvp_noguild;
+		removemapflag "guild_vs2",mf_pvp;
+		removemapflag "guild_vs2",mf_pvp_noparty;
+		
 		if( getmapusers("guild_vs2") <= 1 )
 		{
 			$EVENT_STATE[EVENTID_MATAMATA] = 0;

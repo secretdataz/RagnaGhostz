@@ -25031,6 +25031,26 @@ BUILDIN_FUNC(npcicon)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+BUILDIN_FUNC(receivemobdamage)
+{
+	struct map_session_data *sd = map_charid2sd(script_getnum(st, 2));
+
+	if (sd)
+		sd->event.percent_dmg_from_mob = script_getnum(st, 3);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
+BUILDIN_FUNC(dmginplayers)
+{
+	struct map_session_data *sd = map_charid2sd(script_getnum(st, 2));
+
+	if (sd)
+		sd->event.percent_dmg_in_players = script_getnum(st, 3);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
 
 #include "../custom/script.inc"
 
@@ -25110,6 +25130,8 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(playsoundall,"s?????"),
 	BUILDIN_DEF(add_stickertomeg,"ii"),
 	BUILDIN_DEF(getitemid,""),
+	BUILDIN_DEF(receivemobdamage,"ii"),
+	BUILDIN_DEF(dmginplayers,"ii"),
 	// NPC interaction
 	BUILDIN_DEF(mes,"s*"),
 	BUILDIN_DEF(next,""),

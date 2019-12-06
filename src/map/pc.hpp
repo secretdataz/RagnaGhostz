@@ -807,6 +807,11 @@ struct map_session_data {
 		int killed;
 	} pvp;
 
+	struct {
+		int percent_dmg_from_mob;
+		int percent_dmg_in_players;
+	} event;
+
 	// Sharingan
 	std::vector<int> copycatme;
 
