@@ -179,8 +179,8 @@ phtownall,189,200,3	Script	Ruptura do RagnaGhostz	951,{
 		
 	L_ForceStart:
 		.@forced = 1;
-	OnHour1200:
-	OnHour2200:
+	OnClock1200:
+	OnClock2200:
 	OnRupturaStart:
 		if( .forced && !.@forced ) end;
 		if( .ds_open ) end;
