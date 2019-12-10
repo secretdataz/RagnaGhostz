@@ -1,0 +1,3 @@
+#ifndef SVNVERSION
+#define SVNVERSION 9907715d29_9907715d29
+#endif

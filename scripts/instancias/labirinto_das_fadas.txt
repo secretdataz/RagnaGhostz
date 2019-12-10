@@ -44,7 +44,10 @@ e_woods2,102,71,5	Script	Ztsohg	2131,{
 	sleep2 3000;
 	
 	setnpcdisplay( instance_npcname( "Ztsohg" ), -1 );
-	
+	setnpcdisplay( instance_npcname( "Ztsohg#3" ), -1 );
+	setnpcdisplay( instance_npcname( "Ztsohg#4" ), -1 );
+	setnpcdisplay( instance_npcname( "Ztsohg#5" ), -1 );
+
 	sleep2 2000;
 	
 	monster instance_mapname( strcharinfo(3) ),102,71,"Dragão Ztsohg",2131,1,instance_npcname("Navi#IN1") + "::OnKillBoss";

@@ -167,9 +167,10 @@ morocc,160,138,5	script	Saída do Evento#zp	501,{
 		if(rand(1,5) != 1 && @chanceZP < 2)
 		{
 			message strcharinfo(0),"Que pena, nada aqui!";
-			@chanceZP++;
 			end;
 		}
+		else
+			@chanceZP++;
 
 		@chanceZP = 0;
 
