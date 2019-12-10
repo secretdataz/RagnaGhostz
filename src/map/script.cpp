@@ -13101,6 +13101,14 @@ BUILDIN_FUNC(flagemblem)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+BUILDIN_FUNC(getcastleid)
+{
+	const char* mapname = mapindex_getmapname(script_getstr(st, 2), NULL);
+	struct guild_castle* gc = guild_mapname2gc(mapname);
+	script_pushint(st, gc->castle_id);
+	return SCRIPT_CMD_SUCCESS;
+}
+
 BUILDIN_FUNC(getcastlename)
 {
 	const char* mapname = mapindex_getmapname(script_getstr(st,2),NULL);
@@ -25353,6 +25361,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(agitend,""),
 	BUILDIN_DEF(agitcheck,""),   // <Agitcheck>
 	BUILDIN_DEF(flagemblem,"i"),	// Flag Emblem
+	BUILDIN_DEF(getcastleid, "s"),
 	BUILDIN_DEF(getcastlename,"s"),
 	BUILDIN_DEF(getcastledata,"si"),
 	BUILDIN_DEF(setcastledata,"sii"),

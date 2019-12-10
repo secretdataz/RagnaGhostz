@@ -1,0 +1,198 @@
+
+// Como funciona:
+// Jogadores de um clã que conquistarem um castelo e estiverem dentro dele, recebem permissão de usar o NPC no fim da GdE
+
+// Tabela de Registro de Uso de Encantador (guild_enchant)
+// char_id
+// guild_id
+// castle_id
+// uses       - Quantidade de Uso Disponível
+
+-	Script	Encantador de Equip.#0	90,{
+
+	.@n$ = "[Encantador de Equipamento]";
+
+	mes .@n$;
+	
+	if( getcharid(2) == 0 )
+	{
+		mes "Você não deveria estar aqui!";
+		close;
+	}
+	
+	if( $WOE_RUNNING )
+	{
+		mes "Estamos em guerra, não tenho tempo para Encantar Equipamentos!";
+		close;
+	}
+
+	.@castle_name$ = getcastlename( strcharinfo(3) );
+	.@castle_index = inarray( .castelo_name$, .@castle_name$ );
+	
+	if( .@castle_name$ == "" || .@castle_index < 0 )
+	{
+		mes "Eu não deveria estar aqui!";
+		close;
+	}
+	
+	.@guild_owner = getcastledata( strcharinfo(3), CD_GUILD_ID );
+	
+	if( .@guild_owner == 0 )
+	{
+		mes "Ainda não possuo um mestre.";
+		close;
+	}
+	
+	if( getcharid(2) != .@guild_owner )
+	{
+		mes "Meus serviços pertencem apenas aos membros do Clã " + getguildname( .@guild_owner ) + "!";
+		close;
+	}
+	
+	.@query = sprintf( " SELECT `uses`             " +
+	                   "   FROM `guild_enchant`    " +
+					   "  WHERE `char_id`   = '%d' " +
+					   "    AND `guild_id`  = '%d' " +
+					   "    AND `castle_id` = '%d' ", 
+					   getcharid(0), getcharid(2), getcastleid( strcharinfo(3) ) );
+	
+	.@total = query_sql( .@query, .@uses );
+	
+	if( .@total == 0 )
+	{
+		mes "Vejo que você pertence ao clã " + .@castle_name$ + ", mas infelizmente você não estava dentro do castelo na hora da conquista.";
+		next;
+		mes .@n$;
+		mes "Apenas aqueles que lutaram pelo castelo são dignos do meu serviço.";
+		close;
+	}
+	else if( .@uses <= 0 )
+	{
+		mes "Sinto muito, mas você já estourou o limite de uso de meus serviços no castelo " + .@castle_name$ + ".";
+		next;
+		mes .@n$;
+		mes "Na próxima Guerra do Emperium use novamente meus serviços caso conquiste este castelo.";
+		close;
+	}
+	
+	mes .@n$;
+	mes "Você ainda pode utilizar meu serviço " + .@uses + " vezes.";
+	mes "Encantamento: " + .encant_desc$[.@castle_index];
+	mes "Chance de Destruír Equipamento: " + .encant_bc[.@castle_index] + "%";
+	
+	setarray .@equips[1],EQI_HEAD_TOP,EQI_HEAD_MID,EQI_HEAD_LOW,EQI_ARMOR,EQI_HAND_L,EQI_HAND_R,EQI_GARMENT,EQI_SHOES,EQI_ACC_L,EQI_ACC_R;
+	setarray .@color$[1],"^A52A2A","^228B22","^483D8B","^FFA500","^DAA520","^6B8E23","^A020F0","^2F4F4F","^698B69","^CD6090";
+	
+	for( .@i = 1; .@i < getarraysize( .@equips ); .@i++ )
+	{
+		if( getequipid( .@equips[.@i] ) == -1 ||
+		    !getequipisenableref( .@equips[.@i] ) ) continue;
+		
+		.@temAlgo = 1;
+		
+		.@actualRefine = getequiprefinerycnt( .@equips[.@i] );
+		
+		.@item_place[.@mo] = .@equips[.@i];
+		.@item_name$[.@mo] = sprintf( "%s%s^000000 %s", .@color$[.@i], getequipname( .@equips[.@i] ), ( .@actualRefine > 0 ? "(+" + .@actualRefine + ")" : "" ) );
+		
+		.@item_name_talk$[.@mo] = getequipname( .@equips[.@i] );
+		
+		.@menu$ += "@" + .@item_name$[.@mo] + ":";
+		
+		if( getgroupid() == 99 )
+		{
+			dispbottom ".@mo == " + .@mo;
+			dispbottom ".@item_place[.@mo] == " + .@item_place[.@mo];
+			dispbottom ".@item_name$[.@mo] == " + .@item_name$[.@mo];
+			dispbottom "-----------------";
+		}
+		
+		.@mo++;
+	}
+	
+	if( !.@temAlgo )
+	{
+		next;
+		mes .@n$;
+		mes "Parece que não há nada que eu possa encantar.";
+		close;
+	}
+
+	next;
+	mes .@n$;
+	mes "Selecione qual item deseja refinar.";
+	
+	.@option = select( .@menu$ );
+	
+	.@place = .@item_place[.@option];
+	
+	if( getgroupid() == 99 )
+		dispbottom ".@option = " + .@option;
+	
+	next;
+	
+	for( .@i = 0; .@i < 5; .@i++ )
+	{
+		if( getequiprandomoption( .@place, .@i, ROA_ID ) == .encant_id[.@castle_index] )
+		{
+			mes .@n$;
+			mes "Você não pode encantar um equipamento duas vezes com o mesmo encantamento!";
+			mes "Isso iria prejudicar a diversidade de builds dentro do RagnaGhostz, não concorda?";
+			close;
+		}
+	}
+	
+	mes .@n$;
+	mes "Seleciona Qual Slot devo encantar do item " + .@item_name$[.@option] + ".";
+	
+	.@slot = select("^4682B4*^000000 Slot 1:^FFA500*^000000 Slot 2:^228B22*^000000 Slot 3:^191970*^000000 Slot 4:^4682B4*^000000 Slot 5");
+	.@slot--;
+	
+	.@hasSlot = getequiprandomoption( .@place, .@slot, ROA_ID ) > 0;
+	
+	if( .@hasSlot )
+	{
+		mes .@n$;
+		mes "Parece que o item " + .@item_name$[.@option] + " já possui um encantamento neste slot.";
+		mes "Deseja sobrescrever o encantamento deste slot?";
+		
+		if( select( "Não", "Sim" ) == 1 ) close;
+	}
+
+	.@break = ( rand( 1, 100 ) <= .encant_bc[.@castle_index] );
+
+	if( .@break )
+	{
+		specialeffect2 155;
+		delequip .@place,getcharid(0);
+		mes "Sinto muito, parece que seu equipamento não aguentou o encantamento e foi destruído.";
+		next;
+		mes .@n$;
+		mes "Mais sorte na próxima, e por favor não me demita.";
+		close;
+	}
+	else
+	{
+		specialeffect2 154;
+		specialeffect2 237;	
+		
+		.@value = rand( .encant_min[.@castle_index], .encant_max[.@castle_index] );
+		
+		setrandomoption( .@place, .@slot, .encant_id[.@castle_index], .@value, 0 );
+		mes "Sucesso! Consegui Encantar corretamente seu equipamento!";
+		close;
+	}
+	end;
+	
+	OnInit:
+		.max_uses = 3;
+		
+		.castelo_name$[0] = "Kriemhild";
+		.encant_desc$[0]  = "HP Máximo + 1000 ~~ 5000";
+		.encant_id[0]     = RDMOPT_VAR_MAXHPAMOUNT;
+		.encant_min[0]    = 1000;
+		.encant_max[0]    = 5000;
+		.encant_bc[0]     = 35;
+
+		end;
+}

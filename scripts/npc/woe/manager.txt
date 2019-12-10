@@ -1,0 +1,129 @@
+
+function	script	WOE	{
+	
+	.@cmd$ = getarg(0);
+	
+	.@x[15] = 10;
+	.@y[15] = 10;
+	
+	if( .@cmd$ == "BREAKED" )
+	{
+		.@p$ = strcharinfo(0);
+		.@g$ = strcharinfo(2);
+		.@c$ = getcastlename( strcharinfo(3) );
+		
+		bot_announce( sprintf( "O Jogador **%s** do clã **%s** acaba de conquistar o castelo **%s**!", .@p$, .@g$, .@c$ ), CHANNEL_WOE );
+		announce sprintf( "O Jogador %s do clã %s acaba de conquistar o castelo %s!", .@p$, .@g$, .@c$ ),0;
+		
+		create_emperium( getcastleid( strcharinfo(3) ), getcharid(2) );
+		
+		query_sql( sprintf( "DELETE FROM `guild_enchant` WHERE `castle_id` = '%d' ", getcastleid( strcharinfo(3) ) ) );
+		
+		addrid( 5, strcharinfo(3) );
+		
+		if( getcastledata( strcharinfo(3), CD_GUILD_ID ) != getcharid(2) )
+		{
+			warp "Save",0,0;
+			end;
+		}
+		
+		query_sql( sprintf( "INSERT INTO `guild_enchant` ( `char_id`, `guild_id`, `castle_id`, `uses` )" +
+		                    "     VALUES ( '%d', '%d', '%d', '%d' ) ", getcharid(0), getcharid(2), getcastleid( strcharinfo(3), 5 ) " ) );
+		end;
+	}
+}
+	
+-	Script	Coordenador da GdE	90,{
+
+	.@n$ = "[Coordenador da GdE]";
+	
+	if( $WOE_RUNNING && getcharid(2) > 0 )
+	{
+		mes "A Guerra do Emperium está ocorrendo! Deseja ir até algum feudo?";
+		
+		.@option = select( implode( .feudo_nome$, ":" ) );
+
+		warp .feudo_map$[.@option], .feudo_wx[.@option], .feudo_wy[.@option];
+		npctalk "Boa sorte, " + strcharinfo(0) + " do clã " + strcharinfo(2) + "!";
+		end;
+	}
+	
+	mes "Olá, deseja saber algo sobre a Guerra do Emperium?";
+	
+	switch( select( "Horários", "Premiações", "Como ir até os castelos?" ) )
+	{
+		case 1:
+			next;
+			mes .@n$;
+			mes "[Domingo]";
+			mes "20:00 às 22:00";
+			mes " ";
+			mes "[Sábado]";
+			mes "18:00 às 20:00";
+			mes " ";
+			mes "[Quarta-Feira]";
+			mes "21:00 às 23:00";
+			close;
+	
+		case 2:
+			next;
+			mes .@n$;
+			mes "Os membros dos castelos possuem acesso a NPC's exclusivos.";
+			mes "Mas atenção! Alguns NPC's como o Encantador só atendem aqueles que estiverem dentro do castelo na hora da conquista do castelo!";
+			next;
+			mes .@n$;
+			mes "No fim da Guerra, os jogadores dos castelos que estiverem conectados recebem de 100 a 1000 pontos de Cash por castelo conquistado.";
+			close;
+			
+		case 3:
+			next;
+			mes "Quando a Guerra estiver ocorrendo, fale comigo que eu lhe teleportarei para os Feudos disponíveis.";
+			close;
+	}
+	
+	end;
+	
+	OnSun2000:
+	OnWed2100:
+	OnSat1800:
+		announce "[Coordenador da GdE]: A Guerra do Emperium começou!", 0;
+		bot_announce( "A **Guerra do Emperium** começou! Boa Sorte a todos os clãs!", CHANNEL_WOE );
+		$WOE_RUNNING = 1;
+		
+		for( .@i = 0; .@i < getarraysize( .emp_castle$ ) )
+		{
+			
+		}
+		end;
+		
+	OnSun2200:
+	OnSat2000:
+	OnWed2300:
+		announce "[Coordenador da GdE]: A Guerra do Emperium acabou!", 0;
+		bot_announce( "A **Guerra do Emperium** acabou, em breve computarei os resultados!", CHANNEL_WOE );
+		$WOE_RUNNING = 0;
+		end;
+		end;
+	
+	OnBreaked:
+		WOE( "BREAKED" );
+		end;
+	
+	OnInit:
+		if( $WOE_RUNNING )
+			announce "A Guerra do Emperium foi interrompida por causa de problemas técnicos!",0;
+			
+		$WOE_RUNNING = 0;
+		
+		.feudo_nome$[1] = "Feudo de Prontera";
+		.feudo_map$[1] = "prt_gld";
+		.feudo_wx[1] = 150;
+		.feudo_wy[1] = 150;
+		
+		// Kriemhild
+		.emp_castle$[0] = "Kriemhild";
+		.emp_map$[0]    = "prtg_cas01";
+		.emp_x[0]       = 100;
+		.emp_y[0]       = 100;
+		end;
+}
