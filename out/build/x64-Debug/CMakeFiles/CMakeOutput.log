@@ -1,0 +1,184 @@
+The system is: Windows - 10.0.18362 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.24.28314/bin/HostX64/x64/cl.exe 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+Microsoft (R) C/C++ Optimizing Compiler Versão 19.24.28314 para x64
+Copyright (C) Microsoft Corporation. Todos os direitos reservados.
+
+CMakeCCompilerId.c
+Microsoft (R) Incremental Linker Version 14.24.28314.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:CMakeCCompilerId.exe 
+CMakeCCompilerId.obj 
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.exe"
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.obj"
+
+The C compiler identification is MSVC, found in "Z:/Projetos/RagnaGhostz/out/build/x64-Debug/CMakeFiles/3.15.19101501-MSVC_2/CompilerIdC/CMakeCCompilerId.exe"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.24.28314/bin/HostX64/x64/cl.exe 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+Microsoft (R) C/C++ Optimizing Compiler Versão 19.24.28314 para x64
+Copyright (C) Microsoft Corporation. Todos os direitos reservados.
+
+CMakeCXXCompilerId.cpp
+Microsoft (R) Incremental Linker Version 14.24.28314.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:CMakeCXXCompilerId.exe 
+CMakeCXXCompilerId.obj 
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.exe"
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.obj"
+
+The CXX compiler identification is MSVC, found in "Z:/Projetos/RagnaGhostz/out/build/x64-Debug/CMakeFiles/3.15.19101501-MSVC_2/CompilerIdCXX/CMakeCXXCompilerId.exe"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: Z:/Projetos/RagnaGhostz/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_886bf && [1/2] Building C object CMakeFiles\cmTC_886bf.dir\testCCompiler.c.obj
+[2/2] Linking C executable cmTC_886bf.exe
+
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: Z:/Projetos/RagnaGhostz/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_f612a && [1/2] Building C object CMakeFiles\cmTC_f612a.dir\CMakeCCompilerABI.c.obj
+Observação: incluindo arquivo: Z:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\share\cmake-3.15\Modules\CMakeCompilerABI.h
+[2/2] Linking C executable cmTC_f612a.exe
+
+
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: Z:/Projetos/RagnaGhostz/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_d3704 && [1/2] Building CXX object CMakeFiles\cmTC_d3704.dir\testCXXCompiler.cxx.obj
+[2/2] Linking CXX executable cmTC_d3704.exe
+
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: Z:/Projetos/RagnaGhostz/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_d8372 && [1/2] Building CXX object CMakeFiles\cmTC_d8372.dir\CMakeCXXCompilerABI.cpp.obj
+Observação: incluindo arquivo: Z:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\share\cmake-3.15\Modules\CMakeCompilerABI.h
+[2/2] Linking CXX executable cmTC_d8372.exe
+
+
+
+Determining if the include file sys/types.h exists passed with the following output:
+Change Dir: Z:/Projetos/RagnaGhostz/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_bf995 && [1/2] Building C object CMakeFiles\cmTC_bf995.dir\CheckIncludeFile.c.obj
+Observação: incluindo arquivo: Z:\Windows Kits\10\include\10.0.18362.0\ucrt\sys/types.h
+[2/2] Linking C executable cmTC_bf995.exe
+
+
+
+Determining if the include file stdint.h exists passed with the following output:
+Change Dir: Z:/Projetos/RagnaGhostz/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_577ef && [1/2] Building C object CMakeFiles\cmTC_577ef.dir\CheckIncludeFile.c.obj
+Observação: incluindo arquivo: Z:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\stdint.h
+Observação: incluindo arquivo:  Z:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\vcruntime.h
+Observação: incluindo arquivo:   Z:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\sal.h
+Observação: incluindo arquivo:    Z:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\concurrencysal.h
+Observação: incluindo arquivo:   Z:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\vadefs.h
+[2/2] Linking C executable cmTC_577ef.exe
+
+
+
+Determining if the include file stddef.h exists passed with the following output:
+Change Dir: Z:/Projetos/RagnaGhostz/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_f5a28 && [1/2] Building C object CMakeFiles\cmTC_f5a28.dir\CheckIncludeFile.c.obj
+Observação: incluindo arquivo: Z:\Windows Kits\10\include\10.0.18362.0\ucrt\stddef.h
+Observação: incluindo arquivo:  Z:\Windows Kits\10\include\10.0.18362.0\ucrt\corecrt.h
+Observação: incluindo arquivo:   Z:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\vcruntime.h
+Observação: incluindo arquivo:    Z:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\sal.h
+Observação: incluindo arquivo:     Z:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\concurrencysal.h
+Observação: incluindo arquivo:    Z:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\vadefs.h
+[2/2] Linking C executable cmTC_f5a28.exe
+
+
+
+Determining size of unsigned short passed with the following output:
+Change Dir: Z:/Projetos/RagnaGhostz/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_7950f && [1/2] Building C object CMakeFiles\cmTC_7950f.dir\CMAKE_SIZEOF_UNSIGNED_SHORT.c.obj
+Observação: incluindo arquivo: Z:\Windows Kits\10\include\10.0.18362.0\ucrt\sys/types.h
+Observação: incluindo arquivo: Z:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\stdint.h
+Observação: incluindo arquivo:  Z:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\vcruntime.h
+Observação: incluindo arquivo:   Z:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\sal.h
+Observação: incluindo arquivo:    Z:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\concurrencysal.h
+Observação: incluindo arquivo:   Z:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.24.28314\include\vadefs.h
+Observação: incluindo arquivo: Z:\Windows Kits\10\include\10.0.18362.0\ucrt\stddef.h
+Observação: incluindo arquivo:  Z:\Windows Kits\10\include\10.0.18362.0\ucrt\corecrt.h
+[2/2] Linking C executable cmTC_7950f.exe
+
+
+
+Determining if the system is big endian passed with the following output:
+Change Dir: Z:/Projetos/RagnaGhostz/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_5debf && [1/2] Building C object CMakeFiles\cmTC_5debf.dir\TestEndianess.c.obj
+[2/2] Linking C executable cmTC_5debf.exe
+
+
+TestEndianess.c:
+/* A 16 bit integer is required. */
+typedef unsigned short cmakeint16;
+
+/* On a little endian machine, these 16bit ints will give "THIS IS LITTLE ENDIAN."
+   On a big endian machine the characters will be exchanged pairwise. */
+const cmakeint16 info_little[] =  {0x4854, 0x5349, 0x4920, 0x2053, 0x494c, 0x5454, 0x454c, 0x4520, 0x444e, 0x4149, 0x2e4e, 0x0000};
+
+/* on a big endian machine, these 16bit ints will give "THIS IS BIG ENDIAN."
+   On a little endian machine the characters will be exchanged pairwise. */
+const cmakeint16 info_big[] =     {0x5448, 0x4953, 0x2049, 0x5320, 0x4249, 0x4720, 0x454e, 0x4449, 0x414e, 0x2e2e, 0x0000};
+
+#ifdef __CLASSIC_C__
+int main(argc, argv) int argc; char *argv[];
+#else
+int main(int argc, char *argv[])
+#endif
+{
+  int require = 0;
+  require += info_little[argc];
+  require += info_big[argc];
+  (void)argv;
+  return require;
+}
+
+
+Determining if the function strnlen exists passed with the following output:
+Change Dir: Z:/Projetos/RagnaGhostz/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_361d0 && [1/2] Building C object CMakeFiles\cmTC_361d0.dir\CheckFunctionExists.c.obj
+[2/2] Linking C executable cmTC_361d0.exe
+
+
+
+Determining if the function getpid exists passed with the following output:
+Change Dir: Z:/Projetos/RagnaGhostz/out/build/x64-Debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe cmTC_fac3b && [1/2] Building C object CMakeFiles\cmTC_fac3b.dir\CheckFunctionExists.c.obj
+[2/2] Linking C executable cmTC_fac3b.exe
+
+
+

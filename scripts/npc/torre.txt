@@ -1297,10 +1297,10 @@ function	script	F_Torre_Warp	{
 		
 		'NEXT = 0;
 		
+		setnpcdisplay( instance_npcname( "#PortalTorre" ), -1 );
 		mapwarp instance_mapname("1@tower"),instance_mapname("1@tower"),50,355;
 		callfunc "F_Torre_Monstros",'TORREID, 'LEVEL, instance_mapname("1@tower"), instance_npcname("TorreLogic")+"::OnMyMobDead";
 		cleanmap instance_mapname("1@tower");
-		setnpcdisplay( instance_npcname( "#PortalTorre" ), -1 );
 		end;
 }
 

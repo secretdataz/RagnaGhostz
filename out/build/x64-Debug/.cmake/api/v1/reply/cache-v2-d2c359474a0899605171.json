@@ -1,0 +1,3015 @@
+{
+	"entries" : 
+	[
+		{
+			"name" : "ALLOW_SAME_DIRECTORY",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Allow CMake to build in the source directory."
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
+			"name" : "BIG_ENDIAN",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Result of TEST_BIG_ENDIAN"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "0"
+		},
+		{
+			"name" : "BUILD_MAPCACHE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "build mapcache executable"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "BUILD_SERVERS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "build server executables"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "CHAR_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz/src/char"
+		},
+		{
+			"name" : "CMAKE_BUILD_TYPE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel ..."
+				}
+			],
+			"type" : "STRING",
+			"value" : "Debug"
+		},
+		{
+			"name" : "CMAKE_CACHEFILE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "This is the directory where this CMakeCache.txt was created"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "z:/Projetos/RagnaGhostz/out/build/x64-Debug"
+		},
+		{
+			"name" : "CMAKE_CACHE_MAJOR_VERSION",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Major version of cmake used to create the current loaded cache"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "3"
+		},
+		{
+			"name" : "CMAKE_CACHE_MINOR_VERSION",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Minor version of cmake used to create the current loaded cache"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "15"
+		},
+		{
+			"name" : "CMAKE_CACHE_PATCH_VERSION",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Patch version of cmake used to create the current loaded cache"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "19101501"
+		},
+		{
+			"name" : "CMAKE_COMMAND",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to CMake executable."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe"
+		},
+		{
+			"name" : "CMAKE_CPACK_COMMAND",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to cpack program executable."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cpack.exe"
+		},
+		{
+			"name" : "CMAKE_CTEST_COMMAND",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to ctest program executable."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/ctest.exe"
+		},
+		{
+			"name" : "CMAKE_CXX_COMPILER",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "No help, variable specified on the command line."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.24.28314/bin/HostX64/x64/cl.exe"
+		},
+		{
+			"name" : "CMAKE_CXX_FLAGS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the CXX compiler during all build types."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc"
+		},
+		{
+			"name" : "CMAKE_CXX_FLAGS_DEBUG",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the CXX compiler during DEBUG builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/MDd /Zi /Ob0 /Od /RTC1"
+		},
+		{
+			"name" : "CMAKE_CXX_FLAGS_MINSIZEREL",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the CXX compiler during MINSIZEREL builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/MD /O1 /Ob1 /DNDEBUG"
+		},
+		{
+			"name" : "CMAKE_CXX_FLAGS_RELEASE",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the CXX compiler during RELEASE builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/MD /O2 /Ob2 /DNDEBUG"
+		},
+		{
+			"name" : "CMAKE_CXX_FLAGS_RELWITHDEBINFO",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the CXX compiler during RELWITHDEBINFO builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/MD /Zi /O2 /Ob1 /DNDEBUG"
+		},
+		{
+			"name" : "CMAKE_CXX_STANDARD_LIBRARIES",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Libraries linked by default with all C++ applications."
+				}
+			],
+			"type" : "STRING",
+			"value" : "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+		},
+		{
+			"name" : "CMAKE_C_COMPILER",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "No help, variable specified on the command line."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.24.28314/bin/HostX64/x64/cl.exe"
+		},
+		{
+			"name" : "CMAKE_C_FLAGS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the C compiler during all build types."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/DWIN32 /D_WINDOWS /W3"
+		},
+		{
+			"name" : "CMAKE_C_FLAGS_DEBUG",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the C compiler during DEBUG builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/MDd /Zi /Ob0 /Od /RTC1"
+		},
+		{
+			"name" : "CMAKE_C_FLAGS_MINSIZEREL",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the C compiler during MINSIZEREL builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/MD /O1 /Ob1 /DNDEBUG"
+		},
+		{
+			"name" : "CMAKE_C_FLAGS_RELEASE",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the C compiler during RELEASE builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/MD /O2 /Ob2 /DNDEBUG"
+		},
+		{
+			"name" : "CMAKE_C_FLAGS_RELWITHDEBINFO",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the C compiler during RELWITHDEBINFO builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/MD /Zi /O2 /Ob1 /DNDEBUG"
+		},
+		{
+			"name" : "CMAKE_C_STANDARD_LIBRARIES",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Libraries linked by default with all C applications."
+				}
+			],
+			"type" : "STRING",
+			"value" : "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+		},
+		{
+			"name" : "CMAKE_EXECUTABLE_FORMAT",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Executable file format"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Unknown"
+		},
+		{
+			"name" : "CMAKE_EXE_LINKER_FLAGS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during all build types."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/machine:x64"
+		},
+		{
+			"name" : "CMAKE_EXE_LINKER_FLAGS_DEBUG",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during DEBUG builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/debug /INCREMENTAL"
+		},
+		{
+			"name" : "CMAKE_EXE_LINKER_FLAGS_MINSIZEREL",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during MINSIZEREL builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/INCREMENTAL:NO"
+		},
+		{
+			"name" : "CMAKE_EXE_LINKER_FLAGS_RELEASE",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during RELEASE builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/INCREMENTAL:NO"
+		},
+		{
+			"name" : "CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during RELWITHDEBINFO builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/debug /INCREMENTAL"
+		},
+		{
+			"name" : "CMAKE_EXPORT_COMPILE_COMMANDS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Enable/Disable output of compile commands during generation."
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
+			"name" : "CMAKE_EXTRA_GENERATOR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Name of external makefile project generator."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CMAKE_GENERATOR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Name of generator."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Ninja"
+		},
+		{
+			"name" : "CMAKE_GENERATOR_INSTANCE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Generator instance identifier."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CMAKE_GENERATOR_PLATFORM",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Name of generator platform."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CMAKE_GENERATOR_TOOLSET",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Name of generator toolset."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CMAKE_HAVE_PTHREAD_H",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Have include pthread.h"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "CMAKE_HOME_DIRECTORY",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Source directory with the top level CMakeLists.txt file for this project"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz"
+		},
+		{
+			"name" : "CMAKE_INSTALL_PREFIX",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "No help, variable specified on the command line."
+				}
+			],
+			"type" : "PATH",
+			"value" : "Z:/Projetos/RagnaGhostz/out/build/x64-Debug/install"
+		},
+		{
+			"name" : "CMAKE_LINKER",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a program."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.24.28314/bin/Hostx64/x64/link.exe"
+		},
+		{
+			"name" : "CMAKE_MAKE_PROGRAM",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "make program"
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe"
+		},
+		{
+			"name" : "CMAKE_MODULE_LINKER_FLAGS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during the creation of modules during all build types."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/machine:x64"
+		},
+		{
+			"name" : "CMAKE_MODULE_LINKER_FLAGS_DEBUG",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during the creation of modules during DEBUG builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/debug /INCREMENTAL"
+		},
+		{
+			"name" : "CMAKE_MODULE_LINKER_FLAGS_MINSIZEREL",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during the creation of modules during MINSIZEREL builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/INCREMENTAL:NO"
+		},
+		{
+			"name" : "CMAKE_MODULE_LINKER_FLAGS_RELEASE",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during the creation of modules during RELEASE builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/INCREMENTAL:NO"
+		},
+		{
+			"name" : "CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during the creation of modules during RELWITHDEBINFO builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/debug /INCREMENTAL"
+		},
+		{
+			"name" : "CMAKE_MODULE_PATH",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/cmake"
+		},
+		{
+			"name" : "CMAKE_MT",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a program."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "Z:/Windows Kits/10/bin/10.0.18362.0/x64/mt.exe"
+		},
+		{
+			"name" : "CMAKE_NUMBER_OF_MAKEFILES",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "number of local generators"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "13"
+		},
+		{
+			"name" : "CMAKE_PLATFORM_INFO_INITIALIZED",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Platform information initialized"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "1"
+		},
+		{
+			"name" : "CMAKE_PROJECT_DESCRIPTION",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : ""
+		},
+		{
+			"name" : "CMAKE_PROJECT_HOMEPAGE_URL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : ""
+		},
+		{
+			"name" : "CMAKE_PROJECT_NAME",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "rAthena"
+		},
+		{
+			"name" : "CMAKE_RC_COMPILER",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "RC compiler"
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "Z:/Windows Kits/10/bin/10.0.18362.0/x64/rc.exe"
+		},
+		{
+			"name" : "CMAKE_RC_COMPILER_WORKS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "1"
+		},
+		{
+			"name" : "CMAKE_RC_FLAGS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags for Windows Resource Compiler during all build types."
+				}
+			],
+			"type" : "STRING",
+			"value" : "-DWIN32"
+		},
+		{
+			"name" : "CMAKE_RC_FLAGS_DEBUG",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags for Windows Resource Compiler during DEBUG builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "-D_DEBUG"
+		},
+		{
+			"name" : "CMAKE_RC_FLAGS_MINSIZEREL",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags for Windows Resource Compiler during MINSIZEREL builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : ""
+		},
+		{
+			"name" : "CMAKE_RC_FLAGS_RELEASE",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags for Windows Resource Compiler during RELEASE builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : ""
+		},
+		{
+			"name" : "CMAKE_RC_FLAGS_RELWITHDEBINFO",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags for Windows Resource Compiler during RELWITHDEBINFO builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : ""
+		},
+		{
+			"name" : "CMAKE_ROOT",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to CMake installation."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Program Files (x86)/Microsoft Visual Studio/2019/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.15"
+		},
+		{
+			"name" : "CMAKE_SHARED_LINKER_FLAGS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during the creation of shared libraries during all build types."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/machine:x64"
+		},
+		{
+			"name" : "CMAKE_SHARED_LINKER_FLAGS_DEBUG",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during the creation of shared libraries during DEBUG builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/debug /INCREMENTAL"
+		},
+		{
+			"name" : "CMAKE_SHARED_LINKER_FLAGS_MINSIZEREL",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during the creation of shared libraries during MINSIZEREL builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/INCREMENTAL:NO"
+		},
+		{
+			"name" : "CMAKE_SHARED_LINKER_FLAGS_RELEASE",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during the creation of shared libraries during RELEASE builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/INCREMENTAL:NO"
+		},
+		{
+			"name" : "CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during the creation of shared libraries during RELWITHDEBINFO builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/debug /INCREMENTAL"
+		},
+		{
+			"name" : "CMAKE_SIZEOF_UNSIGNED_SHORT",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "CHECK_TYPE_SIZE: sizeof(unsigned short)"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "2"
+		},
+		{
+			"name" : "CMAKE_SKIP_INSTALL_RPATH",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "If set, runtime paths are not added when installing shared libraries, but are added when building."
+				}
+			],
+			"type" : "BOOL",
+			"value" : "NO"
+		},
+		{
+			"name" : "CMAKE_SKIP_RPATH",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "If set, runtime paths are not added when using shared libraries."
+				}
+			],
+			"type" : "BOOL",
+			"value" : "NO"
+		},
+		{
+			"name" : "CMAKE_STATIC_LINKER_FLAGS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during the creation of static libraries during all build types."
+				}
+			],
+			"type" : "STRING",
+			"value" : "/machine:x64"
+		},
+		{
+			"name" : "CMAKE_STATIC_LINKER_FLAGS_DEBUG",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during the creation of static libraries during DEBUG builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : ""
+		},
+		{
+			"name" : "CMAKE_STATIC_LINKER_FLAGS_MINSIZEREL",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during the creation of static libraries during MINSIZEREL builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : ""
+		},
+		{
+			"name" : "CMAKE_STATIC_LINKER_FLAGS_RELEASE",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during the creation of static libraries during RELEASE builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : ""
+		},
+		{
+			"name" : "CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Flags used by the linker during the creation of static libraries during RELWITHDEBINFO builds."
+				}
+			],
+			"type" : "STRING",
+			"value" : ""
+		},
+		{
+			"name" : "CMAKE_VERBOSE_MAKEFILE",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "If this value is on, makefiles will be generated without the .SILENT directive, and all commands will be echoed to the console during the make.  This is useful for debugging only. With Visual Studio IDE projects all commands are done without /nologo."
+				}
+			],
+			"type" : "BOOL",
+			"value" : "FALSE"
+		},
+		{
+			"name" : "COMMON_BASE_DEFINITIONS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "common_base definitions"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "-DLIBCONFIG_STATIC"
+		},
+		{
+			"name" : "COMMON_BASE_HEADERS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "common_base headers"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz/out/build/x64-Debug/src/common/version.hpp;Z:/Projetos/RagnaGhostz/src/common/cbasetypes.hpp;Z:/Projetos/RagnaGhostz/src/common/mmo.hpp;Z:/Projetos/RagnaGhostz/src/common/conf.hpp;Z:/Projetos/RagnaGhostz/src/common/core.hpp;Z:/Projetos/RagnaGhostz/src/common/database.hpp;Z:/Projetos/RagnaGhostz/src/common/db.hpp;Z:/Projetos/RagnaGhostz/src/common/des.hpp;Z:/Projetos/RagnaGhostz/src/common/ers.hpp;Z:/Projetos/RagnaGhostz/src/common/grfio.hpp;Z:/Projetos/RagnaGhostz/src/common/malloc.hpp;Z:/Projetos/RagnaGhostz/src/common/mapindex.hpp;Z:/Projetos/RagnaGhostz/src/common/md5calc.hpp;Z:/Projetos/RagnaGhostz/src/common/nullpo.hpp;Z:/Projetos/RagnaGhostz/src/common/random.hpp;Z:/Projetos/RagnaGhostz/src/common/showmsg.hpp;Z:/Projetos/RagnaGhostz/src/common/socket.hpp;Z:/Projetos/RagnaGhostz/src/common/strlib.hpp;Z:/Projetos/RagnaGhostz/src/common/timer.hpp;Z:/Projetos/RagnaGhostz/src/common/utils.hpp;Z:/Projetos/RagnaGhostz/src/common/msg_conf.hpp;Z:/Projetos/RagnaGhostz/src/common/cli.hpp;Z:/Projetos/RagnaGhostz/src/common/utilities.hpp;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/grammar.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/libconfig.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/parsectx.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/scanctx.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/scanner.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/strbuf.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/wincompat.h;Z:/Projetos/RagnaGhostz/src/common/winapi.hpp"
+		},
+		{
+			"name" : "COMMON_BASE_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "common_base include dirs"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/libconfig;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include"
+		},
+		{
+			"name" : "COMMON_BASE_SOURCES",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "common_base sources"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz/src/common/conf.cpp;Z:/Projetos/RagnaGhostz/src/common/core.cpp;Z:/Projetos/RagnaGhostz/src/common/database.cpp;Z:/Projetos/RagnaGhostz/src/common/db.cpp;Z:/Projetos/RagnaGhostz/src/common/des.cpp;Z:/Projetos/RagnaGhostz/src/common/ers.cpp;Z:/Projetos/RagnaGhostz/src/common/grfio.cpp;Z:/Projetos/RagnaGhostz/src/common/malloc.cpp;Z:/Projetos/RagnaGhostz/src/common/mapindex.cpp;Z:/Projetos/RagnaGhostz/src/common/md5calc.cpp;Z:/Projetos/RagnaGhostz/src/common/nullpo.cpp;Z:/Projetos/RagnaGhostz/src/common/random.cpp;Z:/Projetos/RagnaGhostz/src/common/showmsg.cpp;Z:/Projetos/RagnaGhostz/src/common/socket.cpp;Z:/Projetos/RagnaGhostz/src/common/strlib.cpp;Z:/Projetos/RagnaGhostz/src/common/timer.cpp;Z:/Projetos/RagnaGhostz/src/common/utils.cpp;Z:/Projetos/RagnaGhostz/src/common/msg_conf.cpp;Z:/Projetos/RagnaGhostz/src/common/cli.cpp;Z:/Projetos/RagnaGhostz/src/common/utilities.cpp;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/grammar.c;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/libconfig.c;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/scanctx.c;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/scanner.c;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/strbuf.c;Z:/Projetos/RagnaGhostz/src/common/winapi.cpp"
+		},
+		{
+			"name" : "COMMON_HEADERS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "common headers"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz/out/build/x64-Debug/src/common/version.hpp;Z:/Projetos/RagnaGhostz/src/common/cbasetypes.hpp;Z:/Projetos/RagnaGhostz/src/common/mmo.hpp;Z:/Projetos/RagnaGhostz/src/common/sql.hpp"
+		},
+		{
+			"name" : "COMMON_MINI_DEFINITIONS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "-DMINICORE -DLIBCONFIG_STATIC"
+		},
+		{
+			"name" : "COMMON_MINI_HEADERS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz/out/build/x64-Debug/src/common/version.hpp;Z:/Projetos/RagnaGhostz/src/common/cbasetypes.hpp;Z:/Projetos/RagnaGhostz/src/common/mmo.hpp;Z:/Projetos/RagnaGhostz/src/common/core.hpp;Z:/Projetos/RagnaGhostz/src/common/malloc.hpp;Z:/Projetos/RagnaGhostz/src/common/showmsg.hpp;Z:/Projetos/RagnaGhostz/src/common/strlib.hpp;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/grammar.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/libconfig.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/parsectx.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/scanctx.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/scanner.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/strbuf.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/wincompat.h;Z:/Projetos/RagnaGhostz/src/common/winapi.hpp"
+		},
+		{
+			"name" : "COMMON_MINI_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/libconfig"
+		},
+		{
+			"name" : "COMMON_MINI_SOURCES",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz/src/common/core.cpp;Z:/Projetos/RagnaGhostz/src/common/malloc.cpp;Z:/Projetos/RagnaGhostz/src/common/showmsg.cpp;Z:/Projetos/RagnaGhostz/src/common/strlib.cpp;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/grammar.c;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/libconfig.c;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/scanctx.c;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/scanner.c;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/strbuf.c;Z:/Projetos/RagnaGhostz/src/common/winapi.cpp"
+		},
+		{
+			"name" : "COMMON_SOURCES",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "common sources"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz/src/common/sql.cpp"
+		},
+		{
+			"name" : "COMMON_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "common source directory"
+				}
+			],
+			"type" : "PATH",
+			"value" : "Z:/Projetos/RagnaGhostz/src/common"
+		},
+		{
+			"name" : "CPACK_BINARY_7Z",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Enable to build 7-Zip packages"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
+			"name" : "CPACK_BINARY_BUNDLE",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_BINARY_CYGWIN",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_BINARY_DEB",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_BINARY_DRAGNDROP",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_BINARY_FREEBSD",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_BINARY_IFW",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Enable to build IFW packages"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
+			"name" : "CPACK_BINARY_NSIS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Enable to build NSIS packages"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "CPACK_BINARY_NUGET",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Enable to build NuGet packages"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
+			"name" : "CPACK_BINARY_OSXX11",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_BINARY_PACKAGEMAKER",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_BINARY_PRODUCTBUILD",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_BINARY_RPM",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_BINARY_STGZ",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_BINARY_TBZ2",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_BINARY_TGZ",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_BINARY_TXZ",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_BINARY_TZ",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_BINARY_WIX",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Enable to build WiX packages"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
+			"name" : "CPACK_BINARY_ZIP",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Enable to build ZIP packages"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
+			"name" : "CPACK_SOURCE_7Z",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Enable to build 7-Zip source packages"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "CPACK_SOURCE_CYGWIN",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_SOURCE_RPM",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_SOURCE_TBZ2",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_SOURCE_TGZ",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_SOURCE_TXZ",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_SOURCE_TZ",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "(This variable does not exist and should not be used)"
+				}
+			],
+			"type" : "UNINITIALIZED",
+			"value" : ""
+		},
+		{
+			"name" : "CPACK_SOURCE_ZIP",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Enable to build ZIP source packages"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "Development",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Development files"
+		},
+		{
+			"name" : "Development_base",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "projects, 3rdparty, sources, templates"
+		},
+		{
+			"name" : "ENABLE_EXTRA_BUILDBOT_CODE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "enable extra buildbot code (default=OFF)"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
+			"name" : "ENABLE_EXTRA_DEBUG_CODE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "enable extra debug code (default=OFF)"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
+			"name" : "ENABLE_MEMMGR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "enable builtin memory manager: default;yes;no (default=default)"
+				},
+				{
+					"name" : "STRINGS",
+					"value" : "default;yes;no"
+				}
+			],
+			"type" : "STRING",
+			"value" : "default"
+		},
+		{
+			"name" : "ENABLE_MEMORY",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "enable memory library: system;memwatch;dmalloc;gcollect (default=system)"
+				},
+				{
+					"name" : "STRINGS",
+					"value" : "system;memwatch;dmalloc;gcollect"
+				}
+			],
+			"type" : "STRING",
+			"value" : "system"
+		},
+		{
+			"name" : "ENABLE_PROFILER",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "enable profiler: none;gprof (default=none)"
+				},
+				{
+					"name" : "STRINGS",
+					"value" : "none;gprof"
+				}
+			],
+			"type" : "STRING",
+			"value" : "none"
+		},
+		{
+			"name" : "ENABLE_RDTSC",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "use RDTSC instruction as a timing source (default=OFF)"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
+			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_Git",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Details about finding Git"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "[C:/Program Files/Git/cmd/git.exe][v2.20.1.windows.1()]"
+		},
+		{
+			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_Threads",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Details about finding Threads"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "[TRUE][v()]"
+		},
+		{
+			"name" : "GIT_EXECUTABLE",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Git command line client"
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "C:/Program Files/Git/cmd/git.exe"
+		},
+		{
+			"name" : "GLOBAL_DEFINITIONS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : " -DFD_SETSIZE=4096 -D_CRT_SECURE_NO_DEPRECATE -D_CRT_NONSTDC_NO_DEPRECATE -DHAVE_STRNLEN -DHAVE_GETPID"
+		},
+		{
+			"name" : "GLOBAL_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz/out/build/x64-Debug/src/common"
+		},
+		{
+			"name" : "GLOBAL_LIBRARIES",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "oldnames.lib;ws2_32.lib"
+		},
+		{
+			"name" : "HAVE_BIG_ENDIAN",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Result of TRY_COMPILE"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "TRUE"
+		},
+		{
+			"name" : "HAVE_CMAKE_SIZEOF_UNSIGNED_SHORT",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Result of TRY_COMPILE"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "TRUE"
+		},
+		{
+			"name" : "HAVE_GETPID",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Have function getpid"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "1"
+		},
+		{
+			"name" : "HAVE_GETTID",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Have function gettid"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "HAVE_LOCAL_MYSQL",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "mysql client is available as a local copy"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "HAVE_LOCAL_PCRE",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "pcre is available as a local copy"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "HAVE_LOCAL_ZLIB",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "zlib is available as a local copy"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "HAVE_MONOTONIC_CLOCK",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Test HAVE_MONOTONIC_CLOCK"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "HAVE_MONOTONIC_CLOCK_COMPILED",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Result of TRY_COMPILE"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "FALSE"
+		},
+		{
+			"name" : "HAVE_SETRLIMIT",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Have function setrlimit"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "HAVE_STDDEF_H",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Have include stddef.h"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "1"
+		},
+		{
+			"name" : "HAVE_STDINT_H",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Have include stdint.h"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "1"
+		},
+		{
+			"name" : "HAVE_STRNLEN",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Have function strnlen"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "1"
+		},
+		{
+			"name" : "HAVE_SYS_TYPES_H",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Have include sys/types.h"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "1"
+		},
+		{
+			"name" : "HAVE_TLS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Test HAVE_TLS"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "HAVE_TLS_COMPILED",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Result of TRY_COMPILE"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "FALSE"
+		},
+		{
+			"name" : "HAVE_common",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "ON"
+		},
+		{
+			"name" : "HAVE_common_base",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "ON"
+		},
+		{
+			"name" : "INSTALL_COMPONENT_DEVELOPMENT",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "install/package files needed to build the project"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
+			"name" : "INSTALL_COMPONENT_RUNTIME",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "install/package files needed to run the project"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "INSTALL_PATH",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "install path (only used when INSTALL_TO_PATH is set)"
+				}
+			],
+			"type" : "STRING",
+			"value" : "Z:/Projetos/RagnaGhostz/out/install/x64-Debug"
+		},
+		{
+			"name" : "INSTALL_TO",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "subdir"
+		},
+		{
+			"name" : "INSTALL_TO_PATH",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "copy files to INSTALL_PATH"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
+			"name" : "INSTALL_TO_SOURCE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "copy files to source directory, skips what is already there (Z:/Projetos/RagnaGhostz)"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
+			"name" : "INSTALL_TO_SUBDIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "copy files to subdirectory (Z:/Projetos/RagnaGhostz/out/build/x64-Debug/install)"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "LIBCONFIG_DEFINITIONS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "libconfig definitions"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "-DLIBCONFIG_STATIC"
+		},
+		{
+			"name" : "LIBCONFIG_HEADERS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "libconfig headers"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/libconfig/grammar.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/libconfig.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/parsectx.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/scanctx.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/scanner.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/strbuf.h;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/wincompat.h"
+		},
+		{
+			"name" : "LIBCONFIG_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a file."
+				}
+			],
+			"type" : "PATH",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/libconfig"
+		},
+		{
+			"name" : "LIBCONFIG_SOURCES",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "libconfig sources"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/libconfig/grammar.c;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/libconfig.c;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/scanctx.c;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/scanner.c;Z:/Projetos/RagnaGhostz/3rdparty/libconfig/strbuf.c"
+		},
+		{
+			"name" : "LIBCONFIG_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a file."
+				}
+			],
+			"type" : "PATH",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/libconfig"
+		},
+		{
+			"name" : "LOGIN_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz/src/login"
+		},
+		{
+			"name" : "MAP_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz/src/map"
+		},
+		{
+			"name" : "MYSQL_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "MYSQL include directories"
+				}
+			],
+			"type" : "PATH",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/mysql/include"
+		},
+		{
+			"name" : "MYSQL_LIBRARIES",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "MYSQL libraries"
+				}
+			],
+			"type" : "PATH",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/mysql/lib/x64/libmysql.lib"
+		},
+		{
+			"name" : "MYSQL_LOCAL_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a file."
+				}
+			],
+			"type" : "PATH",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/mysql/include"
+		},
+		{
+			"name" : "MYSQL_LOCAL_LIBRARIES",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a library."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/mysql/lib/x64/libmysql.lib"
+		},
+		{
+			"name" : "MYSQL_SYSTEM_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "system mysql include directories"
+				}
+			],
+			"type" : "PATH",
+			"value" : "MYSQL_INCLUDE_DIRS-NOTFOUND"
+		},
+		{
+			"name" : "MYSQL_SYSTEM_LIBRARIES",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "system mysql libraries"
+				}
+			],
+			"type" : "PATH",
+			"value" : "MYSQL_LIBRARIES-NOTFOUND"
+		},
+		{
+			"name" : "PACKETVER",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Sets the PACKETVER define of the servers. (see src/common/mmo.h)"
+				}
+			],
+			"type" : "STRING",
+			"value" : ""
+		},
+		{
+			"name" : "PCRE_INCLUDE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a file."
+				}
+			],
+			"type" : "PATH",
+			"value" : "PCRE_INCLUDE_DIR-NOTFOUND"
+		},
+		{
+			"name" : "PCRE_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "PCRE include directories"
+				}
+			],
+			"type" : "PATH",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/pcre/include"
+		},
+		{
+			"name" : "PCRE_LIBRARIES",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "PCRE libraries"
+				}
+			],
+			"type" : "PATH",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/pcre/lib/x64/pcre8.lib"
+		},
+		{
+			"name" : "PCRE_LIBRARY",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a library."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "PCRE_LIBRARY-NOTFOUND"
+		},
+		{
+			"name" : "PCRE_LOCAL_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a file."
+				}
+			],
+			"type" : "PATH",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/pcre/include"
+		},
+		{
+			"name" : "PCRE_LOCAL_LIBRARIES",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a library."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/pcre/lib/x64/pcre8.lib"
+		},
+		{
+			"name" : "PCRE_SYSTEM_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "system pcre include directories"
+				}
+			],
+			"type" : "PATH",
+			"value" : ""
+		},
+		{
+			"name" : "PCRE_SYSTEM_LIBRARIES",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "system pcre libraries"
+				}
+			],
+			"type" : "PATH",
+			"value" : ""
+		},
+		{
+			"name" : "RT_LIBRARY",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a library."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "RT_LIBRARY-NOTFOUND"
+		},
+		{
+			"name" : "Runtime",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Runtime files"
+		},
+		{
+			"name" : "Runtime_base",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "configurations, dbs, npcs, docs, ..."
+		},
+		{
+			"name" : "Runtime_templates",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "conf/import and save (generated from conf/import-tmpl and save-tmpl)"
+		},
+		{
+			"name" : "SVNVERSION",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "SVN version of the source code"
+				}
+			],
+			"type" : "STRING",
+			"value" : ""
+		},
+		{
+			"name" : "SVN_FOLDER_PATTERN",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "pattern of svn folder that we exclude from instalations"
+				}
+			],
+			"type" : "STRING",
+			"value" : "[\\.]svn"
+		},
+		{
+			"name" : "TARGET_LIST",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "common_base;common;login-server;char-server;map-server;mapcache"
+		},
+		{
+			"name" : "WITH_CPACK",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "enable building packages with CPack ('package' target)"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "WITH_LOCAL_MYSQL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "use local version of MYSQL"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "WITH_LOCAL_PCRE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "use local version of PCRE"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "WITH_LOCAL_ZLIB",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "use local version of ZLIB"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "WITH_MYSQL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "use MYSQL"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "WITH_PCRE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "use PCRE"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "WITH_ZLIB",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "use ZLIB"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "YAML_DEFINITIONS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "yaml definitions"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "-std=c++11"
+		},
+		{
+			"name" : "YAML_HEADERS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "yaml headers"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/yaml.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/traits.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/stlemitter.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/parser.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/ostream_wrapper.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/null.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/noncopyable.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/mark.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/exceptions.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/eventhandler.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/emitterstyle.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/emittermanip.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/emitter.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/emitterdef.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/emitfromevents.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/dll.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/binary.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/anchor.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/node/type.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/node/ptr.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/node/parse.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/node/node.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/node/iterator.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/node/impl.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/node/emit.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/node/convert.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/contrib/graphbuilder.h;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include/yaml-cpp/contrib/anchordict.h"
+		},
+		{
+			"name" : "YAML_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a file."
+				}
+			],
+			"type" : "PATH",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/include"
+		},
+		{
+			"name" : "YAML_SOURCES",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "yaml sources"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/binary.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/convert.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/directives.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/emit.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/emitfromevents.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/emitter.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/emitterstate.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/emitterutils.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/exceptions.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/exp.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/memory.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/nodebuilder.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/node.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/node_data.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/nodeevents.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/null.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/ostream_wrapper.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/parse.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/parser.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/regex_yaml.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/scanner.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/scanscalar.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/scantag.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/scantoken.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/simplekey.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/singledocparser.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/stream.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/tag.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/contrib/graphbuilderadapter.cpp;Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src/contrib/graphbuilder.cpp"
+		},
+		{
+			"name" : "YAML_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a file."
+				}
+			],
+			"type" : "PATH",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp/src"
+		},
+		{
+			"name" : "ZLIB_INCLUDE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a file."
+				}
+			],
+			"type" : "PATH",
+			"value" : "ZLIB_INCLUDE_DIR-NOTFOUND"
+		},
+		{
+			"name" : "ZLIB_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "ZLIB include directories"
+				}
+			],
+			"type" : "PATH",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/zlib/include"
+		},
+		{
+			"name" : "ZLIB_LIBRARIES",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "ZLIB libraries"
+				}
+			],
+			"type" : "PATH",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/zlib/lib/x64/zlib.lib"
+		},
+		{
+			"name" : "ZLIB_LIBRARY_DEBUG",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a library."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "ZLIB_LIBRARY_DEBUG-NOTFOUND"
+		},
+		{
+			"name" : "ZLIB_LIBRARY_RELEASE",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a library."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "ZLIB_LIBRARY_RELEASE-NOTFOUND"
+		},
+		{
+			"name" : "ZLIB_LOCAL_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a file."
+				}
+			],
+			"type" : "PATH",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/zlib/include"
+		},
+		{
+			"name" : "ZLIB_LOCAL_LIBRARIES",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a library."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/zlib/lib/x64/zlib.lib"
+		},
+		{
+			"name" : "ZLIB_SYSTEM_INCLUDE_DIRS",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "system zlib include directories"
+				}
+			],
+			"type" : "PATH",
+			"value" : ""
+		},
+		{
+			"name" : "ZLIB_SYSTEM_LIBRARIES",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "system zlib libraries"
+				}
+			],
+			"type" : "PATH",
+			"value" : "ZLIB_LIBRARY-NOTFOUND"
+		},
+		{
+			"name" : "common_LIB_DEPENDS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Dependencies for the target"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "general;oldnames.lib;general;ws2_32.lib;general;Z:/Projetos/RagnaGhostz/3rdparty/mysql/lib/x64/libmysql.lib;general;common_base;general;yaml-cpp;"
+		},
+		{
+			"name" : "common_base_LIB_DEPENDS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Dependencies for the target"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "general;oldnames.lib;general;ws2_32.lib;general;Z:/Projetos/RagnaGhostz/3rdparty/zlib/lib/x64/zlib.lib;general;yaml-cpp;"
+		},
+		{
+			"name" : "rAthena_BINARY_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "Z:/Projetos/RagnaGhostz/out/build/x64-Debug"
+		},
+		{
+			"name" : "rAthena_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "Z:/Projetos/RagnaGhostz"
+		},
+		{
+			"name" : "yaml-cpp_BINARY_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "Z:/Projetos/RagnaGhostz/out/build/x64-Debug/3rdparty/yaml-cpp"
+		},
+		{
+			"name" : "yaml-cpp_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "Z:/Projetos/RagnaGhostz/3rdparty/yaml-cpp"
+		}
+	],
+	"kind" : "cache",
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

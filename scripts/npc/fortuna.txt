@@ -24,7 +24,7 @@ phtownall,63,194,3	Script	Torre da Fortuna	757,{
 			next;
 			mes .@n$;
 			mes "Cada monstro concede 1% (vips possuem 3%) de chance de conseguir 1 ponto de fortuna.";
-			mes "A cada 450 monstros que você matar, irá receber 1 ponto de evento.";
+			mes "A cada 450 monstros que você matar, irá receber 10 pontos de evento.";
 			mes "A cada 300 monstros que você matar, 1 ponto de fortuna é concedido.";
 			mes "A cada 150 monstros que você matar, irá receber 1kk de zeny's.";
 			next;
@@ -149,8 +149,8 @@ phtownall,63,194,3	Script	Torre da Fortuna	757,{
 		}
 		else if( #FORTUNA_KILLS >= 450 )
 		{
-			dispbottom "Recebeu 1 ponto de evento!";
-			#FORTUNA_POINTS++;
+			dispbottom "Recebeu 10 pontos de evento!";
+			#EVENT_POINTS += 10;
 			#FORTUNA_KILLS = 0;
 			specialeffect2 68;
 		}
