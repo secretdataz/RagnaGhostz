@@ -1,0 +1,64 @@
+// Fadhgridh
+prontera,150,150,5	Script	Flag#prtg_cas03	722,{
+
+	.@guild_owner = getcastledata( .map$, CD_GUILD_ID );
+	flagemblem .@guild_owner;
+
+	.@guild_owner = getcastledata( .map$, CD_GUILD_ID );
+
+	if( .@guild_owner <= 0 )
+		end;
+
+	.@n$ = "[^A52A2ACastelo " + .castle$ + "^000000]";
+
+	mes .@n$;
+	mes "^000080Clã^000000: " + getguildname( .@guild_owner );
+
+	if( getcharid(2) != .@guild_owner ) close;
+
+	if( select( "Atalho Secreto" ) == 1 )
+		warp .map$, .x, .y;
+
+	end;
+
+	OnClock2300:
+	OnInit:
+		.castle$ = "Fadhgridh";
+		.map$    = "prtg_cas03";
+		.x       = 181;
+		.y       = 211;
+
+		sleep 10000;
+
+		.@guild_owner = getcastledata( .map$, CD_GUILD_ID );
+		
+		flagemblem .@guild_owner;
+		end;
+}
+
+prtg_cas03	mapflag	noteleport	
+
+prt_gld,147,136,4	duplicate(Flag#prtg_cas03)	Fadhgridh#2	722
+prt_gld,158,140,4	duplicate(Flag#prtg_cas03)	Fadhgridh#3	722
+prt_gld,158,136,4	duplicate(Flag#prtg_cas03)	Fadhgridh#4	722
+
+phtownall,335,73,5	duplicate(Flag#prtg_cas03)	Fadhgridh#town	722
+phtownall,184,171,4	duplicate(Flag#prtg_cas03)	Fadhgridh#town2	722
+
+// Entrada
+prt_gld,153,141,0	warp	prtg-3_prtg-3	1,1,prtg_cas03,168,12
+
+// Castelo
+prtg_cas03,178,85,0	warp	prtg-3-01_prtg-3-12	1,1,prtg_cas03,82,73
+prtg_cas03,191,55,0	warp	prtg-3-02_prtg-3-22	1,1,prtg_cas03,190,233
+prtg_cas03,168,8,0	warp	prtg-3-03_prtg-3	1,1,prt_gld,153,137
+prtg_cas03,172,44,0	warp	prtg-3-04_prtg-3-14	1,1,prtg_cas03,10,78
+prtg_cas03,165,59,0	warp	prtg-3-05_prtg-3-13	1,1,prtg_cas03,45,47
+prtg_cas03,45,120,0	warp	prtg-3-11_prtg-3-23	1,1,prtg_cas03,164,177
+prtg_cas03,86,73,0	warp	prtg-3-12_prtg-3-01	1,1,prtg_cas03,178,81
+prtg_cas03,45,43,0	warp	prtg-3-13_prtg-3-05	1,1,prtg_cas03,165,54
+prtg_cas03,6,78,0	warp	prtg-3-14_prtg-3-04	1,1,prtg_cas03,176,44
+prtg_cas03,169,235,0	warp	prtg-3-21_prtg-3-31	1,1,prtg_cas03,11,200
+prtg_cas03,194,233,0	warp	prtg-3-22_prtg-3-02	1,1,prtg_cas03,191,59
+prtg_cas03,164,173,0	warp	prtg-3-23_prtg-3-11	1,1,prtg_cas03,45,117
+prtg_cas03,7,200,0	warp	prtg-3-31_prtg-3-21	1,1,prtg_cas03,169,231

@@ -1,0 +1,64 @@
+
+-	Script	Kafra do Castelo#0	90,{
+
+	.@n$ = "[^8A2BE2Kafra do Castelo^000000]";
+
+	mes .@n$;
+
+	if( getcharid(2) == 0 )
+	{
+		mes "Você não deveria estar aqui!";
+		close;
+	}
+
+	.@guild_owner = getcastledata( strcharinfo(3), CD_GUILD_ID );
+	
+	if( .@guild_owner == 0 )
+	{
+		mes "Ainda não possuo um mestre.";
+		close;
+	}
+	
+	if( getcharid(2) != .@guild_owner )
+	{
+		mes "Meus serviços pertencem apenas aos membros do Clã " + getguildname( .@guild_owner ) + "!";
+		close;
+	}
+
+	mes "Olá, como posso lhe servir hoje, mestre?";
+
+	switch( select( "Armazém do Clã", "Voltar à Zona Izlude" ) )
+	{
+		case 1:
+			if( !guild_has_permission( GUILD_PERM_STORAGE ) )
+			{
+				next;
+				mes .@n$;
+				mes "Hmmm, parece que o líder do seu clã não liberou acesso do armazém ao seu cargo. Melhor pedir permissão a ele.";
+				close;
+			}
+			close2;
+			guildopenstorage();
+			end;
+
+		case 2:
+			close2;
+			warp  "phtownall",344,65;
+			end;
+	}
+}
+
+// Kriemhild
+prtg_cas01,116,172,3	duplicate(Kafra do Castelo#0)	Kafra do Castelo#kri	94
+
+//Swanhild
+prtg_cas02,52,42,3	duplicate(Kafra do Castelo#0)	Kafra do Castelo#swan	94
+
+// Fadhgridh
+prtg_cas03,176,210,5	duplicate(Kafra do Castelo#0)	Kafra do Castelo#fadh	94
+
+// Skoegul
+prtg_cas04,260,264,5	duplicate(Kafra do Castelo#0)	Kafra do Castelo#fadh	94
+
+// Gondun
+prtg_cas05,208,86,5	duplicate(Kafra do Castelo#0)	Kafra do Castelo#gond	94

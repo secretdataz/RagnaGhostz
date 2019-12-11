@@ -1,0 +1,65 @@
+// Skoegul
+prontera,150,150,5	Script	Flag#prtg_cas04	722,{
+
+	.@guild_owner = getcastledata( .map$, CD_GUILD_ID );
+	flagemblem .@guild_owner;
+
+	.@guild_owner = getcastledata( .map$, CD_GUILD_ID );
+
+	if( .@guild_owner <= 0 )
+		end;
+
+	.@n$ = "[^A52A2ACastelo " + .castle$ + "^000000]";
+
+	mes .@n$;
+	mes "^000080Clã^000000: " + getguildname( .@guild_owner );
+
+	if( getcharid(2) != .@guild_owner ) close;
+
+	if( select( "Atalho Secreto" ) == 1 )
+		warp .map$, .x, .y;
+
+	end;
+
+	OnClock2300:
+	OnInit:
+		.castle$ = "Skoegul";
+		.map$    = "prtg_cas04";
+		.x       = 256;
+		.y       = 250;
+
+		sleep 10000;
+
+		.@guild_owner = getcastledata( .map$, CD_GUILD_ID );
+		
+		flagemblem .@guild_owner;
+		end;
+}
+
+prtg_cas04	mapflag	noteleport	
+
+prt_gld,120,243,6	duplicate(Flag#prtg_cas04)	Skoegul#1-2	722
+prt_gld,120,236,6	duplicate(Flag#prtg_cas04)	Skoegul#2	722
+prt_gld,122,243,6	duplicate(Flag#prtg_cas04)	Skoegul#3	722
+prt_gld,122,236,6	duplicate(Flag#prtg_cas04)	Skoegul#4	722
+
+phtownall,337,75,5	duplicate(Flag#prtg_cas04)	Skoegul#town	722
+phtownall,186,173,4	duplicate(Flag#prtg_cas04)	Skoegul#town2	722
+
+// Entrada
+prt_gld,107,240,0	warp	prtg-4_prtg-4	1,1,prtg_cas04,86,13
+
+// Castelo
+prtg_cas05,38,250,0	warp	prtg-5-01_prtg-5-14	1,1,prtg_cas05,244,7
+prtg_cas05,76,242,0	warp	prtg-5-02_prtg-5-13	1,1,prtg_cas05,288,13
+prtg_cas05,66,225,0	warp	prtg-5-03_prtg-5-12	1,1,prtg_cas05,260,92
+prtg_cas05,17,231,0	warp	prtg-5-04_prtg-5	1,1,prt_gld,208,240
+prtg_cas05,53,246,0	warp	prtg-5-05_prtg-5-15	1,1,prtg_cas05,199,13
+prtg_cas05,228,96,0	warp	prtg-5-11_prtg-5-21	1,1,prtg_cas05,26,7
+prtg_cas05,260,96,0	warp	prtg-5-12_prtg-5-03	1,1,prtg_cas05,66,229
+prtg_cas05,292,13,0	warp	prtg-5-13_prtg-5-02	1,1,prtg_cas05,76,246
+prtg_cas05,244,3,0	warp	prtg-5-14_prtg-5-01	1,1,prtg_cas05,35,247
+prtg_cas05,195,13,0	warp	prtg-5-15_prtg-5-05	1,1,prtg_cas05,55,248
+prtg_cas05,26,3,0	warp	prtg-5-21_prtg-5-11	1,1,prtg_cas05,228,92
+prtg_cas05,58,7,0	warp	prtg-5-22_prtg-5-31	1,1,prtg_cas05,253,290
+prtg_cas05,253,294,0	warp	prtg-5-31_prtg-5-22	1,1,prtg_cas05,58,11

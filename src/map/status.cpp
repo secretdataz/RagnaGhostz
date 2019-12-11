@@ -5774,9 +5774,9 @@ static unsigned short status_calc_str(struct block_list *bl, struct status_chang
 	if(sc->data[SC_FOOD_STR_CASH])
 		str += sc->data[SC_FOOD_STR_CASH]->val1;
 	if(sc->data[SC_BATTLEORDERS])
-		str += 5;
+		str += 20;
 	if(sc->data[SC_LEADERSHIP])
-		str += sc->data[SC_LEADERSHIP]->val1;
+		str += sc->data[SC_LEADERSHIP]->val1 * 2;
 	if (sc->data[SC_LOUD])
 	{
 		str += 4;
@@ -5860,7 +5860,7 @@ static unsigned short status_calc_agi(struct block_list *bl, struct status_chang
 	if(sc->data[SC_FOOD_AGI_CASH])
 		agi += sc->data[SC_FOOD_AGI_CASH]->val1;
 	if(sc->data[SC_SOULCOLD])
-		agi += sc->data[SC_SOULCOLD]->val1;
+		agi += sc->data[SC_SOULCOLD]->val1 * 2;
 	if(sc->data[SC_TRUESIGHT])
 		agi += 5;
 	if(sc->data[SC_INCREASEAGI])
@@ -5944,7 +5944,7 @@ static unsigned short status_calc_vit(struct block_list *bl, struct status_chang
 	if(sc->data[SC_CHANGE])
 		vit += sc->data[SC_CHANGE]->val2;
 	if(sc->data[SC_GLORYWOUNDS])
-		vit += sc->data[SC_GLORYWOUNDS]->val1;
+		vit += sc->data[SC_GLORYWOUNDS]->val1 * 3;
 	if(sc->data[SC_TRUESIGHT])
 		vit += 5;
 	if(sc->data[SC_MARIONETTE])
@@ -6099,7 +6099,7 @@ static unsigned short status_calc_dex(struct block_list *bl, struct status_chang
 	if(sc->data[SC_BATTLEORDERS])
 		dex += 5;
 	if(sc->data[SC_HAWKEYES])
-		dex += sc->data[SC_HAWKEYES]->val1;
+		dex += sc->data[SC_HAWKEYES]->val1 * 2;
 	if(sc->data[SC_TRUESIGHT])
 		dex += 5;
 	if(sc->data[SC_QUAGMIRE])

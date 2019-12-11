@@ -9803,7 +9803,7 @@ void clif_name( struct block_list* src, struct block_list *bl, send_target targe
 				}
 			}
 #if PACKETVER >= 20150513
-			WBUFL(buf, 102) = 0; // Title ID
+			WBUFL(buf, 102) = -1; // Title ID
 #endif
 		}
 		break;

@@ -1,83 +1,83 @@
 
-function	script	WOE	{
-	
-	.@cmd$ = getarg(0);
-	
-	.@x[15] = 10;
-	.@y[15] = 10;
-	
-	if( .@cmd$ == "BREAKED" )
-	{
-		.@p$ = strcharinfo(0);
-		.@g$ = strcharinfo(2);
-		.@c$ = getcastlename( strcharinfo(3) );
-		
-		bot_announce( sprintf( "O Jogador **%s** do cl√£ **%s** acaba de conquistar o castelo **%s**!", .@p$, .@g$, .@c$ ), CHANNEL_WOE );
-		announce sprintf( "O Jogador %s do cl√£ %s acaba de conquistar o castelo %s!", .@p$, .@g$, .@c$ ),0;
-		
-		create_emperium( getcastleid( strcharinfo(3) ), getcharid(2) );
-		
-		query_sql( sprintf( "DELETE FROM `guild_enchant` WHERE `castle_id` = '%d' ", getcastleid( strcharinfo(3) ) ) );
-		
-		addrid( 5, strcharinfo(3) );
-		
-		if( getcastledata( strcharinfo(3), CD_GUILD_ID ) != getcharid(2) )
-		{
-			warp "Save",0,0;
-			end;
-		}
-		
-		query_sql( sprintf( "INSERT INTO `guild_enchant` ( `char_id`, `guild_id`, `castle_id`, `uses` )" +
-		                    "     VALUES ( '%d', '%d', '%d', '%d' ) ", getcharid(0), getcharid(2), getcastleid( strcharinfo(3), 5 ) " ) );
-		end;
-	}
-}
-	
--	Script	Coordenador da GdE	90,{
+prt_gld,164,45,5	Script	Retorno#prtgld	10180,{
 
-	.@n$ = "[Coordenador da GdE]";
+	select( "Retornar" );
+
+	warp "Save",0,0;
+	end;
+
+}
+
+phtownall,344,69,5	Script	Coordenador da GdE	10180,{
+
+	.@n$ = "[^A52A2ACoordenador da GdE^000000]";
 	
+	mes .@n$;
+
 	if( $WOE_RUNNING && getcharid(2) > 0 )
 	{
-		mes "A Guerra do Emperium est√° ocorrendo! Deseja ir at√© algum feudo?";
+		mes "A Guerra do Emperium est· ocorrendo! Deseja ir atÈ algum feudo?";
 		
 		.@option = select( implode( .feudo_nome$, ":" ) );
+		.@option--;
+
+		//message strcharinfo(0),"Option" + .@option;
 
 		warp .feudo_map$[.@option], .feudo_wx[.@option], .feudo_wy[.@option];
-		npctalk "Boa sorte, " + strcharinfo(0) + " do cl√£ " + strcharinfo(2) + "!";
+		npctalk "Boa sorte, " + strcharinfo(0) + " do cl„ " + strcharinfo(2) + "!";
 		end;
 	}
 	
-	mes "Ol√°, deseja saber algo sobre a Guerra do Emperium?";
+	mes "Ol·, deseja saber algo sobre a Guerra do Emperium?";
 	
-	switch( select( "Hor√°rios", "Premia√ß√µes", "Como ir at√© os castelos?" ) )
+	switch( select( "Hor·rios", "PremiaÁıes", "Como ir atÈ os castelos?", " " ) )
 	{
 		case 1:
 			next;
 			mes .@n$;
 			mes "[Domingo]";
-			mes "20:00 √†s 22:00";
+			mes "20:00 ‡s 22:00";
 			mes " ";
-			mes "[S√°bado]";
-			mes "18:00 √†s 20:00";
+			mes "[S·bado]";
+			mes "18:00 ‡s 20:00";
 			mes " ";
 			mes "[Quarta-Feira]";
-			mes "21:00 √†s 23:00";
+			mes "21:00 ‡s 23:00";
 			close;
 	
 		case 2:
 			next;
 			mes .@n$;
 			mes "Os membros dos castelos possuem acesso a NPC's exclusivos.";
-			mes "Mas aten√ß√£o! Alguns NPC's como o Encantador s√≥ atendem aqueles que estiverem dentro do castelo na hora da conquista do castelo!";
+			mes "Mas atenÁ„o! Alguns NPC's como o Encantador sÛ atendem aqueles que estiverem dentro do castelo na hora da conquista do castelo!";
 			next;
 			mes .@n$;
-			mes "No fim da Guerra, os jogadores dos castelos que estiverem conectados recebem de 100 a 1000 pontos de Cash por castelo conquistado.";
+			mes "No fim da Guerra, os jogadores dos castelos que estiverem conectados recebem de 200 pontos de Cash por castelo conquistado.";
 			close;
 			
 		case 3:
 			next;
-			mes "Quando a Guerra estiver ocorrendo, fale comigo que eu lhe teleportarei para os Feudos dispon√≠veis.";
+			mes "Quando a Guerra estiver ocorrendo, fale comigo que eu lhe teleportarei para os Feudos disponÌveis.";
+			close;
+
+		case 4:
+			if( getgroupid() != 99 )
+				close;
+
+			next;
+			mes .@n$;
+			mes "O que deseja?";
+			if( select( "Iniciar GdE", "Encerrar GdE" ) == 1 )
+			{
+				close2;
+				goto OnStartGDE;
+			}
+			else
+			{
+				close2;
+				goto OnEndGDE;
+			}
+
 			close;
 	}
 	
@@ -86,44 +86,174 @@ function	script	WOE	{
 	OnSun2000:
 	OnWed2100:
 	OnSat1800:
-		announce "[Coordenador da GdE]: A Guerra do Emperium come√ßou!", 0;
-		bot_announce( "A **Guerra do Emperium** come√ßou! Boa Sorte a todos os cl√£s!", CHANNEL_WOE );
+	OnStartGDE:
+		announce "[Coordenador da GdE]: A Guerra do Emperium comeÁou!", 0;
+		bot_announce( "A **Guerra do Emperium** comeÁou! Boa Sorte a todos os cl„s!", CHANNEL_WOE );
 		$WOE_RUNNING = 1;
 		
-		for( .@i = 0; .@i < getarraysize( .emp_castle$ ) )
+		.@i = 1;
+
+		freeloop(1);
+
+		killmonster "morocc","SaÌda do Evento#zp::OnPoring";
+
+		while( .emp_castle$[.@i] != "" )
 		{
-			
+			killmonster( .emp_map$[.@i],"Coordenador da GdE::OnBreaked" );
+
+			create_emperium( .emp_map$[.@i], .emp_x[.@i], .emp_y[.@i] );
+
+			maprespawnguildid( .emp_map$[.@i], getcastledata( .emp_map$[.@i], CD_GUILD_ID ), 6 );
+
+			setmapflag( .emp_map$[.@i], mf_gvg );
+
+			.@i++;
 		}
+
+		.@query$ = " UPDATE `guild_enchant` " +
+	               "   SET `uses` = '5' ";
+
+		query_sql( .@query$ );
 		end;
 		
 	OnSun2200:
 	OnSat2000:
 	OnWed2300:
+	OnEndGDE:
 		announce "[Coordenador da GdE]: A Guerra do Emperium acabou!", 0;
 		bot_announce( "A **Guerra do Emperium** acabou, em breve computarei os resultados!", CHANNEL_WOE );
 		$WOE_RUNNING = 0;
-		end;
+		
+		.@i = 1;
+
+		while( .emp_castle$[.@i] != "" )
+		{
+			killmonster( .emp_map$[.@i],"Coordenador da GdE::OnBreaked" );
+
+			maprespawnguildid( .emp_map$[.@i], getcastledata( .emp_map$[.@i], CD_GUILD_ID ), 6 );
+
+			setmapflag( .emp_map$[.@i], mf_gvg );
+
+			.@i++;
+		}
+
+		sleep 9000;
+
+		.@i = 1;
+
+		while( .emp_castle$[.@i] != "" )
+		{
+			.@guild = getcastledata( .emp_map$[.@i], CD_GUILD_ID );
+			.@guild_name$ = getguildname( .@guild );
+
+			if( .@guild_name$ != "" )
+			{
+				bot_announce( sprintf( "O Castelo **%s** agora pertence ao cl„ **%s**!", .emp_castle$[.@i], .@guild_name$ ), CHANNEL_WOE );
+				announce( sprintf( "O Castelo [%s] agora pertence ao cl„ [%s]!", .emp_castle$[.@i], .@guild_name$ ), 0 );
+
+            	cleararray .@members_cid, 0, getarraysize(.@members_cid);
+				getguildmember( .@guild, 1, .@members_cid );
+
+				for( .@z = 0; .@z < getarraysize( .@members_cid ); .@z++ )
+				{
+					if( ischaronline( .@members_cid[.@z] ) )
+					{
+						message( strcharinfo(0,.@members_cid[.@z]),"200 Pontos de Cash foram creditados" );
+						
+						specialeffect2 68,AREA,strcharinfo(0,.@members_cid[.@z]);
+												
+						set( #CASHPOINTS, ( readparam( #CASHPOINTS, .@members_cid[.@z] ) + 200 ), .@members_cid[.@z] );
+						
+						singlesoundeffect( "RANKING_UP.wav", .@cid[.@add] );
+					}
+				}
+			}
+
+			.@i++;
+			sleep 3000;
+		}
 		end;
 	
 	OnBreaked:
-		WOE( "BREAKED" );
+		.@p$ = strcharinfo(0);
+		.@g$ = strcharinfo(2);
+		.@c$ = getcastlename( strcharinfo(3) );
+		.@m$ = strcharinfo(3);
+		.@g  = getcharid(2);
+		.@c  = getcastleid( strcharinfo(3) );
+		
+		bot_announce( sprintf( "O Jogador **%s** do cl„ **%s** acaba de conquistar o castelo **%s**!", .@p$, .@g$, .@c$ ), CHANNEL_WOE );
+		announce sprintf( "O Jogador [%s] do cl„ [%s] acaba de conquistar o castelo [%s]!", .@p$, .@g$, .@c$ ),0;
+
+		setcastledata .@m$, CD_GUILD_ID, .@g;
+
+		removemapflag .@m$, mf_gvg;
+
+		sleep2 5000;
+
+		if( $WOE_RUNNING )
+		{
+			.@index = inarray( .emp_map$, .@m$ );
+
+			.@gid = create_emperium( .emp_map$[.@index], .emp_x[.@index], .emp_y[.@index] );
+		}
+
+		// Reseta o Encantador
+		query_sql( sprintf( "DELETE FROM `guild_enchant` WHERE `castle_id` = '%d' ", .@c ) );
+
+		maprespawnguildid .@m$, .@g, 6;
+
+		setmapflag .@m$, mf_gvg;
+
+		addrid( 5, 0, .@m$ );
+		
+		query_sql( sprintf( "INSERT INTO `guild_enchant` ( `char_id`, `guild_id`, `castle_id`, `uses` )" +
+		                    "     VALUES ( '%d', '%d', '%d', '%d' ) ", getcharid(0), getcharid(2), getcastleid( strcharinfo(3) ), 5 ) );
+
+		unittalk( getcharid(3), "VitÛria e glÛria para o cl„ " + strcharinfo(2) + "!" );
+
+		//donpcevent "Flag#" + .@m$ + "::OnConq";
 		end;
 	
 	OnInit:
 		if( $WOE_RUNNING )
-			announce "A Guerra do Emperium foi interrompida por causa de problemas t√©cnicos!",0;
+			announce "A Guerra do Emperium foi interrompida por causa de problemas tÈcnicos!",0;
 			
 		$WOE_RUNNING = 0;
 		
 		.feudo_nome$[1] = "Feudo de Prontera";
 		.feudo_map$[1] = "prt_gld";
-		.feudo_wx[1] = 150;
-		.feudo_wy[1] = 150;
+		.feudo_wx[1] = 159;
+		.feudo_wy[1] = 40;
 		
 		// Kriemhild
-		.emp_castle$[0] = "Kriemhild";
-		.emp_map$[0]    = "prtg_cas01";
-		.emp_x[0]       = 100;
-		.emp_y[0]       = 100;
+		.emp_castle$[1] = "Kriemhild";
+		.emp_map$[1]    = "prtg_cas01";
+		.emp_x[1]       = 196;
+		.emp_y[1]       = 197;
+
+		//Swanhild
+		.emp_castle$[2] = "Swanhild";
+		.emp_map$[2]    = "prtg_cas02";
+		.emp_x[2]       = 158;
+		.emp_y[2]       = 173;
+
+		// Fadhgridh
+		.emp_castle$[3] = "Fadhgridh";
+		.emp_map$[3]    = "prtg_cas03";
+		.emp_x[3]       = 16;
+		.emp_y[3]       = 221;
+
+		// Skoegul
+		.emp_castle$[4] = "Skoegul";
+		.emp_map$[4]    = "prtg_cas04";
+		.emp_x[4]       = 291;
+		.emp_y[4]       = 14;
+
+		// Gondul
+		.emp_castle$[5] = "Gondul";
+		.emp_map$[5]    = "prtg_cas05";
+		.emp_x[5]       = 266;
+		.emp_y[5]       = 266;
 		end;
 }

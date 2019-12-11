@@ -1,0 +1,67 @@
+// Gondul
+prontera,150,150,5	Script	Flag#prtg_cas05	722,{
+
+	.@guild_owner = getcastledata( .map$, CD_GUILD_ID );
+	flagemblem .@guild_owner;
+
+	.@guild_owner = getcastledata( .map$, CD_GUILD_ID );
+
+	if( .@guild_owner <= 0 )
+		end;
+
+	.@n$ = "[^A52A2ACastelo " + .castle$ + "^000000]";
+
+	mes .@n$;
+	mes "^000080Clã^000000: " + getguildname( .@guild_owner );
+
+	if( getcharid(2) != .@guild_owner ) close;
+
+	if( select( "Atalho Secreto" ) == 1 )
+		warp .map$, .x, .y;
+
+	end;
+
+	OnClock2300:
+	OnInit:
+		.castle$ = "Gondul";
+		.map$    = "prtg_cas05";
+		.x       = 256;
+		.y       = 250;
+
+		sleep 10000;
+
+		.@guild_owner = getcastledata( .map$, CD_GUILD_ID );
+		
+		flagemblem .@guild_owner;
+		end;
+}
+
+prtg_cas05	mapflag	noteleport	
+
+prt_gld,199,243,2	duplicate(Flag#prtg_cas05)	Gondul#1-2	722
+prt_gld,199,236,2	duplicate(Flag#prtg_cas05)	Gondul#2	722
+prt_gld,197,243,2	duplicate(Flag#prtg_cas05)	Gondul#3	722
+prt_gld,197,236,2	duplicate(Flag#prtg_cas05)	Gondul#4	722
+
+phtownall,339,77,5	duplicate(Flag#prtg_cas05)	Gondul#town	722
+phtownall,188,171,4	duplicate(Flag#prtg_cas05)	Gondul#town2	722
+
+// Entrada
+prt_gld,212,240,0	warp	prtg-5_prtg-5	1,1,prtg_cas05,17,235
+
+// Castelo
+prtg_cas04,48,48,0	warp	prtg-4-01_prtg-4-15	1,1,prtg_cas04,10,233
+prtg_cas04,63,30,0	warp	prtg-4-02_prtg-4-14	1,1,prtg_cas04,34,229
+prtg_cas04,86,9,0	warp	prtg-4-03_prtg-3	1,1,prt_gld,111,240
+prtg_cas04,32,28,0	warp	prtg-4-04_prtg-4-16	1,1,prtg_cas04,11,254
+prtg_cas04,42,13,0	warp	prtg-4-05_prtg-4-12	1,1,prtg_cas04,56,254
+prtg_cas04,54,25,0	warp	prtg-4-06_prtg-4-13	1,1,prtg_cas04,56,233
+prtg_cas04,34,290,0	warp	prtg-4-11_prtg-4-21	1,1,prtg_cas04,238,261
+prtg_cas04,60,254,0	warp	prtg-4-12_prtg-4-05	1,1,prtg_cas04,42,17
+prtg_cas04,56,229,0	warp	prtg-4-13_prtg-4-06	1,1,prtg_cas04,54,29
+prtg_cas04,34,225,0	warp	prtg-4-14_prtg-4-02	1,1,prtg_cas04,63,26
+prtg_cas04,10,229,0	warp	prtg-4-15_prtg-4-01	1,1,prtg_cas04,48,44
+prtg_cas04,7,254,0	warp	prtg-4-16_prtg-4-04	1,1,prtg_cas04,32,32
+prtg_cas04,238,257,0	warp	prtg-4-21_prtg-4-11	1,1,prtg_cas04,34,286
+prtg_cas04,247,258,0	warp	prtg-4-22_prtg-4-31	1,1,prtg_cas04,255,14
+prtg_cas04,251,14,0	warp	prtg-4-31_prtg-4-22	1,1,prtg_cas04,247,254

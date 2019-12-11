@@ -1,0 +1,70 @@
+// Kriemhild
+prontera,150,150,5	Script	Flag#prtg_cas01	722,{
+
+	.@guild_owner = getcastledata( .map$, CD_GUILD_ID );
+	flagemblem .@guild_owner;
+
+	.@guild_owner = getcastledata( .map$, CD_GUILD_ID );
+
+	if( .@guild_owner <= 0 )
+		end;
+
+	.@n$ = "[^A52A2ACastelo " + .castle$ + "^000000]";
+
+	mes .@n$;
+	mes "^000080Clã^000000: " + getguildname( .@guild_owner );
+
+	if( getcharid(2) != .@guild_owner ) close;
+
+	if( select( "Atalho Secreto" ) == 1 )
+		warp .map$, .x, .y;
+
+	end;
+
+	OnClock2300:
+	OnInit:
+		.castle$ = "Kriemhild";
+		.map$    = "prtg_cas01";
+		.x       = 108;
+		.y       = 180;
+
+		sleep 10000;
+
+		.@guild_owner = getcastledata( .map$, CD_GUILD_ID );
+		
+		flagemblem .@guild_owner;
+		end;
+}
+
+prt_gld,131,60,6	duplicate(Flag#prtg_cas01)	Kriemhild#f01	722
+prt_gld,138,68,6	duplicate(Flag#prtg_cas01)	Kriemhild#f02	722
+prt_gld,138,60,6	duplicate(Flag#prtg_cas01)	Kriemhild#f03	722
+prt_gld,135,60,6	duplicate(Flag#prtg_cas01)	Kriemhild#f04	722
+prt_gld,135,60,6	duplicate(Flag#prtg_cas01)	Kriemhild#f05	722
+phtownall,331,69,5	duplicate(Flag#prtg_cas01)	Kriemhild#town	722
+phtownall,180,167,4	duplicate(Flag#prtg_cas01)	Kriemhild#town2	722
+
+prt_gld	mapflag	noteleport	
+prt_gld	mapflag	nosave	
+prtg_cas01	mapflag	noteleport	
+
+prt_gld,129,65,0	warp	prtg-1_prtg-1-01	1,1,prtg_cas01,99,32
+
+prtg_cas01,103,32,0	warp	prtg-1-01_prtg-1	1,1,prt_gld,134,65
+prtg_cas01,57,19,0	warp	prtg-1-02_prtg-1-07	1,1,prtg_cas01,80,49
+prtg_cas01,41,34,0	warp	prtg-1-03_prtg-1-08	1,1,prtg_cas01,40,47
+prtg_cas01,37,54,0	warp	prtg-1-04_prtg-1-13	1,1,prtg_cas01,192,119
+prtg_cas01,71,54,0	warp	prtg-1-05_prtg-1-12	1,1,prtg_cas01,192,65
+prtg_cas01,51,70,0	warp	prtg-1-06_prtg-1-11	1,1,prtg_cas01,202,92
+prtg_cas01,84,49,0	warp	prtg-1-07_prtg-1-02	1,1,prtg_cas01,61,19
+prtg_cas01,37,47,0	warp	prtg-1-08_prtg-1-03	1,1,prtg_cas01,45,34
+prtg_cas01,62,34,0	warp	prtg-1-09_prtg-1-13	1,1,prtg_cas01,192,119
+prtg_cas01,84,19,0	warp	prtg-1-010_prtg-1-12	1,1,prtg_cas01,192,65
+prtg_cas01,206,92,0	warp	prtg-1-11_prtg-1-06	1,1,prtg_cas01,55,70
+prtg_cas01,196,65,0	warp	prtg-1-12_prtg-1-05	1,1,prtg_cas01,75,54
+prtg_cas01,196,119,0	warp	prtg-1-13_prtg-1-04	1,1,prtg_cas01,40,54
+prtg_cas01,147,120,0	warp	prtg-1-14_prtg-1-21	1,1,prtg_cas01,75,187
+prtg_cas01,75,183,0	warp	prtg-1-21_prtg-1-14	1,1,prtg_cas01,147,116
+prtg_cas01,109,163,0	warp	prtg-1-22_prtg-1-31	1,1,prtg_cas01,202,183
+prtg_cas01,206,183,0	warp	prtg-1-31_prtg-1-22	1,1,prtg_cas01,113,163
+// Fim Kriemhild

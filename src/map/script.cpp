@@ -10420,6 +10420,27 @@ BUILDIN_FUNC(guildchangegm)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+// create_emperium( .emp_map$[.@i], .emp_x[.@i], .emp_y[.@i] );
+
+BUILDIN_FUNC(create_emperium)
+{
+	int map_id = map_mapname2mapid(script_getstr(st, 2));
+	int map_x = script_getnum(st, 3);
+	int map_y = script_getnum(st, 4);
+
+	if (map_id < 0)
+	{
+		script_pushint(st, 0);
+		return SCRIPT_CMD_FAILURE;
+	}
+
+	int mobgid = mob_once_spawn(NULL, map_id, map_x, map_y, "Emperium", MOBID_EMPERIUM, 1, "Coordenador da GdE::OnBreaked", SZ_BIG, AI_NONE);
+
+	script_pushint(st, mobgid);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
 /*==========================================
  * Spawn a monster:
  * *monster "<map name>",<x>,<y>,"<name to show>",<mob id>,<amount>{,"<event label>",<size>,<ai>};
@@ -13084,6 +13105,7 @@ BUILDIN_FUNC(flagemblem)
 		return SCRIPT_CMD_SUCCESS;
 
 	nd = (TBL_NPC*)map_id2nd(st->oid);
+
 	if( nd == NULL ) {
 		ShowError("script:flagemblem: npc %d not found\n", st->oid);
 	} else if( nd->subtype != NPCTYPE_SCRIPT ) {
@@ -25140,6 +25162,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(getitemid,""),
 	BUILDIN_DEF(receivemobdamage,"ii"),
 	BUILDIN_DEF(dmginplayers,"ii"),
+	BUILDIN_DEF(create_emperium,"sii"),
 	// NPC interaction
 	BUILDIN_DEF(mes,"s*"),
 	BUILDIN_DEF(next,""),
@@ -25360,7 +25383,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(agitstart,""),	// <Agit>
 	BUILDIN_DEF(agitend,""),
 	BUILDIN_DEF(agitcheck,""),   // <Agitcheck>
-	BUILDIN_DEF(flagemblem,"i"),	// Flag Emblem
+	BUILDIN_DEF(flagemblem,"i?"),	// Flag Emblem
 	BUILDIN_DEF(getcastleid, "s"),
 	BUILDIN_DEF(getcastlename,"s"),
 	BUILDIN_DEF(getcastledata,"si"),

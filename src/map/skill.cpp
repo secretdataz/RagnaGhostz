@@ -9392,7 +9392,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 		if(flag&1) {
 			if (status_get_guild_id(src) == status_get_guild_id(bl)) {				
 				if( skill_id == GD_RESTORE )
-					clif_skill_nodamage(src,bl,AL_HEAL,status_percent_heal(bl,90,90),1);
+					clif_skill_nodamage(src,bl,AL_HEAL,status_percent_heal(bl,100,100),1);
 				else
 					sc_start(src,bl,type,100,skill_lv,skill_get_time(skill_id, skill_lv, src));
 			}
@@ -9431,6 +9431,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 				if (j > 8)
 					j = 0;
 				if ((dstsd = g->member[i].sd) != NULL && sd != dstsd && !dstsd->state.autotrade && !pc_isdead(dstsd)) {
+					if (g->member[i].position > 10)
+						continue;
 					if (map_getmapflag(dstsd->bl.m, MF_NOWARP) && !map_flag_gvg2(dstsd->bl.m))
 						continue;
 					if (!pc_job_can_entermap((enum e_job)dstsd->status.class_, src->m, dstsd->group_level))

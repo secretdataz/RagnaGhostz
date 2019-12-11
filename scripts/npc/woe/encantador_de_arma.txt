@@ -1,37 +1,38 @@
 
 // Como funciona:
-// Jogadores de um cl√£ que conquistarem um castelo e estiverem dentro dele, recebem permiss√£o de usar o NPC no fim da GdE
+// Jogadores de um cl„ que conquistarem um castelo e estiverem dentro dele, recebem permiss„o de usar o NPC no fim da GdE
 
 // Tabela de Registro de Uso de Encantador (guild_enchant)
 // char_id
 // guild_id
 // castle_id
-// uses       - Quantidade de Uso Dispon√≠vel
+// uses       - Quantidade de Uso DisponÌvel
 
 -	Script	Encantador de Equip.#0	90,{
 
-	.@n$ = "[Encantador de Equipamento]";
+	.@castle_name$ = getcastlename( strcharinfo(3) );
+
+	.@n$ = "[^C71585Encantador - " + .@castle_name$ + "^000000]";
 
 	mes .@n$;
 	
 	if( getcharid(2) == 0 )
 	{
-		mes "Voc√™ n√£o deveria estar aqui!";
+		mes "VocÍ n„o deveria estar aqui!";
 		close;
 	}
 	
 	if( $WOE_RUNNING )
 	{
-		mes "Estamos em guerra, n√£o tenho tempo para Encantar Equipamentos!";
+		mes "Estamos em guerra, n„o tenho tempo para Encantar Equipamentos!";
 		close;
 	}
 
-	.@castle_name$ = getcastlename( strcharinfo(3) );
 	.@castle_index = inarray( .castelo_name$, .@castle_name$ );
 	
 	if( .@castle_name$ == "" || .@castle_index < 0 )
 	{
-		mes "Eu n√£o deveria estar aqui!";
+		mes "Eu n„o deveria estar aqui!";
 		close;
 	}
 	
@@ -39,50 +40,52 @@
 	
 	if( .@guild_owner == 0 )
 	{
-		mes "Ainda n√£o possuo um mestre.";
+		mes "Ainda n„o possuo um mestre.";
 		close;
 	}
 	
 	if( getcharid(2) != .@guild_owner )
 	{
-		mes "Meus servi√ßos pertencem apenas aos membros do Cl√£ " + getguildname( .@guild_owner ) + "!";
+		mes "Meus serviÁos pertencem apenas aos membros do Cl„ " + getguildname( .@guild_owner ) + "!";
 		close;
 	}
 	
-	.@query = sprintf( " SELECT `uses`             " +
+	.@query$ = sprintf( " SELECT `uses`             " +
 	                   "   FROM `guild_enchant`    " +
 					   "  WHERE `char_id`   = '%d' " +
 					   "    AND `guild_id`  = '%d' " +
 					   "    AND `castle_id` = '%d' ", 
 					   getcharid(0), getcharid(2), getcastleid( strcharinfo(3) ) );
 	
-	.@total = query_sql( .@query, .@uses );
+	.@total = query_sql( .@query$, .@uses );
 	
 	if( .@total == 0 )
 	{
-		mes "Vejo que voc√™ pertence ao cl√£ " + .@castle_name$ + ", mas infelizmente voc√™ n√£o estava dentro do castelo na hora da conquista.";
+		mes "Vejo que vocÍ pertence ao cl„ " + .@castle_name$ + ", mas infelizmente vocÍ n„o estava dentro do castelo na hora da conquista.";
 		next;
 		mes .@n$;
-		mes "Apenas aqueles que lutaram pelo castelo s√£o dignos do meu servi√ßo.";
+		mes "Apenas aqueles que lutaram pelo castelo s„o dignos do meu serviÁo.";
 		close;
 	}
 	else if( .@uses <= 0 )
 	{
-		mes "Sinto muito, mas voc√™ j√° estourou o limite de uso de meus servi√ßos no castelo " + .@castle_name$ + ".";
+		mes "Sinto muito, mas vocÍ j· estourou o limite de uso de meus serviÁos no castelo " + .@castle_name$ + ".";
 		next;
 		mes .@n$;
-		mes "Na pr√≥xima Guerra do Emperium use novamente meus servi√ßos caso conquiste este castelo.";
+		mes "Na prÛxima Guerra do Emperium use novamente meus serviÁos caso conquiste este castelo.";
 		close;
 	}
 	
-	mes .@n$;
-	mes "Voc√™ ainda pode utilizar meu servi√ßo " + .@uses + " vezes.";
-	mes "Encantamento: " + .encant_desc$[.@castle_index];
-	mes "Chance de Destru√≠r Equipamento: " + .encant_bc[.@castle_index] + "%";
+	mes "VocÍ ainda pode utilizar meu serviÁo " + .@uses + " vezes.";
+	mes " ";
+	mes "^B03060Encantamento:^000000 " + .encant_desc$[.@castle_index];
+	mes "^FF0000Chance de DestruÌr Equipamento:^000000 " + .encant_bc[.@castle_index] + "%";
 	
 	setarray .@equips[1],EQI_HEAD_TOP,EQI_HEAD_MID,EQI_HEAD_LOW,EQI_ARMOR,EQI_HAND_L,EQI_HAND_R,EQI_GARMENT,EQI_SHOES,EQI_ACC_L,EQI_ACC_R;
 	setarray .@color$[1],"^A52A2A","^228B22","^483D8B","^FFA500","^DAA520","^6B8E23","^A020F0","^2F4F4F","^698B69","^CD6090";
 	
+	.@mo = 1;
+
 	for( .@i = 1; .@i < getarraysize( .@equips ); .@i++ )
 	{
 		if( getequipid( .@equips[.@i] ) == -1 ||
@@ -114,13 +117,13 @@
 	{
 		next;
 		mes .@n$;
-		mes "Parece que n√£o h√° nada que eu possa encantar.";
+		mes "Parece que n„o h· nada que eu possa encantar.";
 		close;
 	}
 
 	next;
 	mes .@n$;
-	mes "Selecione qual item deseja refinar.";
+	mes "Selecione qual item deseja encantar.";
 	
 	.@option = select( .@menu$ );
 	
@@ -136,39 +139,50 @@
 		if( getequiprandomoption( .@place, .@i, ROA_ID ) == .encant_id[.@castle_index] )
 		{
 			mes .@n$;
-			mes "Voc√™ n√£o pode encantar um equipamento duas vezes com o mesmo encantamento!";
-			mes "Isso iria prejudicar a diversidade de builds dentro do RagnaGhostz, n√£o concorda?";
+			mes "VocÍ n„o pode encantar um equipamento duas vezes com o mesmo encantamento!";
+			mes "Isso iria prejudicar a diversidade de builds dentro do RagnaGhostz, n„o concorda?";
 			close;
 		}
 	}
-	
-	mes .@n$;
-	mes "Seleciona Qual Slot devo encantar do item " + .@item_name$[.@option] + ".";
-	
-	.@slot = select("^4682B4*^000000 Slot 1:^FFA500*^000000 Slot 2:^228B22*^000000 Slot 3:^191970*^000000 Slot 4:^4682B4*^000000 Slot 5");
-	.@slot--;
-	
-	.@hasSlot = getequiprandomoption( .@place, .@slot, ROA_ID ) > 0;
-	
-	if( .@hasSlot )
+
+	.@freeSlot = -1;
+
+	for( .@i = 0; .@i < 5; .@i++ )
+	{
+		if( getequiprandomoption( .@place, .@i, ROA_ID ) == 0 )
+		{
+			.@freeSlot = .@i;
+			break;
+		}
+	}
+
+	if( .@freeSlot < 0 )
 	{
 		mes .@n$;
-		mes "Parece que o item " + .@item_name$[.@option] + " j√° possui um encantamento neste slot.";
-		mes "Deseja sobrescrever o encantamento deste slot?";
-		
-		if( select( "N√£o", "Sim" ) == 1 ) close;
+		mes "Este equipamento n„o possui mais slots disponÌveis.";
+		close;
 	}
 
 	.@break = ( rand( 1, 100 ) <= .encant_bc[.@castle_index] );
+
+	.@query$ = sprintf( " UPDATE `guild_enchant`    " +
+	                    "   SET `uses` = `uses` - 1 " +
+					    "  WHERE `char_id`   = '%d' " +
+					    "    AND `guild_id`  = '%d' " +
+					    "    AND `castle_id` = '%d' ", 
+					   getcharid(0), getcharid(2), getcastleid( strcharinfo(3) ) );
+
+	query_sql( .@query$ );
 
 	if( .@break )
 	{
 		specialeffect2 155;
 		delequip .@place,getcharid(0);
-		mes "Sinto muito, parece que seu equipamento n√£o aguentou o encantamento e foi destru√≠do.";
+		mes .@n$;
+		mes "Sinto muito, parece que seu equipamento n„o aguentou o encantamento e foi destruÌdo.";
 		next;
 		mes .@n$;
-		mes "Mais sorte na pr√≥xima, e por favor n√£o me demita.";
+		mes "Mais sorte na prÛxima, e por favor n„o me demita.";
 		close;
 	}
 	else
@@ -178,7 +192,7 @@
 		
 		.@value = rand( .encant_min[.@castle_index], .encant_max[.@castle_index] );
 		
-		setrandomoption( .@place, .@slot, .encant_id[.@castle_index], .@value, 0 );
+		setrandomoption( .@place, .@freeSlot, .encant_id[.@castle_index], .@value, 0 );
 		mes "Sucesso! Consegui Encantar corretamente seu equipamento!";
 		close;
 	}
@@ -188,11 +202,53 @@
 		.max_uses = 3;
 		
 		.castelo_name$[0] = "Kriemhild";
-		.encant_desc$[0]  = "HP M√°ximo + 1000 ~~ 5000";
+		.encant_desc$[0]  = "HP M·ximo + 1000 ~~ 9000";
 		.encant_id[0]     = RDMOPT_VAR_MAXHPAMOUNT;
 		.encant_min[0]    = 1000;
-		.encant_max[0]    = 5000;
+		.encant_max[0]    = 9000;
 		.encant_bc[0]     = 35;
 
+		.castelo_name$[1] = "Swanhild";
+		.encant_desc$[1]  = "ForÁa + 1 ~~ 10";
+		.encant_id[1]     = RDMOPT_VAR_STRAMOUNT;
+		.encant_min[1]    = 1;
+		.encant_max[1]    = 10;
+		.encant_bc[1]     = 50;
+
+		.castelo_name$[2] = "Fadhgridh";
+		.encant_desc$[2]  = "HP M·ximo + 1% ~~ 5%";
+		.encant_id[2]     = RDMOPT_VAR_MAXHPPERCENT;
+		.encant_min[2]    = 1;
+		.encant_max[2]    = 5;
+		.encant_bc[2]     = 70;
+
+		.castelo_name$[3] = "Skoegul";
+		.encant_desc$[3]  = "Toler‚ncia a Todos os Elementos + 1% ~~ 5%";
+		.encant_id[3]     = RDMOPT_ATTR_TOLERACE_ALL;
+		.encant_min[3]    = 1;
+		.encant_max[3]    = 5;
+		.encant_bc[3]     = 50;
+
+		.castelo_name$[4] = "Gondul";
+		.encant_desc$[4]  = "Torna a Arma Inquebr·vel";
+		.encant_id[4]     = RDMOPT_WEAPON_INDESTRUCTIBLE;
+		.encant_min[4]    = 1;
+		.encant_max[4]    = 1;
+		.encant_bc[4]     = 97;
 		end;
 }
+
+// Kriemhild
+prtg_cas01,116,176,3	duplicate(Encantador de Equip.#0)	Encantador de Equip.#kri	963
+
+//Swanhild
+prtg_cas02,55,39,3	duplicate(Encantador de Equip.#0)	Encantador de Equip.#swan	963
+
+// Fadhgridh
+prtg_cas03,184,214,3	duplicate(Encantador de Equip.#0)	Encantador de Equip.#fadh	963
+
+// Skoegul
+prtg_cas04,256,258,3	duplicate(Encantador de Equip.#0)	Encantador de Equip.#skog	963
+
+// Gondul
+prtg_cas05,235,88,5	duplicate(Encantador de Equip.#0)	Encantador de Equip.#gond	963

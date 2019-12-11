@@ -1,0 +1,65 @@
+// Swanhild
+prontera,150,150,5	Script	Flag#prtg_cas02	722,{
+
+	.@guild_owner = getcastledata( .map$, CD_GUILD_ID );
+	flagemblem .@guild_owner;
+
+	.@guild_owner = getcastledata( .map$, CD_GUILD_ID );
+
+	if( .@guild_owner <= 0 )
+		end;
+
+	.@n$ = "[^A52A2ACastelo " + .castle$ + "^000000]";
+
+	mes .@n$;
+	mes "^000080Clã^000000: " + getguildname( .@guild_owner );
+
+	if( getcharid(2) != .@guild_owner ) close;
+
+	if( select( "Atalho Secreto" ) == 1 )
+		warp .map$, .x, .y;
+
+	end;
+
+	OnClock2300:
+	OnInit:
+		.castle$ = "Swanhild";
+		.map$    = "prtg_cas02";
+		.x       = 52;
+		.y       = 39;
+
+		sleep 10000;
+
+		.@guild_owner = getcastledata( .map$, CD_GUILD_ID );
+		
+		flagemblem .@guild_owner;
+		end;
+}
+
+prtg_cas02	mapflag	noteleport	
+
+prt_gld,244,126,8	duplicate(Flag#prtg_cas02)	Swanhild#f01	722
+prt_gld,244,128,8	duplicate(Flag#prtg_cas02)	Swanhild#f02	722
+prt_gld,236,126,8	duplicate(Flag#prtg_cas02)	Swanhild#f03	722
+prt_gld,236,128,8	duplicate(Flag#prtg_cas02)	Swanhild#f04	722
+
+phtownall,333,71,5	duplicate(Flag#prtg_cas02)	Swanhild#town	722
+phtownall,182,169,4	duplicate(Flag#prtg_cas02)	Swanhild#town2	722
+
+// Entrada
+prt_gld,240,124,0	warp	prtg-2_prtg-2	1,1,prtg_cas02,43,229
+
+// Castelo
+prtg_cas02,43,233,0	warp	prtg-2-01_prtg-2	1,1,prt_gld,240,128
+prtg_cas02,88,215,0	warp	prtg-2-02_prtg-2-22	1,1,prtg_cas02,206,41
+prtg_cas02,53,202,0	warp	prtg-2-03_prtg-2-21	1,1,prtg_cas02,165,41
+prtg_cas02,64,164,0	warp	prtg-2-04_prtg-2-12	1,1,prtg_cas02,98,25
+prtg_cas02,35,183,0	warp	prtg-2-05_prtg-2-11	1,1,prtg_cas02,71,82
+prtg_cas02,71,86,0	warp	prtg-2-11_prtg-2-05	1,1,prtg_cas02,35,187
+prtg_cas02,98,21,0	warp	prtg-2-12_prtg-2-04	1,1,prtg_cas02,64,168
+prtg_cas02,45,21,0	warp	prtg-2-13_prtg-2-24	1,1,prtg_cas02,203,25
+prtg_cas02,161,41,0	warp	prtg-2-21_prtg-2-03	1,1,prtg_cas02,57,202
+prtg_cas02,210,41,0	warp	prtg-2-22_prtg-2-02	1,1,prtg_cas02,84,215
+prtg_cas02,184,44,0	warp	prtg-2-23_prtg-2-31	1,1,prtg_cas02,157,140
+prtg_cas02,203,21,0	warp	prtg-2-24_prtg-2-13	1,1,prtg_cas02,45,25
+prtg_cas02,157,135,0	warp	prtg-2-31_prtg-2-23	1,1,prtg_cas02,184,40
