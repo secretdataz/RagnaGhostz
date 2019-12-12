@@ -4590,6 +4590,112 @@ void npc_read_event_script(void)
 	}
 }
 
+/*
+Cria um NPC
+*/
+struct npc_data* makeNPC(struct block_list *bl, const char * sourcename, const char * objname, const char * objnamehidden, int16 mapid, int16 x, int16 y, int8 DIR, int spriteid, int touchx, int touchy)
+{
+	struct npc_data *nd_original;
+	struct npc_data *nd_duplicata;
+
+	char npcname[NPC_NAME_LENGTH + 1] = "";
+
+	strcat(npcname, objname);
+	strncat(npcname, "#", 1);
+	strncat(npcname, objnamehidden, strlen(objnamehidden));
+
+	if ((strlen(objname) + strlen(objnamehidden)) > NPC_NAME_LENGTH)
+	{
+		ShowError("makeNPC: NPC name exceeded maximum size (%s)\n", npcname);
+		return 0;
+	}
+
+	if (npc_name2id(objname) != NULL)
+	{
+		ShowError("makeNPC: NPC name (%s) already exist\n", npcname);
+		return 0;
+	}
+
+	nd_original = npc_name2id(sourcename);
+
+	if (nd_original == NULL)
+	{
+		ShowError("makeNPC: Original NPC not found. (%s)\n", sourcename);
+		return 0;
+	}
+
+	int sourceid, type;
+
+	sourceid = nd_original->src_id ? nd_original->src_id : nd_original->bl.id;
+	type = nd_original->subtype;
+
+	if (map < 0)
+	{
+		ShowError("makeNPC: Map not found. (%s)\n", map);
+		return 0;
+	}
+
+	CREATE(nd_duplicata, struct npc_data, 1);
+
+	nd_duplicata->bl.prev = nd_duplicata->bl.next = NULL;
+	nd_duplicata->bl.id = npc_get_new_npc_id();
+	nd_duplicata->bl.m = mapid;
+	nd_duplicata->bl.x = x;
+	nd_duplicata->bl.y = y;
+	nd_duplicata->sc_display = NULL;
+	nd_duplicata->sc_display_count = 0;
+
+	nd_duplicata->ud.dir = DIR;
+
+	safestrncpy(nd_duplicata->name, npcname, ARRAYLENGTH(nd_duplicata->name));
+	safestrncpy(nd_duplicata->exname, npcname, ARRAYLENGTH(nd_duplicata->exname));
+
+	nd_duplicata->class_ = spriteid;
+	nd_duplicata->speed = 200;
+	nd_duplicata->bl.type = BL_NPC;
+	nd_duplicata->subtype = NPCTYPE_SCRIPT;
+	nd_duplicata->src_id = sourceid;
+
+	nd_duplicata->u.scr.xs = touchx;
+	nd_duplicata->u.scr.ys = touchy;
+	nd_duplicata->u.scr.script = nd_original->u.scr.script;
+
+	nd_duplicata->u.scr.label_list = nd_original->u.scr.label_list;
+	nd_duplicata->u.scr.label_list_num = nd_original->u.scr.label_list_num;
+
+	if( bl != NULL )
+		nd_duplicata->gid_owner = bl->id;
+
+	//Add the npc to its location
+	map_addnpc(mapid, nd_duplicata);
+	status_change_init(&nd_duplicata->bl);
+	unit_dataset(&nd_duplicata->bl);
+
+	npc_setcells(nd_duplicata);
+
+	map_addblock(&nd_duplicata->bl);
+
+	status_set_viewdata(&nd_duplicata->bl, nd_duplicata->class_);
+
+	if (map[nd_duplicata->bl.m].users)
+		clif_spawn(&nd_duplicata->bl);
+
+	npc_duplicate_2(nd_duplicata);
+
+	int i = 0;
+	for (i = 0; i < nd_original->u.scr.label_list_num; i++) {
+		if (npc_event_export_2(nd_duplicata, i)) {
+			ShowWarning("duplicatecreate : duplicate event %s::%s\n",
+				nd_duplicata->exname, nd_duplicata->u.scr.label_list[i].name);
+		}
+		npc_timerevent_export(nd_duplicata, i);
+	}
+
+	nd_duplicata->u.scr.timerid = INVALID_TIMER;
+
+	return nd_duplicata;
+}
+
 void npc_clear_pathlist(void) {
 	struct npc_path_data *npd = NULL;
 	DBIterator *path_list = db_iterator(npc_path_db);

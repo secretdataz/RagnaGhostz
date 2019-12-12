@@ -339,7 +339,7 @@ int chrif_save(struct map_session_data *sd, int flag) {
 	WFIFOB(char_fd,12) = (flag&CSAVE_QUIT) ? 1 : 0; //Flag to tell char-server this character is quitting.
 
 	// If the user is on a instance map, we have to fake his current position
-	if( map_getmapdata(sd->bl.m)->instance_id ){
+	if( map_getmapdata(sd->bl.m)->instance_id || map[sd->bl.m].clone_id ){
 		struct mmo_charstatus status;
 
 		// Copy the whole status

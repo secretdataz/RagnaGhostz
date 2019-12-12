@@ -738,6 +738,7 @@ struct map_data {
 	int users;
 	int users_pvp;
 	int iwall_num; // Total of invisible walls in this map
+	unsigned int clone_id;;
 
 	std::unordered_map<int16, int> flag;
 	struct point save;
@@ -1041,10 +1042,17 @@ void map_clearflooritem(struct block_list* bl);
 int map_addflooritem(struct item *item, int amount, int16 m, int16 x, int16 y, int first_charid, int second_charid, int third_charid, int flags, unsigned short mob_id, bool canShowEffect = true);
 
 // instances
+static int map_instancemap_leave(struct block_list *bl, va_list ap);
+static int map_instancemap_clean(struct block_list *bl, va_list ap);
+static void map_free_questinfo(struct map_data *mapdata);
 int map_addinstancemap(const char *name, unsigned short instance_id);
 int map_delinstancemap(int m);
 void map_data_copyall(void);
 void map_data_copy(struct map_data *dst_map, struct map_data *src_map);
+
+// Clone map system
+int map_delclonemap(const char* mapname);
+int map_addclonemap(const char *name, const char *newname);
 
 // player to map session
 void map_addnickdb(int charid, const char* nick);

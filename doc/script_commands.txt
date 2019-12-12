@@ -4055,6 +4055,7 @@ invoking RID. It returns 1 if successful and 0 upon failure.
 ---------------------------------------
 
 *rid2name(<rid>)
+*rid2cid(<aid>)
 
 Converts rid to name. Note: The player/monster/NPC must be online/enabled.
 Good for PCKillEvent where you can convert 'killedrid' to the name of the player.

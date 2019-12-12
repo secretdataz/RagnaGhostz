@@ -8652,7 +8652,11 @@ BUILDIN_FUNC(strnpcinfo)
 	int num;
 	char *buf,*name=NULL;
 
-	nd = map_id2nd(st->oid);
+	if( script_hasdata(st, 3) )
+		nd = map_id2nd(script_getnum(st, 3));
+	else
+		nd = map_id2nd(st->oid);
+	
 	if (!nd) {
 		script_pushconststr(st, "");
 		return SCRIPT_CMD_SUCCESS;
@@ -17537,6 +17541,19 @@ BUILDIN_FUNC(rid2name)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+BUILDIN_FUNC(rid2cid)
+{
+	struct block_list *bl = NULL;
+	int rid = script_getnum(st,2);
+	
+	if(bl->type == BL_PC)
+		script_pushint(st, BL_CAST(BL_PC, bl)->status.char_id );
+	else
+		script_pushint(st, 0);
+	
+	return SCRIPT_CMD_SUCCESS;
+}
+
 /**
  * Toggle a unit from moving.
  * pcblockmove(<unit_id>,<option>);
@@ -24882,7 +24899,7 @@ BUILDIN_FUNC(unitmove)
 }
 
 // [Zell]
-// DuplicateCreate("sourcename", "targetnameshown", "targetnamehidden", "targetmap", targetx, targety, targetdir{, targetspriteid{, targetxs, targetys}});
+// DuplicateCreate("sourcename", "targetnameshown", "targetnamehidden", "targetmap", targetx, targety, targetdir{, targetspriteid{, targetxs, targetys}, owner});
 BUILDIN_FUNC(duplicatecreate)
 {
 	const char *npcOriginal = script_getstr(st, 2);
@@ -24904,108 +24921,21 @@ BUILDIN_FUNC(duplicatecreate)
 
 	if (script_hasdata(st, 11))
 		touchY = script_getnum(st, 11);
+	
+	struct block_list *bl = NULL;
+	
+	if(script_hasdata(st, 12))
+		bl = map_id2bl( script_getnum(st, 12) );
+	
+	struct npc_data *nd = makeNPC( bl, npcOriginal, dupNome, dupNomeInv, map_mapname2mapid(mapa), x, y, dir, sprite, int touchX, int touchY )
 
-	struct npc_data *nd_original;
-	struct npc_data *nd_duplicata;
-
-	char nomeNPC[NPC_NAME_LENGTH] = "";
-
-	strcat(nomeNPC, dupNome);
-	strncat(nomeNPC, "#", 1);
-	strncat(nomeNPC, dupNomeInv, strlen(dupNomeInv));
-
-	if ((strlen(dupNome) + strlen(dupNomeInv)) > NPC_NAME_LENGTH)
+	if( nd == NULL )
 	{
-		ShowError("duplicate: NPC name exceeded maximum size (%s)\n", nomeNPC);
-		script_pushint(st, 0);
-		return 0;
+		script_pushint(st, -1);
+		return SCRIPT_CMD_FAILURE;
 	}
-
-	if (npc_name2id(nomeNPC) != NULL)
-	{
-		ShowError("duplicatecreate: NPC name (%s) already exist\n", nomeNPC);
-		script_pushint(st, 0);
-		return 0;
-	}
-
-	nd_original = npc_name2id(npcOriginal);
-
-	if (nd_original == NULL)
-	{
-		ShowError("duplicatecreate: Original NPC not found. (%s)\n", npcOriginal);
-		script_pushint(st, 0);
-		return 0;
-	}
-
-	int sourceid, type, dupmapid;
-
-	sourceid = nd_original->src_id ? nd_original->src_id : nd_original->bl.id;
-	type = nd_original->subtype;
-	dupmapid = map_mapname2mapid(mapa);
-
-	if (dupmapid < 0)
-	{
-		ShowError("duplicatecreate: Map not found. (%s)\n", mapa);
-		script_pushint(st, 0);
-		return 0;
-	}
-
-	CREATE(nd_duplicata, struct npc_data, 1);
-
-	nd_duplicata->bl.prev = nd_duplicata->bl.next = NULL;
-	nd_duplicata->bl.id = npc_get_new_npc_id();
-	nd_duplicata->bl.m = dupmapid;
-	nd_duplicata->bl.x = x;
-	nd_duplicata->bl.y = y;
-	nd_duplicata->sc_display = NULL;
-	nd_duplicata->sc_display_count = 0;
-
-	nd_duplicata->ud.dir = dir;
-
-	safestrncpy(nd_duplicata->name, nomeNPC, ARRAYLENGTH(nd_duplicata->name));
-	safestrncpy(nd_duplicata->exname, nomeNPC, ARRAYLENGTH(nd_duplicata->exname));
-
-	nd_duplicata->class_ = sprite;
-	nd_duplicata->speed = 200;
-	nd_duplicata->bl.type = BL_NPC;
-	nd_duplicata->subtype = NPCTYPE_SCRIPT;
-	nd_duplicata->src_id = sourceid;
-
-	nd_duplicata->u.scr.xs = touchX;
-	nd_duplicata->u.scr.ys = touchY;
-	nd_duplicata->u.scr.script = nd_original->u.scr.script;
-
-	nd_duplicata->u.scr.label_list = nd_original->u.scr.label_list;
-	nd_duplicata->u.scr.label_list_num = nd_original->u.scr.label_list_num;
-
-	//Add the npc to its location
-	map_addnpc(dupmapid, nd_duplicata);
-	status_change_init(&nd_duplicata->bl);
-	unit_dataset(&nd_duplicata->bl);
-	nd_duplicata->ud.dir = dir;
-	npc_setcells(nd_duplicata);
-
-	map_addblock(&nd_duplicata->bl);
-
-	status_set_viewdata(&nd_duplicata->bl, nd_duplicata->class_);
-
-	if (map[nd_duplicata->bl.m].users)
-		clif_spawn(&nd_duplicata->bl);
-
-	npc_duplicate_2(nd_duplicata);
-
-	int i = 0;
-	for (i = 0; i < nd_original->u.scr.label_list_num; i++) {
-		if (npc_event_export_2(nd_duplicata, i)) {
-			ShowWarning("duplicatecreate : duplicate event %s::%s\n",
-				nd_duplicata->exname, nd_duplicata->u.scr.label_list[i].name);
-		}
-		npc_timerevent_export(nd_duplicata, i);
-	}
-
-	nd_duplicata->u.scr.timerid = INVALID_TIMER;
-
-	script_pushint(st, 1);
+	
+	script_pushint( st, nd->bl.id );
 	return SCRIPT_CMD_SUCCESS;
 }
 
@@ -25029,6 +24959,79 @@ BUILDIN_FUNC(duplicateremove)
 		nd = (struct npc_data *)map_id2bl(st->oid);
 
 	npc_unload(nd, true);
+
+	script_pushint(st, 1);
+	return SCRIPT_CMD_SUCCESS;
+}
+
+BUILDIN_FUNC(getowner)
+{
+	struct block_list *bl = map_id2bl( script_getnum(st, 2) );
+	
+	if(bl == NULL)
+	{
+		script_pushint(st, 0);
+		return SCRIPT_CMD_SUCCESS;
+	}
+	
+	switch(bl->type)
+	{
+		case BL_NPC:
+			script_pushint(st, BL_CAST(BL_NPC,bl)->gid_owner);
+			break;
+		default:
+			script_pushint(st, 0);
+			break;
+	}
+	
+	return SCRIPT_CMD_SUCCESS;
+}
+
+/**
+ * Clones an existing map without having to reboot your server.
+ * Usage: clonemap(source_map_name, new_map_name, { char_id })
+ * Return: Map ID
+ */
+BUILDIN_FUNC(clonemap)
+{
+	int res = 0;
+	const char* map_name_original = script_getstr(st, 2);
+	const char* map_name_new = script_getstr(st, 3);
+
+	if (map_mapname2mapid(map_name_original) < 0)
+		return SCRIPT_CMD_FAILURE;
+
+	if (map_mapname2mapid(map_name_new) >= 0)
+		return SCRIPT_CMD_FAILURE;
+
+	if ((res = map_addclonemap(map_name_original, map_name_new)) < 0)
+		return SCRIPT_CMD_FAILURE;
+
+	script_pushint(st, res);
+	return SCRIPT_CMD_SUCCESS;
+}
+
+/**
+ * Removes a cloned map.
+ * Usage: delmap(<map_name>)
+ * @author Tokeiburu
+ */
+BUILDIN_FUNC(delmap)
+{
+	int res = 0;
+	int m = 0;
+	const char *map_name = script_getstr(st, 2);
+
+	if ((m = map_mapname2mapid(map_name)) < 0 || map[m].clone_id == 0)
+	{
+		script_pushint(st, 0);
+		return SCRIPT_CMD_SUCCESS;
+	}
+
+	if ((res = map_delclonemap(map_name)) != 1) {
+		script_pushint(st, 0);
+		return SCRIPT_CMD_SUCCESS;
+	}
 
 	script_pushint(st, 1);
 	return SCRIPT_CMD_SUCCESS;
@@ -25147,8 +25150,11 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(openmastery, "i"),
 	BUILDIN_DEF(requestmac,"i"),
 	BUILDIN_DEF(countplayerson,""),
-	BUILDIN_DEF(duplicatecreate, "ssssiii???"),
+	BUILDIN_DEF(duplicatecreate, "ssssiii????"),
 	BUILDIN_DEF(duplicateremove, "?"),
+	BUILDIN_DEF(getowner,"i"),
+	BUILDIN_DEF(clonemap, "ss?"),
+	BUILDIN_DEF(delmap, "s"),
 	BUILDIN_DEF(rgzbonus, "ii"),
 	BUILDIN_DEF(isselling, "isi"),
 	BUILDIN_DEF(unitmove,"iii"),
@@ -25243,7 +25249,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(getguildmaster,"i"),
 	BUILDIN_DEF(getguildmasterid,"i"),
 	BUILDIN_DEF(strcharinfo,"i?"),
-	BUILDIN_DEF(strnpcinfo,"i"),
+	BUILDIN_DEF(strnpcinfo,"i?"),
 	BUILDIN_DEF(getequipid,"??"),
 	BUILDIN_DEF(getequipuniqueid,"i?"),
 	BUILDIN_DEF(getequipname,"i?"),
@@ -25533,6 +25539,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(strtol,"si"),
 	// [zBuffer] List of player cont commands --->
 	BUILDIN_DEF(rid2name,"i"),
+	BUILDIN_DEF(rid2cid,"i"),
 	BUILDIN_DEF(pcfollow,"ii"),
 	BUILDIN_DEF(pcstopfollow,"i"),
 	BUILDIN_DEF(pcblockmove,"ii"),
