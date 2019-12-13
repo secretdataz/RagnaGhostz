@@ -802,7 +802,7 @@ extern bool agit3_flag;
  * @return True on success or false otherwise
  */
 inline bool mapdata_flag_vs(struct map_data *mapdata) {
-	if (mapdata == nullptr)
+	if (mapdata == nullptr || mapdata->m == 0)
 		return false;
 
 	if (mapdata->flag[MF_PVP] || mapdata->flag[MF_GVG_DUNGEON] || mapdata->flag[MF_GVG] || ((agit_flag || agit2_flag) && mapdata->flag[MF_GVG_CASTLE]) || mapdata->flag[MF_GVG_TE] || (agit3_flag && mapdata->flag[MF_GVG_TE_CASTLE]) || mapdata->flag[MF_BATTLEGROUND])
@@ -817,7 +817,7 @@ inline bool mapdata_flag_vs(struct map_data *mapdata) {
  * @return True on success or false otherwise
  */
 inline bool mapdata_flag_vs2(struct map_data *mapdata) {
-	if (mapdata == nullptr)
+	if (mapdata == nullptr || mapdata->m == 0)
 		return false;
 
 	if (mapdata->flag[MF_PVP] || mapdata->flag[MF_GVG_DUNGEON] || mapdata->flag[MF_GVG] || mapdata->flag[MF_GVG_CASTLE] || mapdata->flag[MF_GVG_TE] || mapdata->flag[MF_GVG_TE_CASTLE] || mapdata->flag[MF_BATTLEGROUND])
@@ -832,7 +832,7 @@ inline bool mapdata_flag_vs2(struct map_data *mapdata) {
  * @return True on success or false otherwise
  */
 inline bool mapdata_flag_gvg(struct map_data *mapdata) {
-	if (mapdata == nullptr)
+if (mapdata == nullptr || mapdata->m == 0)
 		return false;
 
 	if (mapdata->flag[MF_GVG] || ((agit_flag || agit2_flag) && mapdata->flag[MF_GVG_CASTLE]) || mapdata->flag[MF_GVG_TE] || (agit3_flag && mapdata->flag[MF_GVG_TE_CASTLE]))
@@ -847,7 +847,7 @@ inline bool mapdata_flag_gvg(struct map_data *mapdata) {
  * @return True on success or false otherwise
  */
 inline bool mapdata_flag_gvg2(struct map_data *mapdata) {
-	if (mapdata == nullptr)
+if (mapdata == nullptr || mapdata->m == 0)
 		return false;
 
 	if (mapdata->flag[MF_GVG] || mapdata->flag[MF_GVG_TE] || mapdata->flag[MF_GVG_CASTLE] || mapdata->flag[MF_GVG_TE_CASTLE])
@@ -862,7 +862,7 @@ inline bool mapdata_flag_gvg2(struct map_data *mapdata) {
  * @return True on success or false otherwise
  */
 inline bool mapdata_flag_ks(struct map_data *mapdata) {
-	if (mapdata == nullptr)
+if (mapdata == nullptr || mapdata->m == 0)
 		return false;
 
 	if (mapdata->flag[MF_TOWN] || mapdata->flag[MF_PVP] || mapdata->flag[MF_GVG] || mapdata->flag[MF_GVG_TE] || mapdata->flag[MF_BATTLEGROUND])
@@ -878,7 +878,7 @@ inline bool mapdata_flag_ks(struct map_data *mapdata) {
  * @author Cydh
  */
 inline bool mapdata_flag_gvg2_te(struct map_data *mapdata) {
-	if (mapdata == nullptr)
+if (mapdata == nullptr || mapdata->m == 0)
 		return false;
 
 	if (mapdata->flag[MF_GVG_TE] || mapdata->flag[MF_GVG_TE_CASTLE])
@@ -894,7 +894,7 @@ inline bool mapdata_flag_gvg2_te(struct map_data *mapdata) {
  * @author Cydh
  */
 inline bool mapdata_flag_gvg2_no_te(struct map_data *mapdata) {
-	if (mapdata == nullptr)
+	if (mapdata == nullptr || mapdata->m == 0)
 		return false;
 
 	if (mapdata->flag[MF_GVG] || mapdata->flag[MF_GVG_CASTLE])

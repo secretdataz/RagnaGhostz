@@ -32,6 +32,7 @@ enum instance_mode {
 	IM_PARTY,
 	IM_GUILD,
 	IM_CLAN,
+	IM_HOUSE,
 	IM_MAX,
 };
 

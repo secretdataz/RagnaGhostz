@@ -11,3 +11,4 @@
 4,Pesadelo Musical,34400,100,job_duncer,69,44
 5,Vida de Espionagem,34400,100,gef_tower,52,179
 6,Labirinto das Fadas,34400,100,e_woods,69,49,e_woods2,e_woods3,e_woods4,e_woods5
+100,House1,9999999,100,house1,10,10

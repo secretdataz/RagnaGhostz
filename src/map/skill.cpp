@@ -6539,6 +6539,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 		case NV_RECOVERYHP:
 		case NV_PROVOCATION:
 		case NV_BUFFS:
+		case QUEST_HOUSE:
 			npcInvoker(bl, std::to_string(skill_id).c_str());
 			return 1;
 

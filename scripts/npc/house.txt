@@ -1,0 +1,1040 @@
+
+/*
+
+ <house_mobilia>
+ 
+ id         = ID da Mobilia
+ npc_name   = Nome do NPC Original
+ color      = Código da Cor
+ name       = Nome da Mobilia
+ descricao  = Descrição
+ categoria  = Categoria da Mobilia (Tapetes, Cadeiras.. e etc)
+ sprite_1   = Sprite do Mob Normal
+ sprite_2   = Sprite do Mob Invertida
+ material   = ID dos Ingredientes (ITEM_ID:QTD|ITEM_ID:QTD...)
+ craft_time = Tempo de Craft em Segundos
+ 
+ <house_account>
+
+ account_id = ID da Conta
+ status  = 0: Guardada
+           1: Posta
+ sprite  = Sprite do NPC da Casa
+ locked  = 0: Aberto para Todos
+           1: Trancado para Todos
+		2: Liberado somente para amigos
+		3: Por senha
+ senha   = Senha caso locked seja igual a (3)
+ mapa    = Mapa onde está montado
+ x       = Coordenada x de onde está montado
+ y       = Coordenada y de onde está montado
+ mapid   = ID do Mapa Copiado
+ npcid   = ID do NPC Gerado
+ 
+ <house_data>
+
+ id         = Id (Auto Increment)
+ account_id    = Id da Conta
+ mobilia_id = ID da Mobília
+ status     = 0: Desativada
+              1: Ativada
+ x          = X de onde a mobilia está na casa
+ y          = y de onde a mobilia está na casa
+ dir        = Direção
+ dir_type   = Se é a sprite_1 ou sprite_2 que será mostrada
+ obj_data   = Valor extra para alguma função
+ 
+*/
+
+//*del_house
+// Deleta uma casa
+function	Script	del_house	{
+	
+	.@account_id  = getarg(0);
+	.@hard_remove = getarg(1); // True caso o jogador realmente esteja removendo a tenda e não só deslogando
+	
+	if( .@account_id == 0 ) return;
+
+	.@char_id = rid2cid( .@account_id );
+
+	.@query$ = sprintf( "SELECT `mapid`,            " +
+	                    "       `npcid`             " +
+						"  FROM `house_account`     " +
+						" WHERE `account_id` = '%d' ", .@account_id );
+						
+	query_sql( .@query$, .@mapid, .@npcid );
+	
+	duplicateremove( strnpcinfo( 0, .@npcid ) );
+	
+	.@query$ = sprintf( "UPDATE `house_account` " +
+	                    "   SET `mapid` = '0',  " +
+					    "       `npcid` = '0'   " +
+					    ( .@hard_remove ? ", `status` = '0' " : "" ) +
+					    " WHERE `account_id` = '%d' ", .@account_id );
+
+	query_sql( .@query$ );
+	
+	// Removendo Walls de Paredes
+	
+	.@quey$ = sprintf( "SELECT hd.id                                            " +
+	                   "  FROM `house_data` hd                                  " +
+					   " INNER JOIN `house_mobilia` hm ON hm.id = hd.mobilia_id " +
+					   "                              AND hm.categoria = '%d'   " +
+					   " WHERE `account_id` = '%d' ", MOBILIA_CATEGORIA_PAREDE, .@account_id );
+					   
+	.@walls = query_sql( .@query$, .@wall );
+
+	for( .@i = 0; .@i < .@walls; .@i++ )
+		delwall "H" + .@wall[.@i];
+		
+	delmap( "H" + .@account_id );
+
+	return;
+}
+
+function	Script	init_house	{
+
+	.@query$ = "SELECT `account_id`    " +
+	           "  FROM `house_account` " +
+	           " WHERE `status` = '1'  " +
+	           "   AND `mapid` > '0'   ";
+
+	.@c = query_sql( .@query$, .@aids );
+
+	for( ; .@i < .@c; .@i++ )
+		del_house( .@aids[.@i], 1 );
+
+	query_sql( "UPDATE `house_account` " +
+		       "   SET `mapid` = '0',  " + 
+			   "       `npcid` = '0',  " +
+			   "       `status` = '0'  " );
+				  
+	//query_sql( "UPDATE `h_mobilia` SET `extra2`= '0' ");
+	
+	return;
+}
+
+//*add_house
+// Cria uma tenda e carrega os npcs dentro dela
+function	Script	add_house	{
+
+	.@account_id = getarg(0);
+	
+	if( .@account_id == 0 ) return;
+	
+	.@char_id = rid2cid( .@account_id );
+	
+	if( .@char_id == 0 ) return;
+	
+	if( strcharinfo( 3, .@char_id ) != "phtownall" )
+	{
+		megdisp .@char_id,"#ERRO#Não é permitido montar uma Tenda neste mapa!";
+		return;
+	}
+
+	.@map$ = "phtownall";
+	
+	.@query$ = sprintf( "SELECT `status`            " +
+		                "  FROM `house_account`     " +
+					    " WHERE `account_id` = '%d' ", .@account_id );
+
+	.@q = query_sql( .@query$, .@status );
+
+	if( !.@status )
+		.@estaColocando = 1;
+	
+	if( .@q <= 0 )
+	{
+		.@query$ = sprintf( "INSERT INTO `house_account` ( `account_id`, `status`, `sprite`, `locked` ) " +
+		                   "     VALUES ( '%d', '%d', '%d', '%d' ) ", .@account_id, HOUSE_MOUNTED, HOUSE_SPRITE_DEFAULT, HOUSE_LOCK_NONE );
+		
+		query_sql( .@query$ );
+		
+		.@query$ = sprintf( "INSERT INTO `house_data` ( `account_id`, `mobilia_id`, `status`, `x`, `y`, `dir` ) " +
+		                    "     VALUES ( '%d', '%d', '%d', '%d', '%d', '%d' ) ", 
+							.@account_id, MOBILIA_CRAFTMAKE, HOUSE_MOB_ACTIVE,
+							MOBILIA_CRAFTMAKE_DEFX, MOBILIA_CRAFTMAKE_DEFY, MOBILIA_CRAFTMAKE_DEFD );
+		
+		query_sql( .@query$ );
+	}
+	
+	if( .@estaColocando )
+	{
+		getmapxy( .@m$, .@x, .@y, BL_PC );
+		
+		.@y -= 2;
+	  
+		.@query$ = sprintf( "UPDATE `house_account`     " +
+		                    "   SET `mapa`    = '%s',   " +
+							"       `x`       = '%d',   " +
+							"       `y`       = '%d'    " +
+							" WHERE `account_id` = '%d' ",
+							.@map$, .@x, .@y, .@account_id );
+							
+		query_sql( .@query$ );
+	}
+	
+	.@query$ = sprintf( " SELECT `sprite`,           " +
+	                    "        `mapa`, `x`, `y`    " +
+	                    "   FROM `house_account`     " +
+			            "  WHERE `account_id` = '%d' ",
+						.@account_id );
+						
+	query_sql( .@query$, .@sprite, .@map$, .@x, .@y );
+	
+	.@house_name$ = sprintf( "Casa de %s", rid2name( .@account_id ) );
+	
+	.@npc_id = duplicatecreate( "House_NPC", .@house_name$, "", .@map$, .@x, .@y, 5, .@sprite, -1, -1, .@account_id );
+	
+	if( .@npc_id <= 0 )
+	{
+		megdisp .@char_id, "#ERRO#Aconteceu um erro grave no sistema de tendas! Contate a Equipe!";
+		return;
+	}
+	
+	if( .@sprite == HOUSE_SPRITE_DEFAULT )
+	{
+		.@outx = HOUSE_SPRITE_DEFAULT_X;
+		.@outy = HOUSE_SPRITE_DEFAULT_Y;
+		.@mapToCopy$ = "house1";
+	}
+
+	.@house_map$  = "H" + .@account_id;
+	.@house_mapid = clonemap( .@mapToCopy$, .@house_map$ );
+	
+	@HOUSE_MAPID = .@house_mapid;
+	
+	.@query$ = sprintf( "UPDATE `house_account`         " +
+		                "   SET `mapid`       = '%d',   " +
+						"       `npcid`       = '%d',   " +
+						"       `status`      = '1'     " +
+						" WHERE `account_id`  = '%d'    ",
+						.@house_mapid, .@npc_id, .@account_id );
+	
+	query_sql( .@query$ );
+	
+	//Adicionando NPC's ao Mapa
+	
+	// NPC de Saída
+	duplicatecreate( "House_NPC_Out", "Saída", .@house_map$, .@house_map$, .@outx, .@outy, 5, 45, 1, 1, .@account_id );
+
+	.@query$ = sprintf( "SELECT hd.id,                                           " +
+						"       hd.mobilia_id,                                   " +
+						"       hm.npc_name,                                     " +
+						"       hm.name,                                         " +
+						"       hm.categoria,                                    " +
+						"       hd.x,                                            " +
+						"       hd.y,                                            " +
+						"       hd.dir,                                          " +
+						"       hd.dir_type,                                     " +
+						"       hm.sprite_1,                                     " +
+						"       hm.sprite_2,                                     " +
+						"       hd.obj_data                                      " +
+						"  FROM `house_data` hd                                  " +
+						" INNER JOIN `house_mobilia` hm ON hm.id = hd.mobilia_id " +
+						" WHERE hd.account_id = '%d' ", .@account_id );
+						
+	.@mob_count = query_sql( .@query$,
+	                         .@id,        .@mobilia_id,
+							 .@npc_name$, .@name$,
+							 .@categoria,
+							 .@x,         .@y,
+							 .@dir,       .@dir_type,
+							 .@sprite_1,  .@sprite_2,
+							 .@obj_data$ );
+							 
+	for( .@i = 0; .@i < .@mob_count; .@i++ )
+	{
+		// Mudança na Sprite Invertida
+		if( .@dit_type[.@i] == 0 && .@sprite_2[.@i] > 0 )
+			.@sprite = .@sprite_2[.@i];
+		else
+			.@sprite = .@sprite_1[.@i];
+		
+		if( .@categoria[.@i] == MOBILIA_CATEGORIA_PAREDE )
+		{
+			.@dir = 6;
+			
+			setwall( .@house_map$, .@x[.@i], .@y[.@i], 1, 1, 1, "H" + .@id[.@i] );	
+		}
+		
+		duplicatecreate( .@npc_name$[.@i], .@name$[.@i], "" + .@id[.@i], .@house_map$, .@x[.@i], .@y[.@i], .@dir[.@i], .@sprite, 0, 0, .@account_id );
+	}
+	
+	debugmes( "Tenda","Carregado a tenda do jogador " + strcharinfo( 0, .@char_id ) + " com " + .@mob_count + " objetos." );
+	
+	return;
+}
+
+//*housewarp
+function	Script	housewarp	{
+	
+	.@account_id = getarg(0);
+	.@npc_id     = getarg(1);
+	.@type       = getarg(2); // IN, OUT
+	
+	.@owner_gid = getowner( .@npc_id );
+	.@map$ = "H" + .@owner_gid;
+	
+	.@query$ = sprintf( "SELECT `sprite`, `x`, `y`  " +
+	                    "  FROM `house_account`     " +
+						" WHERE `account_id` = '%d' ",
+						.@owner_gid );
+	
+	query_sql( .@query$, .@sprite, .@x, .@y );
+	
+	if( .@type == IN )
+	{
+		if( .@sprite == HOUSE_SPRITE_DEFAULT )
+		{
+			.@x = 27;
+			.@y = 10;
+		}
+		else
+			return;
+		
+		warp( .@map$, .@x, .@y );
+	}
+	else
+		warp( "phtownall", .@x, .@y );
+	
+	return;
+}
+
+//*houseinfo
+// Retorna alguma informação da casa do jogador
+function	Script	houseinfo	{
+
+	.@account_id = getarg(0);
+	.@info       = getarg(1);
+	
+	.@char_id    = rid2cid( .@account_id );
+
+	if( getargcount() >= 3 )
+		.@param1 = getarg(2);
+	
+	// MAP_NAME|X|Y
+	if( .@info == HOUSEINFO_MAPOUT )
+	{
+		.@query$ = sprintf( "SELECT `mapa`, `x`, `y`    " +
+		                    "  FROM `house_account`     " +
+							" WHERE `account_id` = '%d' ", .@account_id );
+							
+		query_sql( .@query$, .@mapa$, .@x, .@y );
+
+		return sprintf( "%s|%d|%d", .@mapa$, .@x, .@y );
+	}
+	
+	if( .@info == HOUSEINFO_STATUS )
+	{
+		.@query$ = sprintf( "SELECT `status`            " +
+		                    "  FROM `house_account`     " +
+							" WHERE `account_id` = '%d' ", .@account_id );
+							
+		query_sql( .@query$, .@house_status );
+		
+		return .@house_status;
+	}
+	
+	// .@param1 -> NPC GID
+	// Retorna o account_id ao invés do GID
+	if( .@info == HOUSEINFO_OWNER )
+	{
+		.@owner_gid = getowner( .@param1 );
+		
+		if( .@owner_gid <= 0 )
+		{
+			megdisp( .@char_id, "#ERRO#Falha ao obter o Owner Gid associado a este Objeto [1]" );
+			end;
+		}
+		
+		return .@owner_gid;
+	}
+
+	// .@param1 -> NPC GID
+	if( .@info == HOUSEINFO_LOCK )
+	{
+		.@owner_gid = getowner( .@param1 );
+		
+		if( .@owner_gid <= 0 )
+		{
+			megdisp( .@char_id, "#ERRO#Falha ao obter o Owner Gid associado a este Objeto [2]" );
+			end;
+		}
+		
+		.@query$ = sprintf( "SELECT `locked`,           " +
+		                    "       `senha`             " +
+				            "  FROM `house_account`     " +
+				            " WHERE `account_id` = '%d' ", .@owner_gid );
+							
+		query_sql( .@query$, .@locked, .@senha );
+
+		return ( .@locked == HOUSE_LOCK_PASSWORD ) ? ( .@senha + 100 ) : .@locked;
+	}
+	
+	return 0;
+}
+
+//*getObjData
+function	Script	getObjData	{
+
+	.@account_id = getarg(0);
+	.@npc_id = getarg(1);
+
+	.@id = strnpcinfo( 2, .@npc_id );
+
+	.@query$ = sprintf( "SELECT `obj_data` " +
+		                "  FROM `house_data` " + 
+		                " WHERE `account_id` = '%d' " +
+		                "   AND `id` = '%d' ",
+		                .@account_id, .@id );
+
+	query_sql( .@query$, .@data$ );
+
+	return .@data$;
+}
+
+//*houselock
+function	Script	houselock	{
+
+	.@account_id = getarg(0);
+	.@lock_type = getarg(1);
+
+	.@query$ += "UPDATE `house_account` " +
+	            "   SET `locked` = '%d' ";
+
+	if( .@lock_type == HOUSE_LOCK_ALL || .@lock_type == HOUSE_LOCK_NONE )
+		.@query$ += ", `senha` = '0' ";
+	else if( .@lock_type == HOUSE_LOCK_PASSWORD )
+		.@query$ += sprintf( ", `senha` = '%d' ", getarg(2) );
+
+	.@query$ += "WHERE `account_id` = '%d' ";
+
+	.@query$ = sprintf( .@query$, .@lock_type, .@account_id );
+
+	query_sql( .@query$ );
+
+	megdisp( getcharid(0),"Sua Tenda agora está trancada." );
+	end;
+}
+
+//*edithouse
+function	Script	edithouse	{
+
+	.@account_id = getarg(0);
+	.@npc_id = getarg(1);
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, .@npc_id );
+
+	if( getgroupid() == 99 )
+		message( strcharinfo(0), ".@owner_gid = " + .@owner_gid );
+
+	if( .@owner_gid != getcharid(3) )
+		end;
+
+	.@id = strnpcinfo( 2, .@npc_id );
+	.@npc_name$ = strnpcinfo( 0, .@npc_id );
+
+	.@query$ = sprintf( "SELECT hd.mobilia_id,                                   " +
+		                "       hd.dir,                                          " +
+		                "       hd.dir_type,                                     " +
+		                "       hm.categoria,                                    " +
+		                "       hm.sprite_1,                                     " +
+		                "       hm.sprite_2,                                     " +
+		                "       hd.obj_data,                                     " +
+		                "       hd.x,                                            " +
+		                "       hd.y,                                            " +
+		                "       hd.dir,                                          " +
+		                "       hd.dir_type                                      " +
+		                "  FROM `house_data` hd                                  " +
+		                " INNER JOIN `house_mobilia` hm ON hd.mobilia_id = hm.id " +
+		                " WHERE hd.account_id = '%d'                             " +
+		                "   AND hd.id = '%d' ",
+		                .@account_id, .@id );
+
+	query_sql( .@query$, .@mobilia_id, .@dir, .@dir_type, .@categoria, .@sprite_1, .@sprite_2, .@obj_data$,
+	                     .@x_backup, .@y_backup, .@dir_backup, .@dir_type_backup );
+
+	.@escolha$ = "Ainda não definido";
+
+	while( 1 )
+	{
+		L_movemenu:
+		
+		getmapxy( .@m$, .@x, .@y, BL_NPC, strnpcinfo( 0, .@npc_id ) );
+
+		switch( prompt("^FFA500@^000000"+.@escolha$+":^20B2AA@^000000Cima:^20B2AA@^000000Baixo:^20B2AA@^000000Direita:^20B2AA@^000000Esquerda:^20B2AA@^000000Rotacionar:^228B22@^000000Confirmar:^FF0000@^000000Cancelar" ) )
+		{
+			case 1:
+				if(.@escolha$=="Ainda não definido")
+				{
+					message( strcharinfo(0),"Escolha uma opção antes." );
+					continue;
+				}
+
+				if( .@escolha$ == "Cima" ) .@y++;
+				else if( .@escolha$ == "Baixo" ) .@y--;
+				else if( .@escolha$ == "Direita" ) .@x++;
+				else if( .@escolha$ == "Esquerda" ) .@x--;
+				else goto L_rotated;
+				break;
+
+			case 2:
+				.@escolha$ = "Cima";
+				.@y++;
+				break;
+
+			case 3:
+				.@escolha$ = "Baixo";
+				.@y--;
+				break;
+
+			case 4:
+				.@escolha$ = "Direita";
+				.@x++;
+				break;
+
+			case 5:
+				.@escolha$ = "Esquerda";
+				.@x--;
+				break;
+
+			case 6:
+			L_rotated:
+				if( .@categoria == MOBILIA_CATEGORIA_PAREDE )
+					continue;
+
+				// Rotação de Mobs 3D Corretamente
+				if( .@dir < 9 || .@dir > 18 )
+				{
+					setnpcdisplay( .@npc_name$, .@sprite_2 );
+					.@dir_type = 1;
+				}
+				else
+				{
+					setnpcdisplay( .@npc_name$, .@sprite_1 );
+					.@dir_type = 0;
+				}
+
+				.@escolha$ = "Rotacionar";
+				.@dir++;
+
+				movenpc( .@npc_name$, .@x, .@y, .@dir );
+				continue;
+
+			case 7:
+				.@confirm = 1;
+				break;
+
+			case 8:
+			case 255:
+				movenpc( .@npc_name$, .@x_backup, .@y_backup, .@dir_backup );
+				.@dir_type = .@dir_type_backup;
+				end;
+		}
+
+		if( !checkcell( strcharinfo(3), .@x, .@y, cell_chkpass ) )
+		{
+			megdisp( getcharid(0), "#ERRO#Área não permitida, verifique se não está tentando ultrapssar uma parede." );
+			continue;
+		}
+		else
+		{
+			soundeffectall "movel.wav",0;
+			movenpc( .@npc_name$, .@x, .@y );
+		}
+
+		if( .@confirm )
+		{
+			if( .@categoria == MOBILIA_CATEGORIA_PAREDE )
+			{
+				delwall( "H" + id  );
+				setwall( .@m$, .@x, .@y, 1, 1, 1, "H" + .@id );	
+			}
+
+			.@query$ = sprintf( "UPDATE `house_data`        " +
+				                "   SET `x`   = '%d',       " +
+				                "       `y`   = '%d',       " +
+				                "       `dir` = '%d',       " + 
+				                "       `dir_type` = '%d'   " +
+				                " WHERE `account_id` = '%d' " +
+				                "   AND `id` = '%d' ",
+				                .@x, .@y, .@dir, .@dir_type,
+				                .@account_id, .@id );
+
+			query_sql( .@query$ );
+			soundeffect "conseguiu.wav",0;
+			end;
+		}
+
+		continue;
+	}
+}
+
+//*destroyobj
+function	Script	destroyobj	{
+
+	.@account_id = getarg(0);
+	.@npc_id = getarg(1);
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, .@npc_id );
+
+	if( .@owner_gid != getcharid(3) )
+		end;
+
+	.@id = strnpcinfo( 2, .@npc_id );
+	.@npc_name$ = strnpcinfo( 0, .@npc_id );
+
+	.@query$ = sprintf( "SELECT hd.mobilia_id,                                   " +		             
+		                "       hm.material                                      " +
+		                "  FROM `house_data` hd                                  " +
+		                " INNER JOIN `house_mobilia` hm ON hd.mobilia_id = hm.id " +
+		                " WHERE hd.account_id = '%d'                             " +
+		                "   AND hd.id = '%d' ",
+		                .@account_id, .@id );
+
+	query_sql( .@query$, .@mobilia_id, .@material$ );
+
+	getmapxy( .@m$, .@x, .@y, BL_NPC, strnpcinfo( 0, .@npc_id ) );
+
+	if( select( "Confirmar Exclusão" ) == 1 )
+	{
+		explode( .@itens$, .@material$, "|" );
+
+		for( .@d = 0; .@d < getarraysize( .@itens$ ); .@d++ )
+		{
+			deletearray( .@item_data$[0], 5 );
+		
+			explode( .@item_data$, .@itens$[.@d], ":" );
+			
+			.@item_id  = atoi( .@item_data$[0] );
+			.@item_qtd = atoi( .@item_data$[1] );
+		
+			getitem( .@item_id, .@item_qtd );
+			getitem( .@item_id, .@item_qtd );
+		}
+
+		.@query$ = sprintf( "DELETE FROM `house_data`        " +
+			                "      WHERE `account_id` = '%d' " +
+			                "        AND `id` = '%d' ", 
+			                .@account_id, .@id );
+
+		query_sql( .@query$ );
+		duplicateremove( .@npc_name$ );
+	}
+
+	end;
+}
+
+//*opentable
+
+//Categorias:
+// MOBILIA_CATEGORIA_CRAFTTABLE = Mesa de Construção
+// MOBILIA_CATEGORIA_CAMA = Cama
+// MOBILIA_CATEGORIA_ESTANDE = Estande
+// MOBILIA_CATEGORIA_MESA = Mesas
+// MOBILIA_CATEGORIA_PAREDE = Parede (Especial Manipulação)
+// MOBILIA_CATEGORIA_RACK = Racks
+// MOBILIA_CATEGORIA_ALMOFADA = Almofadas
+// MOBILIA_CATEGORIA_ARMARIO = Armários
+// MOBILIA_CATEGORIA_SOFA = Poltronas/Sofás
+function	Script	opentable	{
+
+	.@account_id = getarg(0);
+	
+	.@max_objects = 300;
+
+	.@count = query_sql( sprintf( "SELECT 1 FROM `house_data` WHERE `account_id` = '%d' ", .@account_id ), .@one );
+
+	if( .@one > 300 )
+	{
+		message( strcharinfo(0), "Você alcançou o limite máximo de objetos!" );
+	}
+
+	setarray .@menuCateg$,"^B22222Paredes^000000:^2E8B57Camas^000000:^A0522DEstante de Livros^000000:^B8860BMesas^000000:^B8860BRacks^000000:^D02090Almofadas^000000:^8B0000Armários^000000:^8B814CSofás/Cadeiras^000000";
+	setarray .@menuCategID[1],MOBILIA_CATEGORIA_PAREDE,MOBILIA_CATEGORIA_CAMA,MOBILIA_CATEGORIA_ESTANDE,MOBILIA_CATEGORIA_MESA,MOBILIA_CATEGORIA_RACK,MOBILIA_CATEGORIA_ALMOFADA,MOBILIA_CATEGORIA_ARMARIO,MOBILIA_CATEGORIA_SOFA;
+		
+	L_CraftVoltar:
+	
+	.@qnt = getarraysize( .@menuCraft ) + 10;
+	
+	if( .@qnt > 0 )
+	{
+		deletearray .@id[0],.@qnt;
+		deletearray .@npc_name$[0],.@qnt;
+		deletearray .@color$[0],.@qnt;
+		deletearray .@name$[0],.@qnt;
+		deletearray .@desc$[0],.@qnt;
+		deletearray .@categoria[0],.@qnt;
+		deletearray .@sprite[0],.@qnt;
+		deletearray .@material$[0],.@qnt;
+		deletearray .@craft_time[0],.@qnt;
+	}
+	
+	.@escolhaMenu = select( .@menuCateg$ );
+	
+	.@query$ = sprintf( "SELECT `id`,              " +
+	                    "       `npc_name`,        " +
+						"       `color`,           " +
+						"       `name`,            " +
+						"       `descricao`,       " +
+						"       `categoria`,       " +
+						"       `sprite_1`,        " +
+						"       `material`,        " +
+						"       `craft_time`       " +
+	                    "  FROM `house_mobilia`    " +
+						" WHERE `categoria` = '%d' ", .@menuCategID[.@escolhaMenu] );
+						
+	.@menuCraft = query_sql( .@query$,
+	                         .@id,
+	                         .@npc_name$,
+							 .@color$,
+							 .@name$,
+							 .@desc$,
+							 .@categoria,
+							 .@sprite,
+							 .@material$,
+							 .@craft_time );
+ 
+	for( .@i = 0; .@i < .@menuCraft; .@i++ )
+		.@menuObjs$ += sprintf( "^%s%s^000000:", .@color$[.@i], .@name$[.@i] ) + ( .@i == .@menuCraft ? ":Voltar" : ":" );
+	
+	.@menuObjetoSel = select(.@menuObjs$);
+	
+	.@debugMenu = getarraysize(.@menuCraft) + 2;
+				
+	if( .@menuObjetoSel == .@debugMenu ) goto L_CraftVoltar;
+	
+	.@menuObjetoSel--;
+	
+	deletearray( .@itens$[0], 10 );
+	
+	explode( .@itens$, .@material$[.@menuObjetoSel], "|" );
+	
+	.@n$ = "[^8B4513Mesa de Construção^000000]";
+	
+	L_escolhaObj:
+	mes .@n$;
+	mes "^556B2FNome^000000: "+ .@name$[.@menuObjetoSel];
+	mes "^556B2FDescrição^000000: " + .@desc$[.@menuObjetoSel];
+	mes " ";
+	mes "^556B2FMateriais Necessários^000000: ";
+	
+	.@text$ = "> %s [%d/%d]";
+	
+	for( .@i = 0; .@i < getarraysize( .@itens$ ); .@i++ )
+	{
+		deletearray( .@item_data$[0], 5 );
+		
+		explode( .@item_data$, .@itens$[.@i], ":" );
+		
+		.@item_id  = atoi( .@item_data$[0] );
+		.@item_qtd = atoi( .@item_data$[1] );
+		
+		mes sprintf( .@text$, getitemname( .@item_id ), countitem( .@item_id ), .@item_qtd );
+		
+		if( countitem( .@item_id ) < .@item_qtd ) .@naoTemTudo = 1;
+	}
+	
+	mes " ";
+	mes "^556B2FTempo de Construção^000000: " + .@craft_time[.@menuObjetoSel];
+	
+	switch( select( (.@naoTemTudo == 1 ? "^FF0000" : "^2E8B57") +"Construir^000000","^A52A2AVoltar^000000","^8B7D7BCancelar^000000" ) )
+	{
+		case 1:
+			next;
+			mes .@n$;
+			
+			if(.@naoTemTudo == 1)
+			{
+				mes "Materiais insuficiente para criar este objeto.";
+				next;
+				goto L_escolhaObj;
+			}
+			
+			close2;
+			progressbar( "1", .@craft_time[.@menuObjetoSel] );
+			
+			for( .@d = 0; .@d < getarraysize( .@itens$ ); .@d++ )
+			{
+				deletearray( .@item_data$[0], 5 );
+		
+				explode( .@item_data$, .@itens$[.@d], ":" );
+				
+				.@item_id  = atoi( .@item_data$[0] );
+				.@item_qtd = atoi( .@item_data$[1] );
+		
+				delitem( .@item_id, .@item_qtd );
+				delitem( .@item_id, .@item_qtd );
+			}
+			
+			getmapxy( .@m$, .@x, .@y, BL_PC );
+
+			.@map$ = "H" + .@account_id;
+
+			if( .@categoria[.@menuObjetoSel] != MOBILIA_CATEGORIA_PAREDE )
+			{
+				.@query$ = sprintf( "INSERT INTO `house_data` ( `account_id`, `mobilia_id`, `status`, `x`, `y`, `dir` ) " +
+					                "     VALUES ( '%d', '%d', '%d', '%d', '%d', '%d' ) ",
+					                .@account_id,     .@id[.@menuObjetoSel],
+					                HOUSE_MOB_ACTIVE, 
+					                .@x, .@y, 4 );
+
+				query_sql( .@query$ );
+				query_sql("SELECT LAST_INSERT_ID()", .@last_inserted );
+
+				duplicatecreate( .@npc_name$[.@menuObjetoSel], .@name$[.@menuObjetoSel], "" + .@last_inserted, .@map$, .@x, .@y, 4, .@sprite[.@menuObjetoSel], 0, 0, .@account_id );
+
+				setwall( .@map$, .@x, .@y, 1, 1, 1, "H" + .@last_inserted );	
+			}
+			else
+			{
+				.@query$ = sprintf( "INSERT INTO `house_data` ( `account_id`, `mobilia_id`, `status`, `x`, `y`, `dir` ) " +
+					                "     VALUES ( '%d', '%d', '%d', '%d', '%d', '%d' ) ",
+					                .@account_id,     .@id[.@menuObjetoSel],
+					                HOUSE_MOB_ACTIVE, 
+					                .@x, .@y, 6 );
+
+				duplicatecreate( "housewall", "", "" + .@last_inserted, .@map$, .@x, .@y, 4, .@sprite[.@menuObjetoSel], 1, 1, .@account_id );
+			}
+
+			specialeffect2 154;
+			soundeffectall "wedid.wav",0;
+			end;
+
+		case 2:
+			next;
+			goto L_CraftVoltar;
+			end;
+	}
+
+	return;
+}
+
+-	Script	1032	-1,{
+
+	.@status = houseinfo( getcharid(3), HOUSEINFO_STATUS );
+
+	if( .@status )
+	{
+		megdisp( getcharid(0), "#ERRO#Você já possui uma Tenda posta." );
+		end;
+	}
+
+	add_house( getcharid(3) );
+	end;
+
+	OnInit:
+		init_house();
+		end;
+
+	OnPcLogOutEvent:
+		if( !@HOUSE_MAPID ) end;
+		del_house( getcharid(3), 0 );
+		end;
+
+	OnPcLoginEvent:
+		if( !#QUEST_TENDA ) end;
+
+		skill( 1032, 1, SKILL_PERM_GRANT );
+
+		.@status = houseinfo( getcharid(3), HOUSEINFO_STATUS );
+
+		if( !.@status ) end;
+
+		add_house( getcharid(3) );
+
+		goto L_marcarMapa;
+		end;
+
+	L_marcarMapa:
+		if( strcharinfo(3) == "phtownall" )
+		{
+			.@mxy$ = houseinfo( getcharid(3), HOUSEINFO_MAPOUT );
+	
+			explode( .@data$, .@mxy$, "|" );
+
+			.@m$ = .@data$[0];
+			.@x = atoi( .@data$[1] );
+			.@y = atoi( .@data$[2] );
+
+			viewpoint 0,.@x,.@y,100,0xFF0000;
+		}
+		end;
+}
+
+-	Script	House_NPC	-1,{
+
+	if( getgroupid() == 99 )
+		dispbottom "Nome do NPC: " + strnpcinfo(0);
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, getnpcid(0) );
+
+	if( .@owner_gid != getcharid(3) )
+	{
+		switch( select( "^006400Entrar^000000:^A52A2ACancelar^000000" ) )
+		{
+			case 1:
+				.@lock = houseinfo( getcharid(3), HOUSEINFO_LOCK, getnpcid(0) );
+
+				if( .@lock >= 100 )
+				{
+					.@senha = ( .@lock - 100 );
+
+					mes "[^B22222Cadeado^000000]";
+					mes "Esta tenda está trancada, por favor digite a senha para prosseguir.";
+
+					if( getgroupid() == 99 )
+						mes "^FF0000>> Senha é " + .@senha + " <<^000000";
+
+					input .@password;
+
+					if( .@password != .@senha )
+					{
+						mes "[^B22222Cadeado^000000]";
+						mes "Combinação errada.";
+						close;
+					}
+
+					housewarp( getcharid(3), getnpcid(0), IN );
+					end;
+				}
+				else if( .@lock == HOUSE_LOCK_ALL )
+				{
+					mes "[^B22222Cadeado^000000]";
+					mes "O dono da tenda não deseja receber visitas.";
+					close;
+				}
+
+				housewarp( getcharid(3), getnpcid(0), IN );
+				end;
+
+			case 2:
+				close;
+		}
+	}
+
+	switch( select( "^006400Entrar^000000:^191970Trancar^000000:^FF0000Recolher Tenda^000000:^BDB76BCancelar^000000" ) )
+	{
+		case 1:
+			housewarp( getcharid(3), getnpcid(0), IN );
+			end;
+
+		case 2:
+			goto L_lock;
+			end;
+
+		case 3:
+			del_house( getcharid(3), 1 );
+			end;
+
+		case 4:
+			close;
+	}
+
+	end;
+
+	L_lock:
+		switch( select( "^FF0000@^000000Bloquear Todos:^FFD700@^000000Senha:^9370DB@^000000Destrancar" ) )
+		{
+			case 1:
+				houselock( getcharid(3), HOUSE_LOCK_ALL );
+				end;
+				
+			case 2:
+				input .@password;
+				houselock( getcharid(3), HOUSE_LOCK_PASSWORD, .@password );
+				end;
+				
+			case 3:
+				houselock( getcharid(3), HOUSE_LOCK_NONE );
+				end;
+		}	
+}
+
+-	Script	House_NPC_Out	-1,{
+
+	getmapxy( .@m$, .@x, .@y, BL_NPC, strnpcinfo(0) );
+	unitwalk( getcharid(3), .@x, .@y );
+	end;
+
+	OnTouch:
+		housewarp( getcharid(3), getnpcid(0), OUT );
+		end;
+
+}
+
+-	Script	craftable	422,{
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, getnpcid(0) );
+
+	if( .@owner_gid != getcharid(3) )
+	{
+		message( strcharinfo(0), "Uma mesa para construir objetos... não quero roubar isso." );
+		end;
+	}
+
+	mes "[^8B4513Mesa de Construção^000000]";
+	mes "^556B2FDescrição do Objeto^000000: Permite criar novos objetos para sua tenda.";
+
+	switch( select( "^D2691EMenu de Construção^000000:^8B4513Edições de Parede^000000:^483D8B@^000000Editar" ) )
+	{	
+		case 1:
+			opentable( getcharid(3) );
+			close;
+			
+		case 2:
+			if( @walledit == 0 )
+			{
+				message( strcharinfo(0), "Edição de Paredes ativada" );
+				@walledit = 1;
+			}
+			else
+			{
+				message( strcharinfo(0), "Edição de Paredes desativada" );
+				@walledit = 0;
+			}
+
+			close2;
+			end;
+		
+		case 3:
+			edithouse( getcharid(3), getnpcid(0) );
+			end;
+	}
+
+	end;
+}
+
+phtownall,202,344,3	Script	Escoteiro	896,{
+
+	.@n$ = "[^2E8B57Escoteiro^000000]";
+
+	mes .@n$;
+
+	if( #QUEST_TENDA )
+	{
+		mes "Está curtindo sua nova Habilidades?";
+		close;
+	}
+
+	mes "Eu posso lhe ensinar a montar uma tenda. Tudo o que preciso é que você me traga 30 pontos de fortuna!";
+	mes " ";
+	mes "Seus Pontos: " + #FORTUNA_POINTS;
+
+	if( #FORTUNA_POINTS >= 30 )
+	{
+		if( select( "Irei pensar...", "Me ensine!" ) == 2 )
+		{
+			next;
+			mes .@n$;
+			mes "Pronto, viu como é fácil montar sua tenda? Olhe na sua árvore de Habilidades!";
+			#FORTUNA_POINTS -= 30;
+			#QUEST_TENDA = 1;
+			skill( 1032, 1, SKILL_PERM_GRANT );
+			close;
+		}
+	}
+
+	close;
+}

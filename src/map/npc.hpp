@@ -111,6 +111,7 @@ struct npc_data {
 
 	int invokerid;
 	std::string chat_icon;
+	int gid_owner;
 };
 
 struct eri;
@@ -1170,8 +1171,8 @@ enum e_job_types
 	JT_4_EP17_CLEANER_W,
 	JT_4_EP17_MERMAID,
 
-	NPC_RANGE3_END, // Official: JT_NEW_NPC_3RD_END=19999
-	JT_NEW_NPC_3RD_END = 49999,
+	NPC_RANGE3_END = 49999, // Official: JT_NEW_NPC_3RD_END=19999
+	JT_NEW_NPC_3RD_END,
 
 	// Unofficial
 	JT_INVISIBLE = 32767,
@@ -1266,6 +1267,8 @@ int npc_unload(struct npc_data* nd, bool single);
 int npc_reload(void);
 void npc_read_event_script(void);
 int npc_script_event(struct map_session_data* sd, enum npce_event type);
+
+struct npc_data* makeNPC(struct block_list* bl, const char* sourcename, const char* objname, const char* objnamehidden, int16 mapid, int16 x, int16 y, int8 DIR, int spriteid, int touchx, int touchy);
 
 int npc_duplicate4instance(struct npc_data *snd, int16 m);
 int npc_instanceinit(struct npc_data* nd);

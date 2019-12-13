@@ -17543,10 +17543,9 @@ BUILDIN_FUNC(rid2name)
 
 BUILDIN_FUNC(rid2cid)
 {
-	struct block_list *bl = NULL;
-	int rid = script_getnum(st,2);
+	struct block_list *bl = map_id2bl(script_getnum(st, 2));
 	
-	if(bl->type == BL_PC)
+	if(bl != NULL && bl->type == BL_PC)
 		script_pushint(st, BL_CAST(BL_PC, bl)->status.char_id );
 	else
 		script_pushint(st, 0);
@@ -24927,7 +24926,7 @@ BUILDIN_FUNC(duplicatecreate)
 	if(script_hasdata(st, 12))
 		bl = map_id2bl( script_getnum(st, 12) );
 	
-	struct npc_data *nd = makeNPC( bl, npcOriginal, dupNome, dupNomeInv, map_mapname2mapid(mapa), x, y, dir, sprite, int touchX, int touchY )
+	struct npc_data* nd = makeNPC(bl, npcOriginal, dupNome, dupNomeInv, map_mapname2mapid(mapa), x, y, dir, sprite, touchX, touchY);
 
 	if( nd == NULL )
 	{

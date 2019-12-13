@@ -58,7 +58,7 @@ prtg_cas02,52,42,3	duplicate(Kafra do Castelo#0)	Kafra do Castelo#swan	94
 prtg_cas03,176,210,5	duplicate(Kafra do Castelo#0)	Kafra do Castelo#fadh	94
 
 // Skoegul
-prtg_cas04,260,264,5	duplicate(Kafra do Castelo#0)	Kafra do Castelo#fadh	94
+prtg_cas04,260,264,5	duplicate(Kafra do Castelo#0)	Kafra do Castelo#sko	94
 
 // Gondun
 prtg_cas05,208,86,5	duplicate(Kafra do Castelo#0)	Kafra do Castelo#gond	94

@@ -10839,8 +10839,11 @@ void clif_parse_LoadEndAck(int fd,struct map_session_data *sd)
 		if (battle_config.bg_flee_penalty != 100 || battle_config.gvg_flee_penalty != 100) {
 			struct map_data *pmap = map_getmapdata(sd->state.pmap);
 
-			if ((pmap != nullptr && (mapdata_flag_gvg(pmap) || pmap->flag[MF_BATTLEGROUND])) || (mapdata != nullptr && (mapdata_flag_gvg(mapdata) || mapdata->flag[MF_BATTLEGROUND])))
-				status_calc_bl(&sd->bl, SCB_FLEE); //Refresh flee penalty
+			if (pmap != nullptr && pmap->m > 0)
+			{
+				if ((pmap != nullptr && (mapdata_flag_gvg(pmap) || pmap->flag[MF_BATTLEGROUND])) || (mapdata != nullptr && (mapdata_flag_gvg(mapdata) || mapdata->flag[MF_BATTLEGROUND])))
+					status_calc_bl(&sd->bl, SCB_FLEE); //Refresh flee penalty
+			}
 		}
 
 		if( night_flag && mapdata->flag[MF_NIGHTENABLED] )

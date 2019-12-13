@@ -759,7 +759,7 @@ struct map_session_data {
 		t_tick tick;
 	} roulette;
 
-	unsigned short instance_id;
+	unsigned short instance_id, house_id;
 	short setlook_head_top, setlook_head_mid, setlook_head_bottom, setlook_robe; ///< Stores 'setlook' script command values.
 
 #if PACKETVER >= 20150513

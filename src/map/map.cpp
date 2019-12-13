@@ -2210,24 +2210,20 @@ int map_quit(struct map_session_data *sd) {
  *------------------------------------------*/
 int map_addclonemap(const char *name, const char *newname)
 {
-	int src_m = map_mapname2mapid(name);
-	int dst_m = -1, i;
+	int16 src_m = map_mapname2mapid(name);
+	char iname[MAP_NAME_LENGTH];
 	size_t num_cell, size;
 
 	if (src_m < 0)
 		return -1;
 
-	if (strlen(name) >= MAP_NAME_LENGTH) {
+	if (strlen(newname) > 20) {
 		// against buffer overflow
-		ShowError("map_addclonemap: can't add long map name \"%s\"\n", name);
+		ShowError("map_addisntancemap: can't add long map name \"%s\"\n", newname);
 		return -2;
 	}
 
-	if (strlen(newname) >= MAP_NAME_LENGTH) {
-		// against buffer overflow
-		ShowError("map_addclonemap: can't add long map name \"%s\"\n", newname);
-		return -2;
-	}
+	int16 dst_m = -1, i;
 
 	for (i = instance_start; i < MAX_MAP_PER_SERVER; i++) {
 		if (!map[i].name[0])
@@ -2239,57 +2235,51 @@ int map_addclonemap(const char *name, const char *newname)
 		dst_m = map_num++;
 	else {
 		// Out of bounds
-		ShowError("map_addclonemap failed. map_num(%d) > map_max(%d)\n", map_num, MAX_MAP_PER_SERVER);
+		ShowError("map_addinstancemap failed. map_num(%d) > map_max(%d)\n", map_num, MAX_MAP_PER_SERVER);
 		return -3;
 	}
 
-	if (map[src_m].clone_id) {
-		ShowError("map_addclonemap failed. Cannot clone a cloned map.\n", map_num, MAX_MAP_PER_SERVER);
-		return -4;
-	}
+	struct map_data* src_map = map_getmapdata(src_m);
+	struct map_data* dst_map = map_getmapdata(dst_m);
 
-	// Copy the map
-	memcpy(&map[dst_m], &map[src_m], sizeof(struct map_data));
+	strcpy(iname, newname);
 
-	// Alter the name
-	// Due to this being custom we only worry about preserving as many characters as necessary for accurate map distinguishing
-	// This also allows us to maintain complete independence with main map functions
-	strncpy(map[dst_m].name, newname, MAP_NAME_LENGTH);
+	snprintf(dst_map->name, sizeof(dst_map->name), newname);
 
-	map[dst_m].m = dst_m;
-	map[dst_m].clone_id = src_m;
-	map[dst_m].users = 0;
+	dst_map->name[MAP_NAME_LENGTH - 1] = '\0';
 
-	memset(map[dst_m].npc, 0, sizeof(map[dst_m].npc));
-	map[dst_m].npc_num = 0;
+	dst_map->m = dst_m;
+	dst_map->clone_id = src_m;
+	dst_map->users = 0;
+	dst_map->xs = src_map->xs;
+	dst_map->ys = src_map->ys;
+	dst_map->bxs = src_map->bxs;
+	dst_map->bys = src_map->bys;
+	dst_map->iwall_num = src_map->iwall_num;
+
+	memset(dst_map->npc, 0, sizeof(dst_map->npc));
+	dst_map->npc_num = 0;
+	dst_map->npc_num_area = 0;
+	dst_map->npc_num_warp = 0;
 
 	// Reallocate cells
-	num_cell = map[dst_m].xs * map[dst_m].ys;
-	CREATE(map[dst_m].cell, struct mapcell, num_cell);
-	memcpy(map[dst_m].cell, map[src_m].cell, num_cell * sizeof(struct mapcell));
+	num_cell = dst_map->xs * dst_map->ys;
+	CREATE(dst_map->cell, struct mapcell, num_cell);
+	memcpy(dst_map->cell, src_map->cell, num_cell * sizeof(struct mapcell));
 
-	// Remove ontouch NPC cells
-	for (i = 0; i < num_cell; i++) {
-		map[dst_m].cell[i].npc = 0;
-	}
+	size = dst_map->bxs * dst_map->bys * sizeof(struct block_list*);
+	dst_map->block = (struct block_list**)aCalloc(1, size);
+	dst_map->block_mob = (struct block_list**)aCalloc(1, size);
 
-	// Remove all mob spawners (these should not be copied over)
-	for (i = 0; i < MAX_MOB_LIST_PER_MAP; i++) {
-		map[dst_m].moblist[i] = NULL;
-	}
+	dst_map->index = mapindex_addmap(-1, dst_map->name);
+	dst_map->channel = NULL;
+	dst_map->mob_delete_timer = INVALID_TIMER;
 
-	// Remove quest information from the map
-	map[dst_m].qi_data = NULL;
+	map_data_copy(dst_map, src_map);
 
-	size = map[dst_m].bxs * map[dst_m].bys * sizeof(struct block_list*);
-	map[dst_m].block = (struct block_list **)aCalloc(1, size);
-	map[dst_m].block_mob = (struct block_list **)aCalloc(1, size);
+	ShowInfo("[House] Created map '%s' ('%d') from map '%s' ('%d')\n", dst_map->name, dst_map->m, name, src_map->m);
 
-	map[dst_m].index = mapindex_addmap(-1, map[dst_m].name);
-	map[dst_m].channel = NULL;
-	map[dst_m].mob_delete_timer = INVALID_TIMER;
-
-	map_addmap2db(&map[dst_m]);
+	map_addmap2db(dst_map);
 
 	return dst_m;
 }
@@ -2313,19 +2303,33 @@ int map_delclonemap(const char* mapname)
 	if (map[m].mob_delete_timer != INVALID_TIMER)
 		delete_timer(map[m].mob_delete_timer, map_removemobs_timer);
 
+	map[m].mob_delete_timer = INVALID_TIMER;
+
 	// Free memory
-	aFree(map[m].cell);
+	if (map[m].cell)
+		aFree(map[m].cell);
+
 	map[m].cell = NULL;
-	aFree(map[m].block);
+
+	if (map[m].block)
+		aFree(map[m].block);
+
 	map[m].block = NULL;
-	aFree(map[m].block_mob);
+
+	if (map[m].block_mob)
+		aFree(map[m].block_mob);
+
 	map[m].block_mob = NULL;
-	map_free_questinfo(map_getmapdata(m));
+
+	map_free_questinfo(&map[m]);
+	map[m].damage_adjust = {};
+	map[m].flag.clear();
+	map[m].skill_damage.clear();
 
 	mapindex_removemap(map[m].index);
 	map_removemapdb(&map[m]);
-	memset(&map[m], 0x00, sizeof(map[0]));
-	map[m].mob_delete_timer = INVALID_TIMER;
+
+	memset(&map[m].name, '\0', sizeof(map[0].name)); // just remove the name
 	return 1;
 }
 
@@ -3768,8 +3772,12 @@ int map_delmap(char* mapname){
 /// Initializes map flags and adjusts them depending on configuration.
 void map_flags_init(void){
 	for (int i = 0; i < map_num; i++) {
+
 		struct map_data *mapdata = &map[i];
 		union u_mapflag_args args = {};
+
+		if (mapdata == NULL || mapdata->m == 0 || mapdata->clone_id > 0)
+			continue;
 
 		mapdata->flag.clear();
 		mapdata->flag.reserve(MF_MAX); // Reserve the bucket size

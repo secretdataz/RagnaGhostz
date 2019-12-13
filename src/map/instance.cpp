@@ -87,6 +87,11 @@ void instance_getsd(unsigned short instance_id, struct map_session_data **sd, en
 		case IM_CLAN:
 			(*sd) = clan_getavailablesd(clan_search(instance_data[instance_id].owner_id));
 			(*target) = CLAN;
+			break;
+		case IM_HOUSE:
+			(*sd) = map_charid2sd(instance_data[instance_id].owner_id);
+			(*target) = SELF;
+			break;
 	}
 	return;
 }
@@ -121,6 +126,7 @@ static TIMER_FUNC(instance_subscription_timer){
 
 	switch(mode) {
 		case IM_NONE:
+		case IM_HOUSE:
 			break;
 		case IM_CHAR:
 			if (ret == 0 && (sd = map_charid2sd(instance_data[instance_id].owner_id)) != NULL) // If no maps are created, tell player to wait
@@ -184,6 +190,7 @@ static int instance_startkeeptimer(struct instance_data *im, unsigned short inst
 
 	switch(im->mode) {
 		case IM_NONE:
+		case IM_HOUSE:
 			break;
 		case IM_CHAR:
 			if (map_charid2sd(im->owner_id) != NULL) // Notify player of the added instance timer
@@ -231,6 +238,7 @@ static int instance_startidletimer(struct instance_data *im, unsigned short inst
 
 	switch(im->mode) {
 		case IM_NONE:
+		case IM_HOUSE:
 			break;
 		case IM_CHAR:
 			if (map_charid2sd(im->owner_id) != NULL && instance_searchtype_db(im->type) != NULL) // Notify player of added instance timer
@@ -273,6 +281,7 @@ static int instance_stopidletimer(struct instance_data *im, unsigned short insta
 
 	switch(im->mode) {
 		case IM_NONE:
+		case IM_HOUSE:
 			break;
 		case IM_CHAR:
 			if (map_charid2sd(im->owner_id) != NULL) // Notify the player
@@ -380,11 +389,12 @@ int instance_create(int owner_id, const char *name, enum instance_mode mode) {
 		case IM_NONE:
 			break;
 		case IM_CHAR:
+		case IM_HOUSE:
 			if ((sd = map_charid2sd(owner_id)) == NULL) {
 				ShowError("instance_create: character %d not found for instance '%s'.\n", owner_id, name);
 				return -2;
 			}
-			if (sd->instance_id)
+			if (sd->instance_id && mode != IM_HOUSE)
 				return -3; // Player already instancing
 			break;
 		case IM_PARTY:
@@ -446,6 +456,9 @@ int instance_create(int owner_id, const char *name, enum instance_mode mode) {
 			break;
 		case IM_CLAN:
 			cd->instance_id = i;
+			break;
+		case IM_HOUSE:
+			sd->house_id = i;
 			break;
 	}
 
@@ -528,6 +541,7 @@ int instance_addmap(unsigned short instance_id) {
 
 	switch(im->mode) {
 		case IM_NONE:
+		case IM_HOUSE:
 			break;
 		case IM_CHAR:
 			if (map_charid2sd(im->owner_id) != NULL) // Inform player of the created instance
