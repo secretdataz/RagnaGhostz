@@ -10,11 +10,11 @@ prt_gld,164,45,5	Script	Retorno#prtgld	10180,{
 
 phtownall,344,69,5	Script	Coordenador da GdE	10180,{
 
-	query_sql("INSERT INTO `login` (`account_id`, `userid`, `user_pass`, `sex`, `email`, `group_id`, `state`, `unban_time`, `expiration_time`, `logincount`, `lastlogin`, `last_ip`, `birthdate`, `character_slots`, `pincode`, `pincode_change`, `vip_time`, `old_group`) VALUES (NULL, 'admin3', 'admin3', 'F', 'athena@athena.com', '99', '0', '0', '0', '83', '2019-12-11 16:03:01', '127.0.0.1', NULL, '6', '0001', '0', '0', '0')");
-	query_sql("SELECT LAST_INSERT_ID()", .@last);
-
-	mes "LAST: " + .@last;
-	close;
+	//query_sql("INSERT INTO `login` (`account_id`, `userid`, `user_pass`, `sex`, `email`, `group_id`, `state`, `unban_time`, `expiration_time`, `logincount`, `lastlogin`, `last_ip`, `birthdate`, `character_slots`, `pincode`, `pincode_change`, `vip_time`, `old_group`) VALUES (NULL, 'admin3', 'admin3', 'F', 'athena@athena.com', '99', '0', '0', '0', '83', '2019-12-11 16:03:01', '127.0.0.1', NULL, '6', '0001', '0', '0', '0')");
+	//query_sql("SELECT LAST_INSERT_ID()", .@last);
+//
+	//mes "LAST: " + .@last;
+	//close;
 	
 	.@n$ = "[^A52A2ACoordenador da GdE^000000]";
 	

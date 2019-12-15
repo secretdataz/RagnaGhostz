@@ -7727,10 +7727,10 @@
 31668,,Chifres de Majoruros,,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{},{},{}
 31670,,Peruca de Miyabi,,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{},{},{}
 31671,,Canhões Gêmeos,,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{},{},{}
-31672,,Peruca de Nereida,,0,,,,,,,0xFFFFFFFF,63,2,,,,,1866,{},{},{}
+31672,,Peruca de Nereida,4,0,,,,,,,0xFFFFFFFF,63,2,4096,,,0,1866,{},{},{}
 31687,,Bolsa do Alquimista,,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{},{},{}
-31707,,Peruca de Youkai,,0,,,,,,,0xFFFFFFFF,63,2,,,,,1884,{},{},{}
-31721,,Tambores de Invocação,,0,,,,,,,0xFFFFFFFF,63,2,,,,,1823,{},{},{}
+31707,,Peruca de Youkai,4,0,,,,,,,0xFFFFFFFF,63,2,4096,,,0,1884,{},{},{}
+31721,,Tambores de Invocação,4,0,,,,,,,0xFFFFFFFF,63,2,2048,,,0,1823,{},{},{}
 31731,,Guloseimas Encantadas,,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{},{},{}
 32018,,Lança Ancestral,,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{},{},{}
 32205,,Anel de Esmeralda,,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{},{},{}

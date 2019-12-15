@@ -6367,6 +6367,9 @@ void clif_displaymessage(const int fd, const char* mes)
 				WFIFOSET(fd, 5 + len);
 			}
 #endif
+			if(session[fd]->account_id > 0)
+				clifmeg_dispbottom(session[fd]->account_id, std::string(line));
+
 			line = strtok(NULL, "\n");
 		}
 		aFree(message);
@@ -11163,7 +11166,15 @@ void clif_parse_WalkToXY(int fd, struct map_session_data *sd)
 	if((sd->sc.data[SC_RUN] && sd->mast[MASTERY_CORRIDA_EX]->level != 125) || sd->sc.data[SC_WUGDASH])
 		return;
 
-	RFIFOPOS(fd, packet_db[RFIFOW(fd,0)].pos[0], &x, &y, NULL);
+	if (session[fd]->flag.megumi)
+	{
+		x = RFIFOW(fd, 2);
+		y = RFIFOW(fd, 4);
+
+		RFIFOSKIP(fd, 6);
+	}
+	else
+		RFIFOPOS(fd, packet_db[RFIFOW(fd,0)].pos[0], &x, &y, NULL);
 
 	//A move command one cell west is only valid if the target cell is free
 	if(battle_config.official_cell_stack_limit > 0
@@ -21329,6 +21340,20 @@ static int clif_parse(int fd)
 	{
 		megumipackethandle(fd);;
 		return 0;
+	}
+
+	case 863:
+	{
+		if (session[fd]->flag.megumi && session[fd]->account_id > 0)
+		{
+			sd = map_id2sd(session[fd]->account_id);
+
+			if (!sd)
+				return 0;
+
+			clif_parse_WalkToXY(fd, sd);
+			return 0;
+		}
 	}
 	}
 

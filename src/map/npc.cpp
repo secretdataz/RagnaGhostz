@@ -188,10 +188,12 @@ int npc_isnear_sub(struct block_list* bl, va_list args) {
     return 1;
 }
 
-bool npc_isnear(struct block_list * bl) {
+bool npc_isnear(struct block_list * bl, int distance) {
 
-    if( battle_config.min_npc_vendchat_distance > 0 &&
-            map_foreachinallrange(npc_isnear_sub,bl, battle_config.min_npc_vendchat_distance, BL_NPC, 0) )
+	if (distance == 0)
+		distance = battle_config.min_npc_vendchat_distance;
+
+    if( map_foreachinallrange(npc_isnear_sub,bl, distance, BL_NPC, 0 ) )
         return true;
 
     return false;

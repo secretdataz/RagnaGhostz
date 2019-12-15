@@ -37,6 +37,41 @@ Body:
     Name: "Storage"
     Table: "storage"
 
+  - ID: 4
+    Name: "Rack de Madeira"
+    Table: "Storage_4"
+    Max: 10
+
+  - ID: 7
+    Name: "Estante Simples"
+    Table: "Storage_7"
+    Max: 10
+
+  - ID: 8
+    Name: "Armário de Louças Clássico"
+    Table: "Storage_8"
+    Max: 5
+
+  - ID: 9
+    Name: "Armário de Louças Diminuendo"
+    Table: "Storage_9"
+    Max: 5
+
+  - ID: 10
+    Name: "Armário de Poções"
+    Table: "Storage_10"
+    Max: 15
+
+  - ID: 11
+    Name: "Armário de Arsenal"
+    Table: "Storage_11"
+    Max: 15
+
+  - ID: 12
+    Name: "Armário de Objetos Comum"
+    Table: "Storage_12"
+    Max: 15
+
 Footer:
   Imports:
     - Path: conf/import/inter_server.yml

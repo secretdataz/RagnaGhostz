@@ -76,11 +76,11 @@ function	Script	del_house	{
 	
 	// Removendo Walls de Paredes
 	
-	.@quey$ = sprintf( "SELECT hd.id                                            " +
+	.@query$ = sprintf( "SELECT hd.id                                            " +
 	                   "  FROM `house_data` hd                                  " +
 					   " INNER JOIN `house_mobilia` hm ON hm.id = hd.mobilia_id " +
 					   "                              AND hm.categoria = '%d'   " +
-					   " WHERE `account_id` = '%d' ", MOBILIA_CATEGORIA_PAREDE, .@account_id );
+					   " WHERE hd.account_id = '%d' ", MOBILIA_CATEGORIA_PAREDE, .@account_id );
 					   
 	.@walls = query_sql( .@query$, .@wall );
 
@@ -93,6 +93,8 @@ function	Script	del_house	{
 }
 
 function	Script	init_house	{
+
+	freeloop(1);
 
 	.@query$ = "SELECT `account_id`    " +
 	           "  FROM `house_account` " +
@@ -246,7 +248,7 @@ function	Script	add_house	{
 	for( .@i = 0; .@i < .@mob_count; .@i++ )
 	{
 		// Mudança na Sprite Invertida
-		if( .@dit_type[.@i] == 0 && .@sprite_2[.@i] > 0 )
+		if( .@dir_type[.@i] == 1 )
 			.@sprite = .@sprite_2[.@i];
 		else
 			.@sprite = .@sprite_1[.@i];
@@ -258,7 +260,9 @@ function	Script	add_house	{
 			setwall( .@house_map$, .@x[.@i], .@y[.@i], 1, 1, 1, "H" + .@id[.@i] );	
 		}
 		
-		duplicatecreate( .@npc_name$[.@i], .@name$[.@i], "" + .@id[.@i], .@house_map$, .@x[.@i], .@y[.@i], .@dir[.@i], .@sprite, 0, 0, .@account_id );
+		.@nid = duplicatecreate( .@npc_name$[.@i], .@categoria[.@i] == MOBILIA_CATEGORIA_PAREDE ? "" : .@name$[.@i], "H" + .@id[.@i], .@house_map$, .@x[.@i], .@y[.@i], .@dir[.@i], .@sprite, -1, -1, .@account_id );
+		
+		movenpc( strnpcinfo( 0, .@nid ), .@x[.@i], .@y[.@i], .@dir[.@i] );
 	}
 	
 	debugmes( "Tenda","Carregado a tenda do jogador " + strcharinfo( 0, .@char_id ) + " com " + .@mob_count + " objetos." );
@@ -381,7 +385,7 @@ function	Script	getObjData	{
 	.@account_id = getarg(0);
 	.@npc_id = getarg(1);
 
-	.@id = strnpcinfo( 2, .@npc_id );
+	.@id = atoi( delchar( strnpcinfo( 2, .@npc_id ), 0 ) ) ;
 
 	.@query$ = sprintf( "SELECT `obj_data` " +
 		                "  FROM `house_data` " + 
@@ -392,6 +396,26 @@ function	Script	getObjData	{
 	query_sql( .@query$, .@data$ );
 
 	return .@data$;
+}
+
+//*setObjData
+function	Script	setObjData	{
+
+	.@account_id = getarg(0);
+	.@npc_id = getarg(1);
+	.@data$ = escape_sql( getarg(2) );
+
+	.@id = atoi( delchar( strnpcinfo( 2, .@npc_id ), 0 ) ) ;
+
+	.@query$ = sprintf( "UPDATE `house_data`        " +
+		                "   SET `obj_data` = '%s'   " +
+		                " WHERE `account_id` = '%d' " +
+		                "   AND `id` = '%d'         ",
+		                .@data$, .@account_id, .@id );
+
+	query_sql( .@query$ );
+
+	return;
 }
 
 //*houselock
@@ -432,7 +456,7 @@ function	Script	edithouse	{
 	if( .@owner_gid != getcharid(3) )
 		end;
 
-	.@id = strnpcinfo( 2, .@npc_id );
+	.@id = atoi( delchar( strnpcinfo( 2, .@npc_id ), 0 ) ) ;
 	.@npc_name$ = strnpcinfo( 0, .@npc_id );
 
 	.@query$ = sprintf( "SELECT hd.mobilia_id,                                   " +
@@ -456,6 +480,11 @@ function	Script	edithouse	{
 	                     .@x_backup, .@y_backup, .@dir_backup, .@dir_type_backup );
 
 	.@escolha$ = "Ainda não definido";
+
+	.@dir_type = .@dir_type_backup;
+	.@dir = .@dir_backup;
+	.@x = .@x_backup;
+	.@y = .@y_backup;
 
 	while( 1 )
 	{
@@ -504,20 +533,18 @@ function	Script	edithouse	{
 				if( .@categoria == MOBILIA_CATEGORIA_PAREDE )
 					continue;
 
+				.@dir++;
+
 				// Rotação de Mobs 3D Corretamente
-				if( .@dir < 9 || .@dir > 18 )
+				if( .@dir > 9 )
 				{
-					setnpcdisplay( .@npc_name$, .@sprite_2 );
-					.@dir_type = 1;
-				}
-				else
-				{
-					setnpcdisplay( .@npc_name$, .@sprite_1 );
-					.@dir_type = 0;
+					.@dir_type = .@dir_type == 1 ? 0 : 1;
+					.@dir = 0;
+
+					setnpcdisplay( .@npc_name$, .@dir_type == 1 ? .@sprite_2 : .@sprite_1 );
 				}
 
 				.@escolha$ = "Rotacionar";
-				.@dir++;
 
 				movenpc( .@npc_name$, .@x, .@y, .@dir );
 				continue;
@@ -529,7 +556,6 @@ function	Script	edithouse	{
 			case 8:
 			case 255:
 				movenpc( .@npc_name$, .@x_backup, .@y_backup, .@dir_backup );
-				.@dir_type = .@dir_type_backup;
 				end;
 		}
 
@@ -548,7 +574,7 @@ function	Script	edithouse	{
 		{
 			if( .@categoria == MOBILIA_CATEGORIA_PAREDE )
 			{
-				delwall( "H" + id  );
+				delwall( "H" + .@id  );
 				setwall( .@m$, .@x, .@y, 1, 1, 1, "H" + .@id );	
 			}
 
@@ -582,7 +608,7 @@ function	Script	destroyobj	{
 	if( .@owner_gid != getcharid(3) )
 		end;
 
-	.@id = strnpcinfo( 2, .@npc_id );
+	.@id = atoi( delchar( strnpcinfo( 2, .@npc_id ), 0 ) ) ;
 	.@npc_name$ = strnpcinfo( 0, .@npc_id );
 
 	.@query$ = sprintf( "SELECT hd.mobilia_id,                                   " +		             
@@ -610,7 +636,6 @@ function	Script	destroyobj	{
 			.@item_id  = atoi( .@item_data$[0] );
 			.@item_qtd = atoi( .@item_data$[1] );
 		
-			getitem( .@item_id, .@item_qtd );
 			getitem( .@item_id, .@item_qtd );
 		}
 
@@ -696,15 +721,15 @@ function	Script	opentable	{
 							 .@material$,
 							 .@craft_time );
  
+ 	.@menuObjs$ = "";
+
 	for( .@i = 0; .@i < .@menuCraft; .@i++ )
-		.@menuObjs$ += sprintf( "^%s%s^000000:", .@color$[.@i], .@name$[.@i] ) + ( .@i == .@menuCraft ? ":Voltar" : ":" );
+		.@menuObjs$ += sprintf( "^%s%s^000000:", .@color$[.@i], .@name$[.@i] );
 	
 	.@menuObjetoSel = select(.@menuObjs$);
 	
 	.@debugMenu = getarraysize(.@menuCraft) + 2;
-				
-	if( .@menuObjetoSel == .@debugMenu ) goto L_CraftVoltar;
-	
+					
 	.@menuObjetoSel--;
 	
 	deletearray( .@itens$[0], 10 );
@@ -742,18 +767,17 @@ function	Script	opentable	{
 	switch( select( (.@naoTemTudo == 1 ? "^FF0000" : "^2E8B57") +"Construir^000000","^A52A2AVoltar^000000","^8B7D7BCancelar^000000" ) )
 	{
 		case 1:
-			next;
-			mes .@n$;
-			
 			if(.@naoTemTudo == 1)
 			{
 				mes "Materiais insuficiente para criar este objeto.";
 				next;
 				goto L_escolhaObj;
 			}
-			
+
 			close2;
-			progressbar( "1", .@craft_time[.@menuObjetoSel] );
+
+			if( getgroupid() != 99 )
+				progressbar( "1", .@craft_time[.@menuObjetoSel] );
 			
 			for( .@d = 0; .@d < getarraysize( .@itens$ ); .@d++ )
 			{
@@ -764,7 +788,6 @@ function	Script	opentable	{
 				.@item_id  = atoi( .@item_data$[0] );
 				.@item_qtd = atoi( .@item_data$[1] );
 		
-				delitem( .@item_id, .@item_qtd );
 				delitem( .@item_id, .@item_qtd );
 			}
 			
@@ -783,7 +806,7 @@ function	Script	opentable	{
 				query_sql( .@query$ );
 				query_sql("SELECT LAST_INSERT_ID()", .@last_inserted );
 
-				duplicatecreate( .@npc_name$[.@menuObjetoSel], .@name$[.@menuObjetoSel], "" + .@last_inserted, .@map$, .@x, .@y, 4, .@sprite[.@menuObjetoSel], 0, 0, .@account_id );
+				duplicatecreate( .@npc_name$[.@menuObjetoSel], .@name$[.@menuObjetoSel], "H" + .@last_inserted, .@map$, .@x, .@y, 4, .@sprite[.@menuObjetoSel], 0, 0, .@account_id );
 
 				setwall( .@map$, .@x, .@y, 1, 1, 1, "H" + .@last_inserted );	
 			}
@@ -795,7 +818,9 @@ function	Script	opentable	{
 					                HOUSE_MOB_ACTIVE, 
 					                .@x, .@y, 6 );
 
-				duplicatecreate( "housewall", "", "" + .@last_inserted, .@map$, .@x, .@y, 4, .@sprite[.@menuObjetoSel], 1, 1, .@account_id );
+				query_sql( .@query$ );
+				query_sql("SELECT LAST_INSERT_ID()", .@last_inserted );
+				duplicatecreate( .@npc_name$[.@menuObjetoSel], "", "H" + .@last_inserted, .@map$, .@x, .@y, 4, .@sprite[.@menuObjetoSel], 1, 1, .@account_id );
 			}
 
 			specialeffect2 154;
@@ -964,48 +989,6 @@ function	Script	opentable	{
 
 }
 
--	Script	craftable	422,{
-
-	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, getnpcid(0) );
-
-	if( .@owner_gid != getcharid(3) )
-	{
-		message( strcharinfo(0), "Uma mesa para construir objetos... não quero roubar isso." );
-		end;
-	}
-
-	mes "[^8B4513Mesa de Construção^000000]";
-	mes "^556B2FDescrição do Objeto^000000: Permite criar novos objetos para sua tenda.";
-
-	switch( select( "^D2691EMenu de Construção^000000:^8B4513Edições de Parede^000000:^483D8B@^000000Editar" ) )
-	{	
-		case 1:
-			opentable( getcharid(3) );
-			close;
-			
-		case 2:
-			if( @walledit == 0 )
-			{
-				message( strcharinfo(0), "Edição de Paredes ativada" );
-				@walledit = 1;
-			}
-			else
-			{
-				message( strcharinfo(0), "Edição de Paredes desativada" );
-				@walledit = 0;
-			}
-
-			close2;
-			end;
-		
-		case 3:
-			edithouse( getcharid(3), getnpcid(0) );
-			end;
-	}
-
-	end;
-}
-
 phtownall,202,344,3	Script	Escoteiro	896,{
 
 	.@n$ = "[^2E8B57Escoteiro^000000]";
@@ -1037,4 +1020,365 @@ phtownall,202,344,3	Script	Escoteiro	896,{
 	}
 
 	close;
+}
+
+-	Script	craftable	422,{
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, getnpcid(0) );
+
+	if( .@owner_gid != getcharid(3) )
+	{
+		message( strcharinfo(0), "Uma mesa para construir objetos... não quero roubar isso." );
+		end;
+	}
+
+	mes "[^8B4513Mesa de Construção^000000]";
+	mes "^556B2FDescrição do Objeto^000000: Permite criar novos objetos para sua tenda.";
+
+	switch( select( "^D2691EMenu de Construção^000000:^8B4513Edições de Parede^000000:^483D8B@^000000Editar" ) )
+	{	
+		case 1:
+			next;
+			opentable( getcharid(3) );
+			close;
+			
+		case 2:
+			if( @walledit == 0 )
+			{
+				message( strcharinfo(0), "Edição de Paredes ativada" );
+				@walledit = 1;
+			}
+			else
+			{
+				message( strcharinfo(0), "Edição de Paredes desativada" );
+				@walledit = 0;
+			}
+
+			close2;
+			end;
+		
+		case 3:
+			edithouse( getcharid(3), getnpcid(0) );
+			end;
+	}
+
+	end;
+}
+
+// Mobilias
+
+
+-	Script	House_Wall	-1,{
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, getnpcid(0) );
+
+	if( .@owner_gid != getcharid(3) || @walledit == 0 )
+		end;
+	
+	switch( select( "^483D8B@^000000Editar:^FF0000@^000000Deletar" ) )
+	{
+		case 1:
+			edithouse( getcharid(3), getnpcid(0) );
+			end;
+	
+		case 2:
+			destroyobj( getcharid(3), getnpcid(0) );
+			end;
+	}
+}
+
+-	Script	Mobilia_Bed	-1,{
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, getnpcid(0) );
+
+	if( .@owner_gid != getcharid(3)  )
+		end;
+	
+	switch( select( "^483D8B@^000000Editar:^FF0000@^000000Deletar" ) )
+	{
+		case 1:
+			edithouse( getcharid(3), getnpcid(0) );
+			end;
+	
+		case 2:
+			destroyobj( getcharid(3), getnpcid(0) );
+			end;
+	}
+
+}
+
+-	Script	Mobilia_RELINK	-1,{
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, getnpcid(0) );
+
+	if( .@owner_gid != getcharid(3)  )
+		end;
+
+
+	switch( select( "^483D8B@^000000Editar:^FF0000@^000000Deletar" ) )
+	{
+		case 1:
+			edithouse( getcharid(3), getnpcid(0) );
+			end;
+	
+		case 2:
+			destroyobj( getcharid(3), getnpcid(0) );
+			end;
+	}
+}
+
+-	Script	House_DeskWrite	-1,{
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, getnpcid(0) );
+
+	mes "[^B22222Anotação^000000]";
+	mes getObjData( .@owner_gid, getnpcid(0) );
+
+	if( .@owner_gid != getcharid(3)  )
+		close;
+
+	switch( select( "^D2691EEscrever Anotação^000000:^483D8B@^000000Editar:^FF0000@^000000Deletar" ) )
+	{
+		case 1:
+			input .@note$;
+			setObjData( getcharid(3), getnpcid(0), .@note$ );			
+			end;
+
+		case 2:
+			edithouse( getcharid(3), getnpcid(0) );
+			end;
+	
+		case 3:
+			destroyobj( getcharid(3), getnpcid(0) );
+			end;
+	}
+}
+
+-	Script	House_Storage_4	-1,{
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, getnpcid(0) );
+
+	if( .@owner_gid != getcharid(3)  )
+		end;
+
+	.@storage = 4;
+
+	switch( select( "^D2691EArmazém^000000:^483D8B@^000000Editar:^FF0000@^000000Deletar" ) )
+	{
+		case 1:
+			openstorage2 .@storage,STOR_MODE_GET|STOR_MODE_PUT;
+			end;
+
+		case 2:
+			edithouse( getcharid(3), getnpcid(0) );
+			end;
+	
+		case 3:
+			destroyobj( getcharid(3), getnpcid(0) );
+			end;
+	}
+
+}
+
+-	Script	House_Sit	-1,{
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, getnpcid(0) );
+
+	if( .@owner_gid != getcharid(3)  )
+		end;
+
+	switch( select( "^D2691ESentar^000000:^483D8B@^000000Editar:^FF0000@^000000Deletar" ) )
+	{
+		case 1:
+			getmapxy( .@m$, .@x, .@y, BL_NPC );
+			unitwarp( getcharid(3), .@m$, .@x, .@y );
+			sit();
+			end;
+
+		case 2:
+			edithouse( getcharid(3), getnpcid(0) );
+			end;
+	
+		case 3:
+			destroyobj( getcharid(3), getnpcid(0) );
+			end;
+	}
+
+}
+
+-	Script	House_Storage_7	-1,{
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, getnpcid(0) );
+
+	if( .@owner_gid != getcharid(3)  )
+		end;
+
+	.@storage = 7;
+
+	switch( select( "^D2691EArmazém^000000:^483D8B@^000000Editar:^FF0000@^000000Deletar" ) )
+	{
+		case 1:
+			openstorage2 .@storage,STOR_MODE_GET|STOR_MODE_PUT;
+			end;
+
+		case 2:
+			edithouse( getcharid(3), getnpcid(0) );
+			end;
+	
+		case 3:
+			destroyobj( getcharid(3), getnpcid(0) );
+			end;
+	}
+
+}
+
+-	Script	House_Storage_8	-1,{
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, getnpcid(0) );
+
+	if( .@owner_gid != getcharid(3)  )
+		end;
+
+	.@storage = 8;
+
+	switch( select( "^D2691EArmazém^000000:^483D8B@^000000Editar:^FF0000@^000000Deletar" ) )
+	{
+		case 1:
+			openstorage2 .@storage,STOR_MODE_GET|STOR_MODE_PUT;
+			end;
+
+		case 2:
+			edithouse( getcharid(3), getnpcid(0) );
+			end;
+	
+		case 3:
+			destroyobj( getcharid(3), getnpcid(0) );
+			end;
+	}
+}
+
+-	Script	House_Storage_9	-1,{
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, getnpcid(0) );
+
+	if( .@owner_gid != getcharid(3)  )
+		end;
+
+	.@storage = 9;
+
+	switch( select( "^D2691EArmazém^000000:^483D8B@^000000Editar:^FF0000@^000000Deletar" ) )
+	{
+		case 1:
+			openstorage2 .@storage,STOR_MODE_GET|STOR_MODE_PUT;
+			end;
+
+		case 2:
+			edithouse( getcharid(3), getnpcid(0) );
+			end;
+	
+		case 3:
+			destroyobj( getcharid(3), getnpcid(0) );
+			end;
+	}
+}
+
+-	Script	House_Storage_10	-1,{
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, getnpcid(0) );
+
+	if( .@owner_gid != getcharid(3)  )
+		end;
+
+	.@storage = 10;
+
+	switch( select( "^D2691EArmazém^000000:^483D8B@^000000Editar:^FF0000@^000000Deletar" ) )
+	{
+		case 1:
+			openstorage2 .@storage,STOR_MODE_GET|STOR_MODE_PUT;
+			end;
+
+		case 2:
+			edithouse( getcharid(3), getnpcid(0) );
+			end;
+	
+		case 3:
+			destroyobj( getcharid(3), getnpcid(0) );
+			end;
+	}
+
+}
+
+-	Script	House_Storage_11	-1,{
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, getnpcid(0) );
+
+	if( .@owner_gid != getcharid(3)  )
+		end;
+
+	.@storage = 11;
+
+	switch( select( "^D2691EArmazém^000000:^483D8B@^000000Editar:^FF0000@^000000Deletar" ) )
+	{
+		case 1:
+			openstorage2 .@storage,STOR_MODE_GET|STOR_MODE_PUT;
+			end;
+
+		case 2:
+			edithouse( getcharid(3), getnpcid(0) );
+			end;
+	
+		case 3:
+			destroyobj( getcharid(3), getnpcid(0) );
+			end;
+	}
+}
+
+-	Script	House_Storage_12	-1,{
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, getnpcid(0) );
+
+	if( .@owner_gid != getcharid(3)  )
+		end;
+
+	.@storage = 12;
+
+	switch( select( "^D2691EArmazém^000000:^483D8B@^000000Editar:^FF0000@^000000Deletar" ) )
+	{
+		case 1:
+			openstorage2 .@storage,STOR_MODE_GET|STOR_MODE_PUT;
+			end;
+
+		case 2:
+			edithouse( getcharid(3), getnpcid(0) );
+			end;
+	
+		case 3:
+			destroyobj( getcharid(3), getnpcid(0) );
+			end;
+	}
+}
+
+-	Script	House_Storage_13	-1,{
+
+	.@owner_gid = houseinfo( getcharid(3), HOUSEINFO_OWNER, getnpcid(0) );
+
+	if( .@owner_gid != getcharid(3)  )
+		end;
+
+	.@storage = 13;
+
+	switch( select( "^D2691EArmazém^000000:^483D8B@^000000Editar:^FF0000@^000000Deletar" ) )
+	{
+		case 1:
+			openstorage2 .@storage,STOR_MODE_GET|STOR_MODE_PUT;
+			end;
+
+		case 2:
+			edithouse( getcharid(3), getnpcid(0) );
+			end;
+	
+		case 3:
+			destroyobj( getcharid(3), getnpcid(0) );
+			end;
+	}
 }

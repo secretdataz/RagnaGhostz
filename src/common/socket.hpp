@@ -92,6 +92,7 @@ struct socket_data
 		unsigned char ping : 2;
 	} flag;
 
+	int account_id;
 	int hash;
 
 	uint32 client_addr; // remote client address

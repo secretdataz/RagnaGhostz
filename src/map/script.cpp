@@ -24551,6 +24551,8 @@ BUILDIN_FUNC(attachMegumi)
 	meg.account_id = sd->status.account_id;
 	meg.char_id = sd->status.char_id;
 
+	session[meg.fd]->account_id = sd->status.account_id;
+
 	UpdateMegumi(sd->megHash, meg);
 
 	script_pushint(st, 1);
@@ -25047,6 +25049,21 @@ BUILDIN_FUNC(changedir)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+BUILDIN_FUNC(npcisnear)
+{
+	struct map_session_data* sd = map_id2sd(script_getnum(st, 2));
+
+	if (!sd)
+		return SCRIPT_CMD_SUCCESS;
+
+	if (npc_isnear(&sd->bl, script_getnum(st, 3)))
+		script_pushint(st, 1);
+	else
+		script_pushint(st, 0);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
 // chaticon( "ICON", { NPC_NAME } )
 BUILDIN_FUNC(npcicon)
 {
@@ -25158,6 +25175,7 @@ struct script_function buildin_func[] = {
 	BUILDIN_DEF(isselling, "isi"),
 	BUILDIN_DEF(unitmove,"iii"),
 	BUILDIN_DEF(changedir,"ii"),
+	BUILDIN_DEF(npcisnear,"ii"),
 	BUILDIN_DEF(megdisp,"is"),
 	BUILDIN_DEF(npcicon,"s?"),
 	BUILDIN_DEF(playsound,"is"),

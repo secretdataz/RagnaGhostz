@@ -6540,6 +6540,13 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 		case NV_PROVOCATION:
 		case NV_BUFFS:
 		case QUEST_HOUSE:
+
+			if (skill_id == QUEST_HOUSE && npc_isnear(src, 5))
+			{
+				clif_displaymessage(sd->fd, "Saia de Perto dos NPC's");
+				return 0;
+			}
+
 			npcInvoker(bl, std::to_string(skill_id).c_str());
 			return 1;
 
