@@ -25,8 +25,8 @@
 		end;
 
 	OnPcLoginEvent:
-		sleep2 1000;
-		
+		sleep2 750;
+
 		.@query$ = "SELECT acc.userid, acc.user_pass " +
 		           "  FROM `login` acc               " +
 				   " WHERE acc.account_id = '%d'     ";
