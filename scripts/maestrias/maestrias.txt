@@ -163,9 +163,17 @@ function	script	mastery	{
 		// 150 -> 50
 		// 151 -> 50
 		// 152 -> 50
-		.@cost = 1 * ( ( .@level + .@mastery_newlevel - 1) * .@increasing ) / 2;
+		.@lvl = .@level;
 
-		.@cost = .@cost / 3;
+		freeloop(1);
+
+		while( .@lvl != .@mastery_newlevel )
+		{
+			.@lvl++;
+			.@calc = ( .@lvl / 8 );
+
+			.@cost += .@calc > 20 ? 20 : .@calc;
+		}
 
 		// Vamos descobrir se o jogador pode arcar com os custos ou se tá chitado
 		switch(.@type)
@@ -184,7 +192,8 @@ function	script	mastery	{
 			case 1: // Pontos de Fidelidade
 				if( #ONLINE_POINTS < .@cost )
 				{
-					debugmes "Mastery","Tentativa de compra de maestria sem pontos de Fidelidade suficientes com CID " + .@cid;
+					debugmes "Mastery","Tentativa de compra de maestria sem pontos de Fidelidade suficientes com CID " + .@cid + sprintf( "(POINTS: %d | CUSTO: %d)", #ONLINE_POINTS, .@cost);
+					debugmes "Mastery",sprintf( "Level Antigo -> %d | Novo Level Comprado -> %d", .@level, .@mastery_newlevel );
 					end;					
 				}
 
