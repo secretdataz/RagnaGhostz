@@ -2223,32 +2223,22 @@ int map_addclonemap(const char *name, const char *newname)
 		return -2;
 	}
 
-	int16 dst_m = -1, i;
+	strcpy(iname, name);
 
-	for (i = instance_start; i < MAX_MAP_PER_SERVER; i++) {
-		if (!map[i].name[0])
-			break;
-	}
-	if (i < map_num) // Destination map value overwrites another
-		dst_m = i;
-	else if (i < MAX_MAP_PER_SERVER) // Destination map value increments to new map
-		dst_m = map_num++;
-	else {
-		// Out of bounds
-		ShowError("map_addinstancemap failed. map_num(%d) > map_max(%d)\n", map_num, MAX_MAP_PER_SERVER);
-		return -3;
-	}
+	int dst_m = map_num++;
 
-	struct map_data* src_map = map_getmapdata(src_m);
-	struct map_data* dst_map = map_getmapdata(dst_m);
+	struct map_data *src_map = map_getmapdata(src_m);
+	struct map_data *dst_map = map_getmapdata(dst_m);
 
-	strcpy(iname, newname);
-
-	snprintf(dst_map->name, sizeof(dst_map->name), newname);
+	// Alter the name
+	// Due to this being custom we only worry about preserving as many characters as necessary for accurate map distinguishing
+	// This also allows us to maintain complete independence with main map functions
+	snprintf(dst_map->name, sizeof(dst_map->name), "%s", newname);
 
 	dst_map->name[MAP_NAME_LENGTH - 1] = '\0';
 
 	dst_map->m = dst_m;
+	dst_map->instance_src_map = 100;
 	dst_map->clone_id = src_m;
 	dst_map->users = 0;
 	dst_map->xs = src_map->xs;
@@ -2268,8 +2258,8 @@ int map_addclonemap(const char *name, const char *newname)
 	memcpy(dst_map->cell, src_map->cell, num_cell * sizeof(struct mapcell));
 
 	size = dst_map->bxs * dst_map->bys * sizeof(struct block_list*);
-	dst_map->block = (struct block_list**)aCalloc(1, size);
-	dst_map->block_mob = (struct block_list**)aCalloc(1, size);
+	dst_map->block = (struct block_list **)aCalloc(1, size);
+	dst_map->block_mob = (struct block_list **)aCalloc(1, size);
 
 	dst_map->index = mapindex_addmap(-1, dst_map->name);
 	dst_map->channel = NULL;
@@ -2291,45 +2281,7 @@ int map_delclonemap(const char* mapname)
 {
 	int m = map_mapname2mapid(mapname);
 
-	if (m < 0 || map[m].instance_id || map[m].clone_id <= 0)
-		return 0;
-
-	// Kick everyone out
-	map_foreachinmap(map_instancemap_leave, m, BL_PC);
-
-	// Do the unit cleanup
-	map_foreachinmap(map_instancemap_clean, m, BL_ALL);
-
-	if (map[m].mob_delete_timer != INVALID_TIMER)
-		delete_timer(map[m].mob_delete_timer, map_removemobs_timer);
-
-	map[m].mob_delete_timer = INVALID_TIMER;
-
-	// Free memory
-	if (map[m].cell)
-		aFree(map[m].cell);
-
-	map[m].cell = NULL;
-
-	if (map[m].block)
-		aFree(map[m].block);
-
-	map[m].block = NULL;
-
-	if (map[m].block_mob)
-		aFree(map[m].block_mob);
-
-	map[m].block_mob = NULL;
-
-	map_free_questinfo(&map[m]);
-	map[m].damage_adjust = {};
-	map[m].flag.clear();
-	map[m].skill_damage.clear();
-
-	mapindex_removemap(map[m].index);
-	map_removemapdb(&map[m]);
-
-	memset(&map[m].name, '\0', sizeof(map[0].name)); // just remove the name
+	map_delinstancemap(m);
 	return 1;
 }
 

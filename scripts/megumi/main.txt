@@ -75,6 +75,7 @@
 		megdisp getcharid(0),"/p Mensagem -> Envia mensagens para a aba de grupo para membros do seu grupo.";
 		megdisp getcharid(0),"/g Mensagem -> Envia mensagens para a aba de clã para membros do seu clã.";
 		megdisp getcharid(0),"/a Mensagem -> Envia mensagens para a aba Global para todos do servido.";
+		megdisp getcharid(0),"/nohidehook -> Desativa que o Hook se esconda ao tirar do foco o jogo, podendo assim, enxergar o chat fora do jogo.";
 
 		// Discord RPC
 		@RPC_DOING$ = "Vou ser " + ( Sex ? "o" : "a" ) + " mais forte!";
