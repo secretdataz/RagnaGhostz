@@ -2,10 +2,7 @@
 
 -	Script	MegumiCore	-1,{
 
-	OnInit:
-		sql_mac( "reset", 0 );
-		bindatcmd "mac",strnpcinfo(3) + "::OnMacCommand";
-		
+	OnInit:		
 		query_sql( "DELETE FROM `char_reg_num` WHERE `key`='INSTANCE_TIMER' " );
 		query_sql( "DELETE FROM `char_reg_num` WHERE `key`='TV_TIME' " );
 		query_sql( "DELETE FROM `char_reg_num` WHERE `key`='SABE_TUDO' " );
@@ -15,12 +12,7 @@
 		.MAX_STICKERS = 70;
 		end;
 
-	OnMacCommand:
-		unittalk getcharid(3),"MAC: " + @MAC$;
-		end;
-
 	OnPCLogoutEvent:
-		//sql_mac("reset", getcharid(0) );
 		stopsound getcharid(0);
 		end;
 

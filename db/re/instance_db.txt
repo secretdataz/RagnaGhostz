@@ -5,10 +5,10 @@
 //
 // EnterMap is considered as Map1
 
-1,Torre da Jornada,34400,100,1@tower,50,355,2@tower,3@tower,4@tower,5@tower,6@tower
-2,Monstro do Lago,34400,100,gld_dun02,20,160
-3,Memoria do Rei Arthur,34400,100,2@mir,102,12
-4,Pesadelo Musical,34400,100,job_duncer,69,44
-5,Vida de Espionagem,34400,100,gef_tower,52,179
-6,Labirinto das Fadas,34400,100,e_woods,69,49,e_woods2,e_woods3,e_woods4,e_woods5
-100,House1,9999999,100,house1,10,10
+1,Torre da Jornada,999999,10,1@tower,50,355,2@tower,3@tower,4@tower,5@tower,6@tower
+2,Monstro do Lago,999999,10,gld_dun02,20,160
+3,Memoria do Rei Arthur,999999,100,2@mir,102,12
+4,Pesadelo Musical,999999,10,job_duncer,69,44
+5,Vida de Espionagem,999999,10,gef_tower,52,179
+6,Labirinto das Fadas,999999,10,e_woods,69,49,e_woods2,e_woods3,e_woods4,e_woods5
+100,House1,999999,10,house1,10,10

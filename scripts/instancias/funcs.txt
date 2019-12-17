@@ -73,11 +73,6 @@ function	script	inst	{
 		instance_enter( $IID$, -1, -1, getcharid(0), instance_id(IM_PARTY) );
 
 		INSTANCE_TIMER[$iid] = gettimetick(2);
-
-		$iid = 0;
-		$delay = 0;
-		$IID$ = "";
-
 		end;
 	}
 	

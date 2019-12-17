@@ -1719,6 +1719,9 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 	{
 		sd = (struct map_session_data *)src;
 
+		if (src->id == bl->id && skill_id == CR_GRANDCROSS && sd->mast[MASTERY_CRUX_MAGNUM_EX]->level == 120)
+			return 0;
+
 		if (sd->mast[MASTERY_MONTARIA_EX]->active && sd->mast[MASTERY_MONTARIA_EX]->level == 70)
 			damage += (damage * 7) / 100;
 

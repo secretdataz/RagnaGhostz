@@ -3233,7 +3233,7 @@ int set_reg(struct script_state* st, struct map_session_data* sd, int64 num, con
 						if (instance_id != 0)
 							src = &instance_data[instance_id].regs;
 					}
-					if (src) {
+					if (src && src->vars != NULL) {
 						bool empty;
 						if (val != 0) {
 							i64db_iput(src->vars, num, val);

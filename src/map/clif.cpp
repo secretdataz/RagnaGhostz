@@ -6368,7 +6368,7 @@ void clif_displaymessage(const int fd, const char* mes)
 			}
 #endif
 			if(session[fd]->account_id > 0)
-				clifmeg_dispbottom(session[fd]->account_id, std::string(line));
+				clifmeg_dispbottom(session[fd]->account_id, std::string("#ORANGE#").append(std::string(line)));
 
 			line = strtok(NULL, "\n");
 		}

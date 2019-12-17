@@ -322,13 +322,13 @@ int skill_get_walkdelay( uint16 skill_id ,uint16 skill_lv, struct block_list *bl
 {
 	if (bl && bl->type == BL_PC)
 	{
-		switch (skill_id)
-		{
-		case CR_GRANDCROSS:
-			if (BL_CAST(BL_PC, bl)->mast[MASTERY_CRUX_MAGNUM_EX]->active && BL_CAST(BL_PC, bl)->mast[MASTERY_CRUX_MAGNUM_EX]->level == 120)
-				return 0;
-			break;
-		}
+		//switch (skill_id)
+		//{
+		//case CR_GRANDCROSS:
+		//	if (BL_CAST(BL_PC, bl)->mast[MASTERY_CRUX_MAGNUM_EX]->active && BL_CAST(BL_PC, bl)->mast[MASTERY_CRUX_MAGNUM_EX]->level == 120)
+		//		return 0;
+		//	break;
+		//}
 	}
 
 	skill_get2 (skill_id, skill_lv, skill_db[skill_id]->walkdelay, 0);
