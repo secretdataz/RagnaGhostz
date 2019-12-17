@@ -9896,7 +9896,7 @@ void clif_disp_overhead_(struct block_list *bl, const char* mes, enum send_targe
 
 		replaceAll(check_command, std::string("[").append(std::string(status_get_name(bl)).append("] ")), "");
 
-		check_command = std::string(check_command.substr(0, 2));     // "think"
+		check_command = std::string(check_command.substr(0, 2));
 
 		if (strcmp(check_command.c_str(), "/p") == 0 && bl->type == BL_PC && BL_CAST(BL_PC, bl)->status.party_id > 0)
 		{

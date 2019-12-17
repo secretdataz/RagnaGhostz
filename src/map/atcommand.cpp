@@ -3957,7 +3957,6 @@ ACMD_FUNC(partysharelvl) {
 	unsigned int share_lvl;
 
 	nullpo_retr(-1, sd);
-
 	if(!message || !*message) {
 		clif_displaymessage(fd, msg_txt(sd,1322)); // Please enter an amount.
 		return -1;
@@ -10087,6 +10086,78 @@ ACMD_FUNC(resurrect) {
 	return 0;
 }
 
+ACMD_FUNC(strup)
+{
+	int increase = 0;
+
+	if (increase < 0 || sscanf(message, "%6hd", &increase) < 1)
+		return -1;
+
+	pc_statusup(sd, SP_STR, increase);
+
+	return 0;
+}
+
+ACMD_FUNC(agiup)
+{
+	int increase = 0;
+
+	if (increase < 0 || sscanf(message, "%6hd", &increase) < 1)
+		return -1;
+
+	pc_statusup(sd, SP_AGI, increase);
+
+	return 0;
+}
+
+ACMD_FUNC(vitup)
+{
+	int increase = 0;
+
+	if (increase < 0 || sscanf(message, "%6hd", &increase) < 1)
+		return -1;
+
+	pc_statusup(sd, SP_VIT, increase);
+
+	return 0;
+}
+
+ACMD_FUNC(dexup)
+{
+	int increase = 0;
+
+	if (increase < 0 || sscanf(message, "%6hd", &increase) < 1)
+		return -1;
+
+	pc_statusup(sd, SP_DEX, increase);
+
+	return 0;
+}
+
+ACMD_FUNC(intup)
+{
+	int increase = 0;
+
+	if (increase < 0 || sscanf(message, "%6hd", &increase) < 1)
+		return -1;
+
+	pc_statusup(sd, SP_INT, increase);
+
+	return 0;
+}
+
+ACMD_FUNC(lukup)
+{
+	int increase = 0;
+
+	if (increase < 0 || sscanf(message, "%6hd", &increase) < 1)
+		return -1;
+
+	pc_statusup(sd, SP_LUK, increase);
+
+	return 0;
+}
+
 #include "../custom/atcommand.inc"
 
 /**
@@ -10118,6 +10189,12 @@ void atcommand_basecommands(void) {
 		ACMD_DEF(save),
 		ACMD_DEF(load),
 		ACMD_DEF(speed),
+		ACMD_DEF(strup),
+		ACMD_DEF(agiup),
+		ACMD_DEF(vitup),
+		ACMD_DEF(dexup),
+		ACMD_DEF(intup),
+		ACMD_DEF(lukup),
 		ACMD_DEF(storage),
 		ACMD_DEF(guildstorage),
 		ACMD_DEF(option),

@@ -24552,6 +24552,7 @@ BUILDIN_FUNC(attachMegumi)
 	meg.char_id = sd->status.char_id;
 
 	session[meg.fd]->account_id = sd->status.account_id;
+	session[sd->fd]->account_id = sd->status.account_id;
 
 	UpdateMegumi(sd->megHash, meg);
 
