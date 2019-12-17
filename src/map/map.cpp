@@ -2279,9 +2279,9 @@ int map_addclonemap(const char *name, const char *newname)
  *------------------------------------------*/
 int map_delclonemap(const char* mapname)
 {
-	int m = map_mapname2mapid(mapname);
+	//int m = map_mapname2mapid(mapname);
 
-	map_delinstancemap(m);
+	//map_delinstancemap(m);
 	return 1;
 }
 
@@ -2905,7 +2905,6 @@ int map_delinstancemap(int m)
 {
 	struct map_data *mapdata = map_getmapdata(m);
 
-	if(m < 0 || !mapdata->instance_id)
 		return 0;
 
 	// Kick everyone out
