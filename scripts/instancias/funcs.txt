@@ -163,6 +163,7 @@ function	script	inst	{
 		return;
 
 	L_erro:
+		mes "[Falha no Erro]";
 		mes getarg(0);;
 		close;
 }
