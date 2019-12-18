@@ -2903,8 +2903,9 @@ static void map_free_questinfo(struct map_data *mapdata);
  *------------------------------------------*/
 int map_delinstancemap(int m)
 {
-	struct map_data *mapdata = map_getmapdata(m);
+	struct map_data* mapdata = map_getmapdata(m);
 
+	if (m < 0 || !mapdata->instance_id)
 		return 0;
 
 	// Kick everyone out
@@ -2913,7 +2914,7 @@ int map_delinstancemap(int m)
 	// Do the unit cleanup
 	map_foreachinmap(map_instancemap_clean, m, BL_ALL);
 
-	if( mapdata->mob_delete_timer != INVALID_TIMER )
+	if (mapdata->mob_delete_timer != INVALID_TIMER)
 		delete_timer(mapdata->mob_delete_timer, map_removemobs_timer);
 	mapdata->mob_delete_timer = INVALID_TIMER;
 
