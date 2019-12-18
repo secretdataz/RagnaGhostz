@@ -1847,13 +1847,13 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 			damage = 1;
 	}
 
-	if (src->type == BL_HOM && BL_CAST(BL_HOM,bl)->master)
+	if (src->type == BL_HOM && BL_CAST(BL_HOM,src)->master)
 	{
-		if (BL_CAST(BL_HOM, bl)->master->mast[MASTERY_FORTALECER_DANO_HOMUNCULO]->active)
-			damage += (damage * (BL_CAST(BL_HOM, bl)->master->mast[MASTERY_FORTALECER_DANO_HOMUNCULO]->level / 10)) / 100;
+		if (BL_CAST(BL_HOM, src)->master->mast[MASTERY_FORTALECER_DANO_HOMUNCULO]->active)
+			damage += (damage * (BL_CAST(BL_HOM, src)->master->mast[MASTERY_FORTALECER_DANO_HOMUNCULO]->level / 10)) / 100;
 
-		if (BL_CAST(BL_HOM, bl)->master->mast[MASTERY_FORTALECER_DANO_HOMUNCULO_EM_MONGES]->active)
-			damage += (damage * (BL_CAST(BL_HOM, bl)->master->mast[MASTERY_FORTALECER_DANO_HOMUNCULO_EM_MONGES]->level / 10)) / 100;
+		if (BL_CAST(BL_HOM, src)->master->mast[MASTERY_FORTALECER_DANO_HOMUNCULO_EM_MONGES]->active)
+			damage += (damage * (BL_CAST(BL_HOM, src)->master->mast[MASTERY_FORTALECER_DANO_HOMUNCULO_EM_MONGES]->level / 10)) / 100;
 	}
 	
 	return damage;
