@@ -60,11 +60,7 @@ function	script	mastery	{
 
 	if( .@func$ == "LoadPlayerData" || .@func$ == "SendPlayerData" )
 	{
-		.@c = query_sql( "SELECT `mastery_id`, `level` " +
-		                 "  FROM `mastery_player`      " +
-		                 " WHERE `bound` = " + getcharid(0), .@mastery_id, .@level );
-
-		if( .@c == 0)
+		if( !FIRST_MASTERY_RECEIVED )
 		{
 			.@class = Class;
 
