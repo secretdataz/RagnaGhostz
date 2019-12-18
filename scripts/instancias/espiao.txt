@@ -239,7 +239,7 @@ gef_tower,109,165,3	script	Espião Resfriado#geft8	899,10,0,{
 	OnInstanceInit:
 		'ESPIAORESFRIADO = 0;
 		
-		while( 'GUARDA != 3 && getmapusers( instance_mapname( "gef_tower" ) ) > 0 )
+		while( 'GUARDA != 3 )
 		{
 			sleep 5000;
 			npctalk "Aaaaa...";
@@ -250,6 +250,11 @@ gef_tower,109,165,3	script	Espião Resfriado#geft8	899,10,0,{
 			sleep 1400;
 			emotion 20;
 			'ESPIAORESFRIADO = 0;
+
+			.@times++;
+
+			if( .@times >= 20 && getmapusers( instance_mapname( "gef_tower" ) ) == 0 )
+				end;
 		}
 		end;
 
@@ -304,7 +309,7 @@ gef_tower,56,85,2	script	Espião#geft2	899,11,0,{
 		end;
 
 	OnInstanceInit:
-		while( 'GUARDA != 3 && getmapusers( instance_mapname( "gef_tower" ) ) > 0 )
+		while( 'GUARDA != 3 )
 		{
 			npctalk "Hmm...";
 			changedir getnpcid(0, instance_npcname( "Espião#geft2" ) ),2;
@@ -313,7 +318,12 @@ gef_tower,56,85,2	script	Espião#geft2	899,11,0,{
 			changedir getnpcid(0, instance_npcname( "Espião#geft2" ) ),4;
 			'ESPI2DIR = 1;
 			npctalk "Eu vou achar esses capitalistas!";		
-			sleep 4000;	
+			sleep 4000;
+
+			.@times++;
+
+			if( .@times >= 20 && getmapusers( instance_mapname( "gef_tower" ) ) == 0 )
+				end;
 		}
 		end;
 }
