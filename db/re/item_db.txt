@@ -7464,8 +7464,8 @@
 29524,Reverter_Corrida,Reverter [Corrida],2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "cp_use",29524; },{},{}
 29525,Aposta_Corrida,Aposta [Corrida],2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "cp_use",29525; },{},{}
 29526,Sem_Ejetar_Corrida,Sem Ejetar [Corrida],2,0,,,,,,,0xFFFFFFFF,63,2,,,,,,{ callfunc "cp_use",29526; },{},{}
-29527,C_Spell_Circuit,Auréola dos Deuses [QUEST],4,0,,0,,1,,4,0xFFFFFFFF,63,2,1024,,1,1,1301,{ bonus bInt,25; bonus bVit,5; bonus bMagicDamageReturn,3; bonus2 bAddMagicDamageClass,4008,7; },{},{}
-29528,C_Seraph_Wing_Helm,Elmo do Serafim [QUEST],4,0,,0,,1,,4,0xFFFFFFFF,63,2,1024,,1,1,1352,{ bonus bInt,20; bonus bVit,10; bonus bLongWeaponDamageReturn,3; bonus bShortWeaponDamageReturn,3; bonus2 bAddMagicDamageClass,4017,7; },{},{}
+29527,C_Spell_Circuit,Auréola dos Deuses [QUEST],4,0,,0,,1,,4,0xFFFFFFFF,63,2,256,,1,1,1301,{ bonus bInt,25; bonus bVit,5; bonus bMagicDamageReturn,3; bonus2 bAddMagicDamageClass,4008,7; },{},{}
+29528,C_Seraph_Wing_Helm,Elmo do Serafim [QUEST],4,0,,0,,1,,4,0xFFFFFFFF,63,2,256,,1,1,1352,{ bonus bInt,20; bonus bVit,10; bonus bLongWeaponDamageReturn,3; bonus bShortWeaponDamageReturn,3; bonus2 bAddMagicDamageClass,4017,7; },{},{}
 29529,Garuda_Hat,Coroa do Garuda [QUEST],4,20,,100,,1,,4,0xFFFFFFFE,63,2,256,,1,1,677,{ bonus bStr,20; bonus bVit,15; bonus2 bSubEle,Ele_Fire,50; },{},{}
 29530,Evil_Marcher_Hat,Chapéu da Banda [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,256,,1,1,687,{ bonus bLuk,20; bonus bDex,20; bonus bMaxHPrate,-3; if( Class == 4020 || Class == 4021 ) { bonus bUnstripableArmor; } },{},{}
 29531,Bone_de_Caveira,Boné de Caveira [QUEST],4,20,,500,,10,,3,0xFFFFFFFF,63,2,256,,1,1,713,{ bonus bStr,10; bonus2 bSubSkill,271,15; if( Class != 4013 && Class != 4018 ) { bonus bMaxHPrate,-5; } },{},{}
