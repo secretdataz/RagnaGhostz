@@ -249,7 +249,7 @@ e_woods,72,52,5	Script	Navi#IN1	624,{
 		mapannounce instance_mapname( strcharinfo(3) ),"O Dragão Ztsohg foi derrotado!",bc_map,"0x00CED1";
 		dispbottom "Desfazendo Grupo em 7 segundos...";
 		sleep2 7000;
-		inst( "REWARD", 15, 60, instance_mapname( "2@mir" ) );
+		inst( "REWARD", 15, 60, instance_mapname( "e_woods" ) );
 		end;
 	
 	OnInstanceInit:

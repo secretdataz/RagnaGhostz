@@ -3066,7 +3066,7 @@ int mob_dead(struct mob_data *md, struct block_list *src, int type)
 					mvp_sd->mast[MASTERY_EXCALIBUR]->val1 = 10;
 
 					clif_specialeffect(&mvp_sd->bl, 220, AREA);
-					clif_disp_overhead_(&mvp_sd->bl, "EXCALIBAAAAAAH", AREA);
+					clif_disp_overhead_(&mvp_sd->bl, "EXCALIBUR", AREA);
 					map_foreachinallrange(buildin_excalibur, &mvp_sd->bl, 5, BL_MOB | BL_PC, mvp_sd->bl.id);
 
 					mvp_sd->mast[MASTERY_EXCALIBUR]->val1 = 0;

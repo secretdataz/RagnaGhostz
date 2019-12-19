@@ -1,0 +1,861 @@
+
+phtownall,338,203,5	Script	Irmãs Katarina	628 ,{
+	
+	inst( "INICIO", getcharid(0), INSTANCIA_IRMAS_KATARINA );
+	end;
+
+}
+
+thom_01,21,155,5	Script	Sdnegel Katarina	2131,{
+
+	end;
+	
+}
+
+thom_01,21,155,5	Script	Eugael Katarina	2131,{
+
+	if( getpartyleader( getcharid(1), 2 ) != getcharid(0) )
+	{
+		npctalk "Onde está seu líder?";
+		end;
+	}
+	
+	if( 'BOSS > 0 ) end;
+	
+	'BOSS = 1;
+	
+	.@talk$[0] = "Acha que pode pegar o ouro de volta?";
+	.@sleep[0] = 4500;
+	
+	.@talk$[1] = "Então vamos lutar, a violência resolve tudo!";
+	.@sleep[1] = 5000;
+		
+	for( ; .@i < getarraysize( .@talk$ ); .@i++ )
+	{
+		npctalk .@talk$[.@i],"",BC_AREA,0xFF8C00;
+		sleep2 .@sleep[.@i];
+	}
+		
+	unittalk( getcharid(3), sprintf( "Atenção [%s], preparem-se para a batalha!", strcharinfo(1) ) );
+
+	sleep2 3000;
+	
+	setnpcdisplay( instance_npcname( "Eugael Katarina" ), -1 );
+	setnpcdisplay( instance_npcname( "Sdnegel Katarina" ), -1 );
+
+	sleep2 2000;
+	
+	monster instance_mapname( strcharinfo(3) ),102,71,"Eugael Katarina",2131,1,instance_npcname("Thomas#IN1") + "::OnKillBoss";
+	monster instance_mapname( strcharinfo(3) ),102,71,"Sdnegel Katarina",2131,1,instance_npcname("Thomas#IN1") + "::OnKillBoss";
+
+	end;
+}
+
+function	Script	box_push	{
+
+	if( getarg(0 )== 1 )
+	{
+		soundeffectall "absorcao.wav",0;
+		unittalk getcharid(3),"Não consigo passar por isso, uma energia está me empurrando.";
+		specialeffect 146;
+		specialeffect2 146;
+	}
+
+	return;
+}
+
+//Alavanca 1: Bloco 1 e Bloco 2
+
+thom_01,17,121,5	script	#t_ala1	905,1,1,{
+
+	getmapxy( .@m$, .@x, .@y, BL_PC );
+	getmapxy( .@m2$, .@x2, .@y2, BL_NPC );
+	
+	if( distance( .@x, .@y, .@x2, .@y2 ) > 2 )
+	{
+		message( strcharinfo(0), "Se aproxime da Alavanca para a mover" );
+		end;
+	}
+	
+	soundeffectall "switch.wav",0;
+	setnpcdisplay( instance_npcname("#t_ala1"), ( 'ala1 ? 905 : 10256 ) );
+	
+	getmapxy( .@m$, .@x, .@y, BL_PC );
+	
+	.@m$ = instance_mapname(strcharinfo(3));
+	
+	mapwarp( .@m$, .@m$, .@x, .@y );
+
+	if( 'ala1 == 0 )
+	{
+		'ala1 = 1;
+		
+		//Bloco 1
+		setcell instance_mapname("thom_01"),27,93,27,103,cell_walkable,1;
+		setnpcdisplay(instance_npcname("#t_bloco1"), 555);
+		
+		//Bloco 2
+		setnpcdisplay(instance_npcname("#t_bloco2"), 553);
+		setcell instance_mapname("thom_01"),27,32,27,39,cell_walkable,0;
+	}
+	else
+	{
+		'ala1 = 0;
+		
+		//Bloco 1
+		setcell instance_mapname("thom_01"),27,93,27,103,cell_walkable,0;
+		setnpcdisplay(instance_npcname("#t_bloco1"), 553);
+		
+		//Bloco 2
+		setnpcdisplay(instance_npcname("#t_bloco2"), 555);
+		setcell instance_mapname("thom_01"),27,32,27,39,cell_walkable,1;
+	}
+	
+	end;
+}
+
+//Alavanca 2: Bloco 3 e Bloco 4
+thom_01,71,117,5	script	#t_ala2	905,1,1,{
+
+	getmapxy( .@m$, .@x, .@y, BL_PC );
+	getmapxy( .@m2$, .@x2, .@y2, BL_NPC );
+	
+	if( distance( .@x, .@y, .@x2, .@y2 ) > 2 )
+	{
+		message( strcharinfo(0), "Se aproxime da Alavanca para a mover" );
+		end;
+	}
+	
+	soundeffectall "switch.wav",0;
+	setnpcdisplay( instance_npcname("#t_ala2"), ( 'ala2 ? 905 : 10256 ) );
+	
+	getmapxy( .@m$, .@x, .@y, BL_PC );
+	
+	.@m$ = instance_mapname(strcharinfo(3));
+	
+	mapwarp( .@m$, .@m$, .@x, .@y );
+
+	if( 'ala2 == 0 )
+	{
+		'ala2 = 1;
+		
+		//Bloco 3
+		setcell instance_mapname("thom_01"),73,32,73,39,cell_walkable,1;
+		setnpcdisplay(instance_npcname("#t_bloco3"), 555);
+		
+		//Bloco 4
+		setnpcdisplay(instance_npcname("#t_bloco4"), 553);
+		setcell instance_mapname("thom_01"),80,79,80,88,cell_walkable,0;
+	}
+	else
+	{
+		'ala2 = 0;
+		
+		//Bloco 3
+		setcell instance_mapname("thom_01"),73,32,73,39,cell_walkable,0;
+		setnpcdisplay(instance_npcname("#t_bloco3"), 553);
+		
+		//Bloco 4
+		setnpcdisplay(instance_npcname("#t_bloco4"), 555);
+		setcell instance_mapname("thom_01"),80,79,80,88,cell_walkable,1;
+	}
+
+	end;
+}
+
+//Alavanca 3 - Bloco 5 e Bloco 6
+thom_01,43,17,5	script	#t_ala3	905,1,1,{
+
+	getmapxy( .@m$, .@x, .@y, BL_PC );
+	getmapxy( .@m2$, .@x2, .@y2, BL_NPC );
+	
+	if( distance( .@x, .@y, .@x2, .@y2 ) > 2 )
+	{
+		message( strcharinfo(0), "Se aproxime da Alavanca para a mover" );
+		end;
+	}
+	
+	soundeffectall "switch.wav",0;
+	setnpcdisplay( instance_npcname("#t_ala3"), ( 'ala3 ? 905 : 10256 ) );
+	
+	getmapxy( .@m$, .@x, .@y, BL_PC );
+	
+	.@m$ = instance_mapname(strcharinfo(3));
+	
+	mapwarp( .@m$, .@m$, .@x, .@y );
+	
+	if( 'ala3 == 0 )
+	{
+		'ala3 = 1;
+		
+		//Bloco 5
+		setcell instance_mapname("thom_01"),108,105,115,105,cell_walkable,1;
+		setnpcdisplay(instance_npcname("#t_bloco5"), 555);
+		
+		//Bloco 6
+		setnpcdisplay(instance_npcname("#t_bloco6"), 553);
+		setcell instance_mapname("thom_01"),134,104,141,104,cell_walkable,0;
+	}
+	else
+	{
+		'ala3 = 0;
+		
+		//Bloco 5
+		setcell instance_mapname("thom_01"),108,105,115,105,cell_walkable,0;
+		setnpcdisplay(instance_npcname("#t_bloco5"), 553);
+		
+		//Bloco 6
+		setnpcdisplay(instance_npcname("#t_bloco6"), 555);
+		setcell instance_mapname("thom_01"),134,104,141,104,cell_walkable,1;
+	}
+
+	end;
+}
+
+//Alavanca 4 - Bloco 7 e Bloco 8
+
+thom_01,111,111,5	script	#t_ala4	905,1,1,{
+
+	getmapxy( .@m$, .@x, .@y, BL_PC );
+	getmapxy( .@m2$, .@x2, .@y2, BL_NPC );
+	
+	if( distance( .@x, .@y, .@x2, .@y2 ) > 2 )
+	{
+		message( strcharinfo(0), "Se aproxime da Alavanca para a mover" );
+		end;
+	}
+	
+	soundeffectall "switch.wav",0;
+	setnpcdisplay( instance_npcname("#t_ala4"), ( 'ala4 ? 905 : 10256 ) );
+	
+	getmapxy( .@m$, .@x, .@y, BL_PC );
+	
+	.@m$ = instance_mapname(strcharinfo(3));
+	
+	mapwarp( .@m$, .@m$, .@x, .@y );
+	
+	if( 'ala4 == 0 )
+	{
+		'ala4 = 1;
+		//Bloco 7
+		setcell instance_mapname("thom_01"),94,14,94,21,cell_walkable,1;
+		setnpcdisplay(instance_npcname("#t_bloco7"), 555);
+		//Bloco 8
+		setnpcdisplay(instance_npcname("#t_bloco8"), 553);
+		setcell instance_mapname("thom_01"),134,87,141,87,cell_walkable,0;
+	}
+	else
+	{
+		'ala4 = 0;
+		//Bloco 7
+		setcell instance_mapname("thom_01"),94,14,94,21,cell_walkable,0;
+		setnpcdisplay(instance_npcname("#t_bloco7"), 553);
+		//Bloco 8
+		setnpcdisplay(instance_npcname("#t_bloco8"), 555);
+		setcell instance_mapname("thom_01"),134,87,141,87,cell_walkable,1;
+	}
+	
+	end;
+}
+
+//Alavanca 5 - Bloco 9 e Bloco 10
+thom_01,162,18,5	script	#t_ala5	905,1,1,{
+	
+	getmapxy( .@m$, .@x, .@y, BL_PC );
+	getmapxy( .@m2$, .@x2, .@y2, BL_NPC );
+	
+	if( distance( .@x, .@y, .@x2, .@y2 ) > 2 )
+	{
+		message( strcharinfo(0), "Se aproxime da Alavanca para a mover" );
+		end;
+	}
+	
+	soundeffectall "switch.wav",0;
+	setnpcdisplay( instance_npcname("#t_ala5"), ( 'ala5 ? 905 : 10256 ) );
+	
+	getmapxy( .@m$, .@x, .@y, BL_PC );
+	
+	.@m$ = instance_mapname(strcharinfo(3));
+	
+	mapwarp( .@m$, .@m$, .@x, .@y );
+	
+	if( 'ala5 == 0 )
+	{
+		'ala5 = 1;
+		
+		//Bloco 9
+		setcell instance_mapname("thom_01"),134,68,140,68,cell_walkable,0;
+		setnpcdisplay(instance_npcname("#t_bloco9"), 553);
+		
+		//Bloco 10
+		setnpcdisplay(instance_npcname("#t_bloco10"), 555);
+		setcell instance_mapname("thom_01"),144,82,144,86,cell_walkable,1;
+	}
+	else
+	{
+		'ala5 = 0;
+		
+		//Bloco 9
+		setcell instance_mapname("thom_01"),134,68,140,68,cell_walkable,1;
+		setnpcdisplay(instance_npcname("#t_bloco9"), 555);
+		
+		//Bloco 10
+		setnpcdisplay(instance_npcname("#t_bloco10"), 553);
+		setcell instance_mapname("thom_01"),144,82,144,86,cell_walkable,0;
+	}
+	
+	end;
+}
+
+//Alavanca 6 - Bloco 11 e Bloco 12
+thom_01,138,124,5	script	#t_ala6	905,1,1,{
+
+	getmapxy( .@m$, .@x, .@y, BL_PC );
+	getmapxy( .@m2$, .@x2, .@y2, BL_NPC );
+	
+	if( distance( .@x, .@y, .@x2, .@y2 ) > 2 )
+	{
+		message( strcharinfo(0), "Se aproxime da Alavanca para a mover" );
+		end;
+	}
+	
+	soundeffectall "switch.wav",0;
+	setnpcdisplay( instance_npcname("#t_ala6"), ( 'ala6 ? 905 : 10256 ) );
+	
+	getmapxy( .@m$, .@x, .@y, BL_PC );
+	
+	.@m$ = instance_mapname(strcharinfo(3));
+	
+	mapwarp( .@m$, .@m$, .@x, .@y );
+	
+	if( 'ala6 == 0 )
+	{
+		'ala6 = 1;
+		
+		//Bloco 11
+		setcell instance_mapname("thom_01"),160,91,167,91,cell_walkable,0;
+		setnpcdisplay(instance_npcname("#t_bloco11"), 553);
+		
+		//Bloco 12
+		setnpcdisplay(instance_npcname("#t_bloco12"), 555);
+		setcell instance_mapname("thom_01"),160,69,167,69,cell_walkable,1;
+	}
+	else
+	{
+		'ala6 = 0;
+		
+		//Bloco 11
+		setcell instance_mapname("thom_01"),160,91,167,91,cell_walkable,1;
+		setnpcdisplay(instance_npcname("#t_bloco11"), 555);
+		
+		//Bloco 12
+		setnpcdisplay(instance_npcname("#t_bloco12"), 553);
+		setcell instance_mapname("thom_01"),160,69,167,69,cell_walkable,0;
+	}
+	
+	end;
+}
+
+//Alavanca 7 - Retira todos os Blocos do 13 ao 18
+
+thom_01,147,166,5	script	#t_ala7	905,1,1,{
+	
+	getmapxy( .@m$, .@x, .@y, BL_PC );
+	getmapxy( .@m2$, .@x2, .@y2, BL_NPC );
+	
+	if( distance( .@x, .@y, .@x2, .@y2 ) > 2 )
+	{
+		message( strcharinfo(0), "Se aproxime da Alavanca para a mover" );
+		end;
+	}
+	
+	if( 'ala7 )
+	{
+		message( strcharinfo(0),"Parece que emperrou..." );
+		end;
+	}
+	
+	soundeffectall "switch.wav",0;
+	setnpcdisplay( instance_npcname("#t_ala7"), ( 'ala7 ? 905 : 10256 ) );
+	
+	getmapxy( .@m$, .@x, .@y, BL_PC );
+	
+	.@m$ = instance_mapname(strcharinfo(3));
+	
+	mapwarp( .@m$, .@m$, .@x, .@y );
+	
+	//Bloco 13
+	setnpcdisplay(instance_npcname("#t_bloco13"), 555);
+	setcell instance_mapname("thom_01"),118,170,118,177,cell_walkable,1;
+	
+	//Bloco 14
+	setnpcdisplay(instance_npcname("#t_bloco14"), 555);
+	setcell instance_mapname("thom_01"),118,154,118,161,cell_walkable,1;
+	
+	//Bloco 15
+	setnpcdisplay(instance_npcname("#t_bloco15"), 555);
+	setcell instance_mapname("thom_01"),97,154,97,161,cell_walkable,1;
+	
+	//Bloco 16
+	setnpcdisplay(instance_npcname("#t_bloco16"), 555);
+	setcell instance_mapname("thom_01"),95,170,95,177,cell_walkable,1;
+	
+	//Bloco 17
+	setnpcdisplay(instance_npcname("#t_bloco17"), 555);
+	setcell instance_mapname("thom_01"),81,170,81,177,cell_walkable,1;
+	
+	//Bloco 18
+	setnpcdisplay(instance_npcname("#t_bloco18"), 555);
+	setcell instance_mapname("thom_01"),81,154,81,161,cell_walkable,1;
+	
+	'ala7 = 1;
+	end;
+}
+
+// Bloco 1 - Afetado pela Alavanca 1
+// Normal: Preso
+
+thom_01,26,98,5	script	#t_bloco1		553,1,7,{
+
+	OnTouch:
+		if('ala1==1) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+		setcell instance_mapname("thom_01"),27,93,27,103,cell_walkable,0;
+		end;
+}
+
+// Bloco 2 - Afetado pela Alavanca 1
+// Normal: Solto
+
+thom_01,26,36,5	script	#t_bloco2		555,1,7,{
+
+	OnTouch:
+		if('ala1==0) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+		setcell instance_mapname("thom_01"),27,32,27,39,cell_walkable,1;
+		end;
+}
+
+//Bloco 3 - Afetado pela Alavanca 2
+// Normal: Preso
+
+thom_01,71,35,5	script	#t_bloco3		553,3,7,{
+
+	OnTouch:
+		if('ala2==1) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+	setcell instance_mapname("thom_01"),73,32,73,39,cell_walkable,0;
+	end;
+
+}
+
+//Bloco 4 - Afetado pela Alavanca 2
+// Normal: Solto
+
+thom_01,80,83,5	script	#t_bloco4		555,3,7,{
+
+	OnTouch:
+		if('ala2==0) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+	setcell instance_mapname("thom_01"),80,79,80,88,cell_walkable,1;
+	end;
+
+}
+
+//Bloco 5 - Afetado pela Alavanca 3
+// Normal: Preso
+
+thom_01,111,103,5	script	#t_bloco5		553,7,1,{
+
+	OnTouch:
+		if('ala3==1) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+	setcell instance_mapname("thom_01"),108,105,115,105,cell_walkable,0;
+	end;
+
+}
+
+//Bloco 6 - Afetado pela Alavanca 3
+// Normal: Solto
+
+thom_01,137,102,5	script	#t_bloco6		555,7,1,{
+
+	OnTouch:
+		if('ala3==0) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+	setcell instance_mapname("thom_01"),134,104,141,104,cell_walkable,1;
+	end;
+
+}
+
+//Bloco 7 - Afetado pela Alavanca 4
+// Normal: Preso
+
+thom_01,93,17,5	script	#t_bloco7		553,7,1,{
+
+	OnTouch:
+		if('ala4==1) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+	setcell instance_mapname("thom_01"),94,14,94,21,cell_walkable,0;
+	end;
+
+}
+
+//Bloco 8 - Afetado pela Alavanca 3
+// Normal: Solto
+
+thom_01,137,88,5	script	#t_bloco8		555,7,1,{
+
+	OnTouch:
+		if('ala4==0) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+	setcell instance_mapname("thom_01"),134,87,141,87,cell_walkable,1;
+	end;
+
+}
+
+//Bloco 9 - Afetado pela Alavanca 5
+// Normal: Solto
+
+thom_01,137,69,5	script	#t_bloco9		555,7,1,{
+
+	OnTouch:
+		if('ala5==0) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+	setcell instance_mapname("thom_01"),134,68,140,68,cell_walkable,1;
+	end;
+
+}
+
+//Bloco 10 - Afetado pela Alavanca 5
+// Normal: Preso
+
+thom_01,142,84,5	script	#t_bloco10	553,7,1,{
+
+	OnTouch:
+		if('ala5==1) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+	setcell instance_mapname("thom_01"),144,82,144,86,cell_walkable,0;
+	end;
+
+}
+
+//Bloco 11 - Afetado pela Alavanca 6
+// Normal: Solto
+
+thom_01,164,90,5	script	#t_bloco11	555,7,1,{
+
+	OnTouch:
+		if('ala6==0) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+	setcell instance_mapname("thom_01"),160,91,167,91,cell_walkable,1;
+	end;
+
+}
+
+//Bloco 12 - Afetado pela Alavanca 6
+// Normal: Preso
+
+thom_01,163,68,5	script	#t_bloco12	553,7,1,{
+
+	OnTouch:
+		if('ala6==1) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+	setcell instance_mapname("thom_01"),160,69,167,69,cell_walkable,0;
+	end;
+
+}
+
+//Bloco 13 - Afetado pela Alavanca 7
+// Normal: Solto
+
+thom_01,119,173,5	script	#t_bloco13	555,1,7,{
+
+	OnTouch:
+		if('ala7==1) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+	setcell instance_mapname("thom_01"),118,170,118,177,cell_walkable,1;
+	end;
+}
+
+//Bloco 14 - Afetado pela Alavanca 7
+// Normal: Solto
+
+thom_01,119,157,5	script	#t_bloco14	555,1,7,{
+
+	OnTouch:
+		if('ala7==1) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+	setcell instance_mapname("thom_01"),118,154,118,161,cell_walkable,1;
+	end;
+}
+
+//Bloco 15 - Afetado pela Alavanca 7
+// Normal: Solto
+
+thom_01,96,158,5	script	#t_bloco15	555,1,7,{
+
+	OnTouch:
+		if('ala7==1) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+	setcell instance_mapname("thom_01"),97,154,97,161,cell_walkable,1;
+	end;
+}
+
+//Bloco 16 - Afetado pela Alavanca 7
+// Normal: Solto
+
+thom_01,96,174,5	script	#t_bloco16	555,1,7,{
+
+	OnTouch:
+		if('ala7==1) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+	setcell instance_mapname("thom_01"),95,170,95,177,cell_walkable,1;
+	end;
+}
+
+//Bloco 17 - Afetado pela Alavanca 7
+// Normal: Solto
+
+thom_01,80,174,5	script	#t_bloco17	555,1,7,{
+
+	OnTouch:
+		if('ala7==1) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+	setcell instance_mapname("thom_01"),81,170,81,177,cell_walkable,1;
+	end;
+}
+
+//Bloco 18 - Afetado pela Alavanca 7
+// Normal: Solto
+
+thom_01,80,158,5	script	#t_bloco18	555,1,7,{
+
+	OnTouch:
+		if('ala7==1) end;
+		box_push(1);
+		end;
+
+	OnInstanceInit:
+	setcell instance_mapname("thom_01"),81,154,81,161,cell_walkable,1;
+	end;
+}
+
+//Piso 1 - Baixo
+
+thom_01,127,158,5	script	#t_pisa	-1,1,7,{
+
+	end;
+	
+	OnTouch:
+		if( 'ala7 == 1 )
+		{
+			'ala7 = 0;
+			soundeffectall "switch.wav",0;
+			
+			//Bloco 13
+			setnpcdisplay(instance_npcname("#t_bloco13"), 553);
+			setcell instance_mapname("thom_01"),118,170,118,177,cell_walkable,0;
+			//Bloco 14
+			setnpcdisplay(instance_npcname("#t_bloco14"), 553);
+			setcell instance_mapname("thom_01"),118,154,118,161,cell_walkable,0;
+			//Bloco 15
+			setnpcdisplay(instance_npcname("#t_bloco15"), 553);
+			setcell instance_mapname("thom_01"),97,154,97,161,cell_walkable,0;
+			//Bloco 16
+			setnpcdisplay(instance_npcname("#t_bloco16"), 553);
+			setcell instance_mapname("thom_01"),95,170,95,177,cell_walkable,0;
+			//Bloco 17
+			setnpcdisplay(instance_npcname("#t_bloco17"), 553);
+			setcell instance_mapname("thom_01"),81,170,81,177,cell_walkable,0;
+			//Bloco 18
+			setnpcdisplay(instance_npcname("#t_bloco17"), 553);
+			setcell instance_mapname("thom_01"),81,154,81,161,cell_walkable,0;
+			instance_warpall instance_mapname("thom_01"),152,167;
+		}
+		end;
+}
+
+//Piso 2 - Baixo
+
+thom_01,115,158,5	script	#t_pisa2	-1,1,7,{
+
+	OnTouch:
+		if( 'ala7 == 1 )
+		{
+			'ala7 = 0;
+			soundeffectall "switch.wav",0;
+			
+			//Bloco 13
+			setnpcdisplay(instance_npcname("#t_bloco13"), 553);
+			setcell instance_mapname("thom_01"),118,170,118,177,cell_walkable,0;
+			//Bloco 14
+			setnpcdisplay(instance_npcname("#t_bloco14"), 553);
+			setcell instance_mapname("thom_01"),118,154,118,161,cell_walkable,0;
+			//Bloco 15
+			setnpcdisplay(instance_npcname("#t_bloco15"), 553);
+			setcell instance_mapname("thom_01"),97,154,97,161,cell_walkable,0;
+			//Bloco 16
+			setnpcdisplay(instance_npcname("#t_bloco16"), 553);
+			setcell instance_mapname("thom_01"),95,170,95,177,cell_walkable,0;
+			//Bloco 17
+			setnpcdisplay(instance_npcname("#t_bloco17"), 553);
+			setcell instance_mapname("thom_01"),81,170,81,177,cell_walkable,0;
+			//Bloco 18
+			setnpcdisplay(instance_npcname("#t_bloco17"), 553);
+			setcell instance_mapname("thom_01"),81,154,81,161,cell_walkable,0;
+			instance_warpall instance_mapname("thom_01"),152,167;
+		}
+		end;
+}
+
+//Piso 3 - Baixo
+
+thom_01,88,158,5	script	#t_pisa3	-1,1,7,{
+
+	OnTouch:
+		if( 'ala7 == 1 )
+		{
+			'ala7 = 0;
+			soundeffectall "switch.wav",0;
+			
+			//Bloco 13
+			setnpcdisplay(instance_npcname("#t_bloco13"), 553);
+			setcell instance_mapname("thom_01"),118,170,118,177,cell_walkable,0;
+			//Bloco 14
+			setnpcdisplay(instance_npcname("#t_bloco14"), 553);
+			setcell instance_mapname("thom_01"),118,154,118,161,cell_walkable,0;
+			//Bloco 15
+			setnpcdisplay(instance_npcname("#t_bloco15"), 553);
+			setcell instance_mapname("thom_01"),97,154,97,161,cell_walkable,0;
+			//Bloco 16
+			setnpcdisplay(instance_npcname("#t_bloco16"), 553);
+			setcell instance_mapname("thom_01"),95,170,95,177,cell_walkable,0;
+			//Bloco 17
+			setnpcdisplay(instance_npcname("#t_bloco17"), 553);
+			setcell instance_mapname("thom_01"),81,170,81,177,cell_walkable,0;
+			//Bloco 18
+			setnpcdisplay(instance_npcname("#t_bloco17"), 553);
+			setcell instance_mapname("thom_01"),81,154,81,161,cell_walkable,0;
+			instance_warpall instance_mapname("thom_01"),152,167;
+		}
+		end;
+}
+
+thom_01,101,51,3	Script	Thomas#IN1	628,{
+
+	if( 'THOMAS == 2 )
+		end;
+
+	if( getpartyleader( getcharid(1), 2 ) != getcharid(0) )
+	{
+		npctalk "Onde está seu líder?";
+		end;
+	}
+
+	if( 'THOMAS == 1 ) end;
+
+	'THOMAS = 1;
+
+	.@talk$[0] = "Obrigado por atender meu chamado!";
+	.@sleep[0] = 1500;
+
+	.@talk$[1] = "As irmãs katarinas sequestraram nosso ouro e se esconderam neste calabouço!";
+	.@sleep[1] = 3000;
+
+	.@talk$[2] = "Ajude-nos " + strcharinfo(1) + ", vocês são nossa última esperança!;
+	.@sleep[2] = 4500;
+
+	for( ; .@i < getarraysize( .@talk$ ); .@i++ )
+	{
+		npctalk .@talk$[.@i],"",BC_AREA,0xFF8C00;
+		sleep2 .@sleep[.@i];
+	}
+
+	sleep2 5000;
+
+	inst( "DESTROY_BARRICADE", instance_mapname( "thom_01" ), 86, 54, 117, 54, "Thomas#IN1::OnBarricade" );
+	end;
+
+	OnBarricade:
+		end;
+
+	OnKillBoss:
+		mapannounce instance_mapname( "thom_01" ),"A Memória do Rei Arthur foi derrotado!",bc_map,"0x00CED1";
+		'THOMAS = 100;
+		dispbottom "Desfazendo Grupo em 7 segundos...";
+		sleep2 7000;
+		inst( "REWARD", 20, 65, instance_mapname( "thom_01" ) );
+		end;
+
+	OnInstanceInit:
+		'THOMAS = 0;
+		'ala1 = 0;
+		'ala2 = 0;
+		'ala3 = 0;
+		'ala4 = 0;
+		'ala5 = 0;
+		'ala6 = 0;
+		'ala7 = 0;
+		
+		inst( "DESTROY_BARRICADE", instance_mapname( "thom_01" ), 86, 54, 117, 54, "Thomas#IN1::OnBarricade" );
+		inst( "DEPLOY_BARRICADE", instance_mapname( "thom_01" ), 86, 54, 117, 54, "Thomas#IN1::OnBarricade" );
+		end;
+}
+
+thom_01	mapflag	clouds
+thom_01	mapflag	clouds2
+thom_01	mapflag	nosave
+thom_01	mapflag	nomemo
+thom_01	mapflag	noteleport

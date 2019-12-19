@@ -4031,6 +4031,8 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 
 		// Pre-Renewal: skill ratio for weapon part of damage [helvetica]
 		case ASC_BREAKER:
+			skillratio += -100 + 100 * skill_lv;
+
 			if (sd && sd->mast[MASTERY_DESTRUIDOR_DE_ALMAS_EX]->active)
 				skillratio += sd->mast[MASTERY_DESTRUIDOR_DE_ALMAS_EX]->level;
 			break;

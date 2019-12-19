@@ -34,6 +34,12 @@ function	script	inst	{
 	.@delay[INSTANCIA_LABIRINTO_DAS_FADAS] = 150;
 	.@item[INSTANCIA_LABIRINTO_DAS_FADAS] = 29566;
 	
+	// Calabouço das Irmãs Katarina
+	.@nome_inst$[INSTANCIA_IRMAS_KATARINA] = "Calabouço das Irmãs Katarina";
+	.@desc$[INSTANCIA_IRMAS_KATARINA] = "Passe pelo enigma do calabouço e derrote as Irmãs Katarinas para ter chances de receber a Maestria [%s] e outros itens especiais!";
+	.@delay[INSTANCIA_IRMAS_KATARINA] = 175;
+	.@item[INSTANCIA_IRMAS_KATARINA] = 29566;
+	
 	if( .@func$ == "INICIO" )
 	{
 		.@cid = getarg(1);

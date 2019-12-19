@@ -10445,6 +10445,49 @@ BUILDIN_FUNC(create_emperium)
 	return SCRIPT_CMD_SUCCESS;
 }
 
+//	.@mobgid = skill_monster( getcharid(3), .@x, .@y, 1033, spawn_timer );
+// skillmonster, iiiii
+BUILDIN_FUNC(skill_monster)
+{
+	struct block_list *bl = map_id2bl(script_getnum(st, 2));
+
+	if (!bl)
+		return SCRIPT_CMD_SUCCESS;
+
+	int map_id = bl->m;
+
+	int map_x = script_getnum(st, 3);
+	int map_y = script_getnum(st, 4);
+	int mobid = script_getnum(st, 5);
+	int timer = script_getnum(st, 6);
+
+	if (map_id < 0)
+	{
+		script_pushint(st, 0);
+		return SCRIPT_CMD_FAILURE;
+	}
+
+	int mobgid = mob_once_spawn_sub(bl, map_id, map_x, map_y, "", mobid, "", SZ_BIG, AI_NONE);
+
+	struct mob_data *md = map_id2md(mobgid);
+
+	if (md) {
+		md->master_id = bl->id;
+		md->special_state.ai = AI_ATTACK;
+		if (md->deletetimer != INVALID_TIMER)
+			delete_timer(md->deletetimer, mob_timer_delete);
+
+		if(timer != -1)
+			md->deletetimer = add_timer(gettick() + timer, mob_timer_delete, md->bl.id, 0);
+
+		mob_spawn(md); //Now it is ready for spawning.
+	}
+
+	script_pushint(st, mobgid);
+
+	return SCRIPT_CMD_SUCCESS;
+}
+
 /*==========================================
  * Spawn a monster:
  * *monster "<map name>",<x>,<y>,"<name to show>",<mob id>,<amount>{,"<event label>",<size>,<ai>};
