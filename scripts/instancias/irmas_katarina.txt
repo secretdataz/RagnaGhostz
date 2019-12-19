@@ -1,5 +1,5 @@
 
-// Maestria: Mestre das Lâminas
+// Maestria: Conhecedor das Lâminas
 // Permite ver a arma de qualquer usuário, independente de suas configurações do ALT + Q
 // Nível Máximo: 1
 
