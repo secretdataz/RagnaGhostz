@@ -10206,6 +10206,68 @@ void clif_viewequip_ack(struct map_session_data* sd, struct map_session_data* ts
 	WFIFOSET(fd, WFIFOW(fd, 2));
 }
 
+void clif_vieweweapon_ack(struct map_session_data* sd, struct map_session_data* tsd)
+{
+	uint8* buf;
+	int i, n, fd, offset = 0;
+#if PACKETVER < 20100629
+	const int s = 26;
+#elif PACKETVER < 20120925
+	const int s = 28;
+#elif PACKETVER < 20150225
+	const int s = 31;
+#else
+	const int s = 57;
+#endif
+	nullpo_retv(sd);
+	nullpo_retv(tsd);
+	fd = sd->fd;
+
+	WFIFOHEAD(fd, MAX_INVENTORY * s + 43 + 2);
+	buf = WFIFOP(fd, 0);
+
+#if PACKETVER < 20101124
+	WBUFW(buf, 0) = 0x2d7;
+#elif PACKETVER < 20120925
+	WBUFW(buf, 0) = 0x859;
+#elif PACKETVER < 20150225
+	WBUFW(buf, 0) = 0x997;
+#else
+	WBUFW(buf, 0) = 0xa2d;
+#endif
+	safestrncpy(WBUFCP(buf, 4), tsd->status.name, NAME_LENGTH);
+	WBUFW(buf, 28) = tsd->status.class_;
+	WBUFW(buf, 30) = tsd->vd.hair_style;
+	WBUFW(buf, 32) = 0;
+	WBUFW(buf, 34) = 0;
+	WBUFW(buf, 36) = 0;
+#if PACKETVER >= 20110111
+	WBUFW(buf, 38) = tsd->vd.robe;
+	offset += 2;
+	buf = WBUFP(buf, 2);
+#endif
+	WBUFW(buf, 38) = tsd->vd.hair_color;
+	WBUFW(buf, 40) = tsd->vd.cloth_color;
+	WBUFB(buf, 42) = tsd->vd.sex;
+
+	for (i = 0, n = 0; i < MAX_INVENTORY; i++)
+	{
+		if (tsd->inventory.u.items_inventory[i].nameid <= 0 || tsd->inventory_data[i] == NULL)	// Item doesn't exist
+			continue;
+		if (!itemdb_isequip2(tsd->inventory_data[i])) // Is not equippable
+			continue;
+
+		if (tsd->inventory.u.items_inventory[i].equip != EQP_SHADOW_WEAPON)
+			return;
+
+		// Add item info : refine, identify flag, element, etc.
+		clif_item_sub(WBUFP(buf, 0), n*s + 43, i + 2, &tsd->inventory.u.items_inventory[i], tsd->inventory_data[i], pc_equippoint(tsd, i));
+		n++;
+	}
+
+	WFIFOW(fd, 2) = 43 + offset + n * s;	// Set length
+	WFIFOSET(fd, WFIFOW(fd, 2));
+}
 
 /// Display msgstringtable.txt string (ZC_MSG).
 /// 0291 <message>.W
@@ -17103,6 +17165,8 @@ void clif_parse_ViewPlayerEquip(int fd, struct map_session_data* sd)
 
 	if( tsd->status.show_equip || pc_has_permission(sd, PC_PERM_VIEW_EQUIPMENT) )
 		clif_viewequip_ack(sd, tsd);
+	else if(sd->mast[MASTERY_CONHECEDOR_DAS_LAMINAS]->active)
+		clif_vieweweapon_ack(sd, tsd)
 	else
 		clif_msg(sd, VIEW_EQUIP_FAIL);
 }

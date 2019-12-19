@@ -909,6 +909,7 @@ void clif_send_homdata(struct map_session_data *sd, int state, int param);	//[or
 void clif_configuration( struct map_session_data* sd, enum e_config_type type, bool enabled );
 void clif_partytickack(struct map_session_data* sd, bool flag);
 void clif_viewequip_ack(struct map_session_data* sd, struct map_session_data* tsd);
+void clif_vieweweapon_ack(struct map_session_data* sd, struct map_session_data* tsd);
 void clif_equipcheckbox(struct map_session_data* sd);
 
 void clif_msg(struct map_session_data* sd, unsigned short id);

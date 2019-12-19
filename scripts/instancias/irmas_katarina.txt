@@ -1,4 +1,16 @@
 
+// Maestria: Mestre das Lâminas
+// Permite ver a arma de qualquer usuário, independente de suas configurações do ALT + Q
+// Nível Máximo: 1
+
+// Carta Sdnegel Katarina
+// Ao clicar para atacar um alvo (não funciona em emperium), se teleporta até 1 célula próxima dele.
+// Equipa em Botas
+
+// Carta Eugael Katarina
+// Impede que o efeito da carta Sdnegel Katarina funcione em você
+// Equipa em acessório
+
 phtownall,338,203,5	Script	Irmãs Katarina	628 ,{
 	
 	inst( "INICIO", getcharid(0), INSTANCIA_IRMAS_KATARINA );
