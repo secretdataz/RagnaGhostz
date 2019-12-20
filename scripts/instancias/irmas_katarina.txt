@@ -11,30 +11,38 @@
 // Impede que o efeito da carta Sdnegel Katarina funcione em você
 // Equipa em acessório
 
-phtownall,338,203,5	Script	Irmãs Katarina	628 ,{
+phtownall,338,195,5	Script	Irmãs Katarina	748,{
 	
 	inst( "INICIO", getcharid(0), INSTANCIA_IRMAS_KATARINA );
 	end;
 
 }
 
-thom_01,21,155,5	Script	Sdnegel Katarina	2131,{
+thom_01,18,153,5	Script	Sdnegel Katarina	3628,{
 
 	end;
 	
 }
 
-thom_01,21,155,5	Script	Eugael Katarina	2131,{
+thom_01,21,155,5	Script	Eugael Katarina	3628,{
 
 	if( getpartyleader( getcharid(1), 2 ) != getcharid(0) )
 	{
 		npctalk "Onde está seu líder?";
 		end;
 	}
+
+	getmapxy( .@m$, .@x, .@y, BL_PC );
+
+	mapwarp( .@m$, .@m$, .@x, .@y );
+
+	inst( "DEPLOY_BARRICADE", instance_mapname( "thom_01" ), 38, 146, 38, 153, "Thomas#IN1::OnBarricade2" );
 	
 	if( 'BOSS > 0 ) end;
 	
 	'BOSS = 1;
+
+	sleep2 1500;
 	
 	.@talk$[0] = "Acha que pode pegar o ouro de volta?";
 	.@sleep[0] = 4500;
@@ -57,8 +65,8 @@ thom_01,21,155,5	Script	Eugael Katarina	2131,{
 
 	sleep2 2000;
 	
-	monster instance_mapname( strcharinfo(3) ),102,71,"Eugael Katarina",2131,1,instance_npcname("Thomas#IN1") + "::OnKillBoss";
-	monster instance_mapname( strcharinfo(3) ),102,71,"Sdnegel Katarina",2131,1,instance_npcname("Thomas#IN1") + "::OnKillBoss";
+	monster( instance_mapname( strcharinfo(3) ),21,155,"Eugael Katarina",3628,1,instance_npcname("Thomas#IN1") + "::OnKillBoss" );
+	monster( instance_mapname( strcharinfo(3) ),18,153,"Sdnegel Katarina",3628,1,instance_npcname("Thomas#IN1") + "::OnKillBoss" );
 
 	end;
 }
@@ -78,7 +86,7 @@ function	Script	box_push	{
 
 //Alavanca 1: Bloco 1 e Bloco 2
 
-thom_01,17,121,5	script	#t_ala1	905,1,1,{
+thom_01,17,121,5	script	#t_ala1	10393,{
 
 	getmapxy( .@m$, .@x, .@y, BL_PC );
 	getmapxy( .@m2$, .@x2, .@y2, BL_NPC );
@@ -90,7 +98,7 @@ thom_01,17,121,5	script	#t_ala1	905,1,1,{
 	}
 	
 	soundeffectall "switch.wav",0;
-	setnpcdisplay( instance_npcname("#t_ala1"), ( 'ala1 ? 905 : 10256 ) );
+	setnpcdisplay( instance_npcname("#t_ala1"), ( 'ala1 ? 10393 : 10394 ) );
 	
 	getmapxy( .@m$, .@x, .@y, BL_PC );
 	
@@ -127,7 +135,7 @@ thom_01,17,121,5	script	#t_ala1	905,1,1,{
 }
 
 //Alavanca 2: Bloco 3 e Bloco 4
-thom_01,71,117,5	script	#t_ala2	905,1,1,{
+thom_01,71,117,5	script	#t_ala2	10393,{
 
 	getmapxy( .@m$, .@x, .@y, BL_PC );
 	getmapxy( .@m2$, .@x2, .@y2, BL_NPC );
@@ -139,7 +147,7 @@ thom_01,71,117,5	script	#t_ala2	905,1,1,{
 	}
 	
 	soundeffectall "switch.wav",0;
-	setnpcdisplay( instance_npcname("#t_ala2"), ( 'ala2 ? 905 : 10256 ) );
+	setnpcdisplay( instance_npcname("#t_ala2"), ( 'ala2 ? 10393 : 10394 ) );
 	
 	getmapxy( .@m$, .@x, .@y, BL_PC );
 	
@@ -176,7 +184,7 @@ thom_01,71,117,5	script	#t_ala2	905,1,1,{
 }
 
 //Alavanca 3 - Bloco 5 e Bloco 6
-thom_01,43,17,5	script	#t_ala3	905,1,1,{
+thom_01,43,17,5	script	#t_ala3	10393,{
 
 	getmapxy( .@m$, .@x, .@y, BL_PC );
 	getmapxy( .@m2$, .@x2, .@y2, BL_NPC );
@@ -188,7 +196,7 @@ thom_01,43,17,5	script	#t_ala3	905,1,1,{
 	}
 	
 	soundeffectall "switch.wav",0;
-	setnpcdisplay( instance_npcname("#t_ala3"), ( 'ala3 ? 905 : 10256 ) );
+	setnpcdisplay( instance_npcname("#t_ala3"), ( 'ala3 ? 10393 : 10394 ) );
 	
 	getmapxy( .@m$, .@x, .@y, BL_PC );
 	
@@ -226,7 +234,7 @@ thom_01,43,17,5	script	#t_ala3	905,1,1,{
 
 //Alavanca 4 - Bloco 7 e Bloco 8
 
-thom_01,111,111,5	script	#t_ala4	905,1,1,{
+thom_01,111,111,5	script	#t_ala4	10393,{
 
 	getmapxy( .@m$, .@x, .@y, BL_PC );
 	getmapxy( .@m2$, .@x2, .@y2, BL_NPC );
@@ -238,7 +246,7 @@ thom_01,111,111,5	script	#t_ala4	905,1,1,{
 	}
 	
 	soundeffectall "switch.wav",0;
-	setnpcdisplay( instance_npcname("#t_ala4"), ( 'ala4 ? 905 : 10256 ) );
+	setnpcdisplay( instance_npcname("#t_ala4"), ( 'ala4 ? 10393 : 10394 ) );
 	
 	getmapxy( .@m$, .@x, .@y, BL_PC );
 	
@@ -271,7 +279,7 @@ thom_01,111,111,5	script	#t_ala4	905,1,1,{
 }
 
 //Alavanca 5 - Bloco 9 e Bloco 10
-thom_01,162,18,5	script	#t_ala5	905,1,1,{
+thom_01,162,18,5	script	#t_ala5	10393,{
 	
 	getmapxy( .@m$, .@x, .@y, BL_PC );
 	getmapxy( .@m2$, .@x2, .@y2, BL_NPC );
@@ -283,7 +291,7 @@ thom_01,162,18,5	script	#t_ala5	905,1,1,{
 	}
 	
 	soundeffectall "switch.wav",0;
-	setnpcdisplay( instance_npcname("#t_ala5"), ( 'ala5 ? 905 : 10256 ) );
+	setnpcdisplay( instance_npcname("#t_ala5"), ( 'ala5 ? 10393 : 10394 ) );
 	
 	getmapxy( .@m$, .@x, .@y, BL_PC );
 	
@@ -320,7 +328,7 @@ thom_01,162,18,5	script	#t_ala5	905,1,1,{
 }
 
 //Alavanca 6 - Bloco 11 e Bloco 12
-thom_01,138,124,5	script	#t_ala6	905,1,1,{
+thom_01,138,124,5	script	#t_ala6	10393,{
 
 	getmapxy( .@m$, .@x, .@y, BL_PC );
 	getmapxy( .@m2$, .@x2, .@y2, BL_NPC );
@@ -332,7 +340,7 @@ thom_01,138,124,5	script	#t_ala6	905,1,1,{
 	}
 	
 	soundeffectall "switch.wav",0;
-	setnpcdisplay( instance_npcname("#t_ala6"), ( 'ala6 ? 905 : 10256 ) );
+	setnpcdisplay( instance_npcname("#t_ala6"), ( 'ala6 ? 10393 : 10394 ) );
 	
 	getmapxy( .@m$, .@x, .@y, BL_PC );
 	
@@ -370,7 +378,7 @@ thom_01,138,124,5	script	#t_ala6	905,1,1,{
 
 //Alavanca 7 - Retira todos os Blocos do 13 ao 18
 
-thom_01,147,166,5	script	#t_ala7	905,1,1,{
+thom_01,147,166,5	script	#t_ala7	10393,{
 	
 	getmapxy( .@m$, .@x, .@y, BL_PC );
 	getmapxy( .@m2$, .@x2, .@y2, BL_NPC );
@@ -388,7 +396,7 @@ thom_01,147,166,5	script	#t_ala7	905,1,1,{
 	}
 	
 	soundeffectall "switch.wav",0;
-	setnpcdisplay( instance_npcname("#t_ala7"), ( 'ala7 ? 905 : 10256 ) );
+	setnpcdisplay( instance_npcname("#t_ala7"), ( 'ala7 ? 10393 : 10394 ) );
 	
 	getmapxy( .@m$, .@x, .@y, BL_PC );
 	
@@ -427,7 +435,7 @@ thom_01,147,166,5	script	#t_ala7	905,1,1,{
 // Bloco 1 - Afetado pela Alavanca 1
 // Normal: Preso
 
-thom_01,26,98,5	script	#t_bloco1		553,1,7,{
+thom_01,26,98,5	script	#t_bloco1	553,1,7,{
 
 	OnTouch:
 		if('ala1==1) end;
@@ -442,7 +450,7 @@ thom_01,26,98,5	script	#t_bloco1		553,1,7,{
 // Bloco 2 - Afetado pela Alavanca 1
 // Normal: Solto
 
-thom_01,26,36,5	script	#t_bloco2		555,1,7,{
+thom_01,26,36,5	script	#t_bloco2	555,1,7,{
 
 	OnTouch:
 		if('ala1==0) end;
@@ -457,7 +465,7 @@ thom_01,26,36,5	script	#t_bloco2		555,1,7,{
 //Bloco 3 - Afetado pela Alavanca 2
 // Normal: Preso
 
-thom_01,71,35,5	script	#t_bloco3		553,3,7,{
+thom_01,71,35,5	script	#t_bloco3	553,3,7,{
 
 	OnTouch:
 		if('ala2==1) end;
@@ -473,7 +481,7 @@ thom_01,71,35,5	script	#t_bloco3		553,3,7,{
 //Bloco 4 - Afetado pela Alavanca 2
 // Normal: Solto
 
-thom_01,80,83,5	script	#t_bloco4		555,3,7,{
+thom_01,80,83,5	script	#t_bloco4	555,3,7,{
 
 	OnTouch:
 		if('ala2==0) end;
@@ -489,7 +497,7 @@ thom_01,80,83,5	script	#t_bloco4		555,3,7,{
 //Bloco 5 - Afetado pela Alavanca 3
 // Normal: Preso
 
-thom_01,111,103,5	script	#t_bloco5		553,7,1,{
+thom_01,111,103,5	script	#t_bloco5	553,7,1,{
 
 	OnTouch:
 		if('ala3==1) end;
@@ -505,7 +513,7 @@ thom_01,111,103,5	script	#t_bloco5		553,7,1,{
 //Bloco 6 - Afetado pela Alavanca 3
 // Normal: Solto
 
-thom_01,137,102,5	script	#t_bloco6		555,7,1,{
+thom_01,137,102,5	script	#t_bloco6	555,7,1,{
 
 	OnTouch:
 		if('ala3==0) end;
@@ -521,7 +529,7 @@ thom_01,137,102,5	script	#t_bloco6		555,7,1,{
 //Bloco 7 - Afetado pela Alavanca 4
 // Normal: Preso
 
-thom_01,93,17,5	script	#t_bloco7		553,7,1,{
+thom_01,93,17,5	script	#t_bloco7	553,7,1,{
 
 	OnTouch:
 		if('ala4==1) end;
@@ -537,7 +545,7 @@ thom_01,93,17,5	script	#t_bloco7		553,7,1,{
 //Bloco 8 - Afetado pela Alavanca 3
 // Normal: Solto
 
-thom_01,137,88,5	script	#t_bloco8		555,7,1,{
+thom_01,137,88,5	script	#t_bloco8	555,7,1,{
 
 	OnTouch:
 		if('ala4==0) end;
@@ -553,7 +561,7 @@ thom_01,137,88,5	script	#t_bloco8		555,7,1,{
 //Bloco 9 - Afetado pela Alavanca 5
 // Normal: Solto
 
-thom_01,137,69,5	script	#t_bloco9		555,7,1,{
+thom_01,137,69,5	script	#t_bloco9	555,7,1,{
 
 	OnTouch:
 		if('ala5==0) end;
@@ -774,7 +782,7 @@ thom_01,115,158,5	script	#t_pisa2	-1,1,7,{
 
 //Piso 3 - Baixo
 
-thom_01,88,158,5	script	#t_pisa3	-1,1,7,{
+thom_01,75,162,5	script	#t_pisa3	-1,7,1,{
 
 	OnTouch:
 		if( 'ala7 == 1 )
@@ -805,7 +813,7 @@ thom_01,88,158,5	script	#t_pisa3	-1,1,7,{
 		end;
 }
 
-thom_01,101,51,3	Script	Thomas#IN1	628,{
+thom_01,17,14,3	Script	Thomas#IN1	748,{
 
 	if( 'THOMAS == 2 )
 		end;
@@ -826,7 +834,7 @@ thom_01,101,51,3	Script	Thomas#IN1	628,{
 	.@talk$[1] = "As irmãs katarinas sequestraram nosso ouro e se esconderam neste calabouço!";
 	.@sleep[1] = 3000;
 
-	.@talk$[2] = "Ajude-nos " + strcharinfo(1) + ", vocês são nossa última esperança!;
+	.@talk$[2] = "Ajude-nos " + strcharinfo(1) + ", vocês são nossa última esperança!";
 	.@sleep[2] = 4500;
 
 	for( ; .@i < getarraysize( .@talk$ ); .@i++ )
@@ -835,12 +843,13 @@ thom_01,101,51,3	Script	Thomas#IN1	628,{
 		sleep2 .@sleep[.@i];
 	}
 
-	sleep2 5000;
+	sleep2 1000;
 
-	inst( "DESTROY_BARRICADE", instance_mapname( "thom_01" ), 86, 54, 117, 54, "Thomas#IN1::OnBarricade" );
+	inst( "DESTROY_BARRICADE", instance_mapname( "thom_01" ), 14, 16, 21, 16, "Thomas#IN1::OnBarricade" );
 	end;
 
 	OnBarricade:
+	OnBarricade2:
 		end;
 
 	OnKillBoss:
@@ -859,10 +868,12 @@ thom_01,101,51,3	Script	Thomas#IN1	628,{
 		'ala4 = 0;
 		'ala5 = 0;
 		'ala6 = 0;
-		'ala7 = 0;
-		
-		inst( "DESTROY_BARRICADE", instance_mapname( "thom_01" ), 86, 54, 117, 54, "Thomas#IN1::OnBarricade" );
-		inst( "DEPLOY_BARRICADE", instance_mapname( "thom_01" ), 86, 54, 117, 54, "Thomas#IN1::OnBarricade" );
+		'ala7 = 1;
+		'BOSS = 0;
+
+		inst( "DESTROY_BARRICADE", instance_mapname( "thom_01" ), 14, 16, 21, 16, "Thomas#IN1::OnBarricade" );
+		inst( "DEPLOY_BARRICADE", instance_mapname( "thom_01" ), 14, 16, 21, 16, "Thomas#IN1::OnBarricade" );
+		inst( "DESTROY_BARRICADE", instance_mapname( "thom_01" ), 38, 146, 38, 153, "Thomas#IN1::OnBarricade2" );
 		end;
 }
 

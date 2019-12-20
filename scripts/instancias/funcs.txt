@@ -35,10 +35,10 @@ function	script	inst	{
 	.@item[INSTANCIA_LABIRINTO_DAS_FADAS] = 29566;
 	
 	// Calabouço das Irmãs Katarina
-	.@nome_inst$[INSTANCIA_IRMAS_KATARINA] = "Calabouço das Irmãs Katarina";
+	.@nome_inst$[INSTANCIA_IRMAS_KATARINA] = "Irmas Katarina";
 	.@desc$[INSTANCIA_IRMAS_KATARINA] = "Passe pelo enigma do calabouço e derrote as Irmãs Katarinas para ter chances de receber a Maestria [%s] e outros itens especiais!";
 	.@delay[INSTANCIA_IRMAS_KATARINA] = 175;
-	.@item[INSTANCIA_IRMAS_KATARINA] = 29566;
+	.@item[INSTANCIA_IRMAS_KATARINA] = 29568;
 	
 	if( .@func$ == "INICIO" )
 	{
@@ -61,7 +61,7 @@ function	script	inst	{
 		
 		if( .@ok < 0 )
 		{
-			message strcharinfo(0),"Erro, recrie seu grupo ou aguarde mais alguns segundos!";
+			message strcharinfo(0),"Erro " + .@ok + ", recrie seu grupo ou aguarde mais alguns segundos!";
 			end;
 		}
 

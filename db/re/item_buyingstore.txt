@@ -2033,3 +2033,5 @@
 29562  // Carta_Piano_Maldito
 29563  // Carta_Guarda_Comunista
 29567  // Carta_Dragao_Ztsohg
+29569  // Carta_Sdnegel_Katarina
+29570  // Carta_Eugael_Katarina

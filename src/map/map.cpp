@@ -538,6 +538,53 @@ int map_moveblock(struct block_list *bl, int x1, int y1, t_tick tick)
  * flag:
  *		0x1 - only count standing units
  *------------------------------------------*/
+struct block_list* map_gid_oncell(int16 m, int16 x, int16 y, int type, int flag)
+{
+	int bx, by;
+	struct block_list* bl;
+	int count = 0;
+	struct map_data* mapdata = map_getmapdata(m);
+
+	if (x < 0 || y < 0 || (x >= mapdata->xs) || (y >= mapdata->ys))
+		return 0;
+
+	bx = x / BLOCK_SIZE;
+	by = y / BLOCK_SIZE;
+
+	if (type & ~BL_MOB)
+		for (bl = mapdata->block[bx + by * mapdata->bxs]; bl != NULL; bl = bl->next)
+			if (bl->x == x && bl->y == y && bl->type & type) {
+				if (flag & 1) {
+					struct unit_data* ud = unit_bl2ud(bl);
+					if (!ud || ud->walktimer == INVALID_TIMER)
+						return bl;
+				}
+				else {
+					return bl;
+				}
+			}
+
+	if (type & BL_MOB)
+		for (bl = mapdata->block_mob[bx + by * mapdata->bxs]; bl != NULL; bl = bl->next)
+			if (bl->x == x && bl->y == y) {
+				if (flag & 1) {
+					struct unit_data* ud = unit_bl2ud(bl);
+					if (!ud || ud->walktimer == INVALID_TIMER)
+						return bl;
+				}
+				else {
+					return bl;
+				}
+			}
+
+	return NULL;
+}
+
+/*==========================================
+ * Counts specified number of objects on given cell.
+ * flag:
+ *		0x1 - only count standing units
+ *------------------------------------------*/
 int map_count_oncell(int16 m, int16 x, int16 y, int type, int flag)
 {
 	int bx,by;

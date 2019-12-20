@@ -147,3 +147,6 @@
 29566,137,100	// Pele_de_Dragao
 29567,8,100	// Carta_Dragao_Ztsohg
 
+29568,137,100	// Conhecedor_das_Laminas
+29569,8,100	// Carta_Sdnegel_Katarina
+29570,8,100	// Carta_Eugael_Katarina

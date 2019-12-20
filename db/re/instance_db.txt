@@ -11,4 +11,5 @@
 4,Pesadelo Musical,34400,10,job_duncer,69,44
 5,Vida de Espionagem,34400,10,gef_tower,52,179
 6,Labirinto das Fadas,34400,10,e_woods,69,49,e_woods2,e_woods3,e_woods4,e_woods5
+7,Irmas Katarina,34400,10,thom_01,17,11
 100,House1,34400,10,house1,10,10

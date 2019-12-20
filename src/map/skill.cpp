@@ -5642,10 +5642,10 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 		else
 			y = 0;
 		// Doesn't have slide effect in GVG
-		if (skill_check_unit_movepos(5, src, bl->x + x, bl->y + y, 1, 1)) {
-			clif_blown(src);
-			clif_spiritball(src);
-		}
+		//if (skill_check_unit_movepos(5, src, bl->x + x, bl->y + y, 1, 1)) {
+		//	clif_blown(src);
+		//	clif_spiritball(src);
+		//}
 		skill_attack(BF_MISC, src, src, bl, skill_id, skill_lv, tick, flag);
 		status_set_hp(src, umax(status_get_max_hp(src) / 100, 1), 0);
 		status_change_end(src, SC_NEN, INVALID_TIMER);
@@ -7165,7 +7165,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 	case TK_JUMPKICK:
 		/* Check if the target is an enemy; if not, skill should fail so the character doesn't unit_movepos (exploitable) */
 		if( battle_check_target(src, bl, BCT_ENEMY) > 0 ) {
-			if( unit_movepos(src, bl->x, bl->y, 2, 1) ) {
+			if( unit_movepos(src, bl->x, bl->y, 3, 1) ) {
 				skill_attack(BF_WEAPON,src,src,bl,skill_id,skill_lv,tick,flag);
 				clif_blown(src);
 			}

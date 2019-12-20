@@ -645,6 +645,29 @@ int unit_walktoxy( struct block_list *bl, short x, short y, unsigned char flag)
 	if (bl->type == BL_PC)
 		sd = BL_CAST(BL_PC, bl);
 
+	if (sd && sd->csd[CSD_CARD_SDNEGEL_KATARINA]->active)
+	{
+		block_list* trg = map_gid_oncell(bl->m, x, y, BL_CHAR | BL_MOB, 1);
+
+		if (trg != NULL)
+		{
+			bool wait = ((int)time(NULL) - sd->csd[CSD_CARD_SDNEGEL_KATARINA]->count) < 2;
+
+			if (wait || trg->type == BL_PC && BL_CAST(BL_PC, trg)->csd[CSD_CARD_EUGAEL_KATARINA]->active)
+				;
+			else
+			{
+				sd->csd[CSD_CARD_SDNEGEL_KATARINA]->count = (int)time(NULL);
+
+				if (battle_check_target(bl, trg, BCT_ENEMY) > 0) {
+					if (unit_movepos(bl, trg->x, trg->y, 2, 1)) {
+						clif_blown(bl);
+					}
+				}
+			}
+		}
+	}
+
 	if ((flag&8) && !map_closest_freecell(bl->m, &x, &y, BL_CHAR|BL_NPC, 1)) //This might change x and y
 		return 0;
 
@@ -950,8 +973,11 @@ bool unit_movepos(struct block_list *bl, short dst_x, short dst_y, int easy, boo
 	if(ud == NULL)
 		return false;
 
-	unit_stop_walking(bl, 1);
-	unit_stop_attack(bl);
+	if (easy != 3)
+	{
+		unit_stop_walking(bl, 1);
+		unit_stop_attack(bl);
+	}
 
 	if( checkpath && (map_getcell(bl->m,dst_x,dst_y,CELL_CHKNOPASS) || !path_search(NULL,bl->m,bl->x,bl->y,dst_x,dst_y,easy,CELL_CHKNOREACH)) )
 		return false; // Unreachable

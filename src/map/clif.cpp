@@ -10257,7 +10257,7 @@ void clif_vieweweapon_ack(struct map_session_data* sd, struct map_session_data* 
 		if (!itemdb_isequip2(tsd->inventory_data[i])) // Is not equippable
 			continue;
 
-		if (tsd->inventory.u.items_inventory[i].equip != EQP_SHADOW_WEAPON)
+		if (tsd->inventory.u.items_inventory[i].equip != EQP_HAND_R)
 			return;
 
 		// Add item info : refine, identify flag, element, etc.
@@ -17163,10 +17163,10 @@ void clif_parse_ViewPlayerEquip(int fd, struct map_session_data* sd)
 	if (!tsd)
 		return;
 
-	if( tsd->status.show_equip || pc_has_permission(sd, PC_PERM_VIEW_EQUIPMENT) )
+	if (tsd->status.show_equip || pc_has_permission(sd, PC_PERM_VIEW_EQUIPMENT))
 		clif_viewequip_ack(sd, tsd);
-	else if(sd->mast[MASTERY_CONHECEDOR_DAS_LAMINAS]->active)
-		clif_vieweweapon_ack(sd, tsd)
+	else if (sd->mast[MASTERY_CONHECEDOR_DAS_LAMINAS]->active)
+		clif_vieweweapon_ack(sd, tsd);
 	else
 		clif_msg(sd, VIEW_EQUIP_FAIL);
 }

@@ -10467,9 +10467,7 @@ BUILDIN_FUNC(skill_monster)
 		return SCRIPT_CMD_FAILURE;
 	}
 
-	int mobgid = mob_once_spawn_sub(bl, map_id, map_x, map_y, "", mobid, "", SZ_BIG, AI_NONE);
-
-	struct mob_data *md = map_id2md(mobgid);
+	struct mob_data *md = mob_once_spawn_sub(bl, map_id, map_x, map_y, "", mobid, "", SZ_BIG, AI_NONE);
 
 	if (md) {
 		md->master_id = bl->id;
@@ -10481,9 +10479,11 @@ BUILDIN_FUNC(skill_monster)
 			md->deletetimer = add_timer(gettick() + timer, mob_timer_delete, md->bl.id, 0);
 
 		mob_spawn(md); //Now it is ready for spawning.
-	}
 
-	script_pushint(st, mobgid);
+		script_pushint(st, md->bl.id);
+	}
+	else
+		script_pushint(st, -1);
 
 	return SCRIPT_CMD_SUCCESS;
 }
@@ -24887,8 +24887,11 @@ BUILDIN_FUNC(rgzbonus)
 
 		case CSD_ITEM_TIARA_POPSTAR:
 		case CSD_CARD_MEMORIA_DO_REI_ARTHUR:
+		case CSD_CARD_SDNEGEL_KATARINA:
+		case CSD_CARD_EUGAEL_KATARINA:
 			sd->csd[effect]->active = state;
 			break;
+
 
 		default:
 			return SCRIPT_CMD_FAILURE;
