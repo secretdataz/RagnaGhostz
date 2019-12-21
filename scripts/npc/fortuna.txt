@@ -105,7 +105,7 @@ phtownall,63,194,3	Script	Torre da Fortuna	757,{
 		
 		.@mob_dead_num = mobcount( "c_tower1","Torre da Fortuna::OnDrops");
 
-		if( .@mob_dead_num == 20 )
+		if( .@mob_dead_num <= 30 )
 		{
 			killmonster "c_tower1","Torre da Fortuna::OnDrops";
 			monster "c_tower1",0,0,"Drops da Fortuna",1572,500,"Torre da Fortuna::OnDrops";
