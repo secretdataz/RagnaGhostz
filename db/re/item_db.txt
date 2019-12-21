@@ -1907,7 +1907,7 @@
 4125,Deviace_Card,Carta Deviace,6,20,,10,,,,,,,,2,,,,,{ bonus2 bAddRace,RC_DemiHuman,7; bonus2 bAddRace,RC_Player,7; bonus2 bAddRace,RC_Brute,7; bonus2 bAddRace,RC_Plant,7; bonus2 bAddRace,RC_Insect,7; },{},{}
 4126,Minorous_Card,Carta Minorous,6,20,,10,,,,,,,,2,,,,,{ bonus2 bAddSize,Size_Large,15; bonus bBaseAtk,5; },{},{}
 4127,Nightmare_Card,Carta Pesadelo,6,20,,10,,,,,,,,769,,,,,{ bonus2 bResEff,Eff_Sleep,10000; bonus bAgi,1; },{},{}
-4128,Golden_Bug_Card,Carta Besouro-Ladrão Dourado,6,20,,10,,,,,,,,32,,,,,{ bonus bNoMagicDamage,100; bonus bUseSPrate,100; },{},{}
+4128,Golden_Bug_Card,Carta Besouro-Ladrão Dourado,6,20,,10,,,,,,,,32,,,,,{ bonus bNoMagicDamage,100; bonus bUseSPrate,40; },{},{}
 4129,Baphomet__Card,Carta Bafomé Jr.,6,20,,10,,,,,,,,4,,,,,{ bonus bAgi,3; bonus bCritical,1; },{},{}
 4130,Scorpion_King_Card,Carta Rei Escorpião,6,20,,10,,,,,,,,2,,,,,{ bonus2 bAddEle,Ele_Undead,20; },{},{}
 4131,Moonlight_Flower_Card,Carta Flor do Luar,6,20,,10,,,,,,,,64,,,,,{ bonus bSpeedRate,25; },{},{}
