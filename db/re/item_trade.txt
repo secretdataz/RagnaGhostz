@@ -84,6 +84,7 @@
 8060,475,99	// Sticker #61
 8061,475,99	// Sticker #62
 
+13634,511,100	// Pacote_de_Inauguracao
 14611,479,100	// Poção_da_Amnésia
 23340,467,100	// S_Megaphone
 25403,473,100	// Moeda_VIP

@@ -5569,7 +5569,7 @@
 13611,Enriched_Oridecon_Box5,Cx Oridecon Enriquecido [5],18,20,,10,,,,,0xFFFFFFFF,63,2,,,,,,{ getitem 7620,5; },{},{}
 13621,Greed_Box30,Caixa de Ganância,18,20,,10,,,,,0xFFFFFFFF,63,2,,,,,,{ getitem 14529,30; },{},{}
 13624,Flee_30_Scroll_Box,Caixa de Esquiva,18,20,,10,,,,,0xFFFFFFFF,63,2,,,,,,{ getitem 14530,1; },{},{}
-13634,Vigorgra_Package1,1 Hour Package Vol 1,18,20,,10,,,,,0xFFFFFFFF,63,2,,,,,,{ getgroupitem(IG_Vigorgra_Package1); },{},{}
+13634,Pacote_de_Inauguracao,Pacote de Inauguração,2,1,,1,,,,,0xFFFFFFFF,63,2,,,,,,{ getitem( 8000, 1 ); getitem( 8001, 1 ); getitem( 8002, 1 ); getitem( 8003, 1 ); getitem( 8004, 1 ); #CASHPOINTS += 3000; vip_time( 10080 ); #EVENT_POINTS += 500; #ONLINE_POINTS += 500; },{},{}
 13635,Vigorgra_Package2,1 Hour Package Vol 2,18,20,,10,,,,,0xFFFFFFFF,63,2,,,,,,{ getgroupitem(IG_Vigorgra_Package2); },{},{}
 13636,Vigorgra_Package3,Pacote do Deus Bragi,18,20,,10,,,,,0xFFFFFFFF,63,2,,,,,,{ getgroupitem(IG_Vigorgra_Package3); },{},{}
 13637,Vigorgra_Package4,Pacote da Deusa Idun,18,20,,10,,,,,0xFFFFFFFF,63,2,,,,,,{ getgroupitem(IG_Vigorgra_Package4); },{},{}

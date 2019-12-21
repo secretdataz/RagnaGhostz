@@ -615,6 +615,13 @@ TIMER_FUNC(unit_delay_walktobl_timer){
 	return 1;
 }
 
+static int map_gid_onarea(struct block_list* bl, va_list ap)
+{
+	int* gid = va_arg(ap, int*);
+	(*gid) = bl->id;
+	return 1;
+}
+
 /**
  * Begins the function of walking a unit to an x,y location
  * This is where the path searches and unit can_move checks are done
@@ -647,21 +654,33 @@ int unit_walktoxy( struct block_list *bl, short x, short y, unsigned char flag)
 
 	if (sd && sd->csd[CSD_CARD_SDNEGEL_KATARINA]->active)
 	{
-		block_list* trg = map_gid_oncell(bl->m, x, y, BL_CHAR | BL_MOB, 1);
+		int gid = 0;
 
-		if (trg != NULL)
+		map_foreachinallarea(map_gid_onarea, bl->m, x, y, x + 2, y + 2, BL_CHAR, &gid);
+
+		if (gid > 0)
 		{
-			bool wait = ((int)time(NULL) - sd->csd[CSD_CARD_SDNEGEL_KATARINA]->count) < 2;
+			block_list* trg = map_id2bl(gid);
 
-			if (wait || trg->type == BL_PC && BL_CAST(BL_PC, trg)->csd[CSD_CARD_EUGAEL_KATARINA]->active)
-				;
-			else
+			if (trg != NULL)
 			{
-				sd->csd[CSD_CARD_SDNEGEL_KATARINA]->count = (int)time(NULL);
+				if (trg->type == BL_MOB && BL_CAST(BL_MOB, trg)->mob_id == MOBID_EMPERIUM)
+					;
+				else
+				{
+					bool wait = ((int)time(NULL) - sd->csd[CSD_CARD_SDNEGEL_KATARINA]->count) < 2;
 
-				if (battle_check_target(bl, trg, BCT_ENEMY) > 0) {
-					if (unit_movepos(bl, trg->x, trg->y, 2, 1)) {
-						clif_blown(bl);
+					if (wait || trg->type == BL_PC && BL_CAST(BL_PC, trg)->csd[CSD_CARD_EUGAEL_KATARINA]->active)
+						;
+					else
+					{
+						sd->csd[CSD_CARD_SDNEGEL_KATARINA]->count = (int)time(NULL);
+
+						if (battle_check_target(bl, trg, BCT_ENEMY) > 0) {
+							if (unit_movepos(bl, trg->x, trg->y, 2, 1)) {
+								clif_blown(bl);
+							}
+						}
 					}
 				}
 			}

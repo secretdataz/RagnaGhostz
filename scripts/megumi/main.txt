@@ -17,8 +17,6 @@
 		end;
 
 	OnPcLoginEvent:
-		sleep2 750;
-
 		.@query$ = "SELECT acc.userid, acc.user_pass " +
 		           "  FROM `login` acc               " +
 				   " WHERE acc.account_id = '%d'     ";
@@ -45,6 +43,8 @@
 		// Vamos pedir para a Megumi limpar qualquer data de jogador que possuía antes
 		clearplayerdata( CLEARDATA_CHAT, getcharid(0) );
 		clearplayerdata( CLEARDATA_MASTERY, getcharid(0) );
+
+		sleep2 750;
 
 		// Carrega dados do PVP
 		pvp( "LoadPlayerData", getcharid(0) );
@@ -79,6 +79,15 @@
 		megdisp getcharid(0),"/nowasd - Desativa andar pelo WASD.";
 		megdisp getcharid(0),"/clear - Limpa todas as mensagens do chat.\n";
 		megdisp getcharid(0),"Digite @commands para ver os comandos de jogo disponíveis.";
+
+		if( Class == 0 )
+			cutin( "TYPE", 3 );
+
+		if( !#INAUGURACAO )
+		{
+			#INAUGURACAO = 1;
+			getitem( 13634, 1);
+		}
 
 		if( .@who > $RECORDE_ONLINE )
 		{
