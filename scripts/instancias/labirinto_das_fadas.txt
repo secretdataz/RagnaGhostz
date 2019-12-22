@@ -275,7 +275,7 @@ e_woods,72,52,5	Script	Navi#IN1	624,{
 		setnpcdisplay( instance_npcname(" #e_woodsPEsquerda"), -1 );
 		setnpcdisplay( instance_npcname(" #e_woodsPBaixo"), -1 );
 		
-		'right_gates = rand(7,15);
+		'right_gates = rand(3,8);
 		
 		setarray .@portais$[1],"Cima","Direita","Esquerda","Baixo";
 		'portal_certo = rand(1,4);
