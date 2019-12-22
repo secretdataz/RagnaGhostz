@@ -10447,8 +10447,8 @@ static bool clif_process_message(struct map_session_data* sd, bool whisperFormat
 		sprintf( out_full_message, "%s%s%s", out_name, seperator, out_message );
 	}
 
-	if( is_atcommand( fd, sd, out_message, 1 )  )
-		return false;
+	//if( is_atcommand( fd, sd, out_message, 1 )  )
+		//return false;
 
 	if (sd->sc.cant.chat || (sd->state.block_action & PCBLOCK_CHAT))
 		return false; //no "chatting" while muted.
