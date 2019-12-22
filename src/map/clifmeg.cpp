@@ -253,6 +253,14 @@ void clifmeg_blockchat(int aid)
 	clifmeg_send(aid, "BLOCKCHAT", pk);
 }
 
+void clifmeg_unblockchat(int aid)
+{
+	std::string pk = std::to_string(aid);
+
+	clifmeg_send(aid, "UNBLOCKCHAT", pk);
+}
+
+
 // Pede o MAC
 void clifmeg_requestmac(int aid)
 {

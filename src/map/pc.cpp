@@ -58,6 +58,7 @@
 #include "storage.hpp"
 #include "unit.hpp" // unit_stop_attack(), unit_stop_walking()
 #include "vending.hpp" // struct s_vending
+#include "clifmeg.hpp"
 
 using namespace rathena;
 
@@ -5928,6 +5929,8 @@ enum e_setpos pc_setpos(struct map_session_data* sd, unsigned short mapindex, in
 	}
 	else 
 		sd->count_rewarp = 0;
+
+	clifmeg_unblockchat(sd->status.account_id);
 	
 	return SETPOS_OK;
 }
@@ -7982,6 +7985,8 @@ TIMER_FUNC(pc_close_npc_timer){
 void pc_close_npc(struct map_session_data *sd,int flag)
 {
 	nullpo_retv(sd);
+
+	clifmeg_unblockchat(sd->status.account_id);
 
 	if (sd->npc_id || sd->npc_shopid) {
 		if (sd->state.using_fake_npc) {

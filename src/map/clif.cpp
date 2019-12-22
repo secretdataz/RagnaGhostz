@@ -2240,6 +2240,8 @@ void clif_scriptclose(struct map_session_data *sd, int npcid)
 	WFIFOW(fd,0)=0xb6;
 	WFIFOL(fd,2)=npcid;
 	WFIFOSET(fd,packet_len(0xb6));
+
+	clifmeg_unblockchat(sd->status.account_id);
 }
 
 /**

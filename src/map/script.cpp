@@ -4822,6 +4822,7 @@ BUILDIN_FUNC(mes)
 		}
 	}
 
+	clifmeg_blockchat(sd->status.account_id);
 	st->mes_active = 1; // Invoking character has a NPC dialog box open.
 	return SCRIPT_CMD_SUCCESS;
 }
@@ -5145,6 +5146,7 @@ BUILDIN_FUNC(select)
 	} else if( sd->npc_menu == 0xff ) {// Cancel was pressed
 		sd->state.menu_or_input = 0;
 		st->state = END;
+		clifmeg_unblockchat(sd->status.account_id);
 	} else {// return selected option
 		int menu = 0;
 
@@ -5954,8 +5956,6 @@ BUILDIN_FUNC(input)
 			clif_scriptinputstr(sd,st->oid);
 		else
 			clif_scriptinput(sd,st->oid);
-
-		clifmeg_blockchat(sd->status.account_id);
 	}
 	else
 	{	// take received text/value and store it in the designated variable
