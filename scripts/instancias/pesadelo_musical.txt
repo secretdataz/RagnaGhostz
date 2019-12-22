@@ -119,8 +119,8 @@ job_duncer,69,110,4	script	Meio#0	723,1,1,{
 	}
 	else
 	{
-		npctalk "Que pena, perdeu 10 pontos!",instance_npcname( "Piano Maldito" ),BC_AREA,0xFF8C00;
-		'pts -= 10;
+		npctalk "Que pena, perdeu 1 ponto!",instance_npcname( "Piano Maldito" ),BC_AREA,0xFF8C00;
+		'pts -= 1;
 		
 		if( 'pts < 0 ) 'pts = 0;
 	}

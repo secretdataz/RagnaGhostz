@@ -3,7 +3,7 @@ phtownall,84,64,5	Script	Refinador	63,{
 
 	atcommand "@repairall";
 	
-	.@max_refine = 15;
+	.@max_refine = 12;
 	
 	.@n$ = "[^A52A2ARefinador^000000]";
 	
