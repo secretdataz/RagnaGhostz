@@ -7482,7 +7482,7 @@
 29542,Diadema_do_Grifo_[QUEST],Diadema do Grifo [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,1,935,{ bonus bStr,10; bonus bVit,10; },{ rgzbonus(6,1); },{ rgzbonus(6,0); }
 29543,Asas_de_Tapaton_[QUEST],Asas de Tapaton [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,1,1008,{ bonus bStr,15; bonus bInt,5; bonus2 bSubEle,Ele_Dark,35; bonus2 bSubEle,Ele_Poison,35; },{},{}
 29544,Tiara_de_Popstar_[QUEST],Tiara de Popstar [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,1,1423,{ bonus bMaxHPrate,10; bonus bMaxSPrate,10; },{ if( Class == 4020 || Class == 4021 ) rgzbonus(7,1); },{ rgzbonus(7,0); }
-29545,Asinhas_do_Inverno_[QUEST],Asinhas do Inverno [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,1,564,{ bonus bInt,7; skill 89,25; },{},{}
+29545,Asinhas_do_Inverno_[QUEST],Asinhas do Inverno [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,1,564,{ bonus bInt,7; skill 89,5; },{},{}
 29546,Gato_Rabugento_[QUEST],Gato Rabugento [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,512,,1,1,1292,{ bonus bLuk,10; bonus3 bAutoSpell,136,10,40; bonus bMaxHPrate,-10; },{},{}
 29547,Nariz_de_Madeira_[QUEST],Nariz de Madeira [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,1,,1,1,737,{ bonus bDex,10; bonus2 bMagicAtkEle,Ele_Earth,70; skill 288,5; },{},{}
 29548,Seringa_Vermelha_[QUEST],Seringa Vermelha [QUEST],4,20,,500,,10,,4,0xFFFFFFFF,63,2,1,,1,1,842,{ bonus bMdefRate,15; bonus bMaxHPrate,-5; bonus bMaxSPrate,7; },{},{}
