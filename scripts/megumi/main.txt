@@ -7,7 +7,7 @@
 		query_sql( "DELETE FROM `char_reg_num` WHERE `key`='TV_TIME' " );
 		query_sql( "DELETE FROM `char_reg_num` WHERE `key`='SABE_TUDO' " );
 		
-		bot_announce( "Desculpa o transtorno, o servidor está online novamente!", CHANNEL_REALGERAL );
+		bot_announce( "Estamos Online!", CHANNEL_REALGERAL );
 
 		.MAX_STICKERS = 70;
 		end;
