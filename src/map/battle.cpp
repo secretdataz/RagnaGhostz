@@ -4034,7 +4034,7 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			skillratio += -100 + 100 * skill_lv;
 
 			if (sd && sd->mast[MASTERY_DESTRUIDOR_DE_ALMAS_EX]->active)
-				skillratio += sd->mast[MASTERY_DESTRUIDOR_DE_ALMAS_EX]->level;
+				skillratio += (sd->mast[MASTERY_DESTRUIDOR_DE_ALMAS_EX]->level / 3);
 			break;
 
 		case PA_SACRIFICE:
@@ -4935,12 +4935,13 @@ static void battle_attack_sc_bonus(struct Damage* wd, struct block_list *src, st
 					// equip atk * (1 + (edp level * .6))
 					{
 						int multiply = 1;
+						int increase = 0;
 
 						if (sd && sd->mast[MASTERY_ENCANTAR_COM_VENENO_MORTAL_EX]->active && sd->mast[MASTERY_ENCANTAR_COM_VENENO_MORTAL_EX]->level == 250)
-							multiply = 2;
+							increase += 30;
 
-						ATK_RATE(wd->weaponAtk, wd->weaponAtk2, 100 + ((sc->data[SC_EDP]->val1 * multiply) * 80));
-						ATK_RATE(wd->equipAtk, wd->equipAtk2, 100 + ((sc->data[SC_EDP]->val1 * multiply) * 60));
+						ATK_RATE(wd->weaponAtk, wd->weaponAtk2, 100 + ((sc->data[SC_EDP]->val1 * multiply) * (80 + increase)));
+						ATK_RATE(wd->equipAtk, wd->equipAtk2, 100 + ((sc->data[SC_EDP]->val1 * multiply) * (60 + increase)));
 					}
 					break;
 #else
@@ -6296,6 +6297,7 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 					case MG_COLDBOLT:
 						if (sd && skill_id == MG_COLDBOLT && sd->mast[MASTERY_LANCA_DE_GELO_EX]->active)
 							skillratio += sd->mast[MASTERY_LANCA_DE_FOGO_EX]->level;
+						skillratio += 15;
 					case MG_LIGHTNINGBOLT:
 						if (sc && sc->data[SC_SPELLFIST] && mflag&BF_SHORT)  {
 							skillratio += (sc->data[SC_SPELLFIST]->val4 * 100) + (sc->data[SC_SPELLFIST]->val1 * 50) - 100;// val4 = used bolt level, val2 = used spellfist level. [Rytech]

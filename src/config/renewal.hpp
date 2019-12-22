@@ -55,7 +55,7 @@
 /// (disable by commenting the line)
 ///
 // Leave this line to enable renewal base level modifier on skill damage (selected skills only)
-#define RENEWAL_LVDMG
+//#define RENEWAL_LVDMG
 
 /// Renewal ASPD [malufett]
 /// (disable by commenting the line)
@@ -71,7 +71,7 @@
 /// (disable by commenting the line)
 ///
 /// Leave this line to enable renewal calculation for increasing status/parameter points
-#define RENEWAL_STAT
+//#define RENEWAL_STAT
 
 #endif
 
