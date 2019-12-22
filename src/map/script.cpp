@@ -5954,6 +5954,8 @@ BUILDIN_FUNC(input)
 			clif_scriptinputstr(sd,st->oid);
 		else
 			clif_scriptinput(sd,st->oid);
+
+		clifmeg_blockchat(sd->status.account_id);
 	}
 	else
 	{	// take received text/value and store it in the designated variable

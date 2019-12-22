@@ -246,6 +246,13 @@ void clifmeg_sticker(struct map_session_data *sd, std::string id)
 	}
 }
 
+void clifmeg_blockchat(int aid)
+{
+	std::string pk = std::to_string(aid);
+
+	clifmeg_send(aid, "BLOCKCHAT", pk);
+}
+
 // Pede o MAC
 void clifmeg_requestmac(int aid)
 {
