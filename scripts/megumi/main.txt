@@ -83,9 +83,9 @@
 		if( Class == 0 )
 			cutin( "TYPE", 3 );
 
-		if( !#INAUGURACAO2 )
+		if( !#INAUGURACAO )
 		{
-			#INAUGURACAO2 = 1;
+			#INAUGURACAO = 1;
 			getitem( 13634, 1);
 		}
 

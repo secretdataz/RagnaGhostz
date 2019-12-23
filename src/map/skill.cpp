@@ -8001,8 +8001,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 
 		if (sd && sd->mast[MASTERY_MEDICAR_EX]->active && sd->mast[MASTERY_MEDICAR_EX]->level == 75)
 		{
-			status_change_clear_buffs(src, SCCB_BUFFS);
-			status_change_clear_buffs(src, SCCB_DEBUFFS);
+			status_change_clear_buffs(bl, SCCB_BUFFS);
+			status_change_clear_buffs(bl, SCCB_DEBUFFS);
 		}
 		break;
 
