@@ -476,7 +476,7 @@ phtownall,203,186,4	Script	Arena RagnaGhostz	10084,{
 
 					if( .@prize_give && .@i > 0 ) // Casuais não recebem premiação
 					{
-							set( #CASHPOINTS, .rank_prizecash[.@i], .@cid[.@add] );
+							set( #CASHPOINTS, ( getvar( #CASHPOINTS, .@cid[.@add] ) + .rank_prizecash[.@i] ), .@cid[.@add] );
 
 							.@getvip = ( rand( 1, .rank_prizevipchance[.@i] ) >= rand( 1, 100 ) );
 
@@ -794,8 +794,7 @@ function	script	pvp	{
 
 		if( .@cash > 0 )
 		{
-
-			set( #CASHPOINTS, .@cash, .@cid );
+			set( #CASHPOINTS, ( getvar( #CASHPOINTS, .@cid ) + .@cash ), .@cid );
 
 			.@getvip = ( rand( 1, .@vip_chance ) >= rand( 1, 100 ) );
 
