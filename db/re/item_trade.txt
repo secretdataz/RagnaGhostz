@@ -151,3 +151,10 @@
 29568,137,100	// Conhecedor_das_Laminas
 29569,8,100	// Carta_Sdnegel_Katarina
 29570,8,100	// Carta_Eugael_Katarina
+29584,408,100	// Chapeu_do_Urahara
+29585,408,100	// Chapeu_do_Taxista
+29586,408,100	// Chapeu_da_Enfermeira
+29587,408,100	// Elmo_Vermelho_da_Valkyria
+29588,408,100	// Elmo_do_Hatii
+29589,408,100	// Gorro_de_Flamel
+29590,408,100	// Elmo_do_Orc_Heroi

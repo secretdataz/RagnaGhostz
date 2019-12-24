@@ -83,10 +83,17 @@
 		if( Class == 0 )
 			cutin( "TYPE", 3 );
 
-		if( !#INAUGURACAO )
+		//if( !#INAUGURACAO )
+		//{
+		//	#INAUGURACAO = 1;
+		//	getitem( 13634, 1);
+		//}
+
+		if( !RESETED )
 		{
-			#INAUGURACAO = 1;
-			getitem( 13634, 1);
+			atcommand "@reset";
+			atcommand "@allskills";
+			RESETED = 1;
 		}
 
 		if( .@who > $RECORDE_ONLINE )

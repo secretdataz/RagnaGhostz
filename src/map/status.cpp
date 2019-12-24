@@ -1754,6 +1754,10 @@ int status_damage(struct block_list *src,struct block_list *target,int64 dhp, in
 	if( hp && battle_config.invincible_nodamage && src && sc && sc->data[SC_INVINCIBLE] && !sc->data[SC_INVINCIBLEOFF] )
 		hp = 1;
 
+	if (src->type == BL_PC && target->type == BL_PC && BL_CAST(BL_PC, src)->csd[CSD_ITEM_CHAPEU_DO_TAXISTA]->active)
+		BL_CAST(BL_PC, target)->csd[CSD_ITEM_CHAPEU_DO_TAXISTA]->count = (int)time(NULL);
+
+
 	if( hp && !(flag&1) ) {
 		if( sc ) {
 			struct status_change_entry *sce;

@@ -1743,6 +1743,12 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 		if (sd->mast[MASTERY_MESTRE_DAS_ARTES]->active)
 			damage += (damage * (sd->mast[MASTERY_MESTRE_DAS_ARTES]->level / 10)) / 100;
 
+		if (sd->csd[CSD_ITEM_ELMO_VERMELHO_DA_VALKYRIA]->active && skill_id == MG_FIREBOLT && getRandomValue(1,100) <= 25)
+			damage += (damage * 75) / 100;
+
+		if (sd->csd[CSD_ITEM_ELMO_DO_HAITII]->active && skill_id == MG_COLDBOLT && getRandomValue(1, 100) <= 25)
+			damage += (damage * 110) / 100;
+
 		// Calculos Finais
 		if (sd->mast[MASTERY_BANHO_DE_SANGUE_EX]->active && sd->mast[MASTERY_BANHO_DE_SANGUE_EX]->level == 300)
 			status_heal(src, damage, 0, 1);
@@ -2733,6 +2739,9 @@ static bool is_attack_critical(struct Damage* wd, struct block_list *src, struct
  */
 static int is_attack_piercing(struct Damage* wd, struct block_list *src, struct block_list *target, int skill_id, int skill_lv, short weapon_position)
 {
+	if (target->type == BL_PC && BL_CAST(BL_PC, target)->csd[CSD_ITEM_CHAPEU_DA_ENFERMEIRA]->active)
+		return 0;
+
 	if (skill_id == MO_INVESTIGATE || skill_id == RL_MASS_SPIRAL)
 		return 2;
 
